@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Framework\Weapon">
+      <UniqueIdentifier>{1329f0ab-9e16-4264-8842-32945ab586af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Ground">
+      <UniqueIdentifier>{7cb5482f-dea5-437b-bde8-e1cf3d2f28b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Item">
+      <UniqueIdentifier>{48228837-814b-463c-8bd9-7d3d394fe079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Enemy">
+      <UniqueIdentifier>{e68725f7-b68d-4e82-afc0-122450bd0dec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Camera">
+      <UniqueIdentifier>{3bd84627-2563-49fb-85b0-59709abf0c50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameControllers">
+      <UniqueIdentifier>{228d8734-58ef-49be-a081-499f20719b3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Simon">
+      <UniqueIdentifier>{3ccc2b62-5d93-4dc5-8d08-7f004da15124}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\debug">
+      <UniqueIdentifier>{fc530495-5dc0-419b-9e1f-8ab11ad8a695}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Scene">
+      <UniqueIdentifier>{724c14fd-d63b-496e-a582-8fc307657436}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Map">
+      <UniqueIdentifier>{f51d6401-1fa1-4efe-a069-fd9849277390}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\UI">
+      <UniqueIdentifier>{d01b451a-7a83-4874-9e7e-900f24385b87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\define">
+      <UniqueIdentifier>{76349c48-46c7-48aa-b32d-9afd95653bc0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Whip.h">
+      <Filter>Framework\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Framework\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Framework\GameControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Framework\GameControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Framework\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites.h">
+      <Filter>Framework\GameControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Framework\GameControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="debug.h">
+      <Filter>Framework\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="MorningStar.h">
+      <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="BigHeart.h">
+      <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Simon.h">
+      <Filter>Framework\Simon</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>Framework\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="Dagger1.h">
+      <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Dagger.h">
+      <Filter>Framework\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldBag.h">
+      <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Framework\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Framework\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene1.h">
+      <Filter>Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene2.h">
+      <Filter>Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Framework\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Torch.h">
+      <Filter>Framework\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="define.h">
+      <Filter>Framework\define</Filter>
+    </ClInclude>
+    <ClInclude Include="SmallHeart.h">
+      <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Ghou.h">
+      <Filter>Framework\Enemy</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Game.cpp">
+      <Filter>Framework\GameControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Framework\GameControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Framework\GameControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprites.cpp">
+      <Filter>Framework\GameControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Framework\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Whip.cpp">
+      <Filter>Framework\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Framework\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="debug.cpp">
+      <Filter>Framework\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="MorningStar.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="BigHeart.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Simon.cpp">
+      <Filter>Framework\Simon</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>Framework\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Torch.cpp">
+      <Filter>Framework\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Dagger1.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Dagger.cpp">
+      <Filter>Framework\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Framework\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Framework\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene1.cpp">
+      <Filter>Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene2.cpp">
+      <Filter>Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GoldBag.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>Framework\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="define.cpp">
+      <Filter>Framework\define</Filter>
+    </ClCompile>
+    <ClCompile Include="SmallHeart.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Ghou.cpp">
+      <Filter>Framework\Enemy</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
