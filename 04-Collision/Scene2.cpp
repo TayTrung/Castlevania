@@ -6,9 +6,9 @@
 CGame *game1 = CGame::GetInstance();
 Ground *ground1;
 Simon *simon1;
-vector<LPGAMEOBJECT> Item1;
-vector<LPGAMEOBJECT> Surface1;
-vector<LPGAMEOBJECT> Enemy1;
+vector<LPGAMEOBJECT> listItem1;
+vector<LPGAMEOBJECT> listSurface1;
+vector<LPGAMEOBJECT> listEnemy1;
 Camera *camera1 = Camera::GetInstance();
 Map *map1;
 BigHeart *bigheart1;
@@ -306,14 +306,14 @@ void Scene2::LoadResources()
 		candle->SetState(CANDLE_STATE_ACTIVE);
 		candle->setItemInside(smallheartInside);
 		candle->SetPosition(29+i*(157-29), offsetMap +128);
-		//Enemy1.push_back(candle);
+		listEnemy1.push_back(candle);
 
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
 		candle->setItemInside(smallheartInside);
 		candle->SetPosition(92 + i * (220 - 92), offsetMap + 97);
-		//Enemy1.push_back(candle);
+		listEnemy1.push_back(candle);
 		}
 #pragma endregion
 
@@ -326,13 +326,31 @@ void Scene2::LoadResources()
 
 	animations->Add(999, ani);
 
-	for (int i = 0; i < 176; i++)
+	for (int i = 0; i < 3; i++)
 	{
-		Ground *ground = new Ground(2);
-		ground->AddAnimation(999);
-		ground->SetPosition(0 + i * 16.0f, offsetMap+160);
-
-		Surface1.push_back(ground);
+		if (i == 0)
+		{
+			Ground *ground = new Ground(21);
+			ground->AddAnimation(999);
+			ground->SetPosition(0, offsetMap + 160);
+			listSurface1.push_back(ground);
+		}
+		else 
+			if (i == 1)
+			{
+				Ground *ground = new Ground(22);
+				ground->AddAnimation(999);
+				ground->SetPosition(0 + 16+ BRICKMAP21_BBOX_WIDTH, offsetMap + 160);
+				listSurface1.push_back(ground);
+			}
+			else
+				if (i == 2)
+				{
+					Ground *ground = new Ground(23);
+					ground->AddAnimation(999);
+					ground->SetPosition(0 + 16*2+ BRICKMAP21_BBOX_WIDTH+ BRICKMAP22_BBOX_WIDTH, offsetMap + 160);
+					listSurface1.push_back(ground);
+				}
 	}
 	
 
@@ -356,7 +374,7 @@ void Scene2::Update(DWORD dt)
 		if (tick == 360)
 		{
 			tick = 0;
-	//		spawnGhou(x1 + SCREEN_WIDTH - 60, 125 + offsetMap);
+			spawnGhou(x1 + SCREEN_WIDTH - 60, 125 + offsetMap);
 		}
 		else if (tick > 360)
 			tick = 0;
@@ -366,16 +384,16 @@ if ((simon1->dagger->x)<x1 || (simon1->dagger->x)>(x1 + SCREEN_WIDTH))
 		simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
 		simon1->notUseDagger();
 	}
-	for (int i = 0; i < Item1.size(); i++)
+	for (int i = 0; i < listItem1.size(); i++)
 	{
 		//if (Item1.at(i)->GetState() == ITEM_STATE_ACTIVE)+		Enemy1[i]	0x006196e8 {...}	CGameObject * {Ghou}
 
-			Item1.at(i)->Update(dt, &Surface1);
+		listItem1.at(i)->Update(dt, &listSurface1);
 	}
 
 
-	for (int i = 0; i < Enemy1.size(); i++)
-		Enemy1[i]->Update(dt, &Surface1);
+	for (int i = 0; i < listEnemy1.size(); i++)
+		listEnemy1[i]->Update(dt, &listSurface1);
 
 	erasingObjThatInacitve();
 
@@ -386,13 +404,13 @@ if ((simon1->dagger->x)<x1 || (simon1->dagger->x)>(x1 + SCREEN_WIDTH))
 	camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
 
 	camera1->Update();
-	simon1->Update(dt, &Surface1); 
+	simon1->Update(dt, &listSurface1);
 	if ((simon1->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon1->dagger->isOn == true && simon1->isUsingDagger == true)
-		simon1->dagger->Update(dt, &Surface1);
+		simon1->dagger->Update(dt, &listSurface1);
 
 
 //	if(Item1.at(0)->GetState()==SMALLHEART_STATE_ACTIVE)
-	//Item1.at(0)->Update(dt, &Surface1);
+	//Item1.at(0)->Update(dt, &listSurface1);
 
 }
 
@@ -408,12 +426,12 @@ void Scene2::Render()
 		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 		map1->drawTileMap(camera1, ID_TEX_MAP2);
-		for (int i = 0; i < Surface1.size(); i++)
-			Surface1[i]->Render();
-		for (int i = 0; i < Enemy1.size(); i++)
-			Enemy1[i]->Render();
-		for (int i = 0; i < Item1.size(); i++)
-			Item1[i]->Render();
+		for (int i = 0; i < listSurface1.size(); i++)
+			listSurface1[i]->Render();
+		for (int i = 0; i < listEnemy1.size(); i++)
+			listEnemy1[i]->Render();
+		for (int i = 0; i < listItem1.size(); i++)
+			listItem1[i]->Render();
 
 		simon1->Render();
 		simon1->dagger->Render();
@@ -442,13 +460,13 @@ Scene2::~Scene2()
 
 void Scene2::erasingObjThatInacitve()
 {
-	for (UINT i = 0; i < Enemy1.size(); i++)
+	for (UINT i = 0; i < listEnemy1.size(); i++)
 	{
-		if (dynamic_cast<Ghou *>(Enemy1.at(i)))
+		if (dynamic_cast<Ghou *>(listEnemy1.at(i)))
 		{
-			if (Enemy1.at(i)->state == GHOU_STATE_INACTIVE)
+			if (listEnemy1.at(i)->state == GHOU_STATE_INACTIVE)
 			{
-				Enemy1.erase(Enemy1.begin() + i);
+				listEnemy1.erase(listEnemy1.begin() + i);
 				i = i - 1;
 			}
 		}
@@ -466,7 +484,7 @@ void Scene2::spawnGhou(float x,float y)
 		ghou->setItemInside(smallheartInside);
 		ghou->SetPosition(x+30+i*20, y);
 		ghou->SetState(GHOU_STATE_ACTIVE_LEFT);
-		Enemy1.push_back(ghou);
+		listEnemy1.push_back(ghou);
 	}
 }
 
@@ -475,100 +493,100 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 	if (simon1->whip->isFinished == false && simon1->whip->isAllowedToCollide == true)
 	{
-		for (UINT i = 0; i < Enemy1.size(); i++)
+		for (UINT i = 0; i < listEnemy1.size(); i++)
 		{
 
-			if (simon1->whip->CheckCollision(Enemy1.at(i)) == true)
+			if (simon1->whip->CheckCollision(listEnemy1.at(i)) == true)
 			{
-				if (dynamic_cast<Torch *>(Enemy1.at(i)))
+				if (dynamic_cast<Torch *>(listEnemy1.at(i)))
 				{
-					if (Enemy1.at(i)->state == TORCH_STATE_ACTIVE)
+					if (listEnemy1.at(i)->state == TORCH_STATE_ACTIVE)
 					{
 						float x, y;
 						OutputDebugString(L"Collision Whip and Candle \n");
-						Enemy1.at(i)->SetState(TORCH_STATE_INACTIVE);
-						Enemy1.at(i)->GetPosition(x, y);
+						listEnemy1.at(i)->SetState(TORCH_STATE_INACTIVE);
+						listEnemy1.at(i)->GetPosition(x, y);
 
-						switch (Enemy1.at(i)->itemInside)
+						switch (listEnemy1.at(i)->itemInside)
 						{
 						case 0:
 							break;
 						case bigheartInside:
 							bigheart1->SetState(ITEM_STATE_ACTIVE);
 							bigheart1->SetPosition(x, y);
-							Item1.push_back(bigheart1);
+							listItem1.push_back(bigheart1);
 							break;
 						case morningstarInside:
 							morningstar1->SetState(ITEM_STATE_ACTIVE);
 							morningstar1->SetPosition(x, y);
-							Item1.push_back(morningstar1);
+							listItem1.push_back(morningstar1);
 							break;
 						case daggerInside:
 							dagger1->SetState(ITEM_STATE_ACTIVE);
 							dagger1->SetPosition(x, y);
-							Item1.push_back(dagger1);
+							listItem1.push_back(dagger1);
 							break;
 						case smallheartInside:
 							smallheart1 = new SmallHeart(x);
 							smallheart1->AddAnimation(482);
 							smallheart1->SetState(ITEM_STATE_ACTIVE);
 							smallheart1->SetPosition(x, y);
-							Item1.push_back(smallheart1);
+							listItem1.push_back(smallheart1);
 							break;
 
 						default:
 							break;
 						}
-						Enemy1.erase(Enemy1.begin() + i);
+						listEnemy1.erase(listEnemy1.begin() + i);
 						i = i - 1; //Optional cuz simon only can hit 1 torch at one moment
 					}
 
 				}
 				else
-					if (dynamic_cast<Ghou *>(Enemy1.at(i)))
+					if (dynamic_cast<Ghou *>(listEnemy1.at(i)))
 					{
-						if (Enemy1.at(i)->state == GHOU_STATE_ACTIVE_LEFT || Enemy1.at(i)->state == GHOU_STATE_ACTIVE_RIGHT)
+						if (listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_LEFT || listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_RIGHT)
 						{
 							float x, y;
 							OutputDebugString(L"Collision Whip and Ghou \n");
-							Enemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
-							Enemy1.at(i)->GetPosition(x, y);
+							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
+							listEnemy1.at(i)->GetPosition(x, y);
 
-							switch (Enemy1.at(i)->itemInside)
+							switch (listEnemy1.at(i)->itemInside)
 							{
 							case 0:
 								break;
 							case bigheartInside:
 								bigheart1->SetState(ITEM_STATE_ACTIVE);
 								bigheart1->SetPosition(x, y);
-								Item1.push_back(bigheart1);
+								listItem1.push_back(bigheart1);
 								//tickHeart += 1;
 
 								break;
 							case morningstarInside:
 								morningstar1->SetState(ITEM_STATE_ACTIVE);
 								morningstar1->SetPosition(x, y);
-								Item1.push_back(morningstar1);
+								listItem1.push_back(morningstar1);
 								//tickWhip += 1;
 								break;
 							case daggerInside:
 								dagger1->SetState(ITEM_STATE_ACTIVE);
 								dagger1->SetPosition(x, y);
-								Item1.push_back(dagger1);
+								listItem1.push_back(dagger1);
 								break;
 							case smallheartInside:
 								smallheart1 = new SmallHeart(x);
 								smallheart1->AddAnimation(482);
 								smallheart1->SetState(ITEM_STATE_ACTIVE);
 								smallheart1->SetPosition(x, y);
-								Item1.push_back(smallheart1);
+								listItem1.push_back(smallheart1);
 								break;
 
 							default:
 								break;
 							}
 
-							Enemy1.erase(Enemy1.begin() + i);
+							listEnemy1.erase(listEnemy1.begin() + i);
 							i = i-1;
 						}
 					
@@ -579,119 +597,113 @@ void Scene2::CollisionBetWeaponAndEnemy()
 	else
 		if (simon1->dagger->state != DAGGER_STATE_INACTIVE && simon1->dagger->isOn == true && simon1->isUsingDagger == true)
 		{
-			for (UINT i = 0; i < Enemy1.size(); i++)
+			for (UINT i = 0; i < listEnemy1.size(); i++)
 			{
-
-				if (simon1->whip->CheckCollision(Enemy1.at(i)) == true)
+				if (simon1->dagger->CheckCollision(listEnemy1.at(i)) == true)
 				{
-					if (dynamic_cast<Torch *>(Enemy1.at(i)))
+					if (listEnemy1.at(i)->state == TORCH_STATE_ACTIVE)
 					{
-						if (Enemy1.at(i)->state == TORCH_STATE_ACTIVE)
+						float x, y;
+						OutputDebugString(L"Collision Dagger and Candle \n");
+						listEnemy1.at(i)->SetState(TORCH_STATE_INACTIVE);
+						listEnemy1.at(i)->GetPosition(x, y);
+						simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
+						simon1->notUseDagger();
+
+
+
+
+
+
+						switch (listEnemy1.at(i)->itemInside)
 						{
-							float x, y;
-							OutputDebugString(L"Collision Whip and Candle \n");
-							Enemy1.at(i)->SetState(TORCH_STATE_INACTIVE);
-							Enemy1.at(i)->GetPosition(x, y);
+						case 0:
+							break;
+						case bigheartInside:
+							bigheart1->SetState(ITEM_STATE_ACTIVE);
+							bigheart1->SetPosition(x, y);
+							listItem1.push_back(bigheart1);
+							//tickHeart += 1;
 
+							break;
+						case morningstarInside:
+							morningstar1->SetState(ITEM_STATE_ACTIVE);
+							morningstar1->SetPosition(x, y);
+							listItem1.push_back(morningstar1);
+							//tickWhip += 1;
+							break;
+						case daggerInside:
+							dagger1->SetState(ITEM_STATE_ACTIVE);
+							dagger1->SetPosition(x, y);
+							listItem1.push_back(dagger1);
+							break;
+						case smallheartInside:
+							smallheart1 = new SmallHeart(x);
+							smallheart1->AddAnimation(482);
+							smallheart1->SetState(ITEM_STATE_ACTIVE);
+							smallheart1->SetPosition(x, y);
+							listItem1.push_back(smallheart1);
+							break;
 
-
-
-							switch (Enemy1.at(i)->itemInside)
-							{
-							case 0:
-								break;
-							case bigheartInside:
-								bigheart1->SetState(ITEM_STATE_ACTIVE);
-								bigheart1->SetPosition(x, y);
-								Item1.push_back(bigheart1);
-								//tickHeart += 1;
-
-								break;
-							case morningstarInside:
-								morningstar1->SetState(ITEM_STATE_ACTIVE);
-								morningstar1->SetPosition(x, y);
-								Item1.push_back(morningstar1);
-								//tickWhip += 1;
-								break;
-							case daggerInside:
-								dagger1->SetState(ITEM_STATE_ACTIVE);
-								dagger1->SetPosition(x, y);
-								Item1.push_back(dagger1);
-								break;
-							case smallheartInside:
-								smallheart1 = new SmallHeart(x);
-								smallheart1->AddAnimation(482);
-								smallheart1->SetState(ITEM_STATE_ACTIVE);
-								smallheart1->SetPosition(x, y);
-								Item1.push_back(smallheart1);
-								break;
-
-							default:
-								break;
-							}
+						default:
+							break;
+							
 
 						}
-						else
-						{
-							Enemy1.erase(Enemy1.begin() + i);
-							i = i - 1;
-
-						}
+						listEnemy1.erase(listEnemy1.begin() + i);
+						i = i - 1;
 					}
+
 					else
-						if (dynamic_cast<Ghou *>(Enemy1.at(i)))
+						if (dynamic_cast<Ghou *>(listEnemy1.at(i)))
 						{
-							if (Enemy1.at(i)->state == GHOU_STATE_ACTIVE_LEFT || Enemy1.at(i)->state == GHOU_STATE_ACTIVE_RIGHT)
+							if (listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_LEFT || listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_RIGHT)
 							{
 								float x, y;
 								OutputDebugString(L"Collision Whip and Ghou \n");
-								Enemy1.at(i)->SetState(TORCH_STATE_INACTIVE);
-								Enemy1.at(i)->GetPosition(x, y);
+								listEnemy1.at(i)->SetState(TORCH_STATE_INACTIVE);
+								listEnemy1.at(i)->GetPosition(x, y);
 
 
 
 
-								switch (Enemy1.at(i)->itemInside)
+								switch (listEnemy1.at(i)->itemInside)
 								{
 								case 0:
 									break;
 								case bigheartInside:
 									bigheart1->SetState(ITEM_STATE_ACTIVE);
 									bigheart1->SetPosition(x, y);
-									Item1.push_back(bigheart1);
+									listItem1.push_back(bigheart1);
 									//tickHeart += 1;
 
 									break;
 								case morningstarInside:
 									morningstar1->SetState(ITEM_STATE_ACTIVE);
 									morningstar1->SetPosition(x, y);
-									Item1.push_back(morningstar1);
+									listItem1.push_back(morningstar1);
 									//tickWhip += 1;
 									break;
 								case daggerInside:
 									dagger1->SetState(ITEM_STATE_ACTIVE);
 									dagger1->SetPosition(x, y);
-									Item1.push_back(dagger1);
+									listItem1.push_back(dagger1);
 									break;
 								case smallheartInside:
 									smallheart1 = new SmallHeart(x);
 									smallheart1->AddAnimation(482);
 									smallheart1->SetState(ITEM_STATE_ACTIVE);
 									smallheart1->SetPosition(x, y);
-									Item1.push_back(smallheart1);
+									listItem1.push_back(smallheart1);
 									break;
 
 								default:
 									break;
 								}
-
-							}
-							else
-							{
-								Enemy1.erase(Enemy1.begin() + i);
+								listEnemy1.erase(listEnemy1.begin() + i);
 								i = i - 1;
-
 							}
+
 
 						}
 				}
@@ -704,49 +716,49 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 void Scene2::CollisionBetSimonAndItem()
 {
-	for (UINT i = 0; i < Item1.size(); i++)
+	for (UINT i = 0; i < listItem1.size(); i++)
 	{
-		if (simon1->CheckCollision(Item1.at(i)) == true)
+		if (simon1->CheckCollision(listItem1.at(i)) == true)
 		{
-			if (dynamic_cast<BigHeart *>(Item1.at(i)))
+			if (dynamic_cast<BigHeart *>(listItem1.at(i)))
 			{
-				if (Item1.at(i)->state == ITEM_STATE_ACTIVE)
+				if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
 				{
 
 					OutputDebugString(L"Simon and BigHeart \n");
-					Item1.at(i)->SetState(ITEM_STATE_INACTIVE);
+					listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 					//simon->heartCount += 5;
 
 				}
 			}
 			else
-				if (dynamic_cast<MorningStar *>(Item1.at(i)))
+				if (dynamic_cast<MorningStar *>(listItem1.at(i)))
 				{
-					if (Item1.at(i)->state == ITEM_STATE_ACTIVE)
+					if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
 					{
 						OutputDebugString(L"Simon and WHIP \n");
-						Item1.at(i)->SetState(ITEM_STATE_INACTIVE);
+						listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 						simon1->whip->levelUpWhip();
 					}
 				}
 				else
-					if (dynamic_cast<Dagger1 *>(Item1.at(i)))
+					if (dynamic_cast<Dagger1 *>(listItem1.at(i)))
 					{
-						if (Item1.at(i)->state == ITEM_STATE_ACTIVE)
+						if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
 						{
 							OutputDebugString(L"Simon and DAGGER \n");
-							Item1.at(i)->SetState(ITEM_STATE_INACTIVE);
+							listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 							simon1->dagger->turnOnDagger();
 							OutputDebugString(L"Dagger on \n");
 						}
 					}
 					else
-						if (dynamic_cast<SmallHeart *>(Item1.at(i)))
+						if (dynamic_cast<SmallHeart *>(listItem1.at(i)))
 						{
-							if (Item1.at(i)->state == ITEM_STATE_ACTIVE)
+							if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
 							{
 								OutputDebugString(L"Simon and SmallHeart \n");
-								Item1.at(i)->SetState(ITEM_STATE_INACTIVE);
+								listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 							}
 						}
 					else
@@ -780,17 +792,17 @@ void Scene2::CollisionBetSimonAndItem()
 						//		}
 						//}
 						//else
-							if (dynamic_cast<GoldBag *>(Item1.at(i)))
+							if (dynamic_cast<GoldBag *>(listItem1.at(i)))
 							{
-								if (Item1.at(i)->state == ITEM_STATE_ACTIVE)
+								if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
 								{
 									OutputDebugString(L"GoldBag \n");
-									Item1.at(i)->SetState(ITEM_STATE_INACTIVE);
+									listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 								}
 
 							}
 
-			Item1.erase(Item1.begin() + i);
+			listItem1.erase(listItem1.begin() + i);
 			i = i - 1;
 		
 		}
@@ -799,13 +811,13 @@ void Scene2::CollisionBetSimonAndItem()
 
 void Scene2::CollisionBetSimonAndEnemy()
 {
-	for (UINT i = 0; i < Enemy1.size(); i++)
+	for (UINT i = 0; i < listEnemy1.size(); i++)
 	{
-		if (simon1->CheckCollision(Enemy1.at(i)) == true)
+		if (simon1->CheckCollision(listEnemy1.at(i)) == true)
 		{
-			if (dynamic_cast<Ghou *>(Enemy1.at(i)))
+			if (dynamic_cast<Ghou *>(listEnemy1.at(i)))
 			{
-				if (Enemy1.at(i)->state == GHOU_STATE_ACTIVE_LEFT || Item1.at(i)->state == GHOU_STATE_ACTIVE_RIGHT)
+				if (listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_LEFT || listItem1.at(i)->state == GHOU_STATE_ACTIVE_RIGHT)
 				{
 
 					OutputDebugString(L"Simon and BigHeart \n");

@@ -6,11 +6,11 @@ Ground *ground, *invisBox, *invisBox2;
 Camera *camera;
 Simon *simon;
 Map *map;
-vector<LPGAMEOBJECT> Enemy;
+vector<LPGAMEOBJECT> listEnemy;
 int tickHeart;
 int tickWhip;
-vector<LPGAMEOBJECT> Item;
-vector<LPGAMEOBJECT> Surface;
+vector<LPGAMEOBJECT> listItem;
+vector<LPGAMEOBJECT> listSurface;
 GoldBag *goldbag;
 Torch *torch;
 Dagger1 *dagger;
@@ -47,7 +47,7 @@ void Scene1::KeyState(BYTE * states)
 					else*/
 					simon->SetState(SIMON_STATE_SIT);
 				}
-				else
+				/*else
 					if (game->IsKeyDown(DIK_SPACE))
 					{
 						if (simon->isJumping == false)
@@ -55,7 +55,7 @@ void Scene1::KeyState(BYTE * states)
 							simon->SetState(SIMON_STATE_JUMP);
 							simon->isJumping = true;
 						}
-					}
+					}*/
 					else
 					{
 						simon->SetState(SIMON_STATE_IDLE);
@@ -181,7 +181,7 @@ void Scene1::LoadResources()
 
 	//Objects
 	textures->Add(ID_TEX_SIMON, L"textures\\simon.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_GROUND, L"textures\\Ground\\ground1.png", D3DCOLOR_XRGB(176, 224, 248));
+	//textures->Add(ID_TEX_GROUND, L"textures\\Ground\\ground1.png", D3DCOLOR_XRGB(176, 224, 248));
 	textures->Add(ID_TEX_TORCH, L"textures\\Enemy\\0.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_WHIP, L"textures\\Weapon\\morningstar.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
@@ -285,8 +285,8 @@ void Scene1::LoadResources()
 
 #pragma region Co-ordinations of Ground
 
-	LPDIRECT3DTEXTURE9 texGround = textures->Get(ID_TEX_GROUND);
-	sprites->Add(20001, 0, 0, 16, 16, texGround);
+	/*LPDIRECT3DTEXTURE9 texGround = textures->Get(ID_TEX_GROUND);
+	sprites->Add(20001, 0, 0, 16, 16, texGround);*/
 
 #pragma endregion
 
@@ -413,65 +413,67 @@ void Scene1::LoadResources()
 
 #pragma region Adding Animations for Simon
 
-	ani = new CAnimation(300);	// idle right
+	ani = new CAnimation(100);	// idle right
 	ani->Add(10012);
 	animations->Add(400, ani);
 
-	ani = new CAnimation(300);	// idle left
+	ani = new CAnimation(100);	// idle left
 	ani->Add(10011);
 	animations->Add(401, ani);
 
-	ani = new CAnimation(300);	// Walking right
+	ani = new CAnimation(100);	// Walking right
 	ani->Add(10013);
 	ani->Add(10014);
 	ani->Add(10015);
 	animations->Add(402, ani);
 
-	ani = new CAnimation(300);	// Walking left
+	ani = new CAnimation(100);	// Walking left
 	ani->Add(10003);
 	ani->Add(10004);
 	ani->Add(10005);
 	animations->Add(403, ani);
 
-	ani = new CAnimation(300);	// Sitting right
+	ani = new CAnimation(100);	// Sitting right
 	ani->Add(10017);
 	animations->Add(500, ani);
 
-	ani = new CAnimation(300);	// Sitting left
+	ani = new CAnimation(100);	// Sitting left
 	ani->Add(10007);
 	animations->Add(501, ani);
 
 
 	ani = new CAnimation(300);	// Jumping right
 	ani->Add(10017);
+	ani->Add(10017);
 	animations->Add(600, ani);
 
 	ani = new CAnimation(300);	// Jumping left
 	ani->Add(10007);
+	ani->Add(10007);
 	animations->Add(601, ani);
 
-	ani = new CAnimation(300);	// Attacking right
+	ani = new CAnimation(100);	// Attacking right
 	ani->Add(10104);
 	ani->Add(10105);
 	ani->Add(10106);
 	ani->Add(10012);
 	animations->Add(700, ani);
 
-	ani = new CAnimation(300);	// Attacking left
+	ani = new CAnimation(100);	// Attacking left
 	ani->Add(10101);
 	ani->Add(10102);
 	ani->Add(10103);
 	ani->Add(10011);
 	animations->Add(701, ani);
 
-	ani = new CAnimation(300);	// Sitting Attacking right
+	ani = new CAnimation(100);	// Sitting Attacking right
 	ani->Add(10204);
 	ani->Add(10205);
 	ani->Add(10206);
 	ani->Add(10017);
 	animations->Add(800, ani);
 
-	ani = new CAnimation(300);	// Sitting Attacking left
+	ani = new CAnimation(100);	// Sitting Attacking left
 	ani->Add(10201);
 	ani->Add(10202);
 	ani->Add(10203);
@@ -482,14 +484,14 @@ void Scene1::LoadResources()
 
 #pragma region Adding Animation for Whip //de trong simon vì bên duoi co new simon
 	// lvl1
-	ani = new CAnimation(300); //Left
+	ani = new CAnimation(100); //Left
 	ani->Add(30000);
 	ani->Add(30001);
 	ani->Add(30002);
 	ani->Add(30006);
 	animations->Add(710, ani);
 
-	ani = new CAnimation(300); //Right
+	ani = new CAnimation(100); //Right
 	ani->Add(30003);
 	ani->Add(30004);
 	ani->Add(30005);
@@ -498,28 +500,28 @@ void Scene1::LoadResources()
 
 
 	//lvl2
-	ani = new CAnimation(300); //Left
+	ani = new CAnimation(100); //Left
 	ani->Add(30010);
 	ani->Add(30011);
 	ani->Add(30012);
 	ani->Add(30006);
 	animations->Add(712, ani);
 
-	ani = new CAnimation(300); //Right
+	ani = new CAnimation(100); //Right
 	ani->Add(30013);
 	ani->Add(30014);
 	ani->Add(30015);
 	ani->Add(30006);
 	animations->Add(713, ani);
 	//lvl3
-	ani = new CAnimation(300); //Left
+	ani = new CAnimation(100); //Left
 	ani->Add(30020);
 	ani->Add(30021);
 	ani->Add(30022);
 	ani->Add(30006);
 	animations->Add(714, ani);
 
-	ani = new CAnimation(300); //Right
+	ani = new CAnimation(100); //Right
 	ani->Add(30023);
 	ani->Add(30024);
 	ani->Add(30025);
@@ -573,24 +575,20 @@ void Scene1::LoadResources()
 
 	animations->Add(999, ani);
 
-	for (int i = 0; i < 65; i++)
-	{
-		ground = new Ground(0);
-		ground->AddAnimation(999);
-		ground->SetPosition(0 + i * 16.0f, offsetMap+144);
-		Surface.push_back(ground);
-	}
-	invisBox = new Ground(1);
-	invisBox->AddAnimation(999);
-	invisBox->SetPosition(689, 125+offsetMap);
-	invisBox->SetState(INVIS_STATE_NEXT_LVL);
-	Item.push_back(invisBox);
 
-	invisBox2 = new Ground(1);
-	invisBox2->AddAnimation(999);
+	ground = new Ground(11);		
+	ground->SetPosition(0 , offsetMap+144);
+	listSurface.push_back(ground);
+		
+	invisBox = new Ground(0);
+	invisBox->SetPosition(689, 140+offsetMap);
+	invisBox->SetState(INVIS_STATE_NEXT_LVL);
+	listItem.push_back(invisBox);
+
+	invisBox2 = new Ground(0);
 	invisBox2->SetPosition(MAP1_WIDTH - 24, offsetMap + 140);
 	invisBox2->SetState(INVIS_STATE_INVIS_ITEM);
-	Item.push_back(invisBox2);
+	listItem.push_back(invisBox2);
 
 
 #pragma endregion
@@ -619,7 +617,7 @@ void Scene1::LoadResources()
 				torch->setItemInside(daggerInside);
 
 			
-		Enemy.push_back(torch);
+			listEnemy.push_back(torch);
 	}
 
 
@@ -701,19 +699,19 @@ void Scene1::Update(DWORD dt)
 	}
 
 	CollisionBetWeaponAndEnemy();
-	for (int i = 0; i < Item.size(); i++)
+	for (int i = 0; i < listItem.size(); i++)
 	{
-		if (Item.at(i)->GetState() == ITEM_STATE_ACTIVE);
-		Item.at(i)->Update(dt, &Surface);
+		if (listItem.at(i)->GetState() == ITEM_STATE_ACTIVE);
+		listItem.at(i)->Update(dt, &listSurface);
 	}
 	
 	if (goldbag->GetState() == ITEM_STATE_ACTIVE)
-		goldbag->Update(dt, &Surface);
+		goldbag->Update(dt, &listSurface);
 
-	simon->Update(dt, &Surface);
+	simon->Update(dt, &listSurface);
 	
 	if ((simon->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon->dagger->isOn == true && simon->isUsingDagger == true)//updating dagger when being used
-		simon->dagger->Update(dt, &Surface);
+		simon->dagger->Update(dt, &listSurface);
 
 	camera->SetPosition(simon->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon
 	camera->Update();
@@ -734,14 +732,14 @@ void Scene1::Render()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 		map->drawTileMap(camera, ID_TEX_MAP1);
 		//All items are rendered if state = active
-		for (int i = 0; i < Surface.size(); i++)//render surface
-			Surface[i]->Render();
+		for (int i = 0; i < listSurface.size(); i++)//render surface
+			listSurface[i]->Render();
 
-		for (int i = 0; i < Enemy.size(); i++)//render torches
-			Enemy[i]->Render();
+		for (int i = 0; i < listEnemy.size(); i++)//render torches
+			listEnemy[i]->Render();
 
-		for (int i = 0; i < Item.size(); i++)//render ietms
-			Item[i]->Render();
+		for (int i = 0; i < listItem.size(); i++)//render ietms
+			listItem[i]->Render();
 
 		goldbag->Render();
 		//
@@ -779,42 +777,42 @@ void Scene1::CollisionBetWeaponAndEnemy()
 
 	if (simon->whip->isFinished == false && simon->whip->isAllowedToCollide == true)
 	{
-		for (UINT i = 0; i < Enemy.size(); i++)
+		for (UINT i = 0; i < listEnemy.size(); i++)
 		{
 
-			if (simon->whip->CheckCollision(Enemy.at(i)) == true)
+			if (simon->whip->CheckCollision(listEnemy.at(i)) == true)
 			{
-				if (Enemy.at(i)->state == TORCH_STATE_ACTIVE)
+				if (listEnemy.at(i)->state == TORCH_STATE_ACTIVE)
 				{
 					float x, y;
 					OutputDebugString(L"Collision Whip and Candle \n");
-					Enemy.at(i)->SetState(TORCH_STATE_INACTIVE);
-					Enemy.at(i)->GetPosition(x, y);
+					listEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
+					listEnemy.at(i)->GetPosition(x, y);
 
 					
 					
 					
-					switch (Enemy.at(i)->itemInside)
+					switch (listEnemy.at(i)->itemInside)
 					{
 					case 0:
 						break;
 					case bigheartInside:
 						bigheart->SetState(ITEM_STATE_ACTIVE);
 						bigheart->SetPosition(x, y);
-						Item.push_back(bigheart);
+						listItem.push_back(bigheart);
 	//					tickHeart += 1;
 				
 						break;
 					case morningstarInside:
 						morningstar->SetState(ITEM_STATE_ACTIVE);
 						morningstar->SetPosition(x, y);
-						Item.push_back(morningstar);
+						listItem.push_back(morningstar);
 		//				tickWhip += 1;
 						break;
 					case daggerInside:
 						dagger->SetState(ITEM_STATE_ACTIVE);
 						dagger->SetPosition(x, y);
-						Item.push_back(dagger);
+						listItem.push_back(dagger);
 						break;
 					case smallheartInside:
 						break;
@@ -823,7 +821,7 @@ void Scene1::CollisionBetWeaponAndEnemy()
 					}
 
 
-					Enemy.erase(Enemy.begin() + i);// Delete it from enemy since Simion killed it
+					listEnemy.erase(listEnemy.begin() + i);// Delete it from enemy since Simion killed it
 
 					i = i - 1; // Push back 1 cuz after deleting i+1 will replace i
 
@@ -835,48 +833,48 @@ void Scene1::CollisionBetWeaponAndEnemy()
 	else 
 		if (simon->dagger->state != DAGGER_STATE_INACTIVE && simon->dagger->isOn == true && simon->isUsingDagger == true)
 		{
-			for (UINT i = 0; i < Enemy.size(); i++)
+			for (UINT i = 0; i < listEnemy.size(); i++)
 			{
 
-				if (simon->dagger->CheckCollision(Enemy.at(i)) == true)
+				if (simon->dagger->CheckCollision(listEnemy.at(i)) == true)
 				{
-					if (Enemy.at(i)->state == TORCH_STATE_ACTIVE)
+					if (listEnemy.at(i)->state == TORCH_STATE_ACTIVE)
 					{
 						float x, y;
 						OutputDebugString(L"Collision Dagger and Candle \n");
-						Enemy.at(i)->SetState(TORCH_STATE_INACTIVE);
-						Enemy.at(i)->GetPosition(x, y);
+						listEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
+						listEnemy.at(i)->GetPosition(x, y);
 						simon->dagger->SetState(DAGGER_STATE_INACTIVE);
 						simon->notUseDagger();
 
 
-						switch (Enemy.at(i)->itemInside)
+						switch (listEnemy.at(i)->itemInside)
 						{
 						case 0:
 							break;
 						case bigheartInside:
 							bigheart->SetState(ITEM_STATE_ACTIVE);
 							bigheart->SetPosition(x, y);
-							Item.push_back(bigheart);
+							listItem.push_back(bigheart);
 							tickHeart += 1;
 							break;
 						case morningstarInside:
 							morningstar->SetState(ITEM_STATE_ACTIVE);
 							morningstar->SetPosition(x, y);
-							Item.push_back(morningstar);
+							listItem.push_back(morningstar);
 							tickWhip += 1;
 							break;
 						case daggerInside:
 							dagger->SetState(ITEM_STATE_ACTIVE);
 							dagger->SetPosition(x, y);
-							Item.push_back(dagger);
+							listItem.push_back(dagger);
 							break;
 						case smallheartInside:
 							break;
 						default:
 							break;
 						}
-						Enemy.erase(Enemy.begin() + i);// Delete it from enemy since Simion killed it
+						listEnemy.erase(listEnemy.begin() + i);// Delete it from enemy since Simion killed it
 
 						i = i - 1; // Push back 1 cuz after deleting i+1 will replace i
 					}
@@ -891,46 +889,46 @@ void Scene1::CollisionBetWeaponAndEnemy()
 
 void Scene1::CollisionBetSimonAndItem()
 {
-	for (UINT i = 0; i < Item.size(); i++)
+	for (UINT i = 0; i < listItem.size(); i++)
 	{
-		if (simon->CheckCollision(Item.at(i)) == true)
+		if (simon->CheckCollision(listItem.at(i)) == true)
 		{
-			if (dynamic_cast<BigHeart *>(Item.at(i)))
+			if (dynamic_cast<BigHeart *>(listItem.at(i)))
 			{
-				if (Item.at(i)->state == ITEM_STATE_ACTIVE)
+				if (listItem.at(i)->state == ITEM_STATE_ACTIVE)
 				{
 
 					OutputDebugString(L"Simon and BigHeart \n");
-					Item.at(i)->SetState(ITEM_STATE_INACTIVE);
+					listItem.at(i)->SetState(ITEM_STATE_INACTIVE);
 					//simon->heartCount += 5;
 
 				}
 			}
 			else
-				if (dynamic_cast<MorningStar *>(Item.at(i)))
+				if (dynamic_cast<MorningStar *>(listItem.at(i)))
 				{
-					if (Item.at(i)->state == ITEM_STATE_ACTIVE)
+					if (listItem.at(i)->state == ITEM_STATE_ACTIVE)
 					{
 						OutputDebugString(L"Simon and WHIP \n");
-						Item.at(i)->SetState(ITEM_STATE_INACTIVE);
+						listItem.at(i)->SetState(ITEM_STATE_INACTIVE);
 						simon->whip->levelUpWhip();
 					}
 				}
 				else
-					if (dynamic_cast<Dagger1 *>(Item.at(i)))
+					if (dynamic_cast<Dagger1 *>(listItem.at(i)))
 					{
-						if (Item.at(i)->state == ITEM_STATE_ACTIVE)
+						if (listItem.at(i)->state == ITEM_STATE_ACTIVE)
 						{
 							OutputDebugString(L"Simon and DAGGER \n");
-							Item.at(i)->SetState(ITEM_STATE_INACTIVE);
+							listItem.at(i)->SetState(ITEM_STATE_INACTIVE);
 							simon->dagger->turnOnDagger();
 							OutputDebugString(L"Dagger on \n");
 						}
 					}
 					else
-						if (dynamic_cast<Ground *>(Item.at(i)))
+						if (dynamic_cast<Ground *>(listItem.at(i)))
 						{
-							if (Item.at(i)->state == INVIS_STATE_NEXT_LVL)
+							if (listItem.at(i)->state == INVIS_STATE_NEXT_LVL)
 							{
 								
 								OutputDebugString(L"Proceed to lvl 2 \n");
@@ -950,26 +948,26 @@ void Scene1::CollisionBetSimonAndItem()
 
 							}
 							else
-								if (Item.at(i)->state == INVIS_STATE_INVIS_ITEM)
+								if (listItem.at(i)->state == INVIS_STATE_INVIS_ITEM)
 								{
 									OutputDebugString(L"Invis item appear \n");
-									Item.at(i)->SetState(INVIS_STATE_INACTIVE);
+									listItem.at(i)->SetState(INVIS_STATE_INACTIVE);
 									goldbag->SetPosition(660, 125 + offsetMap);
 									goldbag->SetState(ITEM_STATE_ACTIVE);
-									Item.push_back(goldbag);
+									listItem.push_back(goldbag);
 								}
 						}
 						else
-							if (dynamic_cast<GoldBag *>(Item.at(i)))
+							if (dynamic_cast<GoldBag *>(listItem.at(i)))
 							{
-								if (Item.at(i)->state == ITEM_STATE_ACTIVE)
+								if (listItem.at(i)->state == ITEM_STATE_ACTIVE)
 								{
 									OutputDebugString(L"GoldBag \n");
-									Item.at(i)->SetState(ITEM_STATE_INACTIVE);
+									listItem.at(i)->SetState(ITEM_STATE_INACTIVE);
 								}
 							
 							}
-			Item.erase(Item.begin() + i);
+			listItem.erase(listItem.begin() + i);
 			i = i - 1;
 		}
 	}

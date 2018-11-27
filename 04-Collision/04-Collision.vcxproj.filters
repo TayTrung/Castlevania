@@ -76,9 +76,6 @@
     <ClInclude Include="Simon.h">
       <Filter>Framework\Simon</Filter>
     </ClInclude>
-    <ClInclude Include="Ground.h">
-      <Filter>Framework\Ground</Filter>
-    </ClInclude>
     <ClInclude Include="Dagger1.h">
       <Filter>Framework\Item</Filter>
     </ClInclude>
@@ -124,6 +121,9 @@
     <ClInclude Include="Ghou.h">
       <Filter>Framework\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>Framework\Ground</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -158,9 +158,6 @@
     </ClCompile>
     <ClCompile Include="Simon.cpp">
       <Filter>Framework\Simon</Filter>
-    </ClCompile>
-    <ClCompile Include="Ground.cpp">
-      <Filter>Framework\Ground</Filter>
     </ClCompile>
     <ClCompile Include="Torch.cpp">
       <Filter>Framework\Enemy</Filter>
@@ -209,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="Ghou.cpp">
       <Filter>Framework\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>Framework\Ground</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

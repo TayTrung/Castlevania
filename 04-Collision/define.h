@@ -28,8 +28,10 @@
 
 
 #pragma region Ground
-
-#define BRICK_BBOX_WIDTH  16
+#define BRICKMAP11_BBOX_WIDTH 768
+#define BRICKMAP21_BBOX_WIDTH 1584
+#define BRICKMAP22_BBOX_WIDTH 304
+#define BRICKMAP23_BBOX_WIDTH 896
 #define BRICK_BBOX_HEIGHT 16
 
 #define INVIS_BRICK_BBOX_WIDTH	5
@@ -209,7 +211,7 @@
 #define DAGGER_ANI_RIGHT			1
 #define DAGGER_ANI_INACTIVE			2
 
-#define DAGGER_FLYING_SPEED			0.3f 
+#define DAGGER_FLYING_SPEED			0.2f 
 
 #pragma endregion
 

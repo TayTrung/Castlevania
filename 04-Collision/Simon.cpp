@@ -21,15 +21,15 @@ void Simon::notUseDagger()
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	
-	if ((this->GetState()==SIMON_STATE_ATTACK && this->whip->isFinished == true) || (this->GetState() == SIMON_STATE_ATTACK_SITTING && this->whip->isFinished == true))
+	if ((this->GetState()==SIMON_STATE_ATTACK && this->whip->isFinished == true) || (this->GetState() == SIMON_STATE_THROW && this->dagger->isFinished == true) )
 	{
 		//this->SetState(SIMON_STATE_IDLE);
 		CGameObject::SetState(SIMON_STATE_IDLE);
 	}
 
-	if ((this->GetState() == SIMON_STATE_THROW && this->dagger->isFinished == true) || (this->GetState() == SIMON_STATE_THROW_SITTING && this->dagger->isFinished == true))
+	if ((this->GetState() == SIMON_STATE_ATTACK_SITTING && this->whip->isFinished == true) || (this->GetState() == SIMON_STATE_THROW_SITTING && this->dagger->isFinished == true))
 	{
-	CGameObject::SetState(SIMON_STATE_IDLE);
+	CGameObject::SetState(SIMON_STATE_SIT);
 	}
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
@@ -106,8 +106,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 	if (vx < 0 && x < 1) x = 1;
-	//if (this->GetState() != SIMON_STATE_ATTACK_SITTING)
-	//	this->whip->SetPosition(x, y);
+	if (this->GetState() != SIMON_STATE_ATTACK_SITTING)
+		this->whip->SetPosition(x, y);
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
