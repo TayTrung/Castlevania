@@ -124,6 +124,9 @@
     <ClInclude Include="Ground.h">
       <Filter>Framework\Ground</Filter>
     </ClInclude>
+    <ClInclude Include="Panther.h">
+      <Filter>Framework\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -209,6 +212,9 @@
     </ClCompile>
     <ClCompile Include="Ground.cpp">
       <Filter>Framework\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Panther.cpp">
+      <Filter>Framework\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

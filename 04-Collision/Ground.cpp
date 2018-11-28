@@ -26,42 +26,25 @@ void Ground::GetBoundingBox(float &l, float &t, float &r, float &b)
 {
 	l = x;
 	t = y;
-	if (type == 11)
+	if (type == 0)
 	{
-		r = x + BRICKMAP11_BBOX_WIDTH;
-		b = y + BRICK_BBOX_HEIGHT;
+		r = x + INVIS_BRICK_BBOX_WIDTH;
+		b = y + INVIS_BRICK_BBOX_HEIGHT;
 	}
 	else 
-		if (type == 21)
+		if (type == 1)
 		{
-			r = x + BRICKMAP21_BBOX_WIDTH;
+			r = x + Bbox_WIDTH;
 			b = y + BRICK_BBOX_HEIGHT;
 		}
-		else
-			if (type == 22)
-			{
-				r = x + BRICKMAP22_BBOX_WIDTH;
-				b = y + BRICK_BBOX_HEIGHT;
-
-			}
-			else
-				if (type == 23)
-				{
-					r = x + BRICKMAP23_BBOX_WIDTH;
-					b = y + BRICK_BBOX_HEIGHT;
-
-				}
-				else
-					if (type == 0)
-					{
-						r = x + INVIS_BRICK_BBOX_WIDTH;
-						b = y + INVIS_BRICK_BBOX_HEIGHT;
-					}
+	
+				
 }
 
-Ground::Ground(int x)
+Ground::Ground(int xtype,int xbbox_WIDTH)
 {
-	type = x;
+	type = xtype;
+	Bbox_WIDTH = xbbox_WIDTH;
 }
 
 Ground::~Ground()

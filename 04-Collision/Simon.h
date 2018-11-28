@@ -7,7 +7,7 @@
 class Simon : public CGameObject
 {
 public:
-	int untouchable;
+	bool untouchable;
 	//bool isHavingSword;
 	Whip *whip;
 	DWORD untouchable_start;
@@ -19,9 +19,10 @@ public:
 public: 
 	Simon() : CGameObject()
 	{
+		
 		isUsingDagger = false;
 		//isHavingSword = false;
-		untouchable = 0;
+		untouchable = false;
 		whip = new Whip();
 		dagger = new Dagger();
 	//	heartCount = 10;

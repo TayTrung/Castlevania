@@ -122,6 +122,7 @@ bool CGameObject::CheckCollision(CGameObject * v)
 	if(game->AABB(al, at, ar , ab, bl, bt, br,  bb)) return true;
 
 	LPCOLLISIONEVENT e = SweptAABBEx(v);
+
 	if (e->t > 0 && e->t <= 1.0f)
 	{
 		return true;

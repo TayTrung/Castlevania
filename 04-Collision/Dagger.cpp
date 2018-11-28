@@ -108,7 +108,7 @@ Dagger::Dagger()
 {
 	isOn = false;
 	vx = 0;
-	isFinished = false;
+	isFinished = true;
 	this->SetState(DAGGER_STATE_INACTIVE);
 }
 

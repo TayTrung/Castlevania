@@ -4,9 +4,11 @@
 
 define::define()
 {
+
 }
 
 
 define::~define()
 {
+
 }

@@ -120,9 +120,10 @@ void Scene2::OnKeyDown(int KeyCode)
 		break;
 	case DIK_A: // reset
 		simon1->SetState(SIMON_STATE_IDLE);
-		simon1->SetPosition(2600.0f, 0.0f);
+		simon1->SetPosition(688.0f, 0.0f);
 		simon1->SetSpeed(0, 0);
 		break;
+
 		//case DIK_DOWNARROW:
 		//	simon1->SetState(SIMON_STATE_SIT);
 		//	break;
@@ -299,7 +300,7 @@ void Scene2::LoadResources()
 		ani->Add(40002);
 		animations->Add(476, ani);
 
-		for (int i = 0; i < 5; i++)
+		/*for (int i = 0; i < 5; i++)
 		{
 		Torch *candle = new Torch(1);
 		candle->AddAnimation(476);
@@ -314,7 +315,7 @@ void Scene2::LoadResources()
 		candle->setItemInside(smallheartInside);
 		candle->SetPosition(92 + i * (220 - 92), offsetMap + 97);
 		listEnemy1.push_back(candle);
-		}
+		}*/
 #pragma endregion
 
 
@@ -326,33 +327,40 @@ void Scene2::LoadResources()
 
 	animations->Add(999, ani);
 
-	for (int i = 0; i < 3; i++)
-	{
-		if (i == 0)
-		{
-			Ground *ground = new Ground(21);
-			ground->AddAnimation(999);
-			ground->SetPosition(0, offsetMap + 160);
-			listSurface1.push_back(ground);
-		}
-		else 
-			if (i == 1)
-			{
-				Ground *ground = new Ground(22);
-				ground->AddAnimation(999);
-				ground->SetPosition(0 + 16+ BRICKMAP21_BBOX_WIDTH, offsetMap + 160);
-				listSurface1.push_back(ground);
-			}
-			else
-				if (i == 2)
-				{
-					Ground *ground = new Ground(23);
-					ground->AddAnimation(999);
-					ground->SetPosition(0 + 16*2+ BRICKMAP21_BBOX_WIDTH+ BRICKMAP22_BBOX_WIDTH, offsetMap + 160);
-					listSurface1.push_back(ground);
-				}
-	}
-	
+// 3 ground neen
+	Ground *ground = new Ground(1, BRICKMAP21_BBOX_WIDTH);
+	ground->AddAnimation(999);
+	ground->SetPosition(0, offsetMap + 160);
+	listSurface1.push_back(ground);
+
+	ground = new Ground(1, BRICKMAP22_BBOX_WIDTH);
+	ground->AddAnimation(999);
+	ground->SetPosition(0 + 17 + BRICKMAP21_BBOX_WIDTH, offsetMap + 160);
+	listSurface1.push_back(ground);
+
+	ground = new Ground(1, BRICKMAP23_BBOX_WIDTH);
+	ground->AddAnimation(999);
+	ground->SetPosition(0 + 17 * 2 + BRICKMAP21_BBOX_WIDTH + BRICKMAP22_BBOX_WIDTH, offsetMap + 160);
+	listSurface1.push_back(ground);
+
+	//3 ground len cau thang 
+
+	ground = new Ground(1, 3 * 16);
+	ground->AddAnimation(999);
+	ground->SetPosition(688, offsetMap + 160 - 16 * 4);
+	listSurface1.push_back(ground);
+
+	ground = new Ground(1, 10 * 16);
+	ground->AddAnimation(999);
+	ground->SetPosition(688 + 4 * 16, offsetMap + 160 - 16 * 6);
+	listSurface1.push_back(ground);
+
+
+	ground = new Ground(1,6 * 16);
+	ground->AddAnimation(999);
+	ground->SetPosition(688 + 15 * 16, offsetMap + 160 - 16 * 4);
+	listSurface1.push_back(ground);
+
 
 #pragma endregion
 
@@ -379,11 +387,21 @@ void Scene2::Update(DWORD dt)
 		else if (tick > 360)
 			tick = 0;
 	}
-if ((simon1->dagger->x)<x1 || (simon1->dagger->x)>(x1 + SCREEN_WIDTH))
+
+	if (simon1->dagger->isOn == true)
 	{
-		simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
-		simon1->notUseDagger();
+		if (simon1->isUsingDagger == true)
+		{
+
+			if ((simon1->dagger->x) < x1 || (simon1->dagger->x) > (x1 + SCREEN_WIDTH))
+			{
+				simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
+				simon1->notUseDagger();
+			}
+
+		}
 	}
+
 	for (int i = 0; i < listItem1.size(); i++)
 	{
 		//if (Item1.at(i)->GetState() == ITEM_STATE_ACTIVE)+		Enemy1[i]	0x006196e8 {...}	CGameObject * {Ghou}
@@ -400,6 +418,8 @@ if ((simon1->dagger->x)<x1 || (simon1->dagger->x)>(x1 + SCREEN_WIDTH))
 	CollisionBetWeaponAndEnemy();
 
 	CollisionBetSimonAndItem();
+	if (simon1->untouchable == false)
+		CollisionBetSimonAndEnemy();
 
 	camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
 
@@ -476,7 +496,7 @@ void Scene2::erasingObjThatInacitve()
 
 void Scene2::spawnGhou(float x,float y)
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		ghou = new Ghou();
 		ghou->AddAnimation(531);
@@ -486,6 +506,13 @@ void Scene2::spawnGhou(float x,float y)
 		ghou->SetState(GHOU_STATE_ACTIVE_LEFT);
 		listEnemy1.push_back(ghou);
 	}
+	ghou = new Ghou();
+	ghou->AddAnimation(531);
+	ghou->AddAnimation(532);
+	ghou->setItemInside(smallheartInside);
+	ghou->SetPosition(0, y);
+	ghou->SetState(GHOU_STATE_ACTIVE_RIGHT);
+	listEnemy1.push_back(ghou);
 }
 
 void Scene2::CollisionBetWeaponAndEnemy()
@@ -811,96 +838,61 @@ void Scene2::CollisionBetSimonAndItem()
 
 void Scene2::CollisionBetSimonAndEnemy()
 {
-	for (UINT i = 0; i < listEnemy1.size(); i++)
+	if (simon1->GetState() != SIMON_STATE_HURT_LEFT || simon1->GetState() != SIMON_STATE_HURT_RIGHT)
 	{
-		if (simon1->CheckCollision(listEnemy1.at(i)) == true)
+		for (UINT i = 0; i < listEnemy1.size(); i++)
 		{
-			if (dynamic_cast<Ghou *>(listEnemy1.at(i)))
+			//if (simon1->CheckCollision(listEnemy1.at(i)) == true)
+			if (LPCOLLISIONEVENT e = simon1->SweptAABBEx(listEnemy1.at(i)))
 			{
-				if (listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_LEFT || listItem1.at(i)->state == GHOU_STATE_ACTIVE_RIGHT)
+				if (e->t > 0 && e->t <= 1.0f)
 				{
+					if (dynamic_cast<Ghou *>(listEnemy1.at(i)))
+					{
+						if (e->nx == -1)
+						{
 
-					OutputDebugString(L"Simon and BigHeart \n");
-				//	if (simon1->nx = 1)
-				//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
-			//		else if(simon1->nx=-1)
-				//		simon1->SetState(SIMON_STATE_HURT_LEFT);
-					//simon->heartCount += 5;
+							if (listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
+								listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+							{
 
+								OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+								simon1->SetState(SIMON_STATE_HURT_LEFT);
+								simon1->untouchable = true;
+								//	if (simon1->nx = 1)
+								//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
+							//		else if(simon1->nx=-1)
+								//		simon1->SetState(SIMON_STATE_HURT_LEFT);
+									//simon->heartCount += 5;
+
+							}
+					
+						}
+
+						else
+							if (e->nx == 1)
+							{
+								if (listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
+									listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+								{
+
+									OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+									simon1->SetState(SIMON_STATE_HURT_RIGHT);
+									simon1->untouchable = true;
+									//	if (simon1->nx = 1)
+									//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
+								//		else if(simon1->nx=-1)
+									//		simon1->SetState(SIMON_STATE_HURT_LEFT);
+										//simon->heartCount += 5;
+
+								}
+							}
+					}
 				}
 			}
-	/*		else
-				if (dynamic_cast<MorningStar *>(Enemy1.at(i)))
-				{
-					if (Item1.at(i)->state == ITEM_STATE_ACTIVE)
-					{
-						OutputDebugString(L"Simon and WHIP \n");
-						Item1.at(i)->SetState(ITEM_STATE_INACTIVE);
-						simon1->whip->levelUpWhip();
-					}
-				}
-				else
-					if (dynamic_cast<Dagger1 *>(Enemy1.at(i)))
-					{
-						if (Item1.at(i)->state == ITEM_STATE_ACTIVE)
-						{
-							OutputDebugString(L"Simon and DAGGER \n");
-							Item1.at(i)->SetState(ITEM_STATE_INACTIVE);
-							simon1->dagger->turnOnDagger();
-							OutputDebugString(L"Dagger on \n");
-						}
-					}
-					else
-						if (dynamic_cast<SmallHeart *>(Enemy1.at(i)))
-						{
-							if (Item1.at(i)->state == ITEM_STATE_ACTIVE)
-							{
-								OutputDebugString(L"Simon and SmallHeart \n");
-								Item1.at(i)->SetState(ITEM_STATE_INACTIVE);
-							}
-						}
-						else*/
-							//if (dynamic_cast<Ground *>(Item1.at(i)))
-							//{
-							//	if (Item1.at(i)->state == INVIS_STATE_NEXT_LVL)
-							//	{
-							//		OutputDebugString(L"Proceed to lvl 2 \n");
-							//		SceneManager::GetInstance()->replaceScene(new Scene2(simon));
-							//		/*	delete simon;
-							//			for (int i=0;i<2;i++)
-							//			delete bigheart[i];
-							//			delete dagger;
-							//			delete ground;
-							//			delete invisBox;
-							//			delete invisBox2;
-							//			delete camera;
-							//			delete map;
-							//			delete goldbag;
-							//			for (int i = 0; i<2; i++)
-							//			delete morningstar[i];*/
-							//	}
-							//	else
-							//		if (Item1.at(i)->state == INVIS_STATE_INVIS_ITEM)
-							//		{
-							//			OutputDebugString(L"Invis item appear \n");
-							//			Item1.at(i)->SetState(INVIS_STATE_INACTIVE);
-							//			goldbag->SetPosition(660, 125 + offsetMap);
-							//			goldbag->SetState(ITEM_STATE_ACTIVE);
-							//			Item1.push_back(goldbag);
-							//		}
-							//}
-							//else
-				/*			if (dynamic_cast<GoldBag *>(Item1.at(i)))
-							{
-								if (Item1.at(i)->state == ITEM_STATE_ACTIVE)
-								{
-									OutputDebugString(L"GoldBag \n");
-									Item1.at(i)->SetState(ITEM_STATE_INACTIVE);
-								}
-
-							}*/
 		}
 	}
+	
 }
 
 

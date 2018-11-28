@@ -29,7 +29,7 @@
 
 #pragma region Ground
 #define BRICKMAP11_BBOX_WIDTH 768
-#define BRICKMAP21_BBOX_WIDTH 1584
+#define BRICKMAP21_BBOX_WIDTH 1583
 #define BRICKMAP22_BBOX_WIDTH 304
 #define BRICKMAP23_BBOX_WIDTH 896
 #define BRICK_BBOX_HEIGHT 16
@@ -77,6 +77,22 @@
 #define GHOU_WALKING_SPEED 0.07f
 #pragma endregion
 
+#pragma region Panther
+
+#define PANTHER_BBOX_WIDTH		16
+#define PANTHER_BBOX_HEIGHT	32
+
+
+#define GHOU_ANI_RIGHT		0
+#define GHOU_ANI_LEFT		1
+
+#define PANTHER_STATE_ACTIVE_RIGHT 50
+#define PANTHER_STATE_ACTIVE_LEFT	100
+#define PANTHER_STATE_INACTIVE		200
+
+#define PANTHER_WALKING_SPEED 0.07f
+#pragma endregion
+
 #pragma region Scene1
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(0, 0, 0)
@@ -87,6 +103,14 @@
 #define MAP1_HEIGHT	184
 
 
+
+#pragma endregion
+
+
+#pragma region Stairs
+
+#define STAIRS_BBOX_WIDTH	27
+#define STAIRS_BBOX_WIDTH	27
 
 #pragma endregion
 
@@ -232,7 +256,8 @@
 #define SIMON_STATE_ATTACK_SITTING			600
 #define SIMON_STATE_THROW					700
 #define SIMON_STATE_THROW_SITTING			800
-#define SIMON_STATE_HURT					900
+#define SIMON_STATE_HURT_RIGHT				900
+#define SIMON_STATE_HURT_LEFT				1000
 
 
 #define SIMON_ANI_IDLE_RIGHT				0

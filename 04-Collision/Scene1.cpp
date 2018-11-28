@@ -23,44 +23,54 @@ void Scene1::KeyState(BYTE * states)
 	if (simon->whip->isFinished == true)
 	{
 
-
-		if (game->IsKeyDown(DIK_RIGHT))
+		if (simon->dagger->isFinished == true)
 		{
-			if (game->IsKeyDown(DIK_S))
-				simon->SetState(SIMON_STATE_ATTACK);
-			else
-				simon->SetState(SIMON_STATE_WALKING_RIGHT);
-		}
-		else
-			if (game->IsKeyDown(DIK_LEFT))
+			if (game->IsKeyDown(DIK_RIGHT))
 			{
 				if (game->IsKeyDown(DIK_S))
 					simon->SetState(SIMON_STATE_ATTACK);
 				else
-					simon->SetState(SIMON_STATE_WALKING_LEFT);
+
+					if (game->IsKeyDown(DIK_D))
+						simon->SetState(SIMON_STATE_THROW);
+					else
+						simon->SetState(SIMON_STATE_WALKING_RIGHT);
 			}
 			else
-				if (game->IsKeyDown(DIK_DOWN))
+				if (game->IsKeyDown(DIK_LEFT))
 				{
-					/*	if (game->IsKeyDown(DIK_S))
-					simon->SetState(SIMON_STATE_ATTACK_SITTING);
-					else*/
-					simon->SetState(SIMON_STATE_SIT);
+					if (game->IsKeyDown(DIK_S))
+						simon->SetState(SIMON_STATE_ATTACK);
+					else
+						if (game->IsKeyDown(DIK_D))
+							simon->SetState(SIMON_STATE_THROW);
+						else
+							simon->SetState(SIMON_STATE_WALKING_LEFT);
 				}
-				/*else
-					if (game->IsKeyDown(DIK_SPACE))
+				else
+					if (game->IsKeyDown(DIK_DOWN))
 					{
-						if (simon->isJumping == false)
-						{
-							simon->SetState(SIMON_STATE_JUMP);
-							simon->isJumping = true;
-						}
-					}*/
+						/*	if (game->IsKeyDown(DIK_S))
+						simon->SetState(SIMON_STATE_ATTACK_SITTING);
+						else*/
+						simon->SetState(SIMON_STATE_SIT);
+					}
+			/*else
+				if (game->IsKeyDown(DIK_SPACE))
+				{
+					if (simon->isJumping == false)
+					{
+						simon->SetState(SIMON_STATE_JUMP);
+						simon->isJumping = true;
+					}
+				}*/
 					else
 					{
 						simon->SetState(SIMON_STATE_IDLE);
 
 					}
+		}
+		
 	}
 
 }
@@ -105,50 +115,54 @@ void Scene1::OnKeyDown(int KeyCode)
 			
 		break;
 	case DIK_D:
-		if (simon->dagger->isOn == true)
+	//	if (simon->GetState() != SIMON_STATE_WALKING_LEFT && simon->GetState() != SIMON_STATE_WALKING_RIGHT)
 		{
-			if (simon->dagger->GetState() == DAGGER_STATE_INACTIVE)
+			if (simon->dagger->isOn == true)
 			{
-
-				float x, y;
-				simon->GetPosition(x, y);
-				if (simon->GetState() == SIMON_STATE_SIT)
-				{
-					simon->dagger->CreateWeapon(x, y+7, simon->nx);
-
-					if (simon->isUsingDagger == false)
-					{
-						if (simon->nx > 0)
-							simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-						else
-							simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
-						simon->SetState(SIMON_STATE_THROW_SITTING);
-						simon->useDagger();
-
-					}
-				
-				}
-				else
+				if (simon->dagger->GetState() == DAGGER_STATE_INACTIVE)
 				{
 
-
-					simon->dagger->CreateWeapon(x, y, simon->nx);
-
-					if (simon->isUsingDagger == false)
+					float x, y;
+					simon->GetPosition(x, y);
+					if (simon->GetState() == SIMON_STATE_SIT)
 					{
-						if (simon->nx > 0)
-							simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-						else
-							simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
-						simon->SetState(SIMON_STATE_THROW);
-						simon->useDagger();
+						simon->dagger->CreateWeapon(x, y + 7, simon->nx);
+
+						if (simon->isUsingDagger == false)
+						{
+							if (simon->nx > 0)
+								simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+							else
+								simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+							simon->SetState(SIMON_STATE_THROW_SITTING);
+							simon->useDagger();
+
+						}
+
+					}
+					else
+					{
+
+
+						simon->dagger->CreateWeapon(x, y, simon->nx);
+
+						if (simon->isUsingDagger == false)
+						{
+							if (simon->nx > 0)
+								simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+							else
+								simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+							simon->SetState(SIMON_STATE_THROW);
+							simon->useDagger();
+
+						}
 
 					}
 
 				}
-				
+
 			}
-				
+
 		}
 		break;
 	}
@@ -236,51 +250,13 @@ void Scene1::LoadResources()
 	sprites->Add(10205, 220, 166, 235, 196, texMario);
 	sprites->Add(10206, 189, 166, 210, 196, texMario);
 
+	//HURT LEFT
 
+	sprites->Add(10300, 5, 34, 20, 64, texMario);
+	//HURT RIGHT
 
-	/*Idle left
-	sprites->Add(10011, 12, 2, 43, 63, texMario);
-
-	Walking left		
-	sprites->Add(10003, 78, 2, 109, 63, texMario);
-	sprites->Add(10004, 134, 2, 165, 63, texMario);
-	sprites->Add(10005, 196, 2, 227, 63, texMario);
-
-	Sitting left
-	sprites->Add(10007, 252, 2, 283, 63, texMario);
-
-	Attacking left
-	sprites->Add(10101, 312, 2, 359, 63, texMario);
-	sprites->Add(10102, 373, 2, 404, 63, texMario);
-	sprites->Add(10103, 421, 2, 463, 63, texMario);
-
-	Sitting Attacking left
-	sprites->Add(10201, 432, 69, 480, 130, texMario);
-	sprites->Add(10202, 11, 133, 42, 194, texMario);
-	sprites->Add(10203, 62, 133, 104, 194, texMario);
-
-	 Right
-	idle right
-	sprites->Add(10012, 436, 200, 467, 261, texMario);
-
-	Walking right		
-	sprites->Add(10013, 378, 200, 409, 261, texMario);
-	sprites->Add(10014, 314, 200, 345, 261, texMario);
-	sprites->Add(10015, 252, 200, 291, 261, texMario);
-
-	Sitting right
-	sprites->Add(10017, 196, 200, 227, 261, texMario);
-
-	Attacking right
-	sprites->Add(10104, 120, 200, 167, 261, texMario);
-	sprites->Add(10105, 75, 200, 106, 261, texMario);
-	sprites->Add(10106, 16, 200, 58, 261, texMario);
-
-	Sitting Attacking right 
-	sprites->Add(10204, 0, 266, 47, 327, texMario);
-	sprites->Add(10205, 437, 332, 468, 393, texMario);
-	sprites->Add(10206, 375, 332, 418, 393, texMario);*/
-
+	sprites->Add(10301, 221, 133, 236, 163, texMario);
+	
 #pragma endregion
 
 #pragma region Co-ordinations of Ground
@@ -339,43 +315,6 @@ void Scene1::LoadResources()
 	sprites->Add(30024, 35, 77, 49, 95, texWhip);
 	sprites->Add(30025, 120, 79, 162, 87, texWhip);
 
-	////VAMPIRE_KILLLER
-	////LEFT
-	//sprites->Add(30000, 136, 18, 151, 65, texWhip);
-	//sprites->Add(30001, 280, 12, 311, 49, texWhip);
-	//sprites->Add(30002, 352, 16, 395, 31, texWhip);
-
-	////RIGHT
-	//sprites->Add(30003, 488, 222, 503, 269, texWhip);
-	//sprites->Add(30004, 328, 216, 359, 253, texWhip);
-	//sprites->Add(30005, 244, 220, 287, 237, texWhip);
-	////NOTHING
-	//sprites->Add(30006, 0, 0, 1, 1, texWhip);
-
-
-
-
-	////CHAIN WHIP
-	////LEFT
-	//sprites->Add(30010, 136, 86, 151, 133, texWhip);
-	//sprites->Add(30011, 280, 80, 311, 117, texWhip);
-	//sprites->Add(30012, 352, 90, 397, 101, texWhip);
-
-	////RIGHT
-	//sprites->Add(30013, 488, 290, 503, 337, texWhip);
-	//sprites->Add(30014, 328, 284, 359, 321, texWhip);
-	//sprites->Add(30015, 244, 294, 287, 305, texWhip);
-
-	////MORNING_STAR
-	////LEFT
-	//sprites->Add(30020, 136, 154, 151, 201, texWhip);
-	//sprites->Add(30021, 280, 148, 311, 185, texWhip);
-	//sprites->Add(30022, 320, 158, 400, 169, texWhip);
-
-	////RIGHT
-	//sprites->Add(30023, 488, 358, 503, 405, texWhip);
-	//sprites->Add(30024, 328, 352, 359, 389, texWhip);
-	//sprites->Add(30025, 244, 362, 319, 373, texWhip);
 #pragma endregion
 
 #pragma region Co-ordinations of Dagger and Item Dagger
@@ -481,6 +420,13 @@ void Scene1::LoadResources()
 	animations->Add(801, ani);
 
 
+	ani = new CAnimation(300);	//  Hurt right
+	ani->Add(10301);
+	animations->Add(905, ani);
+
+	ani = new CAnimation(300);	// Hurt left
+	ani->Add(10300);
+	animations->Add(906, ani);
 
 #pragma region Adding Animation for Whip //de trong simon vì bên duoi co new simon
 	// lvl1
@@ -528,21 +474,6 @@ void Scene1::LoadResources()
 	ani->Add(30006);
 	animations->Add(715, ani);
 
-
-
-	//whip[0]->AddAnimation(700);
-	//whip[0]->AddAnimation(701);
-	//whip[0]->AddAnimation(706);
-
-	//whip[1]->AddAnimation(702);
-	//whip[1]->AddAnimation(703);
-	//whip[1]->AddAnimation(706);
-
-	//whip[2]->AddAnimation(704);
-	//whip[2]->AddAnimation(705);
-	//whip[2]->AddAnimation(706);
-
-
 #pragma endregion	
 
 	simon = new Simon();
@@ -562,6 +493,8 @@ void Scene1::LoadResources()
 	simon->AddAnimation(701);		// Throw dagger left 
 	simon->AddAnimation(801);		// Sitting Throw dagger right
 	simon->AddAnimation(800);		// Sitting Throw dagger left 
+	simon->AddAnimation(905);		// HUrt right
+	simon->AddAnimation(906);		// HUrt left
 
 	simon->SetPosition(50.0f, 0);
 	//objects.push_back(mario);
@@ -576,16 +509,16 @@ void Scene1::LoadResources()
 	animations->Add(999, ani);
 
 
-	ground = new Ground(11);		
+	ground = new Ground(1, BRICKMAP11_BBOX_WIDTH);
 	ground->SetPosition(0 , offsetMap+144);
 	listSurface.push_back(ground);
 		
-	invisBox = new Ground(0);
+	invisBox = new Ground(0,0);
 	invisBox->SetPosition(689, 140+offsetMap);
 	invisBox->SetState(INVIS_STATE_NEXT_LVL);
 	listItem.push_back(invisBox);
 
-	invisBox2 = new Ground(0);
+	invisBox2 = new Ground(0,0);
 	invisBox2->SetPosition(MAP1_WIDTH - 24, offsetMap + 140);
 	invisBox2->SetState(INVIS_STATE_INVIS_ITEM);
 	listItem.push_back(invisBox2);
@@ -691,11 +624,19 @@ void Scene1::Update(DWORD dt)
 	float x1, y1;
 	x1 = Camera::GetInstance()->GetPosition().x;
 	y1 = Camera::GetInstance()->GetPosition().y;
-
-	if ((simon->dagger->x)<x1 || (simon->dagger->x)>(x1 + SCREEN_WIDTH))// set lai dagger is not being used neu bay qua man hinh
+	if (simon->dagger->isOn == true)
 	{
-	//	simon->dagger->SetState(DAGGER_STATE_INACTIVE);
-		simon->notUseDagger();
+		if (simon->isUsingDagger == true)
+		{
+
+		if ((simon->dagger->x) < x1+50|| (simon->dagger->x) > (x1 + SCREEN_WIDTH-50))// set lai dagger is not being used neu bay qua man hinh
+		{
+			simon->notUseDagger();
+			simon->dagger->SetState(DAGGER_STATE_INACTIVE);
+
+		}
+
+		}
 	}
 
 	CollisionBetWeaponAndEnemy();
