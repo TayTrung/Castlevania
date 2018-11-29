@@ -21,13 +21,15 @@ void Simon::notUseDagger()
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 
-	if ((this->GetState() == SIMON_STATE_ATTACK && this->whip->isFinished == true) || (this->GetState() == SIMON_STATE_THROW && this->dagger->isFinished == true))
+	if ((this->GetState() == SIMON_STATE_ATTACK && this->whip->isFinished == true) ||
+		(this->GetState() == SIMON_STATE_THROW && this->dagger->isFinished == true))
 	{
 		//this->SetState(SIMON_STATE_IDLE);
 		CGameObject::SetState(SIMON_STATE_IDLE);
 	}
 
-	if ((this->GetState() == SIMON_STATE_ATTACK_SITTING && this->whip->isFinished == true) || (this->GetState() == SIMON_STATE_THROW_SITTING && this->dagger->isFinished == true))
+	if ((this->GetState() == SIMON_STATE_ATTACK_SITTING && this->whip->isFinished == true) ||
+		(this->GetState() == SIMON_STATE_THROW_SITTING && this->dagger->isFinished == true))
 	{
 		CGameObject::SetState(SIMON_STATE_SIT);
 	}
@@ -45,11 +47,11 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
-	/*if ( GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
+	if ( GetTickCount() - untouchable_start >SIMON_UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
-		untouchable = 0;
-	}*/
+		untouchable = false;
+	}
 
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
@@ -80,10 +82,11 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				this->SetState(SIMON_STATE_IDLE);
 
 			}
-			if (this->GetState() == SIMON_STATE_HURT_RIGHT || this->GetState() == SIMON_STATE_HURT_LEFT)
+			if (this->GetState() == SIMON_STATE_HURT_RIGHT ||
+				this->GetState() == SIMON_STATE_HURT_LEFT)
 			{
-				this->SetState(SIMON_STATE_IDLE);
-				untouchable = false;
+				CGameObject::SetState(SIMON_STATE_IDLE);
+				StartUntouchable();
 			}
 
 		}
@@ -249,19 +252,23 @@ void Simon::Render()
 void Simon::SetState(int state)
 {
 
+	if (this->whip->isFinished == false||
+		this->dagger->isFinished==false)
+	{
 
-	if (this->GetState() == SIMON_STATE_ATTACK)
-		return;
+		if (this->GetState() == SIMON_STATE_ATTACK)
+			return;
 
-	if (this->GetState() == SIMON_STATE_ATTACK_SITTING)
-		return;
+		if (this->GetState() == SIMON_STATE_ATTACK_SITTING)
+			return;
 
-	if (this->GetState() == SIMON_STATE_THROW)
-		return;
+		if (this->GetState() == SIMON_STATE_THROW)
+			return;
 
-	if (this->GetState() == SIMON_STATE_THROW_SITTING)
-		return;
-	if (untouchable==true)
+		if (this->GetState() == SIMON_STATE_THROW_SITTING)
+			return;
+
+	}else if (this->GetState()==SIMON_STATE_HURT_LEFT || this->GetState() == SIMON_STATE_HURT_RIGHT)
 		return;
 
 	CGameObject::SetState(state);

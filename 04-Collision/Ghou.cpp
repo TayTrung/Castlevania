@@ -50,7 +50,7 @@ void Ghou::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
-	if (x < 0)
+	if ((x < 0) || (x>400))
 		this->SetState(GHOU_STATE_INACTIVE);
 
 }

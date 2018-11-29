@@ -17,6 +17,7 @@
 #include "define.h"
 #include "SmallHeart.h"
 #include "Ghou.h"
+#include "Panther.h"
 class Scene
 {
 public:

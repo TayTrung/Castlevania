@@ -6,8 +6,8 @@ void Panther::GetBoundingBox(float & left, float & top, float & right, float & b
 {
 	left = x;
 	top = y;
-	right = x + GHOU_BBOX_WIDTH;
-	bottom = y + GHOU_BBOX_HEIGHT;
+	right = x + PANTHER_BBOX_WIDTH;
+	bottom = y + PANTHER_BBOX_HEIGHT;
 }
 
 void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -46,33 +46,64 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 
 	}
-
 	//clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
-
-	if (x < 0)
-		this->SetState(GHOU_STATE_INACTIVE);
-
 }
 
 void Panther::Render()
 {
 	int ani;
-	if (this->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+	if (vx != 0)
 	{
-		ani = GHOU_ANI_RIGHT;
-		animations[ani]->Render(x, y);
-		//	RenderBoundingBox(100);
+		if (this->GetState() == PANTHER_STATE_ACTIVE_RIGHT)
+		{
+			ani = PANTHER_ANI_RIGHT;
+			animations[ani]->Render(x, y);
+			//	RenderBoundingBox(100);
+		}
+		else
+			if (this->GetState() == GHOU_STATE_ACTIVE_LEFT)
+			{
+
+				ani = PANTHER_ANI_LEFT;
+				animations[ani]->Render(x, y);
+				//RenderBoundingBox(100);
+			}
+			else
+				if (this->GetState() == PANTHER_STATE_JUMPING_RIGHT)
+				{
+					ani = PANTHER_ANI_JUMP_RIGHT;
+					animations[ani]->Render(x, y);
+					//	RenderBoundingBox(100);
+				}
+				else
+					if (this->GetState() == PANTHER_STATE_JUMPING_LEFT)
+					{
+
+						ani = PANTHER_ANI_JUMP_LEFT;
+						animations[ani]->Render(x, y);
+						//RenderBoundingBox(100);
+					}
+
 	}
 	else
-		if (this->GetState() == GHOU_STATE_ACTIVE_LEFT)
+	{
+
+		if (this->GetState() == PANTHER_STATE_SIT_RIGHT)
 		{
 
-			ani = GHOU_ANI_LEFT;
+			ani = PANTHER_ANI_SIT_RIGHT;
 			animations[ani]->Render(x, y);
-			//RenderBoundingBox(100);
 		}
+		else 
+			if (this->GetState() == PANTHER_STATE_SIT_LEFT)
+			{
 
+				ani = PANTHER_ANI_SIT_LEFT;
+				animations[ani]->Render(x, y);
+			}
+	}
+	RenderBoundingBox(100);
 
 }
 
@@ -81,14 +112,26 @@ void Panther::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case GHOU_STATE_ACTIVE_RIGHT:
+	case PANTHER_STATE_ACTIVE_RIGHT:
 		vx = GHOU_WALKING_SPEED;
 		nx = 1;
 		break;
-	case GHOU_STATE_ACTIVE_LEFT:
+	case PANTHER_STATE_ACTIVE_LEFT:
 		vx = -GHOU_WALKING_SPEED;
 		nx = -1;
 		break;
+	case PANTHER_STATE_JUMPING_LEFT:
+		vx = -PANTHER_WALKING_SPEED;
+		vy = -SIMON_JUMP_SPEED_Y / 10;
+		nx = -1;
+		break;
+	case PANTHER_STATE_JUMPING_RIGHT:
+		vx = -PANTHER_WALKING_SPEED;
+		vy = -SIMON_JUMP_SPEED_Y / 10;
+		nx = -1;
+		break;
+	case PANTHER_STATE_SIT_LEFT:
+	case PANTHER_STATE_SIT_RIGHT:
 	case GHOU_STATE_INACTIVE:
 		vx = 0;
 		break;
