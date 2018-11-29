@@ -15,6 +15,7 @@ public:
 
 	void erasingObjThatInacitve();
 	void spawnGhou(float x, float y);
+	void XuLyPanthera();
 	virtual void CollisionBetWeaponAndEnemy();
 	virtual void CollisionBetSimonAndItem();
 	virtual void CollisionBetSimonAndEnemy();

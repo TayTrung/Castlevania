@@ -8,6 +8,7 @@ void Scene::KeyState(BYTE * states)
 
 void Scene::OnKeyDown(int KeyCode)
 {
+
 }
 
 void Scene::OnKeyUp(int KeyCode)

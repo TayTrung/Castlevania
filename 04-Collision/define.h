@@ -74,7 +74,7 @@
 #define GHOU_STATE_ACTIVE_LEFT	100
 #define GHOU_STATE_INACTIVE		200
 
-#define GHOU_WALKING_SPEED 0.04f
+#define GHOU_WALKING_SPEED 0.07f
 #pragma endregion
 
 #pragma region Panther
@@ -98,7 +98,7 @@
 #define PANTHER_STATE_SIT_LEFT		500
 #define PANTHER_STATE_SIT_RIGHT		600
 
-#define PANTHER_WALKING_SPEED 0.07f
+#define PANTHER_WALKING_SPEED 0.2f
 
 #pragma endregion
 

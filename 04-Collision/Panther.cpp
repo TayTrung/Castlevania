@@ -16,15 +16,14 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	vy += ITEM_GRAVITY * dt;
+	vy += ITEM_GRAVITY/1.1 * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
 
-	CalcPotentialCollisions(coObjects, coEvents);
-
+		CalcPotentialCollisions(coObjects, coEvents);
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
@@ -33,21 +32,49 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else
 	{
-		float min_tx, min_ty, nx = 0, ny;
+		
+			float min_tx, min_ty, nx = 0, ny;
 
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 
-		// block 
-		x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
-		y += min_ty * dy + ny * 0.4f;
+			// block 
+			x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
+			y += min_ty * dy + ny * 0.4f;
 
-		//if (nx != 0) vx = 0;
-		if (ny != 0) vy = 0;
+			//if (nx != 0) vx = 0;
+			if (ny != 0) vy = 0;
+
+			if (this->GetState() == PANTHER_STATE_JUMPING_LEFT)
+				this->SetState(PANTHER_STATE_ACTIVE_LEFT);
+			if (this->GetState() == PANTHER_STATE_JUMPING_RIGHT)
+				this->SetState(PANTHER_STATE_ACTIVE_RIGHT);
 
 
 	}
+
+	if (this->GetState() == PANTHER_STATE_ACTIVE_LEFT || this->GetState() == PANTHER_STATE_ACTIVE_RIGHT)
+	{
+		if (jumped == false)
+		{
+			if (((abs(x - X)) < distanceToJump) && ((abs(x - X)) > distanceToJump -2))
+			{
+				if (nx == 1)
+					this->SetState(PANTHER_STATE_JUMPING_RIGHT);
+
+				else
+					if (nx == -1)
+						this->SetState(PANTHER_STATE_JUMPING_LEFT);
+
+				jumped = true;
+			}
+				
+
+		}
+	}
 	//clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	if (x < 522 || x>1052)
+		this->SetState(PANTHER_STATE_INACTIVE);
 }
 
 void Panther::Render()
@@ -122,12 +149,12 @@ void Panther::SetState(int state)
 		break;
 	case PANTHER_STATE_JUMPING_LEFT:
 		vx = -PANTHER_WALKING_SPEED;
-		vy = -SIMON_JUMP_SPEED_Y / 10;
+		vy = -SIMON_JUMP_SPEED_Y ;
 		nx = -1;
 		break;
 	case PANTHER_STATE_JUMPING_RIGHT:
 		vx = -PANTHER_WALKING_SPEED;
-		vy = -SIMON_JUMP_SPEED_Y / 10;
+		vy = -SIMON_JUMP_SPEED_Y ;
 		nx = -1;
 		break;
 	case PANTHER_STATE_SIT_LEFT:
@@ -138,9 +165,18 @@ void Panther::SetState(int state)
 	}
 }
 
-Panther::Panther()
+void Panther::SetPosition(float x, float y)
 {
-	SetSpeed(5, vy);
+	this->x = x;
+	X = x;
+	this->y = y;
+}
+
+Panther::Panther(float xdistance)
+{
+	distanceToJump = xdistance;
+	changeDirection = false;
+	jumped = false;
 }
 
 

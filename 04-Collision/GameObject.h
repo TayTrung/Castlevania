@@ -58,6 +58,8 @@ public:
 	bool CheckCollision(CGameObject*v);
 	int GetState() { return this->state; }
 
+	bool changeDirection;
+	bool jumped;
 	void RenderBoundingBox(int alpha);
 
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);

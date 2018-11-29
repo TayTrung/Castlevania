@@ -97,7 +97,6 @@ void Ghou::SetState(int state)
 
 Ghou::Ghou()
 {
-	SetSpeed(5, vy);
 }
 
 
