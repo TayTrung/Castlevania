@@ -273,7 +273,29 @@ void Scene1::LoadResources()
 	sprites->Add(10356, 160, 133, 175, 163, texMario);
 	sprites->Add(10357, 130, 133, 145, 163, texMario);
 	
+
+	//Attack on stairs up right
+	sprites->Add(10650, 58 , 166, 81, 196, texMario);
+	sprites->Add(10651, 35, 166, 50, 196, texMario);
+	sprites->Add(10652, 5, 166, 26, 196, texMario);
+					
+	//Attack on stairs up LEFT
+	sprites->Add(10653, 160, 67, 183, 97, texMario);
+	sprites->Add(10654, 191, 67, 206, 97, texMario);
+	sprites->Add(10655, 215, 67, 236, 97, texMario);
+
+	//Attack on stairs down right
+	sprites->Add(10656, 152, 166, 175, 196, texMario);
+	sprites->Add(10657, 130, 166, 145, 196, texMario);
+	sprites->Add(10658, 100, 166, 120, 196, texMario);
+
+	//Attack on stairs down left
+	sprites->Add(10659, 66, 67, 89, 97, texMario);
+	sprites->Add(10660, 96, 67, 111, 97, texMario);
+	sprites->Add(10661, 121, 67, 141, 97, texMario);
 	
+
+
 #pragma endregion
 
 #pragma region Co-ordinations of Ground
@@ -419,6 +441,33 @@ void Scene1::LoadResources()
 	ani->Add(10103);
 	ani->Add(10011);
 	animations->Add(701, ani);
+	ani = new CAnimation(100);	// Attack  up right
+	ani->Add(10650);
+	ani->Add(10651);
+	ani->Add(10652);
+	ani->Add(10354);
+	animations->Add(702, ani);
+
+	ani = new CAnimation(100);	// Attack  up left
+	ani->Add(10653);
+	ani->Add(10654);
+	ani->Add(10655);
+	ani->Add(10350);
+	animations->Add(703, ani);
+
+	ani = new CAnimation(100);	// Attack down right
+	ani->Add(10656);
+	ani->Add(10657);
+	ani->Add(10658);
+	ani->Add(10356);
+	animations->Add(704, ani);
+
+	ani = new CAnimation(100);	// Attack down left
+	ani->Add(10659);
+	ani->Add(10660);
+	ani->Add(10661);
+	ani->Add(10352);
+	animations->Add(705, ani);
 
 	ani = new CAnimation(100);	// Sitting Attacking right
 	ani->Add(10204);
@@ -443,22 +492,22 @@ void Scene1::LoadResources()
 	animations->Add(906, ani);
 
 
-	ani = new CAnimation(300);	//  up left 
+	ani = new CAnimation(100);	//  up left 
 	ani->Add(10350);
 	ani->Add(10351);
 	animations->Add(907, ani);
 	
-	ani = new CAnimation(300);	// Up right
+	ani = new CAnimation(100);	// Up right
 	ani->Add(10354);
 	ani->Add(10355);
 	animations->Add(908, ani);
 
-	ani = new CAnimation(300);	// down left 
+	ani = new CAnimation(100);	// down left 
 	ani->Add(10352);
 	ani->Add(10353);
 	animations->Add(909, ani);
 
-	ani = new CAnimation(300);	// down right
+	ani = new CAnimation(100);	// down right
 	ani->Add(10356);
 	ani->Add(10357);
 	animations->Add(910, ani);
@@ -468,11 +517,11 @@ void Scene1::LoadResources()
 	animations->Add(001, ani);
 
 	ani = new CAnimation(300);	// AFK Up right
-	ani->Add(10354);
+	ani->Add( 10354);
 	animations->Add(002, ani);
 
 	ani = new CAnimation(300);	// AFK down left 
-	ani->Add(10352);
+	ani->Add( 10352);
 	animations->Add(003, ani);
 
 	ani = new CAnimation(300);	// AFK down right
@@ -533,30 +582,47 @@ void Scene1::LoadResources()
 	simon = new Simon();
 	simon->AddAnimation(400);		// idle right
 	simon->AddAnimation(401);		// idle left
+
 	simon->AddAnimation(402);		// walking right
 	simon->AddAnimation(403);		// walking left 
+
 	simon->AddAnimation(500);		// sitting right
 	simon->AddAnimation(501);		// sitting left
+
 	simon->AddAnimation(600);		// jumping right
 	simon->AddAnimation(601);		// jumping left
+
 	simon->AddAnimation(700);		// Attacking right
 	simon->AddAnimation(701);		// Attacking left
+
 	simon->AddAnimation(800);		// Sitting Attacking right
 	simon->AddAnimation(801);		// Sitting Attacking  left
+
 	simon->AddAnimation(700);		// Throw dagger right
 	simon->AddAnimation(701);		// Throw dagger left 
+
 	simon->AddAnimation(801);		// Sitting Throw dagger right
 	simon->AddAnimation(800);		// Sitting Throw dagger left 
+
 	simon->AddAnimation(905);		// HUrt right
 	simon->AddAnimation(906);		// HUrt left
+
 	simon->AddAnimation(908);		// Up right
 	simon->AddAnimation(907);		// up left 
 	simon->AddAnimation(910);		// down right
 	simon->AddAnimation(909);		// down left 
+
 	simon->AddAnimation(002);		// AFK Up right
 	simon->AddAnimation(001);		// AFK up left 
 	simon->AddAnimation(004);		// AFK down right
 	simon->AddAnimation(003);		// AFK down left 
+
+	simon->AddAnimation(702);		//ATK_OS_UP_RIGHT
+	simon->AddAnimation(703);		//ATK_OS_UP_LEFT
+	simon->AddAnimation(704);		//ATK_OS_DOWN_RIGHT
+	simon->AddAnimation(705);		//ATK_OS_DOWN_LEFT
+
+
 	simon->SetPosition(50.0f, 0);
 	//objects.push_back(mario);
 #pragma endregion 	
@@ -945,6 +1011,7 @@ void Scene1::CollisionBetSimonAndItem()
 							{
 								
 								OutputDebugString(L"Proceed to lvl 2 \n");
+								simon->proceedToNextLevel = true;
 								SceneManager::GetInstance()->replaceScene(new Scene2(simon));
 							/*	delete simon;
 								for (int i=0;i<2;i++)

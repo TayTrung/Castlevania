@@ -72,9 +72,11 @@ void CAnimation::Render(float x, float y, int alpha)
 	}
 
 
-	if (frames[currentFrame]->GetSprite()->getID() == 10104)//first frame Attacking right
+	if (frames[currentFrame]->GetSprite()->getID() == 10104 || frames[currentFrame]->GetSprite()->getID() == 10656 ||
+		frames[currentFrame]->GetSprite()->getID() == 10650 )//first frame Attacking right
 		frames[currentFrame]->GetSprite()->Draw(x - 9, y, alpha);
-	else if (frames[currentFrame]->GetSprite()->getID() == 10103)//last frame Attacking left
+	else if (frames[currentFrame]->GetSprite()->getID() == 10103 || frames[currentFrame]->GetSprite()->getID() == 10661 ||
+		frames[currentFrame]->GetSprite()->getID() == 10655)//last frame Attacking left
 		frames[currentFrame]->GetSprite()->Draw(x - 6, y, alpha);
 	else if (frames[currentFrame]->GetSprite()->getID() == 10204)//first fr Sitting Attck right
 		frames[currentFrame]->GetSprite()->Draw(x-8 , y, alpha);

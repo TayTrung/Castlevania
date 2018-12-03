@@ -4,6 +4,8 @@
 
 class Scene2 : public Scene
 {
+private:
+	bool lvl2;
 public:
 	virtual void KeyState(BYTE *states);
 	virtual void OnKeyDown(int KeyCode);

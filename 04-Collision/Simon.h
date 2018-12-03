@@ -17,10 +17,10 @@ public:
 	int ani;
 	bool isOnStairs; 
 	bool directionOnStairs; // true=going up, false=going down
+	bool proceedToNextLevel;
 public:
 	Simon() : CGameObject()
 	{
-
 		isUsingDagger = false;
 		//isHavingSword = false;
 		untouchable = false;
@@ -29,10 +29,9 @@ public:
 		//	heartCount = 10;
 		isJumping = false;
 		isOnStairs = false;
+		proceedToNextLevel = false;
 
-
-
-}
+	}
 	void useDagger();
 	bool isJumping;
 	void notUseDagger();

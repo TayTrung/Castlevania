@@ -19,7 +19,6 @@ public:
 
 	virtual void CollisionBetSimonAndEnemy();
 
-
 	virtual int CollisionBetSimonAndUpStairs();
 	virtual int CollisionBetSimonAndDownStairs();
 	Scene1();
