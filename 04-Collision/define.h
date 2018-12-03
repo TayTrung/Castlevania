@@ -26,8 +26,15 @@
 
 #pragma endregion
 
+#pragma region Stairts
+
+#define STAIRS_BBOX_WIDTH	30
+#define STAIRS_BBOX_HEIGHT 30
+
+#pragma endregion
 
 #pragma region Ground
+
 #define BRICKMAP11_BBOX_WIDTH 768
 #define BRICKMAP21_BBOX_WIDTH 1583
 #define BRICKMAP22_BBOX_WIDTH 304
@@ -116,12 +123,7 @@
 #pragma endregion
 
 
-#pragma region Stairs
 
-#define STAIRS_BBOX_WIDTH	27
-#define STAIRS_BBOX_WIDTH	27
-
-#pragma endregion
 
 //CASES TO DEFINE WHAT ITEMS IS INSIDE
 #define bigheartInside 1
@@ -268,31 +270,60 @@
 #define SIMON_STATE_THROW_SITTING			800
 #define SIMON_STATE_HURT_RIGHT				900
 #define SIMON_STATE_HURT_LEFT				1000
+#define SIMON_STATE_UP_RIGHT				1100
+#define SIMON_STATE_UP_LEFT					1200
+#define SIMON_STATE_DOWN_RIGHT				1300
+#define SIMON_STATE_DOWN_LEFT				1400
 
 #define SIMON_UNTOUCHABLE_TIME				3000
 
 #define SIMON_ANI_IDLE_RIGHT				0
 #define SIMON_ANI_IDLE_LEFT					1
+
 #define SIMON_ANI_WALKING_RIGHT				2
 #define SIMON_ANI_WALKING_LEFT				3
+
 #define SIMON_ANI_SITTING_RIGHT				4
 #define SIMON_ANI_SITTING_LEFT				5
+
 #define SIMON_ANI_JUMPING_RIGHT				6
 #define SIMON_ANI_JUMPING_LEFT				7
+
 #define SIMON_ANI_ATTACKING_RIGHT			8
 #define SIMON_ANI_ATTACKING_LEFT			9
+
 #define SIMON_ANI_ATTACKING_RIGHT_SITTING	10
 #define SIMON_ANI_ATTACKING_LEFT_SITTING	11
+
 #define SIMON_ANI_THROW_RIGHT				12
 #define SIMON_ANI_THROW_LEFT				13
+
 #define SIMON_ANI_THROW_RIGHT_SITTING		14
 #define SIMON_ANI_THROW_LEFT_SITTING		15
+
 #define SIMON_ANI_HURT_RIGHT				16
 #define SIMON_ANI_HURT_LEFT					17
+
+#define SIMON_ANI_UP_RIGHT					18
+#define SIMON_ANI_UP_LEFT					19
+#define SIMON_ANI_DOWN_RIGHT				20	
+#define SIMON_ANI_DOWN_LEFT					21
+
+#define SIMON_ANI_AFK_UP_RIGHT				22
+#define SIMON_ANI_AFK_UP_LEFT				23
+#define SIMON_ANI_AFK_DOWN_RIGHT			24
+#define SIMON_ANI_AFK_DOWN_LEFT				25	
+
+#define SIMON_ANI_ATTACK_OS_UP_RIGHT		26
+#define SIMON_ANI_ATTACK_OS_UP_LEFT         27
+#define SIMON_ANI_ATTACK_OS_DOWN_RIGHT      28		
+#define SIMON_ANI_ATTACK_OS_DOWN_LEFT	    29
+
 //#define SIMON_ANI_DIE						14
 
+
 #define SIMON_BIG_BBOX_WIDTH  16
-#define SIMON_BIG_BBOX_HEIGHT 30
+#define SIMON_BIG_BBOX_HEIGHT 31
 
 #pragma endregion
 

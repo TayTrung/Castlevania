@@ -22,7 +22,11 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
+	if (offCollision == true)
+		if ((y > offsetMap + 140-20)&& (y<offsetMap+140))
+			offCollision = false;
 
+	if(offCollision==false)
 		CalcPotentialCollisions(coObjects, coEvents);
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
@@ -66,6 +70,7 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						this->SetState(PANTHER_STATE_JUMPING_LEFT);
 
 				jumped = true;
+				offCollision = true;
 			}
 				
 
@@ -73,8 +78,11 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	//clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
-	if (x < 522 || x>1052)
-		this->SetState(PANTHER_STATE_INACTIVE);
+	float x1, y1;
+	x1 = Camera::GetInstance()->GetPosition().x;
+	if (jumped == true)
+		if (x<x1 || x>x1 + SCREEN_WIDTH)
+			this->SetState(PANTHER_STATE_INACTIVE);
 }
 
 void Panther::Render()
@@ -177,6 +185,7 @@ Panther::Panther(float xdistance)
 	distanceToJump = xdistance;
 	changeDirection = false;
 	jumped = false;
+	offCollision = false;
 }
 
 

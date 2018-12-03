@@ -18,6 +18,7 @@
 #include "SmallHeart.h"
 #include "Ghou.h"
 #include "Panther.h"
+#include "Stairs.h"
 class Scene
 {
 public:
@@ -32,6 +33,8 @@ public:
 	virtual void CollisionBetWeaponAndEnemy()=0;
 	virtual void CollisionBetSimonAndItem()=0;
 	virtual void CollisionBetSimonAndEnemy()=0;
+	virtual int CollisionBetSimonAndUpStairs()=0;
+	virtual int CollisionBetSimonAndDownStairs()=0;
 	Scene();
 	~Scene();
 };

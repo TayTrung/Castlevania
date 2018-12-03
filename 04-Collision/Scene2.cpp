@@ -10,6 +10,8 @@ vector<LPGAMEOBJECT> listItem1;
 vector<LPGAMEOBJECT> listSurface1;
 vector<LPGAMEOBJECT> listEnemy1;
 vector<LPGAMEOBJECT> listTorches1;
+vector<LPSTAIRS> listUpStairs1;
+vector<LPSTAIRS> listDownStairs1;
 Camera *camera1 = Camera::GetInstance();
 Map *map1;
 BigHeart *bigheart1;
@@ -18,6 +20,7 @@ Dagger1 *dagger1;
 SmallHeart *smallheart1;
 Ghou *ghou;
 Panther *pant;
+Stairs *stairs;
 
 int tick = 350;
 
@@ -30,41 +33,173 @@ void Scene2::KeyState(BYTE * states)
 
 		if (game1->IsKeyDown(DIK_RIGHT))
 		{
-			if (game1->IsKeyDown(DIK_S))
-				simon1->SetState(SIMON_STATE_ATTACK);
-			else
-				simon1->SetState(SIMON_STATE_WALKING_RIGHT);
+
+			if (simon1->isOnStairs ==false)
+			{
+
+				if (game1->IsKeyDown(DIK_S))
+					simon1->SetState(SIMON_STATE_ATTACK);
+				else
+					simon1->SetState(SIMON_STATE_WALKING_RIGHT);
+
+			}	
+		/*	else 
+				if (simon1->isOnStairs == true)
+				{
+					if (simon1->directionOnStairs == true)
+					{
+						if (simon1->nx == 1)
+						{
+							simon1->SetState(SIMON_STATE_UP_RIGHT);
+						}
+					}
+					else
+						if (simon1->directionOnStairs == false)
+						{
+							if (simon1->nx == 1)
+							{
+								simon1->SetState(SIMON_STATE_DOWN_RIGHT);
+							}
+						}
+				}*/
 		}
 		else
 			if (game1->IsKeyDown(DIK_LEFT))
 			{
-				if (game1->IsKeyDown(DIK_S))
-					simon1->SetState(SIMON_STATE_ATTACK);
-				else
-					simon1->SetState(SIMON_STATE_WALKING_LEFT);
+
+				if (simon1->isOnStairs ==false)
+				{
+
+					if (game1->IsKeyDown(DIK_S))
+						simon1->SetState(SIMON_STATE_ATTACK);
+					else
+						simon1->SetState(SIMON_STATE_WALKING_LEFT);
+				}
+	/*			else
+					if (simon1->isOnStairs == true)
+					{
+						if (simon1->directionOnStairs == true)
+						{
+							if (simon1->nx == -1)
+							{
+								simon1->SetState(SIMON_STATE_UP_LEFT);
+							}
+						}
+						else
+							if (simon1->directionOnStairs == false)
+							{
+								if (simon1->nx == -1)
+								{
+									simon1->SetState(SIMON_STATE_DOWN_LEFT);
+								}
+							}
+					}*/
 			}
 			else
 				if (game1->IsKeyDown(DIK_DOWN))
 				{
-					/*	if (game->IsKeyDown(DIK_S))
-					simon->SetState(SIMON_STATE_ATTACK_SITTING);
-					else*/
-					simon1->SetState(SIMON_STATE_SIT);
-				}
-				else
-					if (game1->IsKeyDown(DIK_SPACE))
+					if (simon1->isOnStairs == false)
 					{
-						if (simon1->isJumping == false)
+						if (CollisionBetSimonAndUpStairs() == false)
 						{
-							simon1->SetState(SIMON_STATE_JUMP);
-							simon1->isJumping = true;
+							simon1->SetState(SIMON_STATE_SIT);
 						}
+							
 					}
 					else
-					{
-						simon1->SetState(SIMON_STATE_IDLE);
+						if (simon1->isOnStairs == true)
+						{
+							if (CollisionBetSimonAndDownStairs() == false)
+							{
+								if (simon1->directionOnStairs == false)
+								{
+									if (simon1->nx == 1)
+									{
+										simon1->SetState(SIMON_STATE_DOWN_RIGHT);
+									}
+									else
+										if (simon1->nx == -1)
+										{
+											simon1->SetState(SIMON_STATE_DOWN_LEFT);
+										}
+								}
+							/*	else
+								{
+									simon1->directionOnStairs == false;
+									if (simon1->nx == 1)
+									{
+										simon1->nx = -1;
+										simon1->SetState(SIMON_STATE_DOWN_LEFT);
 
+									}
+									else
+										if (simon1->nx == -1)
+										{
+											simon1->nx = 1;
+											simon1->SetState(SIMON_STATE_DOWN_RIGHT);
+										}*/
+								//}
+							}
+						}
+					
+				}
+				else
+					if (game1->IsKeyDown(DIK_UP))
+					{
+						if (simon1->isOnStairs == false)
+							CollisionBetSimonAndDownStairs();
+						else
+							if (simon1->isOnStairs == true)
+							{
+								if (CollisionBetSimonAndUpStairs() == false)
+								{
+									if (simon1->directionOnStairs == true)
+									{
+										if (simon1->nx == 1)
+										{
+											simon1->SetState(SIMON_STATE_UP_RIGHT);
+										}
+										else
+											if (simon1->nx == -1)
+											{
+												simon1->SetState(SIMON_STATE_UP_LEFT);
+											}
+									}
+									/*else
+									{
+										simon1->directionOnStairs == true;
+										if (simon1->nx == 1)
+										{
+											simon1->nx = -1;
+											simon1->SetState(SIMON_STATE_UP_LEFT);
+
+										}
+										else
+											if (simon1->nx == -1)
+											{
+												simon1->nx = 1;
+												simon1->SetState(SIMON_STATE_UP_RIGHT);
+											}
+									}*/
+									
+								}
+
+							}
 					}
+					else
+						if (game1->IsKeyDown(DIK_SPACE))
+						{
+							if (simon1->isJumping == false)
+							{
+								simon1->SetState(SIMON_STATE_JUMP);
+								simon1->isJumping = true;
+							}
+						}
+						else
+						{
+							simon1->SetState(SIMON_STATE_IDLE);
+
+						}
 	}
 
 }
@@ -163,6 +298,7 @@ void Scene2::OnKeyDown(int KeyCode)
 		spawnGhou(300 /*SCREEN_WIDTH*/, 50);
 		break;
 	}
+
 }
 
 void Scene2::OnKeyUp(int KeyCode)
@@ -192,7 +328,7 @@ void Scene2::LoadResources()
 	CSprites * sprites = CSprites::GetInstance();
 	CAnimations * animations = CAnimations::GetInstance();
 	LPANIMATION ani;
-	simon1->SetPosition(600, 0);
+	simon1->SetPosition(650, 0);
 	camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
 	textures->Add(ID_TEX_MAP2, L"textures\\Map\\Map2.png", D3DCOLOR_XRGB(255, 0, 255));
 
@@ -382,6 +518,8 @@ void Scene2::LoadResources()
 
 
 #pragma endregion
+
+#pragma region Adding Panther 
 		pant = new Panther(15);
 		pant->AddAnimation(550);
 		pant->AddAnimation(551);
@@ -416,6 +554,48 @@ void Scene2::LoadResources()
 		pant->SetPosition(945, 0 + offsetMap);
 		listEnemy1.push_back(pant);
 	
+
+#pragma endregion 
+
+#pragma region Adding Stairs
+		//1=right , 2 = left
+		////1st stair
+		stairs = new Stairs(1);
+		stairs->SetPosition(611, offsetMap + 159);
+		listDownStairs1.push_back(stairs);
+
+		stairs = new Stairs(2);
+		stairs->SetPosition(675, offsetMap + 35);
+		listUpStairs1.push_back(stairs);
+
+		//2nd stair
+		stairs = new Stairs(1);
+		stairs->SetPosition(707, offsetMap + 95);
+		listDownStairs1.push_back(stairs);
+
+		stairs = new Stairs(2);
+		stairs->SetPosition(752, offsetMap + 4);
+		listUpStairs1.push_back(stairs);
+		//1= right, 2 = left
+		////3rd stair
+		stairs = new Stairs(1);
+		stairs->SetPosition(878+20, offsetMap + 4);
+		listUpStairs1.push_back(stairs);
+
+		stairs = new Stairs(2);
+		stairs->SetPosition(928, offsetMap + 95);
+		listDownStairs1.push_back(stairs);
+
+		//4th stair
+		stairs = new Stairs(1);
+		stairs->SetPosition(1283, offsetMap + 159);
+		listDownStairs1.push_back(stairs);
+
+		//stairs = new Stairs(2);
+		//stairs->SetPosition(752, offsetMap + 4);
+		//listDownStairs1.push_back(stairs);
+
+#pragma endregion
 }
 void Scene2::XuLyPanthera()
 {
@@ -465,12 +645,20 @@ void Scene2::XuLyPanthera()
 
 void Scene2::Update(DWORD dt)
 {
+	if (Camera::GetInstance()->GetPosition().x > 1195)
+		Camera::GetInstance()->SetPosition(1190, Camera::GetInstance()->GetPosition().y);
+	else
+	{
+		camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
+		camera1->Update();
+	}
 
 	float x1, y1;
 	x1 = Camera::GetInstance()->GetPosition().x;
 	y1 = Camera::GetInstance()->GetPosition().y;
+	
 	tick += 1;
-	if (simon1->x < 417 - SIMON_BIG_BBOX_WIDTH)
+	if ((simon1->x < 417 - SIMON_BIG_BBOX_WIDTH) || (simon1->x>1117 && simon1->x<1525))
 	{
 		if (tick == 360)
 		{
@@ -510,7 +698,7 @@ void Scene2::Update(DWORD dt)
 	erasingObjThatInacitve();
 
 	if (simon1->untouchable == false)
-		CollisionBetSimonAndEnemy();
+		//CollisionBetSimonAndEnemy();
 
 	CollisionBetSimonAndItem();
 
@@ -518,11 +706,7 @@ void Scene2::Update(DWORD dt)
 		CollisionBetWeaponAndEnemy();
 
 	
-
-	camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
-
-	camera1->Update();
-	simon1->Update(dt, &listSurface1);
+		simon1->Update(dt, &listSurface1);
 	if ((simon1->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon1->dagger->isOn == true && simon1->isUsingDagger == true)
 		simon1->dagger->Update(dt, &listSurface1);
 
@@ -544,12 +728,16 @@ void Scene2::Render()
 		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 		map1->drawTileMap(camera1, ID_TEX_MAP2);
+		for (int i = 0; i < listDownStairs1.size(); i++)
+			listDownStairs1[i]->Render();
+		for (int i = 0; i < listUpStairs1.size(); i++)
+			listUpStairs1[i]->Render();
 		for (int i = 0; i < listSurface1.size(); i++)
 			listSurface1[i]->Render();
 		for (int i = 0; i < listTorches1.size(); i++)
 			listTorches1[i]->Render();
-		for (int i = 0; i < listEnemy1.size(); i++)
-			listEnemy1[i]->Render();
+		/*for (int i = 0; i < listEnemy1.size(); i++)
+			listEnemy1[i]->Render();*/
 		for (int i = 0; i < listItem1.size(); i++)
 			listItem1[i]->Render();
 
@@ -605,23 +793,35 @@ void Scene2::erasingObjThatInacitve()
 
 void Scene2::spawnGhou(float x,float y)
 {
-	for (int i = 0; i < 1; i++)
+	int xz = 0;
+	for (int z = 0; z < listEnemy1.size(); z++)
 	{
+		if (dynamic_cast<Ghou*>(listEnemy1.at(z)))
+		{
+			xz = xz + 1;
+		}
+	}
+	if (xz == 0)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			ghou = new Ghou();
+			ghou->AddAnimation(531);
+			ghou->AddAnimation(532);
+			ghou->setItemInside(smallheartInside);
+			ghou->SetPosition(x + 15 + i * 20, y);
+			ghou->SetState(GHOU_STATE_ACTIVE_LEFT);
+			listEnemy1.push_back(ghou);
+		}
 		ghou = new Ghou();
 		ghou->AddAnimation(531);
 		ghou->AddAnimation(532);
 		ghou->setItemInside(smallheartInside);
-		ghou->SetPosition(x+30+i*20, y);
-		ghou->SetState(GHOU_STATE_ACTIVE_LEFT);
+		ghou->SetPosition(Camera::GetInstance()->GetPosition().x+15, y);
+		ghou->SetState(GHOU_STATE_ACTIVE_RIGHT);
 		listEnemy1.push_back(ghou);
 	}
-	ghou = new Ghou();
-	ghou->AddAnimation(531);
-	ghou->AddAnimation(532);
-	ghou->setItemInside(smallheartInside);
-	ghou->SetPosition(Camera::GetInstance()->GetPosition().x, y);
-	ghou->SetState(GHOU_STATE_ACTIVE_RIGHT);
-//	listEnemy1.push_back(ghou);
+	
 }
 
 void Scene2::CollisionBetWeaponAndEnemy()
@@ -1197,4 +1397,197 @@ void Scene2::CollisionBetSimonAndEnemy()
 	
 }
 
+int Scene2::CollisionBetSimonAndUpStairs()
+{
+	//int x = 0;
+	for (UINT i = 0; i < listUpStairs1.size(); i++)
+	{
+		//if (simon1->CheckCollision(listEnemy1.at(i)) == true)
+		
+		float al, at, ar, ab;
+		float bl, bt, br, bb;
+		listUpStairs1.at(i)->GetBoundingBox(al, at, ar, ab);
+		simon1->GetBoundingBox(bl, bt, br, bb);
+		//if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
+		//{
+		//	if (x == 1)		//1=down right, 12= down left, 2 = up right, 22= up left			
+		//	{
+		//		simon1->isAllowedToGoUpRight = true;
+		//		simon1->isAllowedToGoUpLeft = false;
+		//		simon1->isAllowedToGoDownRight = false;
+		//		simon1->isAllowedToGoDownLeft = false;
+		//	}
+		//	else
+		//		if (x == 2)		//1=down right, 12= down left, 2 = up right, 22= up left
+		//		{
+		//			simon1->isAllowedToGoUpRight = false;
+		//			simon1->isAllowedToGoUpLeft = false;
+		//			simon1->isAllowedToGoDownRight = true;
+		//			simon1->isAllowedToGoDownLeft = false;
+		//		}
+		//		else
+		//			if (x == 12)		//1=down right, 12= down left, 2 = up right, 22= up left
+		//			{
+		//				simon1->isAllowedToGoUpRight = false;
+		//				simon1->isAllowedToGoUpLeft = true;
+		//				simon1->isAllowedToGoDownRight = false;
+		//				simon1->isAllowedToGoDownLeft = false;
+		//			}
+		//			else
+		//				if (x == 22)		//1=down right, 12= down left, 2 = up right, 22= up left
+		//				{
+		//					simon1->isAllowedToGoUpRight = false;
+		//					simon1->isAllowedToGoUpLeft = false;
+		//					simon1->isAllowedToGoDownRight = false;
+		//					simon1->isAllowedToGoDownLeft = true;
+		//				}
+		//	break;
+		//}
+		//else
+		//{
+		//	simon1->isAllowedToGoUpRight = false;
+		//	simon1->isAllowedToGoUpLeft = false;
+		//	simon1->isAllowedToGoDownRight = false;
+		//	simon1->isAllowedToGoDownLeft = false;
+		//}
+		//	
+		
+		//1= right, 2 = left
+		if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
+		{
+			
+			if (simon1->isOnStairs == true)
+			{
+				simon1->SetPosition(simon1->x, simon1->y - 2);
+				simon1->dy = 9999999999999999999;
+				
+				simon1->SetState(SIMON_STATE_IDLE);
+				simon1->isOnStairs = false;
+			}
+			else
+				if (simon1->isOnStairs == false)
+				{
+					float xs, ys, xz, yz;
+					simon1->GetPosition(xs, ys);
+					listUpStairs1.at(i)->GetPosition(xz, yz);
+
+					//simon1->SetPosition(xz, ys);
+					if (listUpStairs1.at(i)->getType() == 1)
+					{
+						simon1->SetState(SIMON_STATE_DOWN_RIGHT);
+						simon1->directionOnStairs = false;// true=going up, false=going down
+					}
+					else
+						if (listUpStairs1.at(i)->getType() == 2)
+						{
+							simon1->SetState(SIMON_STATE_DOWN_LEFT);
+							simon1->directionOnStairs = false;
+						}
+
+					simon1->isOnStairs = true;
+				}
+		return true;
+		}
+
+	}
+	return false;
+
+}
+
+int Scene2::CollisionBetSimonAndDownStairs()
+{
+	for (UINT i = 0; i < listDownStairs1.size(); i++)
+	{
+		//if (simon1->CheckCollision(listEnemy1.at(i)) == true)
+
+		float al, at, ar, ab;
+		float bl, bt, br, bb;
+		listDownStairs1.at(i)->GetBoundingBox(al, at, ar, ab);
+		simon1->GetBoundingBox(bl, bt, br, bb);
+		//if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
+		//{
+		//	if (x == 1)		//1=down right, 12= down left, 2 = up right, 22= up left			
+		//	{
+		//		simon1->isAllowedToGoUpRight = true;
+		//		simon1->isAllowedToGoUpLeft = false;
+		//		simon1->isAllowedToGoDownRight = false;
+		//		simon1->isAllowedToGoDownLeft = false;
+		//	}
+		//	else
+		//		if (x == 2)		//1=down right, 12= down left, 2 = up right, 22= up left
+		//		{
+		//			simon1->isAllowedToGoUpRight = false;
+		//			simon1->isAllowedToGoUpLeft = false;
+		//			simon1->isAllowedToGoDownRight = true;
+		//			simon1->isAllowedToGoDownLeft = false;
+		//		}
+		//		else
+		//			if (x == 12)		//1=down right, 12= down left, 2 = up right, 22= up left
+		//			{
+		//				simon1->isAllowedToGoUpRight = false;
+		//				simon1->isAllowedToGoUpLeft = true;
+		//				simon1->isAllowedToGoDownRight = false;
+		//				simon1->isAllowedToGoDownLeft = false;
+		//			}
+		//			else
+		//				if (x == 22)		//1=down right, 12= down left, 2 = up right, 22= up left
+		//				{
+		//					simon1->isAllowedToGoUpRight = false;
+		//					simon1->isAllowedToGoUpLeft = false;
+		//					simon1->isAllowedToGoDownRight = false;
+		//					simon1->isAllowedToGoDownLeft = true;
+		//				}
+		//	break;
+		//}
+		//else
+		//{
+		//	simon1->isAllowedToGoUpRight = false;
+		//	simon1->isAllowedToGoUpLeft = false;
+		//	simon1->isAllowedToGoDownRight = false;
+		//	simon1->isAllowedToGoDownLeft = false;
+		//}
+		//	
+
+		//1= right, 2 = left
+		
+		if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
+		{
+			if (simon1->isOnStairs == true)
+			{
+				simon1->isOnStairs = false;
+				
+				
+			}
+
+			else
+				if (simon1->isOnStairs == false)
+				{
+					float xs, ys, xz, yz;
+					simon1->GetPosition(xs, ys);
+					listUpStairs1.at(i)->GetPosition(xz, yz);
+					
+					//simon1->SetPosition(xz, ys);
+
+					if (listDownStairs1.at(i)->getType() == 1)
+					{
+						simon1->SetState(SIMON_STATE_UP_RIGHT);
+						
+						
+						simon1->directionOnStairs = true;// true=going up, false=going down
+					}
+					else
+						if (listDownStairs1.at(i)->getType() == 2)
+						{
+							simon1->SetState(SIMON_STATE_UP_LEFT);
+							simon1->directionOnStairs = true;// true=going up, false=going down
+						}
+				simon1->isOnStairs = true;
+				}
+			return true;
+		}
+
+	}
+	return false;
+
+}
 

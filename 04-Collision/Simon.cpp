@@ -21,14 +21,14 @@ void Simon::notUseDagger()
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 
-	if ((this->GetState() == SIMON_STATE_ATTACK && this->whip->isFinished == true) ||
+	if ((this->GetState() == SIMON_STATE_ATTACK && this->whip->isFinished == true) ||//danh xong xet ve vi tri cu
 		(this->GetState() == SIMON_STATE_THROW && this->dagger->isFinished == true))
 	{
 		//this->SetState(SIMON_STATE_IDLE);
 		CGameObject::SetState(SIMON_STATE_IDLE);
 	}
 
-	if ((this->GetState() == SIMON_STATE_ATTACK_SITTING && this->whip->isFinished == true) ||
+	if ((this->GetState() == SIMON_STATE_ATTACK_SITTING && this->whip->isFinished == true) ||////danh xong xet ve vi tri cu
 		(this->GetState() == SIMON_STATE_THROW_SITTING && this->dagger->isFinished == true))
 	{
 		CGameObject::SetState(SIMON_STATE_SIT);
@@ -37,14 +37,15 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	vy += SIMON_GRAVITY * dt;
+	if (this->isOnStairs == false)
+		vy += SIMON_GRAVITY * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
-
-	CalcPotentialCollisions(coObjects, coEvents);
+	if (this->isOnStairs == false)
+		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
 	if ( GetTickCount() - untouchable_start >SIMON_UNTOUCHABLE_TIME)
@@ -74,6 +75,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			vy = 0;
 
+			
 
 			if (this->isJumping == true)
 			{
@@ -89,6 +91,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				StartUntouchable();
 			}
 
+			if (this->GetState() == SIMON_STATE_DOWN_LEFT || this->GetState() == SIMON_STATE_DOWN_RIGHT)
+			{
+				this->SetState(SIMON_STATE_IDLE);
+			}
 		}
 
 	}
@@ -140,12 +146,41 @@ void Simon::Render()
 			{
 				if (nx == 1)
 				{
-					ani = SIMON_ANI_ATTACKING_RIGHT_SITTING;
+					if (this->isOnStairs == true)
+					{
+						// true=going up, false=going down
+						if (this->directionOnStairs == true)
+						{
+							ani = SIMON_ANI_ATTACK_OS_UP_RIGHT;
+						}
+						else
+							if (this->directionOnStairs == false)
+							{
+								ani = SIMON_ANI_ATTACK_OS_DOWN_RIGHT;
+
+							}
+					}
+					else
+						ani = SIMON_ANI_ATTACKING_RIGHT_SITTING;
 					//this->whip->SetState(WHIP_STATE_ACTIVE_RIGHT);
 				}
 				else if (nx == -1)
 				{
-					ani = SIMON_ANI_ATTACKING_LEFT_SITTING;
+					if (this->isOnStairs == true)
+					{
+						// true=going up, false=going down
+						if (this->directionOnStairs == true)
+						{
+							ani = SIMON_ANI_ATTACK_OS_UP_LEFT;
+						}
+						else 
+							if (this->directionOnStairs == false)
+							{
+
+								ani = SIMON_ANI_ATTACK_OS_UP_RIGHT;
+							}
+					}else
+						ani = SIMON_ANI_ATTACKING_LEFT_SITTING;
 					//this->whip->SetState(WHIP_STATE_ACTIVE_LEFT);
 				}
 				//	this->whip->SetPosition(x, y);
@@ -218,9 +253,30 @@ void Simon::Render()
 									else
 										if (this->isJumping == false)
 										{
-											if (nx > 0) ani = SIMON_ANI_IDLE_RIGHT;
+											if (this->isOnStairs == true)
+											{
+												
+												if (this->directionOnStairs == true)// true=going up, false=going down
+												{
+													if (nx > 0) ani = SIMON_ANI_AFK_UP_RIGHT;
+													else
+														if (nx < 0) ani = SIMON_ANI_AFK_UP_LEFT;
+												}
+												else
+													if(this->directionOnStairs == false)
+													{
+														if (nx > 0) ani = SIMON_ANI_AFK_DOWN_RIGHT;
+														else
+															if (nx < 0) ani = SIMON_ANI_AFK_DOWN_LEFT;
+													}
+											}
 											else
-												if (nx < 0) ani = SIMON_ANI_IDLE_LEFT;
+											{
+												if (nx > 0) ani = SIMON_ANI_IDLE_RIGHT;
+												else
+													if (nx < 0) ani = SIMON_ANI_IDLE_LEFT;
+											}
+											
 										}
 	}
 	else
@@ -239,9 +295,28 @@ void Simon::Render()
 			}
 			else
 				if (vx > 0)
-			ani = SIMON_ANI_WALKING_RIGHT;
+				{
+					if (this->GetState() == SIMON_STATE_DOWN_RIGHT)
+						ani = SIMON_ANI_DOWN_RIGHT;
+					else
+						if (this->GetState() == SIMON_STATE_UP_RIGHT)
+							ani = SIMON_ANI_UP_RIGHT;
+						else
+							ani = SIMON_ANI_WALKING_RIGHT;
+
+				}
 				else
-			ani = SIMON_ANI_WALKING_LEFT;
+					if (vx<0)
+					{
+						if (this->GetState() == SIMON_STATE_DOWN_LEFT)
+							ani = SIMON_ANI_DOWN_LEFT;
+						else
+							if (this->GetState() == SIMON_STATE_UP_LEFT)
+								ani = SIMON_ANI_UP_LEFT;
+							else
+								ani = SIMON_ANI_WALKING_LEFT;
+					}
+					
 
 	int alpha = 255;
 	if (untouchable) alpha = 180;
@@ -251,7 +326,7 @@ void Simon::Render()
 
 void Simon::SetState(int state)
 {
-
+	
 	if (this->whip->isFinished == false||
 		this->dagger->isFinished==false)
 	{
@@ -267,6 +342,7 @@ void Simon::SetState(int state)
 
 		if (this->GetState() == SIMON_STATE_THROW_SITTING)
 			return;
+		
 
 	}else if (this->GetState()==SIMON_STATE_HURT_LEFT || this->GetState() == SIMON_STATE_HURT_RIGHT)
 		return;
@@ -289,12 +365,34 @@ void Simon::SetState(int state)
 	case SIMON_STATE_HURT_LEFT:
 		vx = -SIMON_JUMP_SPEED_Y/6;
 		vy = -SIMON_JUMP_SPEED_Y;
+		break;
+	case SIMON_STATE_DOWN_RIGHT:
+		vx = SIMON_WALKING_SPEED/3;
+		vy = SIMON_WALKING_SPEED/3;
+		nx = 1;
+		break;
+	case SIMON_STATE_DOWN_LEFT:
+		vx = -SIMON_WALKING_SPEED/3;
+		vy =  SIMON_WALKING_SPEED/3;
+		nx = -1;
+		break;
+	case SIMON_STATE_UP_RIGHT:
 
+		vx = SIMON_WALKING_SPEED/3;
+		vy = -SIMON_WALKING_SPEED/3;
+		nx = 1;
+		break;
+	case SIMON_STATE_UP_LEFT:
+		vx = -SIMON_WALKING_SPEED/3;
+		vy = -SIMON_WALKING_SPEED/3;
+		nx = -1;
 		break;
 	case SIMON_STATE_JUMP:
-		vy = -SIMON_JUMP_SPEED_Y;
+		vy = -SIMON_JUMP_SPEED_Y*3;
+		break;
 	case SIMON_STATE_IDLE:
 		vx = 0;
+		vy = 0;
 		break;
 		//case	SIMON_STATE_HURT_RIGHT:
 		//	vy = -SIMON_HURT;

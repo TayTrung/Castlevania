@@ -56,6 +56,7 @@ void Camera::Update()
 		{
 			if (mPositionOfCamera.x > MAP2_WIDTH-345)
 				mPositionOfCamera.x = MAP2_WIDTH-345;
+			
 		}
 	}
 }

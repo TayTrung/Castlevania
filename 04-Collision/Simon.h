@@ -15,19 +15,24 @@ public:
 	//int heartCount;
 	bool isUsingDagger;
 	int ani;
-
-public: 
+	bool isOnStairs; 
+	bool directionOnStairs; // true=going up, false=going down
+public:
 	Simon() : CGameObject()
 	{
-		
+
 		isUsingDagger = false;
 		//isHavingSword = false;
 		untouchable = false;
 		whip = new Whip();
 		dagger = new Dagger();
-	//	heartCount = 10;
+		//	heartCount = 10;
 		isJumping = false;
-	}
+		isOnStairs = false;
+
+
+
+}
 	void useDagger();
 	bool isJumping;
 	void notUseDagger();

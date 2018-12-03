@@ -41,6 +41,9 @@
     <Filter Include="Framework\define">
       <UniqueIdentifier>{76349c48-46c7-48aa-b32d-9afd95653bc0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Stairs">
+      <UniqueIdentifier>{717c2540-c8a1-4474-b9f1-6b459ad26cc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Whip.h">
@@ -126,6 +129,9 @@
     </ClInclude>
     <ClInclude Include="Panther.h">
       <Filter>Framework\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Stairs.h">
+      <Filter>Framework\Stairs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +221,9 @@
     </ClCompile>
     <ClCompile Include="Panther.cpp">
       <Filter>Framework\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Stairs.cpp">
+      <Filter>Framework\Stairs</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

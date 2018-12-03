@@ -60,6 +60,7 @@ public:
 
 	bool changeDirection;
 	bool jumped;
+	bool offCollision;
 	void RenderBoundingBox(int alpha);
 
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);

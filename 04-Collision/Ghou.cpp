@@ -50,10 +50,23 @@ void Ghou::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
-	if ((x < 0) || (x>400))
+	float x1, y1;
+	x1 = Camera::GetInstance()->GetPosition().x;
+	if (x1 > 1191)
+	{
+		if (x <= x1 + 10 && this->GetState() == GHOU_STATE_ACTIVE_LEFT)
+			this->SetState(GHOU_STATE_ACTIVE_RIGHT);
+		else
+			if (x >= (x1 + SCREEN_WIDTH - 80) && this->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+				this->SetState(GHOU_STATE_ACTIVE_LEFT);
+	}
+	if (x<x1 || x>x1 + SCREEN_WIDTH)
 		this->SetState(GHOU_STATE_INACTIVE);
+	
+
 
 }
+
 
 void Ghou::Render()
 {

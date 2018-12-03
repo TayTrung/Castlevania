@@ -18,6 +18,10 @@ public:
 	virtual void CollisionBetSimonAndItem();
 
 	virtual void CollisionBetSimonAndEnemy();
+
+
+	virtual int CollisionBetSimonAndUpStairs();
+	virtual int CollisionBetSimonAndDownStairs();
 	Scene1();
 	~Scene1();
 };

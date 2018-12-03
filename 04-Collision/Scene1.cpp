@@ -256,6 +256,23 @@ void Scene1::LoadResources()
 	//HURT RIGHT
 
 	sprites->Add(10301, 221, 133, 236, 163, texMario);
+
+	//STAIR LEFT UP
+	sprites->Add(10350, 131, 34, 146, 64, texMario);
+	sprites->Add(10351, 162, 34, 177, 64, texMario);
+
+	//STAIR LEFT DOWN
+	sprites->Add(10352, 66, 34, 81, 64, texMario);
+	sprites->Add(10353, 96, 34, 111, 64, texMario);
+
+	//STAIR RIGHT UP
+	sprites->Add(10354, 95, 133, 110, 163, texMario);
+	sprites->Add(10355, 64, 133, 79, 163, texMario);
+
+	//STAIR RIGHT DOWN
+	sprites->Add(10356, 160, 133, 175, 163, texMario);
+	sprites->Add(10357, 130, 133, 145, 163, texMario);
+	
 	
 #pragma endregion
 
@@ -381,13 +398,11 @@ void Scene1::LoadResources()
 	animations->Add(501, ani);
 
 
-	ani = new CAnimation(300);	// Jumping right
-	ani->Add(10017);
+	ani = new CAnimation(500);	// Jumping right
 	ani->Add(10017);
 	animations->Add(600, ani);
 
-	ani = new CAnimation(300);	// Jumping left
-	ani->Add(10007);
+	ani = new CAnimation(500);	// Jumping left
 	ani->Add(10007);
 	animations->Add(601, ani);
 
@@ -419,7 +434,6 @@ void Scene1::LoadResources()
 	ani->Add(10007);
 	animations->Add(801, ani);
 
-
 	ani = new CAnimation(300);	//  Hurt right
 	ani->Add(10301);
 	animations->Add(905, ani);
@@ -427,6 +441,46 @@ void Scene1::LoadResources()
 	ani = new CAnimation(300);	// Hurt left
 	ani->Add(10300);
 	animations->Add(906, ani);
+
+
+	ani = new CAnimation(300);	//  up left 
+	ani->Add(10350);
+	ani->Add(10351);
+	animations->Add(907, ani);
+	
+	ani = new CAnimation(300);	// Up right
+	ani->Add(10354);
+	ani->Add(10355);
+	animations->Add(908, ani);
+
+	ani = new CAnimation(300);	// down left 
+	ani->Add(10352);
+	ani->Add(10353);
+	animations->Add(909, ani);
+
+	ani = new CAnimation(300);	// down right
+	ani->Add(10356);
+	ani->Add(10357);
+	animations->Add(910, ani);
+
+	ani = new CAnimation(300);	// AFK up left 
+	ani->Add(10350);
+	animations->Add(001, ani);
+
+	ani = new CAnimation(300);	// AFK Up right
+	ani->Add(10354);
+	animations->Add(002, ani);
+
+	ani = new CAnimation(300);	// AFK down left 
+	ani->Add(10352);
+	animations->Add(003, ani);
+
+	ani = new CAnimation(300);	// AFK down right
+	ani->Add(10356);
+	animations->Add(004, ani);
+
+
+
 
 #pragma region Adding Animation for Whip //de trong simon vì bên duoi co new simon
 	// lvl1
@@ -495,7 +549,14 @@ void Scene1::LoadResources()
 	simon->AddAnimation(800);		// Sitting Throw dagger left 
 	simon->AddAnimation(905);		// HUrt right
 	simon->AddAnimation(906);		// HUrt left
-
+	simon->AddAnimation(908);		// Up right
+	simon->AddAnimation(907);		// up left 
+	simon->AddAnimation(910);		// down right
+	simon->AddAnimation(909);		// down left 
+	simon->AddAnimation(002);		// AFK Up right
+	simon->AddAnimation(001);		// AFK up left 
+	simon->AddAnimation(004);		// AFK down right
+	simon->AddAnimation(003);		// AFK down left 
 	simon->SetPosition(50.0f, 0);
 	//objects.push_back(mario);
 #pragma endregion 	
@@ -699,6 +760,17 @@ void Scene1::Render()
 
 void Scene1::CollisionBetSimonAndEnemy()
 {
+}
+
+int Scene1::CollisionBetSimonAndUpStairs()
+{
+
+	return true;
+}
+int Scene1::CollisionBetSimonAndDownStairs()
+{
+
+	return true;
 }
 
 Scene1::Scene1()
