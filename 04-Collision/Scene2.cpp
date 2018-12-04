@@ -14,6 +14,7 @@ vector<LPSTAIRS> listUpStairs1;
 vector<LPSTAIRS> listDownStairs1;
 Camera *camera1 = Camera::GetInstance();
 Map *map1;
+Bat *bat1;
 BigHeart *bigheart1;
 MorningStar *morningstar1;
 Dagger1 *dagger1;
@@ -397,8 +398,10 @@ void Scene2::LoadResources()
 	textures->Add(ID_TEX_GROUND, L"textures\\Ground\\ground2.png", D3DCOLOR_XRGB(176, 224, 248));
 	textures->Add(ID_TEX_ITEM_SMALLHEART, L"textures\\Item\\smallheart.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_GHOUL, L"textures\\Enemy\\Ghoul.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_BAT, L"textures\\Enemy\\Bat.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_PANTHER, L"textures\\Enemy\\Pant.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_CANDLE, L"textures\\Enemy\\1.png", D3DCOLOR_XRGB(255, 0, 255));
+
 #pragma region Co-ordinations of Ground
 
 	LPDIRECT3DTEXTURE9 texGround = textures->Get(ID_TEX_GROUND);
@@ -413,7 +416,19 @@ void Scene2::LoadResources()
 	sprites->Add(40002, 8, 0, 15, 15, texCandle);
 
 #pragma endregion
+#pragma region Co-orrdiantions of Bat
 
+	LPDIRECT3DTEXTURE9 texBat = textures->Get(ID_TEX_BAT);
+
+	sprites->Add(22300, 48, 0, 63, 15, texBat);// left side
+	sprites->Add(22301, 32, 0, 47, 15, texBat);
+	sprites->Add(22302, 16, 0, 31, 15, texBat);
+
+	sprites->Add(22303, 0, 16, 15, 31, texBat);// right side
+	sprites->Add(22304, 16, 16, 31, 31, texBat);
+	sprites->Add(22305, 32, 16, 47, 31, texBat);
+
+#pragma endregion
 #pragma region Co-ordinations of Ghoul
 
 	LPDIRECT3DTEXTURE9 texGhoul = textures->Get(ID_TEX_GHOUL);
@@ -462,6 +477,24 @@ void Scene2::LoadResources()
 
 #pragma endregion
 
+#pragma region Adding Bat
+	ani = new CAnimation(200);
+	ani->Add(22300);
+	ani->Add(22301);
+	ani->Add(22302);
+	animations->Add(020, ani);
+
+	ani = new CAnimation(200);
+	ani->Add(22303);
+	ani->Add(22304);
+	ani->Add(22305);
+	animations->Add(021, ani);
+#pragma endregion
+
+
+		
+		
+		
 #pragma region Adding Ghou
 
 	ani = new CAnimation(100); // right
@@ -637,6 +670,13 @@ void Scene2::LoadResources()
 
 #pragma endregion 
 
+		bat1 = new Bat(offsetMap+100);
+		bat1->AddAnimation(020);
+		bat1->AddAnimation(021);
+		bat1->SetState(BAT_STATE_ACTIVE_LEFT);
+		bat1->SetPosition(200, offsetMap + 100);
+		listEnemy1.push_back(bat1);
+
 #pragma region Adding Stairs
 		//1=right , 2 = left
 		////1st stair
@@ -674,6 +714,15 @@ void Scene2::LoadResources()
 		stairs = new Stairs(2);
 		stairs->SetPosition(1392-14, offsetMap + 4);
 		listUpStairs1.push_back(stairs);
+
+		//5th stair
+		stairs = new Stairs(1);
+		stairs->SetPosition(1696,  offsetMap + 35);
+		listUpStairs1.push_back(stairs);
+		//offsetMap + 160 - 16 * 4
+		stairs = new Stairs(2);
+		stairs->SetPosition(1760, offsetMap + 159);
+		listDownStairs1.push_back(stairs);
 
 #pragma endregion
 }
@@ -813,11 +862,10 @@ void Scene2::Update(DWORD dt)
 	erasingObjThatInacitve();
 
 	if (simon1->untouchable == false)
-		//CollisionBetSimonAndEnemy();
+		CollisionBetSimonAndEnemy();
 
 	CollisionBetSimonAndItem();
 
-	if (simon1->untouchable == false)
 		CollisionBetWeaponAndEnemy();
 
 	
@@ -851,8 +899,8 @@ void Scene2::Render()
 			listSurface1[i]->Render();
 		for (int i = 0; i < listTorches1.size(); i++)
 			listTorches1[i]->Render();
-		/*for (int i = 0; i < listEnemy1.size(); i++)
-			listEnemy1[i]->Render();*/
+		for (int i = 0; i < listEnemy1.size(); i++)
+			listEnemy1[i]->Render();
 		for (int i = 0; i < listItem1.size(); i++)
 			listItem1[i]->Render();
 
@@ -1375,7 +1423,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 		for (UINT i = 0; i < listEnemy1.size(); i++)
 		{
 			//if (simon1->CheckCollision(listEnemy1.at(i)) == true)
-			if (LPCOLLISIONEVENT e = simon1->SweptAABBEx(listEnemy1.at(i)))
+			LPCOLLISIONEVENT e = simon1->SweptAABBEx(listEnemy1.at(i));
 			{
 				if (e->t > 0 && e->t <= 1.0f)
 				{
@@ -1393,8 +1441,15 @@ void Scene2::CollisionBetSimonAndEnemy()
 									simon1->notUseDagger();
 								if (simon1->whip->isFinished == false)
 									simon1->whip->isFinished = true;
-								simon1->SetState(SIMON_STATE_HURT_LEFT);
-								
+								if (simon1->isOnStairs == true)
+								{
+									simon1->StartUntouchable();
+								}
+								else
+								{
+									simon1->SetState(SIMON_STATE_HURT_LEFT);
+
+								}
 									//	if (simon1->nx = 1)
 								//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
 							//		else if(simon1->nx=-1)
@@ -1417,7 +1472,14 @@ void Scene2::CollisionBetSimonAndEnemy()
 										simon1->notUseDagger();
 									if (simon1->whip->isFinished == false)
 										simon1->whip->isFinished = true;
-									simon1->SetState(SIMON_STATE_HURT_RIGHT);
+									if (simon1->isOnStairs == true)
+									{
+										simon1->StartUntouchable();
+									}
+									else
+									{
+										simon1->SetState(SIMON_STATE_HURT_RIGHT);
+									}
 									
 
 								}
@@ -1438,7 +1500,14 @@ void Scene2::CollisionBetSimonAndEnemy()
 												simon1->notUseDagger();
 											if (simon1->whip->isFinished == false)
 												simon1->whip->isFinished = true;
-											simon1->SetState(SIMON_STATE_HURT_LEFT);
+											if (simon1->isOnStairs == true)
+											{
+												simon1->StartUntouchable();
+											}
+											else
+											{
+												simon1->SetState(SIMON_STATE_HURT_LEFT);
+											}
 										}
 										else 
 											if (x >= x1)
@@ -1448,20 +1517,28 @@ void Scene2::CollisionBetSimonAndEnemy()
 													simon1->notUseDagger();
 												if (simon1->whip->isFinished == false)
 													simon1->whip->isFinished = true;
-												simon1->SetState(SIMON_STATE_HURT_RIGHT);
+
+												if (simon1->isOnStairs == true)
+												{
+													simon1->StartUntouchable();
+												}
+												else
+												{
+													simon1->SetState(SIMON_STATE_HURT_RIGHT);
+												}
 											
 											}
 									}
 								}
 					}
 				}
-				else 
-					{
-					float al, at, ar, ab ;
-					float bl, bt,  br, bb;
+				else
+				{
+					float al, at, ar, ab;
+					float bl, bt, br, bb;
 					listEnemy1.at(i)->GetBoundingBox(al, at, ar, ab);
 					simon1->GetBoundingBox(bl, bt, br, bb);
-					if (game1->AABB(al, at, ar, ab, bl, bt, br, bb)==true)
+					if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
 					{
 						float x, y;
 						simon1->GetPosition(x, y);
@@ -1474,7 +1551,14 @@ void Scene2::CollisionBetSimonAndEnemy()
 								simon1->notUseDagger();
 							if (simon1->whip->isFinished == false)
 								simon1->whip->isFinished = true;
-							simon1->SetState(SIMON_STATE_HURT_LEFT);
+							if (simon1->isOnStairs == true)
+							{
+								simon1->StartUntouchable();
+							}
+							else
+							{
+								simon1->SetState(SIMON_STATE_HURT_LEFT);
+							}
 						}
 						else
 							if (x >= x1)
@@ -1484,11 +1568,17 @@ void Scene2::CollisionBetSimonAndEnemy()
 									simon1->notUseDagger();
 								if (simon1->whip->isFinished == false)
 									simon1->whip->isFinished = true;
-								simon1->SetState(SIMON_STATE_HURT_RIGHT);
-
+								if (simon1->isOnStairs == true)
+								{
+									simon1->StartUntouchable();
+								}
+								else
+								{
+									simon1->SetState(SIMON_STATE_HURT_RIGHT);
+								}
 							}
 					}
-					}
+				}
 			}
 		}
 	}

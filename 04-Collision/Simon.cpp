@@ -406,7 +406,6 @@ void Simon::SetState(int state)
 
 		if (this->GetState() == SIMON_STATE_ATTACK)
 			return;
-
 		if (this->GetState() == SIMON_STATE_ATTACK_SITTING)
 			return;
 		if (this->GetState() == SIMON_STATE_ATTACK_ON_STAIRS)
@@ -415,7 +414,6 @@ void Simon::SetState(int state)
 			return;
 		if (this->GetState() == SIMON_STATE_THROW)
 			return;
-
 		if (this->GetState() == SIMON_STATE_THROW_SITTING)
 			return;
 		

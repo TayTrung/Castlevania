@@ -133,6 +133,9 @@
     <ClInclude Include="Stairs.h">
       <Filter>Framework\Stairs</Filter>
     </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>Framework\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -224,6 +227,9 @@
     </ClCompile>
     <ClCompile Include="Stairs.cpp">
       <Filter>Framework\Stairs</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Framework\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

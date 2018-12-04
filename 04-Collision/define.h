@@ -84,6 +84,19 @@
 #define GHOU_WALKING_SPEED 0.07f
 #pragma endregion
 
+#pragma region Bat
+
+#define BAT_BBOX_WIDTH		16
+#define BAT_BBOX_HEIGHT		16
+
+#define BAT_ANI_RIGHT 0
+#define BAT_ANI_LEFT  1
+
+#define BAT_STATE_ACTIVE_RIGHT	50
+#define BAT_STATE_ACTIVE_LEFT	100
+#define BAT_STATE_INACTIVE		200
+
+#pragma endregion
 #pragma region Panther
 
 #define PANTHER_BBOX_WIDTH		32
@@ -140,6 +153,7 @@
 #define ID_TEX_TORCH 30
 #define ID_TEX_CANDLE 32
 #define ID_TEX_GHOUL 31
+#define ID_TEX_BAT 34
 #define ID_TEX_PANTHER 33
 #define ID_TEX_MOR 40
 #define ID_TEX_ITEM_BIGHEART 50

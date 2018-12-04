@@ -19,6 +19,7 @@
 #include "Ghou.h"
 #include "Panther.h"
 #include "Stairs.h"
+#include "Bat.h"
 class Scene
 {
 public:
