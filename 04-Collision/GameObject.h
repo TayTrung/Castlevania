@@ -32,7 +32,6 @@ struct CCollisionEvent
 class CGameObject
 {
 public:
-	int itemInside;
 	float x; 
 	float y;
 

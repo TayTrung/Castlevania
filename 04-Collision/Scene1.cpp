@@ -6,7 +6,7 @@ Ground *ground, *invisBox, *invisBox2;
 Camera *camera;
 Simon *simon;
 Map *map;
-vector<LPGAMEOBJECT> listEnemy;
+vector<LPENEMY> listEnemy;
 int tickHeart;
 int tickWhip;
 vector<LPGAMEOBJECT> listItem;

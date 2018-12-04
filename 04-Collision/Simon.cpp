@@ -4,7 +4,6 @@
 #include "Simon.h"
 #include "Game.h"
 #include "SceneManager.h"
-//#include "Scene.h"
 #include "Scene1.h"
 #include "Scene2.h"
 
@@ -378,7 +377,7 @@ void Simon::Render()
 				{
 					if (vx < 0)
 					{
-						if (this->GetState() == SIMON_STATE_DOWN_LEFT)
+						if (this->GetState() == SIMON_STATE_DOWN_LEFT)				
 							ani = SIMON_ANI_DOWN_LEFT;
 						else
 							if (this->GetState() == SIMON_STATE_UP_LEFT)

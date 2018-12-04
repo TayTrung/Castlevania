@@ -18,6 +18,8 @@ void Bat::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	if (vy > 0 && y > this->x1 + 10) {
 		y = this->x1 + 10; vy = -vy;
 	}
+	if (x<Camera::GetInstance()->GetPosition().x || x>Camera::GetInstance()->GetPosition().x + SCREEN_WIDTH)
+		this->SetState(BAT_STATE_INACTIVE);
 }
 
 Bat::Bat(int x2)
