@@ -22,6 +22,12 @@
 #include "Bat.h"
 #include "Chicken.h"
 #include "GroundEnemy.h"
+#include "Door.h"
+#include"HolyWater1.h"
+#include "Cross1.h"
+#include "Clock1.h"
+#include "Clock.h"
+#include "Axe1.h"
 class Scene
 {
 public:

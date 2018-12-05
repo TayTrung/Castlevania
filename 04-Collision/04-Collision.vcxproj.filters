@@ -5,9 +5,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Framework\Weapon">
-      <UniqueIdentifier>{1329f0ab-9e16-4264-8842-32945ab586af}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Ground">
       <UniqueIdentifier>{7cb5482f-dea5-437b-bde8-e1cf3d2f28b5}</UniqueIdentifier>
     </Filter>
@@ -43,6 +40,9 @@
     </Filter>
     <Filter Include="Framework\Stairs">
       <UniqueIdentifier>{717c2540-c8a1-4474-b9f1-6b459ad26cc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Weapon">
+      <UniqueIdentifier>{1329f0ab-9e16-4264-8842-32945ab586af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -139,8 +139,32 @@
     <ClInclude Include="Chicken.h">
       <Filter>Framework\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Cross1.h">
+      <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>Framework\Ground</Filter>
+    </ClInclude>
     <ClInclude Include="GroundEnemy.h">
-      <Filter>Framework</Filter>
+      <Filter>Framework\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="HolyWater1.h">
+      <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Clock.h">
+      <Filter>Framework\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="HolyWater.h">
+      <Filter>Framework\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Axe.h">
+      <Filter>Framework\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Clock1.h">
+      <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Axe1.h">
+      <Filter>Framework\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -195,9 +219,6 @@
     <ClCompile Include="Scene1.cpp">
       <Filter>Framework\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Scene2.cpp">
-      <Filter>Framework\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Framework\Scene</Filter>
     </ClCompile>
@@ -240,6 +261,35 @@
     <ClCompile Include="Chicken.cpp">
       <Filter>Framework\Item</Filter>
     </ClCompile>
-    <ClCompile Include="GroundEnemy.cpp" />
+    <ClCompile Include="Cross1.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>Framework\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="GroundEnemy.cpp">
+      <Filter>Framework\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="HolyWater1.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Clock.cpp">
+      <Filter>Framework\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="HolyWater.cpp">
+      <Filter>Framework\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Axe.cpp">
+      <Filter>Framework\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Clock1.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene2.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Axe1.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

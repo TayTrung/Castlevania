@@ -50,7 +50,8 @@ void Map::drawTileMap(Camera *camera, float ID)
 		for (int j = 0; j <= SCREEN_WIDTH/ TileWidth; j++)
 		{
 			RECT rect = getTile(listTileMap[i+ numRow][j+ numCol]);
-			CGame::GetInstance()->Draw(j*TileWidth  -disX, i*TileHeight - disY + offsetMap, CTextures::GetInstance()->Get(ID), rect.left, rect.top, rect.right, rect.bottom, 255);
+			CGame::GetInstance()->Draw(j*TileWidth  -disX, i*TileHeight - disY + offsetMap,
+				CTextures::GetInstance()->Get(ID), rect.left, rect.top, rect.right, rect.bottom, 255);
 		}
 	}
 }

@@ -33,6 +33,17 @@
 
 #pragma endregion
 
+#pragma region Stairts
+
+#define DOOR_STATE_ACTIVE_CLOSED 100
+#define DOOR_STATE_ACTIVE_OPENED 150
+#define DOOR_STATE_INACTIVE 200
+
+#define DOOR_ANI_CLOSED 0
+#define DOOR_ANI_OPENED 1
+#define DOOR_ANI_INACTIVE 2
+
+#pragma endregion
 #pragma region Ground
 
 #define BRICKMAP11_BBOX_WIDTH 768
@@ -74,6 +85,14 @@
 #define GROUND_STATE_INACTIVE 200
 
 #pragma endregion
+
+#pragma region Enemy
+
+#define ENEMY_FREEZE_TIME	1500
+
+#define ENEMY_STATE_FREEZE 495
+
+#pragma endregion
 #pragma region Ghou
 
 #define GHOU_BBOX_WIDTH		16
@@ -82,12 +101,14 @@
 
 #define GHOU_ANI_RIGHT		0
 #define GHOU_ANI_LEFT		1
+#define GHOU_ANI_FREEZE_RIGHT		2
+#define GHOU_ANI_FREEZE_LEFT		3
 
 #define GHOU_STATE_ACTIVE_RIGHT 50
 #define GHOU_STATE_ACTIVE_LEFT	100
 #define GHOU_STATE_INACTIVE		200
 
-#define GHOU_WALKING_SPEED 0.07f
+#define GHOU_WALKING_SPEED 0.05f
 #pragma endregion
 
 #pragma region Bat
@@ -97,6 +118,8 @@
 
 #define BAT_ANI_RIGHT 0
 #define BAT_ANI_LEFT  1
+#define BAT_ANI_FREEZE_RIGHT	2
+#define BAT_ANI_FREEZE_LEFT		3
 
 #define BAT_STATE_ACTIVE_RIGHT	50
 #define BAT_STATE_ACTIVE_LEFT	100
@@ -115,6 +138,8 @@
 #define PANTHER_ANI_SIT_LEFT		3
 #define PANTHER_ANI_JUMP_RIGHT		4
 #define PANTHER_ANI_JUMP_LEFT		5
+#define PANTHER_ANI_FREEZE_RIGHT	6
+#define PANTHER_ANI_FREEZE_LEFT		7
 
 #define PANTHER_STATE_ACTIVE_RIGHT	50
 #define PANTHER_STATE_ACTIVE_LEFT	100
@@ -151,13 +176,21 @@
 #define smallheartInside 4
 #define	chickenInside 6
 #define checkpointBrick 5
-
+#define redbagInside   7
+#define whitebagInside 8
+#define bluebagInside  9
+#define holywaterInside  10
+#define crossInside  11
+#define watchInside 12
+#define axeInside 13
+#define clockInside 14
 
 #define ID_TEX_SIMON 0
 #define ID_TEX_WHIP 10	
 #define ID_TEX_GROUND 20
 #define ID_TEX_GROUND3 21
 #define ID_TEX_GROUND4 22
+#define ID_TEX_DOOR 23
 #define ID_TEX_TORCH 30
 #define ID_TEX_CANDLE 32
 #define ID_TEX_GHOUL 31
@@ -169,8 +202,11 @@
 #define ID_TEX_ITEM_WHIP 70
 #define ID_TEX_ITEM_GOLD 80
 #define ID_TEX_ITEM_SMALLHEART 90
+#define ID_TEX_ITEM_CROSS 100
+#define ID_TEX_ITEM_HOLY 110
+#define ID_TEX_ITEM_CHICKEN 120
+#define ID_TEX_ITEM_CLOCK 120
 
-#define ID_TEX_ITEM_CHICKEN 100
 #pragma region Scene2
 
 #define MAP2_WIDTH	2814
@@ -196,6 +232,14 @@
 
 #pragma endregion
 
+#pragma region Clock1
+
+#define CLOCK1_BBOX_WIDTH  15
+#define CLOCK1_BBOX_HEIGHT 16
+
+
+#pragma endregion
+
 #pragma region SmallHeart
 
 #define SMALLHEART_BBOX_WIDTH  5
@@ -213,10 +257,28 @@
 
 #pragma endregion
 
+#pragma region HolyWater1
+
+#define HOLYWATER1_BBOX_WIDTH		16
+#define HOLYWATER1_BBOX_HEIGHT		16
+
+#pragma endregion
+
+#pragma region Cross1
+
+#define CROSS1_BBOX_WIDTH		16
+#define CROSS1_BBOX_HEIGHT		16
+
+#pragma endregion
+
 #pragma region GoldBag
 
 #define GOLDBAG_BBOX_WIDTH 15
 #define GOLDBAG_BBOX_HEIGHT 15
+
+#define GOLDBAG_ANI_WHITE 0
+#define GOLDBAG_ANI_RED 1
+#define GOLDBAG_ANI_BLUE 2
 
 #pragma endregion
 

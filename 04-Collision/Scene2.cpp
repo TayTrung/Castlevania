@@ -23,12 +23,18 @@ Ghou *ghou;
 Panther *pant;
 Stairs *stairs;
 Chicken *chick;
+Door *door;
+GroundEnemy *groundEnemy;
+GoldBag *goldbag1;
+Cross1 *cross1;
+HolyWater1 *holy1;
+Clock1 *clock1;
 
-int tickGhou = 350;
+int tickGhou = 300;
 int tickBat = 290;
 void Scene2::KeyState(BYTE * states)
 {
-
+	
 
 	if (simon1->whip->isFinished == true)
 	{
@@ -60,6 +66,16 @@ void Scene2::KeyState(BYTE * states)
 								}
 
 							}
+							else
+								if (simon1->nx == -1)
+								{
+									if (CollisionBetSimonAndUpStairs() == false)
+									{
+										simon1->directionOnStairs = false;
+										simon1->SetState(SIMON_STATE_DOWN_RIGHT);
+
+									}
+								}
 						}
 						else
 							if (simon1->directionOnStairs == false)
@@ -71,6 +87,16 @@ void Scene2::KeyState(BYTE * states)
 										simon1->SetState(SIMON_STATE_DOWN_RIGHT);
 									}
 								}
+								else
+									if (simon1->nx == -1)
+									{
+										if (CollisionBetSimonAndUpStairs() == false)
+										{
+											simon1->directionOnStairs = true;
+											simon1->SetState(SIMON_STATE_UP_RIGHT);
+
+										}
+									}
 							}
 					}
 			}
@@ -101,6 +127,16 @@ void Scene2::KeyState(BYTE * states)
 											simon1->SetState(SIMON_STATE_UP_LEFT);
 										}
 									}
+									else 
+										if (simon1->nx == 1)
+										{
+											if (CollisionBetSimonAndUpStairs() == false)
+											{
+												simon1->directionOnStairs = false;
+												simon1->SetState(SIMON_STATE_DOWN_LEFT);
+												
+											}
+										}
 								}
 								else
 									if (simon1->directionOnStairs == false)
@@ -113,6 +149,16 @@ void Scene2::KeyState(BYTE * states)
 												simon1->SetState(SIMON_STATE_DOWN_LEFT);
 											}
 										}
+										else
+											if (simon1->nx == 1)
+											{
+												if (CollisionBetSimonAndUpStairs() == false)
+												{
+													simon1->directionOnStairs = true;
+													simon1->SetState(SIMON_STATE_UP_LEFT);
+
+												}
+											}
 									}
 							
 						
@@ -126,11 +172,13 @@ void Scene2::KeyState(BYTE * states)
 					{
 						if (simon1->isOnStairs == false)
 						{
-							if (CollisionBetSimonAndUpStairs() == false)
+							if(simon1->isJumping==false)
 							{
-								simon1->SetState(SIMON_STATE_SIT);
+								if (CollisionBetSimonAndUpStairs() == false)
+								{
+									simon1->SetState(SIMON_STATE_SIT);
+								}
 							}
-
 						}
 						else
 							if (simon1->isOnStairs == true)
@@ -174,7 +222,13 @@ void Scene2::KeyState(BYTE * states)
 						if (simon1->proceedToNextLevel == false)
 						{
 							if (simon1->isOnStairs == false)
-								CollisionBetSimonAndDownStairs();
+							{
+								if (simon1->isJumping == false)
+								{
+
+									CollisionBetSimonAndDownStairs();
+								}
+							}
 							else
 								if (simon1->isOnStairs == true)
 								{
@@ -267,7 +321,7 @@ void Scene2::OnKeyDown(int KeyCode)
 		{
 			simon1->SetState(SIMON_STATE_IDLE);
 			simon1->isOnStairs = false;
-			simon1->SetPosition(1450.0f, 0.0f);
+			simon1->SetPosition(1190.0f, 0.0f);
 			simon1->SetSpeed(0, 0);
 			break;
 		}
@@ -304,7 +358,10 @@ void Scene2::OnKeyDown(int KeyCode)
 		if (simon1->proceedToNextLevel == false)
 	
 		{
-			if (simon1->dagger->isOn == true)
+			if (simon1->dagger->isOn == true && //dagger
+				simon1->axe->isOn==false &&
+				simon1->holy->isOn == false &&
+				simon1->clock->isOn == false)
 			{
 				if (simon1->dagger->GetState() == DAGGER_STATE_INACTIVE)
 				{
@@ -363,6 +420,160 @@ void Scene2::OnKeyDown(int KeyCode)
 				}
 
 			}
+			else
+				if (simon1->dagger->isOn == false && // axe
+					simon1->axe->isOn == true &&
+					simon1->holy->isOn == false &&
+					simon1->clock->isOn == false)
+				{
+					if (simon1->dagger->GetState() == DAGGER_STATE_INACTIVE)
+					{
+						float x, y;
+						simon1->GetPosition(x, y);
+						if (simon1->isOnStairs == true)
+						{
+							simon1->dagger->CreateWeapon(x, y, simon1->nx);
+							if (simon1->isUsingDagger == false)
+							{
+								if (simon1->nx > 0)
+									simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+								else
+									simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+								simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
+								simon1->useDagger();
+
+							}
+						}
+						else
+							if (simon1->GetState() == SIMON_STATE_SIT)
+							{
+								simon1->dagger->CreateWeapon(x, y + 7, simon1->nx);
+
+								if (simon1->isUsingDagger == false)
+								{
+									if (simon1->nx > 0)
+										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+									else
+										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+									simon1->SetState(SIMON_STATE_THROW_SITTING);
+									simon1->useDagger();
+
+								}
+
+							}
+							else
+							{
+
+
+								simon1->dagger->CreateWeapon(x, y, simon1->nx);
+
+								if (simon1->isUsingDagger == false)
+								{
+									if (simon1->nx > 0)
+										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+									else
+										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+									simon1->SetState(SIMON_STATE_THROW);
+									simon1->useDagger();
+
+								}
+
+							}
+
+					}
+
+				}
+				else
+					if (simon1->dagger->isOn == false && //holy
+						simon1->axe->isOn == false &&
+						simon1->holy->isOn == true &&
+						simon1->clock->isOn == false)
+					{
+						if (simon1->dagger->GetState() == DAGGER_STATE_INACTIVE)
+						{
+							float x, y;
+							simon1->GetPosition(x, y);
+							if (simon1->isOnStairs == true)
+							{
+								simon1->dagger->CreateWeapon(x, y, simon1->nx);
+								if (simon1->isUsingDagger == false)
+								{
+									if (simon1->nx > 0)
+										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+									else
+										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+									simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
+									simon1->useDagger();
+
+								}
+							}
+							else
+								if (simon1->GetState() == SIMON_STATE_SIT)
+								{
+									simon1->dagger->CreateWeapon(x, y + 7, simon1->nx);
+
+									if (simon1->isUsingDagger == false)
+									{
+										if (simon1->nx > 0)
+											simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+										else
+											simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+										simon1->SetState(SIMON_STATE_THROW_SITTING);
+										simon1->useDagger();
+
+									}
+
+								}
+								else
+								{
+
+
+									simon1->dagger->CreateWeapon(x, y, simon1->nx);
+
+									if (simon1->isUsingDagger == false)
+									{
+										if (simon1->nx > 0)
+											simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+										else
+											simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+										simon1->SetState(SIMON_STATE_THROW);
+										simon1->useDagger();
+
+									}
+
+								}
+
+						}
+
+					}
+					else
+						if (simon1->dagger->isOn == false && //clock
+							simon1->axe->isOn == false &&
+							simon1->holy->isOn == false &&
+							simon1->clock->isOn == true  )
+						{
+							float x, y;
+							simon1->GetPosition(x, y);
+							if (simon1->isOnStairs == true)
+								{
+										simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
+										freezeEnemyFunction();
+								}
+								else
+									if (simon1->GetState() == SIMON_STATE_SIT)
+									{
+											simon1->SetState(SIMON_STATE_THROW_SITTING);
+											freezeEnemyFunction();
+									}
+									else
+									{
+											simon1->SetState(SIMON_STATE_THROW);
+											freezeEnemyFunction();
+									}
+
+							
+
+						}
 		}
 		break;
 	case DIK_Z:
@@ -410,12 +621,20 @@ void Scene2::LoadResources()
 	map1 = new Map(ID_TEX_MAP2, "textures\\Map\\Map2.csv");
 
 	textures->Add(ID_TEX_GROUND, L"textures\\Ground\\ground2.png", D3DCOLOR_XRGB(176, 224, 248));
+	textures->Add(ID_TEX_DOOR, L"textures\\Ground\\Gate1.png", D3DCOLOR_XRGB(255, 0, 255));
+
 	textures->Add(ID_TEX_ITEM_SMALLHEART, L"textures\\Item\\smallheart.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_ITEM_CROSS, L"textures\\Item\\cross.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_ITEM_HOLY, L"textures\\Item\\holywater.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_CHICKEN, L"textures\\Item\\10.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_ITEM_CLOCK, L"textures\\Item\\clock.png", D3DCOLOR_XRGB(255, 0, 255));
+
 	textures->Add(ID_TEX_GHOUL, L"textures\\Enemy\\Ghoul.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_BAT, L"textures\\Enemy\\Bat.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_PANTHER, L"textures\\Enemy\\Pant.png", D3DCOLOR_XRGB(255, 0, 255));
+
 	textures->Add(ID_TEX_CANDLE, L"textures\\Enemy\\1.png", D3DCOLOR_XRGB(255, 0, 255));
+
 	textures->Add(ID_TEX_GROUND3, L"textures\\Ground\\ground3.png", D3DCOLOR_XRGB(176, 224, 248));
 	textures->Add(ID_TEX_GROUND4, L"textures\\Ground\\ground4.png", D3DCOLOR_XRGB(176, 224, 248));
 
@@ -444,6 +663,14 @@ void Scene2::LoadResources()
 
 #pragma endregion
 
+#pragma region Co-ordinations of Door
+
+	LPDIRECT3DTEXTURE9 texDoor = textures->Get(ID_TEX_DOOR);
+	sprites->Add(40011, 1, 0, 8, 47, texDoor);
+	sprites->Add(40012, 48, 0, 87, 47, texDoor);
+
+#pragma endregion
+
 #pragma region Co-orrdiantions of Bat
 
 	LPDIRECT3DTEXTURE9 texBat = textures->Get(ID_TEX_BAT);
@@ -467,7 +694,6 @@ void Scene2::LoadResources()
 	sprites->Add(22222, 0, 32, 15, 63, texGhoul);	//left
 	sprites->Add(22223, 18, 32, 33, 63, texGhoul);
 #pragma endregion
-
 
 #pragma region Co-ordinations of PAnth
 
@@ -498,10 +724,60 @@ void Scene2::LoadResources()
 
 #pragma endregion
 
+#pragma region Co-ordinations of HolyWater
+
+	LPDIRECT3DTEXTURE9 texHoly = textures->Get(ID_TEX_ITEM_HOLY);
+	sprites->Add(23041, 0, 0, 15, 15, texHoly);
+
+#pragma endregion
+
+#pragma region Co-ordinations of Clock
+
+	LPDIRECT3DTEXTURE9 texClock = textures->Get(ID_TEX_ITEM_CLOCK);
+	sprites->Add(23541, 0, 0, 14, 15, texClock);
+
+#pragma endregion
+
+#pragma region Co-ordinations of Cross
+
+	LPDIRECT3DTEXTURE9 texCross = textures->Get(ID_TEX_ITEM_CROSS);
+	sprites->Add(23042, 0, 0, 15, 15, texCross);
+
+
+#pragma endregion
+
 #pragma region Co-ordinations of Chicken
 
 	LPDIRECT3DTEXTURE9 texChicken = textures->Get(ID_TEX_ITEM_CHICKEN);
 	sprites->Add(23331, 0, 0, 15, 12, texChicken);
+
+#pragma endregion
+
+	
+#pragma region Adding Clcok
+
+	ani = new CAnimation(100);
+	ani->Add(23541);
+	animations->Add(426, ani);
+
+
+#pragma endregion
+
+#pragma region Adding Cross
+
+	ani = new CAnimation(100);
+	ani->Add(23042);
+	animations->Add(483, ani);
+
+
+#pragma endregion
+
+#pragma region Adding HolyWater
+
+	ani = new CAnimation(100);
+	ani->Add(23041);
+	animations->Add(491, ani);
+
 
 #pragma endregion
 
@@ -518,9 +794,20 @@ void Scene2::LoadResources()
 
 	ani = new CAnimation(100);
 	ani->Add(23331);
-	animations->Add(483, ani);
+	animations->Add(490, ani);
 
 
+#pragma endregion
+
+#pragma region Adding Door
+
+	ani = new CAnimation(100);
+	ani->Add(40011);
+	animations->Add(495, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(40012);
+	animations->Add(496, ani);
 #pragma endregion
 
 #pragma region Adding Bat
@@ -535,6 +822,14 @@ void Scene2::LoadResources()
 	ani->Add(22304);
 	ani->Add(22305);
 	animations->Add(021, ani);
+	
+	ani = new CAnimation(200);
+	ani->Add(22300);
+	animations->Add(022, ani);
+
+	ani = new CAnimation(200);
+	ani->Add(22303);
+	animations->Add(023, ani);
 #pragma endregion
 
 
@@ -552,6 +847,15 @@ void Scene2::LoadResources()
 	ani->Add(22220);
 	ani->Add(22221);
 	animations->Add(532, ani);
+
+	ani = new CAnimation(100); //freeze right
+	ani->Add(22222);
+	animations->Add(533, ani);
+
+	ani = new CAnimation(100);//freeze left
+	ani->Add(22220);
+	animations->Add(534, ani);
+
 	
 #pragma endregion
 
@@ -599,17 +903,85 @@ void Scene2::LoadResources()
 		Torch *candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(smallheartInside);
+		candle->setItemInside(clockInside);
 		candle->SetPosition(29+i*(157-29), offsetMap +128);
 		listTorches1.push_back(candle);
 
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(smallheartInside);
+		candle->setItemInside(randomIteminside());
 		candle->SetPosition(92 + i * (220 - 92), offsetMap + 97);
 		listTorches1.push_back(candle);
 		}
+		
+		Torch *candle = new Torch(1);
+		candle->AddAnimation(476);
+		candle->SetState(CANDLE_STATE_ACTIVE);
+		candle->setItemInside(randomIteminside());
+		candle->SetPosition(673,offsetMap+39);
+		listTorches1.push_back(candle);
+
+		candle = new Torch(1);
+		candle->AddAnimation(476);
+		candle->SetState(CANDLE_STATE_ACTIVE);
+		candle->setItemInside(randomIteminside());
+		candle->SetPosition(735,130+offsetMap);
+		listTorches1.push_back(candle);
+
+		candle = new Torch(1);
+		candle->AddAnimation(476);
+		candle->SetState(CANDLE_STATE_ACTIVE);
+		candle->setItemInside(holywaterInside);
+		candle->SetPosition(799,offsetMap+8);
+		listTorches1.push_back(candle);
+
+		candle = new Torch(1);
+		candle->AddAnimation(476);
+		candle->SetState(CANDLE_STATE_ACTIVE);
+		candle->setItemInside(randomIteminside());
+		candle->SetPosition(992, offsetMap + 39);
+		listTorches1.push_back(candle);
+	
+		candle = new Torch(1);
+		candle->AddAnimation(476);
+		candle->SetState(CANDLE_STATE_ACTIVE);
+		candle->setItemInside(randomIteminside());
+		candle->SetPosition(929, offsetMap + 130);
+		listTorches1.push_back(candle);
+
+		for (int i = 0; i < 4; i++)
+		{
+			candle = new Torch(1);
+			candle->AddAnimation(476);
+			candle->SetState(CANDLE_STATE_ACTIVE);
+			candle->setItemInside(randomIteminside());
+			candle->SetPosition(1055+i*64, offsetMap + 130);
+			listTorches1.push_back(candle);
+
+		}
+
+
+		candle = new Torch(1);
+		candle->AddAnimation(476);
+		candle->SetState(CANDLE_STATE_ACTIVE);
+		candle->setItemInside(randomIteminside());
+		candle->SetPosition(1366, offsetMap + 113);
+		listTorches1.push_back(candle);
+
+		candle = new Torch(1);
+		candle->AddAnimation(476);
+		candle->SetState(CANDLE_STATE_ACTIVE);
+		candle->setItemInside(randomIteminside());
+		candle->SetPosition(1437, offsetMap + 33);
+		listTorches1.push_back(candle);
+
+		candle = new Torch(1);
+		candle->AddAnimation(476);
+		candle->SetState(CANDLE_STATE_ACTIVE);
+		candle->setItemInside(crossInside);
+		candle->SetPosition(1502, offsetMap + 4);
+		listTorches1.push_back(candle);
 #pragma endregion
 
 
@@ -632,7 +1004,7 @@ void Scene2::LoadResources()
 	
 
 	//2 mieng ground chicken
-	GroundEnemy *groundEnemy = new GroundEnemy();
+	groundEnemy = new GroundEnemy();
 	groundEnemy->AddAnimation(998);
 	groundEnemy->SetPosition(1792, offsetMap + 128);
 	groundEnemy->SetState(ITEM_STATE_ACTIVE);
@@ -699,7 +1071,12 @@ void Scene2::LoadResources()
 	ground->SetPosition(1520, offsetMap + 43);
 	listItem1.push_back(ground);
 
-
+	door = new Door();
+	door->SetState(DOOR_STATE_ACTIVE_CLOSED);
+	door->AddAnimation(495);
+	door->AddAnimation(496);
+	door->SetPosition(1528, offsetMap + 16);
+	listSurface1.push_back(door);
 	
 
 #pragma endregion
@@ -712,7 +1089,7 @@ void Scene2::LoadResources()
 	pant->AddAnimation(553);
 	pant->AddAnimation(554);
 	pant->AddAnimation(555);
-	pant->itemInside = smallheartInside;
+	pant->setItemInside(randomIteminside());
 	pant->SetState(PANTHER_STATE_SIT_LEFT);
 	pant->SetPosition(685, 0 + offsetMap);
 	listEnemy1.push_back(pant);
@@ -724,6 +1101,9 @@ void Scene2::LoadResources()
 	pant->AddAnimation(553);
 	pant->AddAnimation(554);
 	pant->AddAnimation(555);
+	pant->AddAnimation(554);
+	pant->AddAnimation(555);
+	pant->setItemInside(randomIteminside());
 	pant->SetState(PANTHER_STATE_SIT_LEFT);
 	pant->SetPosition(880, 0 + offsetMap);
 	listEnemy1.push_back(pant);
@@ -735,6 +1115,9 @@ void Scene2::LoadResources()
 	pant->AddAnimation(553);
 	pant->AddAnimation(554);
 	pant->AddAnimation(555);
+	pant->AddAnimation(554);
+	pant->AddAnimation(555);
+	pant->setItemInside(randomIteminside());
 	pant->SetState(PANTHER_STATE_SIT_LEFT);
 	pant->SetPosition(945, 0 + offsetMap);
 	listEnemy1.push_back(pant);
@@ -746,48 +1129,48 @@ void Scene2::LoadResources()
 #pragma region Adding Stairs
 		//1=right , 2 = left
 		////1st stair
-		stairs = new Stairs(1);
+		stairs = new Stairs(1,true);
 		stairs->SetPosition(611, offsetMap + 159);
 		listDownStairs1.push_back(stairs);
 
-		stairs = new Stairs(2);
+		stairs = new Stairs(2,false);
 		stairs->SetPosition(675, offsetMap + 35);
 		listUpStairs1.push_back(stairs);
 
 		//2nd stair
-		stairs = new Stairs(1);
+		stairs = new Stairs(1, true);
 		stairs->SetPosition(707, offsetMap + 95);
 		listDownStairs1.push_back(stairs);
 
-		stairs = new Stairs(2);
+		stairs = new Stairs(2, false);
 		stairs->SetPosition(752-14, offsetMap + 4);
 		listUpStairs1.push_back(stairs);
 		//1= right, 2 = left
 		////3rd stair
-		stairs = new Stairs(1);
+		stairs = new Stairs(1, false);
 		stairs->SetPosition(878+20, offsetMap + 4);
 		listUpStairs1.push_back(stairs);
 
-		stairs = new Stairs(2);
+		stairs = new Stairs(2, true);
 		stairs->SetPosition(928, offsetMap + 95);
 		listDownStairs1.push_back(stairs);
 
 		//4th stair
-		stairs = new Stairs(1);
+		stairs = new Stairs(1, true);
 		stairs->SetPosition(1283, offsetMap + 159);
 		listDownStairs1.push_back(stairs);
 
-		stairs = new Stairs(2);
+		stairs = new Stairs(2, false);
 		stairs->SetPosition(1392-14, offsetMap + 4);
 		listUpStairs1.push_back(stairs);
 
 		//5th stair
-		stairs = new Stairs(1);
-		stairs->SetPosition(1696,  offsetMap + 35);
+		stairs = new Stairs(1, false);
+		stairs->SetPosition(1698,  offsetMap + 35);
 		listUpStairs1.push_back(stairs);
 		//offsetMap + 160 - 16 * 4
-		stairs = new Stairs(2);
-		stairs->SetPosition(1760, offsetMap + 159);
+		stairs = new Stairs(2, true);
+		stairs->SetPosition(1762, offsetMap + 159);
 		listDownStairs1.push_back(stairs);
 
 #pragma endregion
@@ -868,15 +1251,21 @@ void Scene2::Update(DWORD dt)
 		else
 			if (camera1->GetPosition().x > 1387)
 			{
+
+				door->SetState(DOOR_STATE_ACTIVE_OPENED);
 				simon1->SetState(SIMON_STATE_WALKING_RIGHT);
 				if (simon1->x > 1584)
 				{
 					simon1->SetState(SIMON_STATE_IDLE);
+
+					door->SetState(DOOR_STATE_ACTIVE_CLOSED);
 					if (camera1->GetPosition().x < 1536)
 						camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);
 					if (camera1->GetPosition().x >= 1536)
 					{
 						lvl2 = true;
+
+						door->SetState(DOOR_STATE_INACTIVE);
 						simon1->proceedToNextLevel = false;
 					}
 				
@@ -955,6 +1344,21 @@ void Scene2::Update(DWORD dt)
 
 	
 		simon1->Update(dt, &listSurface1);
+		if (lvl2 == true)
+		{
+			if (simon1->x < 1536)
+				simon1->x = 1536;
+			if (groundEnemy->GetState()== GROUND_STATE_INACTIVE)
+			{
+
+				if (simon1->x > 1808-16)
+					simon1->x=1808-16;
+			}
+			else
+				if (simon1->x > 1792-16)
+					simon1->x = 1792-16;
+		}
+		
 	if ((simon1->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon1->dagger->isOn == true && simon1->isUsingDagger == true)
 		simon1->dagger->Update(dt, &listSurface1);
 
@@ -998,6 +1402,72 @@ void Scene2::Render()
 
 	// Display back buffer content to the screen
 	d3ddv->Present(NULL, NULL, NULL, NULL);
+}
+
+int Scene2::randomIteminside()
+{
+	int randomNumber;
+	randomNumber = rand() % 19;
+	if (randomNumber == 0 || randomNumber == 1 || randomNumber == 2 || randomNumber == 3 || randomNumber == 18 || randomNumber ==17 )
+	{
+		return smallheartInside;
+	}
+	else
+		if (randomNumber == 4 || randomNumber == 5)
+		{
+			return bigheartInside;
+		}
+		else
+			if (randomNumber == 6 || randomNumber == 7)
+			{
+				return morningstarInside;
+			}
+			else
+				if (randomNumber == 8)
+				{
+					return holywaterInside;
+				}
+				else
+					if (randomNumber == 9)
+					{
+						return crossInside;
+					}
+					else
+						if (randomNumber == 10)
+						{
+							return redbagInside;
+						}
+						else
+							if (randomNumber == 11)
+							{
+								return whitebagInside;
+							}
+							else
+								if (randomNumber == 12)
+								{
+									return bluebagInside;
+								}
+								else
+									if (randomNumber == 13)
+									{
+										return axeInside;
+									}
+									else
+										if (randomNumber == 14)
+										{
+											return watchInside;
+										}
+										else
+											if (randomNumber == 15)
+											{
+												return daggerInside;
+											}
+											else
+												if (randomNumber == 16)
+												{
+													return chickenInside;
+												}
+
 }
 
 
@@ -1066,7 +1536,9 @@ void Scene2::spawnGhou(float x,float y)
 			ghou = new Ghou();
 			ghou->AddAnimation(531);
 			ghou->AddAnimation(532);
-			ghou->setItemInside(smallheartInside);
+			ghou->AddAnimation(533);
+			ghou->AddAnimation(534);
+			ghou->setItemInside(randomIteminside());
 			ghou->SetPosition(x + i * 16, y);
 			ghou->SetState(GHOU_STATE_ACTIVE_LEFT);
 			listEnemy1.push_back(ghou);
@@ -1074,7 +1546,9 @@ void Scene2::spawnGhou(float x,float y)
 		ghou = new Ghou();
 		ghou->AddAnimation(531);
 		ghou->AddAnimation(532);
-		ghou->setItemInside(smallheartInside);
+		ghou->AddAnimation(533);
+		ghou->AddAnimation(534);
+		ghou->setItemInside(randomIteminside());
 		ghou->SetPosition(Camera::GetInstance()->GetPosition().x+15, y);
 		ghou->SetState(GHOU_STATE_ACTIVE_RIGHT);
 		listEnemy1.push_back(ghou);
@@ -1086,22 +1560,46 @@ void Scene2::spawnBat(Simon * simon,Camera *camera1)
 	bat1 = new Bat(simon->y+8);
 	bat1->AddAnimation(021);
 	bat1->AddAnimation(020);
-	bat1->setItemInside(smallheartInside);
+	bat1->AddAnimation(023);
+	bat1->AddAnimation(022);
+	bat1->setItemInside(randomIteminside());
 	listEnemy1.push_back(bat1);
 	if (simon->nx == 1)
 	{
 		bat1->SetState(BAT_STATE_ACTIVE_LEFT);
-		bat1->SetPosition(camera1->GetPosition().x+SCREEN_WIDTH-8, (simon->y + 8));
+		bat1->SetPosition(camera1->GetPosition().x+SCREEN_WIDTH-4, (simon->y + 8));
 	}
 	else
 		if (simon->nx == -1)
 		{
 
 			bat1->SetState(BAT_STATE_ACTIVE_RIGHT);
-			bat1->SetPosition(camera1->GetPosition().x + 8, (simon->y + 8));
+			bat1->SetPosition(camera1->GetPosition().x + 4, (simon->y + 8));
 		}
 
 
+}
+
+void Scene2::freezeEnemyFunction()
+{
+	for (UINT i = 0; i < listEnemy1.size(); i++)
+	{
+
+
+		if (listEnemy1.at(i)->x > Camera::GetInstance()->GetPosition().x &&
+			listEnemy1.at(i)->x<Camera::GetInstance()->GetPosition().x + SCREEN_WIDTH &&
+			listEnemy1.at(i)->y>Camera::GetInstance()->GetPosition().y &&
+			listEnemy1.at(i)->y < Camera::GetInstance()->GetPosition().y + SCREEN_HEIGHT)
+		{
+			if (!(dynamic_cast<GroundEnemy *>(listEnemy1.at(i))))
+			{
+
+				listEnemy1.at(i)->SetState(ENEMY_STATE_FREEZE);
+				listEnemy1.at(i)->StartUntouchable();
+			}
+
+		}
+	}
 }
 
 void Scene2::CollisionBetWeaponAndEnemy()
@@ -1116,7 +1614,9 @@ void Scene2::CollisionBetWeaponAndEnemy()
 			{
 				if (dynamic_cast<Ghou *>(listEnemy1.at(i)))
 				{
-						if (listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_LEFT || listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_RIGHT)
+						if (listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_LEFT ||
+							listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_RIGHT ||
+							listEnemy1.at(i)->state==ENEMY_STATE_FREEZE)
 						{
 							float x, y;
 							OutputDebugString(L"Collision Whip and Ghou \n");
@@ -1128,19 +1628,22 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							case 0:
 								break;
 							case bigheartInside:
+								bigheart1 = new BigHeart();
+								bigheart1->AddAnimation(765);
 								bigheart1->SetState(ITEM_STATE_ACTIVE);
 								bigheart1->SetPosition(x, y);
 								listItem1.push_back(bigheart1);
-								//tickHeart += 1;
-
 								break;
 							case morningstarInside:
+								morningstar1 = new MorningStar();
+								morningstar1->AddAnimation(777);
 								morningstar1->SetState(ITEM_STATE_ACTIVE);
 								morningstar1->SetPosition(x, y);
 								listItem1.push_back(morningstar1);
-								//tickWhip += 1;
 								break;
 							case daggerInside:
+								dagger1 = new Dagger1();
+								dagger1->AddAnimation(767);
 								dagger1->SetState(ITEM_STATE_ACTIVE);
 								dagger1->SetPosition(x, y);
 								listItem1.push_back(dagger1);
@@ -1152,6 +1655,48 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								smallheart1->SetPosition(x, y);
 								listItem1.push_back(smallheart1);
 								break;
+							case crossInside:
+								cross1 = new Cross1();
+								cross1->AddAnimation(483);
+								cross1->SetState(ITEM_STATE_ACTIVE);
+								cross1->SetPosition(x, y);
+								listItem1.push_back(cross1);
+								break;
+							case holywaterInside:
+								holy1 = new HolyWater1();
+								holy1->AddAnimation(491);
+								holy1->SetState(ITEM_STATE_ACTIVE);
+								holy1->SetPosition(x, y);
+								listItem1.push_back(holy1);
+								break;
+							case whitebagInside:
+								goldbag1 = new GoldBag(0);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case redbagInside:
+								goldbag1 = new GoldBag(1);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case bluebagInside:
+								goldbag1 = new GoldBag(2);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+
 
 							default:
 								break;
@@ -1170,7 +1715,8 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							listEnemy1.at(i)->state == PANTHER_STATE_JUMPING_LEFT ||
 							listEnemy1.at(i)->state == PANTHER_STATE_JUMPING_RIGHT ||
 							listEnemy1.at(i)->state == PANTHER_STATE_SIT_LEFT ||
-							listEnemy1.at(i)->state == PANTHER_STATE_SIT_RIGHT)
+							listEnemy1.at(i)->state == PANTHER_STATE_SIT_RIGHT ||
+							listEnemy1.at(i)->state == ENEMY_STATE_FREEZE)
 						{
 							float x, y;
 							OutputDebugString(L"Collision Dagger and Pant \n");
@@ -1187,19 +1733,22 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							case 0:
 								break;
 							case bigheartInside:
+								bigheart1 = new BigHeart();
+								bigheart1->AddAnimation(765);
 								bigheart1->SetState(ITEM_STATE_ACTIVE);
 								bigheart1->SetPosition(x, y);
 								listItem1.push_back(bigheart1);
-								//tickHeart += 1;
-
 								break;
 							case morningstarInside:
+								morningstar1 = new MorningStar();
+								morningstar1->AddAnimation(777);
 								morningstar1->SetState(ITEM_STATE_ACTIVE);
 								morningstar1->SetPosition(x, y);
 								listItem1.push_back(morningstar1);
-								//tickWhip += 1;
 								break;
 							case daggerInside:
+								dagger1 = new Dagger1();
+								dagger1->AddAnimation(767);
 								dagger1->SetState(ITEM_STATE_ACTIVE);
 								dagger1->SetPosition(x, y);
 								listItem1.push_back(dagger1);
@@ -1211,6 +1760,48 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								smallheart1->SetPosition(x, y);
 								listItem1.push_back(smallheart1);
 								break;
+							case crossInside:
+								cross1 = new Cross1();
+								cross1->AddAnimation(483);
+								cross1->SetState(ITEM_STATE_ACTIVE);
+								cross1->SetPosition(x, y);
+								listItem1.push_back(cross1);
+								break;
+							case holywaterInside:
+								holy1 = new HolyWater1();
+								holy1->AddAnimation(491);
+								holy1->SetState(ITEM_STATE_ACTIVE);
+								holy1->SetPosition(x, y);
+								listItem1.push_back(holy1);
+								break;
+							case whitebagInside:
+								goldbag1 = new GoldBag(0);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case redbagInside:
+								goldbag1 = new GoldBag(1);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case bluebagInside:
+								goldbag1 = new GoldBag(2);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+
 
 							default:
 								break;
@@ -1224,7 +1815,9 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					else
 						if (dynamic_cast<Bat *>(listEnemy1.at(i)))
 						{
-							if (listEnemy1.at(i)->state == BAT_STATE_ACTIVE_LEFT || listEnemy1.at(i)->state == BAT_STATE_ACTIVE_RIGHT)
+							if (listEnemy1.at(i)->state == BAT_STATE_ACTIVE_LEFT ||
+								listEnemy1.at(i)->state == BAT_STATE_ACTIVE_RIGHT ||
+								listEnemy1.at(i)->state == ENEMY_STATE_FREEZE)
 							{
 								float x, y;
 								OutputDebugString(L"Collision Whip and BAT \n");
@@ -1236,19 +1829,22 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								case 0:
 									break;
 								case bigheartInside:
+									bigheart1 = new BigHeart();
+									bigheart1->AddAnimation(765);
 									bigheart1->SetState(ITEM_STATE_ACTIVE);
 									bigheart1->SetPosition(x, y);
 									listItem1.push_back(bigheart1);
-									//tickHeart += 1;
-
 									break;
 								case morningstarInside:
+									morningstar1 = new MorningStar();
+									morningstar1->AddAnimation(777);
 									morningstar1->SetState(ITEM_STATE_ACTIVE);
 									morningstar1->SetPosition(x, y);
 									listItem1.push_back(morningstar1);
-									//tickWhip += 1;
 									break;
 								case daggerInside:
+									dagger1 = new Dagger1();
+									dagger1->AddAnimation(767);
 									dagger1->SetState(ITEM_STATE_ACTIVE);
 									dagger1->SetPosition(x, y);
 									listItem1.push_back(dagger1);
@@ -1260,6 +1856,48 @@ void Scene2::CollisionBetWeaponAndEnemy()
 									smallheart1->SetPosition(x, y);
 									listItem1.push_back(smallheart1);
 									break;
+								case crossInside:
+									cross1 = new Cross1();
+									cross1->AddAnimation(483);
+									cross1->SetState(ITEM_STATE_ACTIVE);
+									cross1->SetPosition(x, y);
+									listItem1.push_back(cross1);
+									break;
+								case holywaterInside:
+									holy1 = new HolyWater1();
+									holy1->AddAnimation(491);
+									holy1->SetState(ITEM_STATE_ACTIVE);
+									holy1->SetPosition(x, y);
+									listItem1.push_back(holy1);
+									break;
+								case whitebagInside:
+									goldbag1 = new GoldBag(0);
+									goldbag1->AddAnimation(778);
+									goldbag1->AddAnimation(779);
+									goldbag1->AddAnimation(780);
+									goldbag1->SetState(ITEM_STATE_ACTIVE);
+									goldbag1->SetPosition(x, y);
+									listItem1.push_back(goldbag1);
+									break;
+								case redbagInside:
+									goldbag1 = new GoldBag(1);
+									goldbag1->AddAnimation(778);
+									goldbag1->AddAnimation(779);
+									goldbag1->AddAnimation(780);
+									goldbag1->SetState(ITEM_STATE_ACTIVE);
+									goldbag1->SetPosition(x, y);
+									listItem1.push_back(goldbag1);
+									break;
+								case bluebagInside:
+									goldbag1 = new GoldBag(2);
+									goldbag1->AddAnimation(778);
+									goldbag1->AddAnimation(779);
+									goldbag1->AddAnimation(780);
+									goldbag1->SetState(ITEM_STATE_ACTIVE);
+									goldbag1->SetPosition(x, y);
+									listItem1.push_back(goldbag1);
+									break;
+
 
 								default:
 									break;
@@ -1320,16 +1958,22 @@ void Scene2::CollisionBetWeaponAndEnemy()
 						case 0:
 							break;
 						case bigheartInside:
+							bigheart1 = new BigHeart();
+							bigheart1->AddAnimation(765);
 							bigheart1->SetState(ITEM_STATE_ACTIVE);
 							bigheart1->SetPosition(x, y);
 							listItem1.push_back(bigheart1);
 							break;
 						case morningstarInside:
+							morningstar1 = new MorningStar();
+							morningstar1->AddAnimation(777);
 							morningstar1->SetState(ITEM_STATE_ACTIVE);
 							morningstar1->SetPosition(x, y);
 							listItem1.push_back(morningstar1);
 							break;
 						case daggerInside:
+							dagger1 = new Dagger1();
+							dagger1->AddAnimation(767);
 							dagger1->SetState(ITEM_STATE_ACTIVE);
 							dagger1->SetPosition(x, y);
 							listItem1.push_back(dagger1);
@@ -1341,7 +1985,53 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							smallheart1->SetPosition(x, y);
 							listItem1.push_back(smallheart1);
 							break;
-
+						case crossInside:
+							cross1 = new Cross1();
+							cross1->AddAnimation(483);
+							cross1->SetState(ITEM_STATE_ACTIVE);
+							cross1->SetPosition(x, y);
+							listItem1.push_back(cross1);
+							break;
+						case holywaterInside:
+							holy1 = new HolyWater1();
+							holy1->AddAnimation(491);
+							holy1->SetState(ITEM_STATE_ACTIVE);
+							holy1->SetPosition(x, y);
+							listItem1.push_back(holy1);
+							break;
+						case whitebagInside:
+							goldbag1 = new GoldBag(0);
+							goldbag1->AddAnimation(778);
+							goldbag1->AddAnimation(779);
+							goldbag1->AddAnimation(780);
+							goldbag1->SetState(ITEM_STATE_ACTIVE);
+							goldbag1->SetPosition(x, y);
+							listItem1.push_back(goldbag1);
+							break;
+						case redbagInside:
+							goldbag1 = new GoldBag(1);
+							goldbag1->AddAnimation(778);
+							goldbag1->AddAnimation(779);
+							goldbag1->AddAnimation(780);
+							goldbag1->SetState(ITEM_STATE_ACTIVE);
+							goldbag1->SetPosition(x, y);
+							listItem1.push_back(goldbag1);
+							break;
+						case bluebagInside:
+							goldbag1 = new GoldBag(2);
+							goldbag1->AddAnimation(778);
+							goldbag1->AddAnimation(779);
+							goldbag1->AddAnimation(780);
+							goldbag1->SetState(ITEM_STATE_ACTIVE);
+							goldbag1->SetPosition(x, y);
+							listItem1.push_back(goldbag1);
+							break;
+						case clockInside:
+							clock1 = new Clock1();
+							clock1->AddAnimation(426);
+							clock1->SetState(ITEM_STATE_ACTIVE);
+							clock1->SetPosition(x, y);
+							listItem1.push_back(clock1);
 						default:
 							break;
 						}
@@ -1365,7 +2055,9 @@ void Scene2::CollisionBetWeaponAndEnemy()
 				{
 					if (dynamic_cast<Ghou *>(listEnemy1.at(i)))
 						{
-							if (listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_LEFT || listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_RIGHT)
+							if (listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_LEFT ||
+								listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_RIGHT ||
+								listEnemy1.at(i)->state == ENEMY_STATE_FREEZE)
 							{
 								float x, y;
 								OutputDebugString(L"Collision DAGGER and Ghou \n");
@@ -1382,19 +2074,22 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								case 0:
 									break;
 								case bigheartInside:
+									bigheart1 = new BigHeart();
+									bigheart1->AddAnimation(765);
 									bigheart1->SetState(ITEM_STATE_ACTIVE);
 									bigheart1->SetPosition(x, y);
 									listItem1.push_back(bigheart1);
-									//tickHeart += 1;
-
 									break;
 								case morningstarInside:
+									morningstar1 = new MorningStar();
+									morningstar1->AddAnimation(777);
 									morningstar1->SetState(ITEM_STATE_ACTIVE);
 									morningstar1->SetPosition(x, y);
 									listItem1.push_back(morningstar1);
-									//tickWhip += 1;
 									break;
 								case daggerInside:
+									dagger1 = new Dagger1();
+									dagger1->AddAnimation(767);
 									dagger1->SetState(ITEM_STATE_ACTIVE);
 									dagger1->SetPosition(x, y);
 									listItem1.push_back(dagger1);
@@ -1406,6 +2101,48 @@ void Scene2::CollisionBetWeaponAndEnemy()
 									smallheart1->SetPosition(x, y);
 									listItem1.push_back(smallheart1);
 									break;
+								case crossInside:
+									cross1 = new Cross1();
+									cross1->AddAnimation(483);
+									cross1->SetState(ITEM_STATE_ACTIVE);
+									cross1->SetPosition(x, y);
+									listItem1.push_back(cross1);
+									break;
+								case holywaterInside:
+									holy1 = new HolyWater1();
+									holy1->AddAnimation(491);
+									holy1->SetState(ITEM_STATE_ACTIVE);
+									holy1->SetPosition(x, y);
+									listItem1.push_back(holy1);
+									break;
+								case whitebagInside:
+									goldbag1 = new GoldBag(0);
+									goldbag1->AddAnimation(778);
+									goldbag1->AddAnimation(779);
+									goldbag1->AddAnimation(780);
+									goldbag1->SetState(ITEM_STATE_ACTIVE);
+									goldbag1->SetPosition(x, y);
+									listItem1.push_back(goldbag1);
+									break;
+								case redbagInside:
+									goldbag1 = new GoldBag(1);
+									goldbag1->AddAnimation(778);
+									goldbag1->AddAnimation(779);
+									goldbag1->AddAnimation(780);
+									goldbag1->SetState(ITEM_STATE_ACTIVE);
+									goldbag1->SetPosition(x, y);
+									listItem1.push_back(goldbag1);
+									break;
+								case bluebagInside:
+									goldbag1 = new GoldBag(2);
+									goldbag1->AddAnimation(778);
+									goldbag1->AddAnimation(779);
+									goldbag1->AddAnimation(780);
+									goldbag1->SetState(ITEM_STATE_ACTIVE);
+									goldbag1->SetPosition(x, y);
+									listItem1.push_back(goldbag1);
+									break;
+
 
 								default:
 									break;
@@ -1424,7 +2161,8 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								listEnemy1.at(i)->state == PANTHER_STATE_JUMPING_LEFT ||
 								listEnemy1.at(i)->state == PANTHER_STATE_JUMPING_RIGHT ||
 								listEnemy1.at(i)->state == PANTHER_STATE_SIT_LEFT ||
-								listEnemy1.at(i)->state == PANTHER_STATE_SIT_RIGHT)
+								listEnemy1.at(i)->state == PANTHER_STATE_SIT_RIGHT ||
+								listEnemy1.at(i)->state == ENEMY_STATE_FREEZE)
 							{
 								float x, y;
 								OutputDebugString(L"Collision Dagger and Pant \n");
@@ -1441,19 +2179,22 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								case 0:
 									break;
 								case bigheartInside:
+									bigheart1 = new BigHeart();
+									bigheart1->AddAnimation(765);
 									bigheart1->SetState(ITEM_STATE_ACTIVE);
 									bigheart1->SetPosition(x, y);
 									listItem1.push_back(bigheart1);
-									//tickHeart += 1;
-
 									break;
 								case morningstarInside:
+									morningstar1 = new MorningStar();
+									morningstar1->AddAnimation(777);
 									morningstar1->SetState(ITEM_STATE_ACTIVE);
 									morningstar1->SetPosition(x, y);
 									listItem1.push_back(morningstar1);
-									//tickWhip += 1;
 									break;
 								case daggerInside:
+									dagger1 = new Dagger1();
+									dagger1->AddAnimation(767);
 									dagger1->SetState(ITEM_STATE_ACTIVE);
 									dagger1->SetPosition(x, y);
 									listItem1.push_back(dagger1);
@@ -1465,6 +2206,48 @@ void Scene2::CollisionBetWeaponAndEnemy()
 									smallheart1->SetPosition(x, y);
 									listItem1.push_back(smallheart1);
 									break;
+								case crossInside:
+									cross1 = new Cross1();
+									cross1->AddAnimation(483);
+									cross1->SetState(ITEM_STATE_ACTIVE);
+									cross1->SetPosition(x, y);
+									listItem1.push_back(cross1);
+									break;
+								case holywaterInside:
+									holy1 = new HolyWater1();
+									holy1->AddAnimation(491);
+									holy1->SetState(ITEM_STATE_ACTIVE);
+									holy1->SetPosition(x, y);
+									listItem1.push_back(holy1);
+									break;
+								case whitebagInside:
+									goldbag1 = new GoldBag(0);
+									goldbag1->AddAnimation(778);
+									goldbag1->AddAnimation(779);
+									goldbag1->AddAnimation(780);
+									goldbag1->SetState(ITEM_STATE_ACTIVE);
+									goldbag1->SetPosition(x, y);
+									listItem1.push_back(goldbag1);
+									break;
+								case redbagInside:
+									goldbag1 = new GoldBag(1);
+									goldbag1->AddAnimation(778);
+									goldbag1->AddAnimation(779);
+									goldbag1->AddAnimation(780);
+									goldbag1->SetState(ITEM_STATE_ACTIVE);
+									goldbag1->SetPosition(x, y);
+									listItem1.push_back(goldbag1);
+									break;
+								case bluebagInside:
+									goldbag1 = new GoldBag(2);
+									goldbag1->AddAnimation(778);
+									goldbag1->AddAnimation(779);
+									goldbag1->AddAnimation(780);
+									goldbag1->SetState(ITEM_STATE_ACTIVE);
+									goldbag1->SetPosition(x, y);
+									listItem1.push_back(goldbag1);
+									break;
+
 
 								default:
 									break;
@@ -1476,12 +2259,14 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 						}
 						else
-							if (dynamic_cast<Ghou *>(listEnemy1.at(i)))
+							if (dynamic_cast<Bat *>(listEnemy1.at(i)))
 							{
-								if (listEnemy1.at(i)->state == BAT_STATE_ACTIVE_LEFT || listEnemy1.at(i)->state == BAT_STATE_ACTIVE_RIGHT)
+								if (listEnemy1.at(i)->state == BAT_STATE_ACTIVE_LEFT ||
+									listEnemy1.at(i)->state == BAT_STATE_ACTIVE_RIGHT ||
+									listEnemy1.at(i)->state == ENEMY_STATE_FREEZE)
 								{
 									float x, y;
-									OutputDebugString(L"Collision DAGGER and Ghou \n");
+									OutputDebugString(L"Collision DAGGER and Bat \n");
 									listEnemy1.at(i)->SetState(BAT_STATE_INACTIVE);
 									listEnemy1.at(i)->GetPosition(x, y);
 									simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
@@ -1495,19 +2280,22 @@ void Scene2::CollisionBetWeaponAndEnemy()
 									case 0:
 										break;
 									case bigheartInside:
+										bigheart1 = new BigHeart();
+										bigheart1->AddAnimation(765);
 										bigheart1->SetState(ITEM_STATE_ACTIVE);
 										bigheart1->SetPosition(x, y);
 										listItem1.push_back(bigheart1);
-										//tickHeart += 1;
-
 										break;
 									case morningstarInside:
+										morningstar1 = new MorningStar();
+										morningstar1->AddAnimation(777);
 										morningstar1->SetState(ITEM_STATE_ACTIVE);
 										morningstar1->SetPosition(x, y);
 										listItem1.push_back(morningstar1);
-										//tickWhip += 1;
 										break;
 									case daggerInside:
+										dagger1 = new Dagger1();
+										dagger1->AddAnimation(767);
 										dagger1->SetState(ITEM_STATE_ACTIVE);
 										dagger1->SetPosition(x, y);
 										listItem1.push_back(dagger1);
@@ -1519,6 +2307,48 @@ void Scene2::CollisionBetWeaponAndEnemy()
 										smallheart1->SetPosition(x, y);
 										listItem1.push_back(smallheart1);
 										break;
+									case crossInside:
+										cross1 = new Cross1();
+										cross1->AddAnimation(483);
+										cross1->SetState(ITEM_STATE_ACTIVE);
+										cross1->SetPosition(x, y);
+										listItem1.push_back(cross1);
+										break;
+									case holywaterInside:
+										holy1 = new HolyWater1();
+										holy1->AddAnimation(491);
+										holy1->SetState(ITEM_STATE_ACTIVE);
+										holy1->SetPosition(x, y);
+										listItem1.push_back(holy1);
+										break;
+									case whitebagInside:
+										goldbag1 = new GoldBag(0);
+										goldbag1->AddAnimation(778);
+										goldbag1->AddAnimation(779);
+										goldbag1->AddAnimation(780);
+										goldbag1->SetState(ITEM_STATE_ACTIVE);
+										goldbag1->SetPosition(x, y);
+										listItem1.push_back(goldbag1);
+										break;
+									case redbagInside:
+										goldbag1 = new GoldBag(1);
+										goldbag1->AddAnimation(778);
+										goldbag1->AddAnimation(779);
+										goldbag1->AddAnimation(780);
+										goldbag1->SetState(ITEM_STATE_ACTIVE);
+										goldbag1->SetPosition(x, y);
+										listItem1.push_back(goldbag1);
+										break;
+									case bluebagInside:
+										goldbag1 = new GoldBag(2);
+										goldbag1->AddAnimation(778);
+										goldbag1->AddAnimation(779);
+										goldbag1->AddAnimation(780);
+										goldbag1->SetState(ITEM_STATE_ACTIVE);
+										goldbag1->SetPosition(x, y);
+										listItem1.push_back(goldbag1);
+										break;
+
 
 									default:
 										break;
@@ -1552,16 +2382,22 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							case 0:
 								break;
 							case bigheartInside:
+								bigheart1 = new BigHeart();
+								bigheart1->AddAnimation(765);
 								bigheart1->SetState(ITEM_STATE_ACTIVE);
 								bigheart1->SetPosition(x, y);
 								listItem1.push_back(bigheart1);
 								break;
 							case morningstarInside:
+								morningstar1 = new MorningStar();
+								morningstar1->AddAnimation(777);
 								morningstar1->SetState(ITEM_STATE_ACTIVE);
 								morningstar1->SetPosition(x, y);
 								listItem1.push_back(morningstar1);
 								break;
 							case daggerInside:
+								dagger1 = new Dagger1();
+								dagger1->AddAnimation(767);
 								dagger1->SetState(ITEM_STATE_ACTIVE);
 								dagger1->SetPosition(x, y);
 								listItem1.push_back(dagger1);
@@ -1573,6 +2409,48 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								smallheart1->SetPosition(x, y);
 								listItem1.push_back(smallheart1);
 								break;
+							case crossInside:
+								cross1 = new Cross1();
+								cross1->AddAnimation(483);
+								cross1->SetState(ITEM_STATE_ACTIVE);
+								cross1->SetPosition(x, y);
+								listItem1.push_back(cross1);
+								break;
+							case holywaterInside:
+								holy1 = new HolyWater1();
+								holy1->AddAnimation(491);
+								holy1->SetState(ITEM_STATE_ACTIVE);
+								holy1->SetPosition(x, y);
+								listItem1.push_back(holy1);
+								break;
+							case whitebagInside:
+								goldbag1 = new GoldBag(0);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case redbagInside:
+								goldbag1 = new GoldBag(1);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case bluebagInside:
+								goldbag1 = new GoldBag(2);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+
 
 							default:
 								break;
@@ -1624,6 +2502,9 @@ void Scene2::CollisionBetSimonAndItem()
 							OutputDebugString(L"Simon and DAGGER \n");
 							listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 							simon1->dagger->turnOnDagger();
+							simon1->axe->turnOffAxe();
+							simon1->clock->turnOffClock();
+							simon1->holy->turnOffHolyWater();
 							OutputDebugString(L"Dagger on \n");
 						}
 					}
@@ -1658,7 +2539,75 @@ void Scene2::CollisionBetSimonAndItem()
 									}
 
 								}
+								else
 
+									if (dynamic_cast<Cross1 *>(listItem1.at(i)))
+									{
+										if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
+										{
+											OutputDebugString(L"Cross \n");
+											listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
+											float xc, yc;
+											xc=Camera::GetInstance()->GetPosition().x;
+											yc= Camera::GetInstance()->GetPosition().y;
+											for (UINT i = 0; i < listEnemy1.size(); i++)
+											{
+												if (listEnemy1.at(i)->x > xc &&
+													listEnemy1.at(i)->x<xc + SCREEN_WIDTH &&
+													listEnemy1.at(i)->y>yc &&
+													listEnemy1.at(i)->y < yc + SCREEN_HEIGHT)
+												{
+													listEnemy1.at(i)->SetState(200);
+													listEnemy1.erase(listEnemy1.begin() + i);
+													i = i - 1; //Optional cuz simon only can hit 1 torch at one moment
+												}
+											}
+										}
+
+									}
+									else
+										if (dynamic_cast<Axe1 *>(listItem1.at(i)))
+										{
+											if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
+											{
+												OutputDebugString(L"Simon and Axe \n");
+												listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
+												simon1->dagger->turnOffDagger();
+												simon1->axe->turnOnAxe();
+												simon1->clock->turnOffClock();
+												simon1->holy->turnOffHolyWater();
+												OutputDebugString(L"Axe on \n");
+											}
+										}
+										else
+											if (dynamic_cast<HolyWater1 *>(listItem1.at(i)))
+											{
+												if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
+												{
+													OutputDebugString(L"Simon and HolyWater \n");
+													listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
+													simon1->dagger->turnOffDagger();
+													simon1->axe->turnOffAxe();
+													simon1->clock->turnOffClock();
+													simon1->holy->turnOnHolyWater();
+													OutputDebugString(L"HolyWater on \n");
+												}
+
+											}
+											else
+												if (dynamic_cast<Clock1 *>(listItem1.at(i)))
+												{
+													if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
+													{
+														OutputDebugString(L"Simon and Clock \n");
+														listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
+														simon1->dagger->turnOffDagger();
+														simon1->axe->turnOffAxe();
+														simon1->clock->turnOnClock();
+														simon1->holy->turnOffHolyWater();
+														OutputDebugString(L"Clock on \n");
+													}
+												}
 			listItem1.erase(listItem1.begin() + i);
 			i = i - 1;
 
@@ -1679,46 +2628,19 @@ void Scene2::CollisionBetSimonAndEnemy()
 				{
 					if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
 					{
-						
-						if (e->nx == -1)
+						if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
 						{
-
-							if (listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
-								listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
-							{
-
-								OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
-								if (simon1->isUsingDagger == true)
-									simon1->notUseDagger();
-								if (simon1->whip->isFinished == false)
-									simon1->whip->isFinished = true;
-								if (simon1->isOnStairs == true)
-								{
-									simon1->StartUntouchable();
-								}
-								else
-								{
-									simon1->SetState(SIMON_STATE_HURT_LEFT);
-
-								}
-								//	if (simon1->nx = 1)
-							//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
-						//		else if(simon1->nx=-1)
-							//		simon1->SetState(SIMON_STATE_HURT_LEFT);
-								//simon->heartCount += 5;
-
-							}
-
+							//
 						}
-
 						else
-							if (e->nx == 1)
+							if (e->nx == -1)
 							{
+
 								if (listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
 									listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
 								{
 
-									OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+									OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
 									if (simon1->isUsingDagger == true)
 										simon1->notUseDagger();
 									if (simon1->whip->isFinished == false)
@@ -1729,58 +2651,89 @@ void Scene2::CollisionBetSimonAndEnemy()
 									}
 									else
 									{
-										simon1->SetState(SIMON_STATE_HURT_RIGHT);
-									}
+										simon1->SetState(SIMON_STATE_HURT_LEFT);
 
+									}
+									//	if (simon1->nx = 1)
+								//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
+							//		else if(simon1->nx=-1)
+								//		simon1->SetState(SIMON_STATE_HURT_LEFT);
+									//simon->heartCount += 5;
 
 								}
+
 							}
+
 							else
-								if (e->nx == 0)
+								if (e->nx == 1)
 								{
-									if (e->ny == -1)
+									if (listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
+										listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
 									{
-										float x, y;
-										simon1->GetPosition(x, y);
-										float x1, y1;
-										listEnemy1.at(i)->GetPosition(x1, y1);
-										if (x < x1)
+
+										OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+										if (simon1->isUsingDagger == true)
+											simon1->notUseDagger();
+										if (simon1->whip->isFinished == false)
+											simon1->whip->isFinished = true;
+										if (simon1->isOnStairs == true)
 										{
-											OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
-											if (simon1->isUsingDagger == true)
-												simon1->notUseDagger();
-											if (simon1->whip->isFinished == false)
-												simon1->whip->isFinished = true;
-											if (simon1->isOnStairs == true)
-											{
-												simon1->StartUntouchable();
-											}
-											else
-											{
-												simon1->SetState(SIMON_STATE_HURT_LEFT);
-											}
+											simon1->StartUntouchable();
 										}
 										else
-											if (x >= x1)
+										{
+											simon1->SetState(SIMON_STATE_HURT_RIGHT);
+										}
+
+
+									}
+								}
+								else
+									if (e->nx == 0)
+									{
+										if (e->ny == -1)
+										{
+											float x, y;
+											simon1->GetPosition(x, y);
+											float x1, y1;
+											listEnemy1.at(i)->GetPosition(x1, y1);
+											if (x < x1)
 											{
-												OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+												OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
 												if (simon1->isUsingDagger == true)
 													simon1->notUseDagger();
 												if (simon1->whip->isFinished == false)
 													simon1->whip->isFinished = true;
-
 												if (simon1->isOnStairs == true)
 												{
 													simon1->StartUntouchable();
 												}
 												else
 												{
-													simon1->SetState(SIMON_STATE_HURT_RIGHT);
+													simon1->SetState(SIMON_STATE_HURT_LEFT);
 												}
-
 											}
+											else
+												if (x >= x1)
+												{
+													OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+													if (simon1->isUsingDagger == true)
+														simon1->notUseDagger();
+													if (simon1->whip->isFinished == false)
+														simon1->whip->isFinished = true;
+
+													if (simon1->isOnStairs == true)
+													{
+														simon1->StartUntouchable();
+													}
+													else
+													{
+														simon1->SetState(SIMON_STATE_HURT_RIGHT);
+													}
+
+												}
+										}
 									}
-								}
 						if (dynamic_cast<Bat *>(listEnemy1.at(i)))
 						{
 							listEnemy1.at(i)->SetState(BAT_STATE_INACTIVE);
@@ -1795,30 +2748,19 @@ void Scene2::CollisionBetSimonAndEnemy()
 					simon1->GetBoundingBox(bl, bt, br, bb);
 					if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
 					{
-						float x, y;
-						simon1->GetPosition(x, y);
-						float x1, y1;
-						listEnemy1.at(i)->GetPosition(x1, y1);
-						if (x < x1)
+						if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
 						{
-							OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
-							if (simon1->isUsingDagger == true)
-								simon1->notUseDagger();
-							if (simon1->whip->isFinished == false)
-								simon1->whip->isFinished = true;
-							if (simon1->isOnStairs == true)
-							{
-								simon1->StartUntouchable();
-							}
-							else
-							{
-								simon1->SetState(SIMON_STATE_HURT_LEFT);
-							}
+							//
 						}
 						else
-							if (x >= x1)
+						{
+							float x, y;
+							simon1->GetPosition(x, y);
+							float x1, y1;
+							listEnemy1.at(i)->GetPosition(x1, y1);
+							if (x < x1)
 							{
-								OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+								OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
 								if (simon1->isUsingDagger == true)
 									simon1->notUseDagger();
 								if (simon1->whip->isFinished == false)
@@ -1829,9 +2771,28 @@ void Scene2::CollisionBetSimonAndEnemy()
 								}
 								else
 								{
-									simon1->SetState(SIMON_STATE_HURT_RIGHT);
+									simon1->SetState(SIMON_STATE_HURT_LEFT);
 								}
 							}
+							else
+								if (x >= x1)
+								{
+									OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+									if (simon1->isUsingDagger == true)
+										simon1->notUseDagger();
+									if (simon1->whip->isFinished == false)
+										simon1->whip->isFinished = true;
+									if (simon1->isOnStairs == true)
+									{
+										simon1->StartUntouchable();
+									}
+									else
+									{
+										simon1->SetState(SIMON_STATE_HURT_RIGHT);
+									}
+								}
+						}
+				
 						if (dynamic_cast<Bat *>(listEnemy1.at(i)))
 						{
 							listEnemy1.at(i)->SetState(BAT_STATE_INACTIVE);
@@ -1848,13 +2809,14 @@ int Scene2::CollisionBetSimonAndUpStairs()
 {
 	for (UINT i = 0; i < listUpStairs1.size(); i++)
 	{
+
 		float al, at, ar, ab;
 		float bl, bt, br, bb;
 		listUpStairs1.at(i)->GetBoundingBox(al, at, ar, ab);
 		simon1->GetBoundingBox(bl, bt, br, bb);
 		//1= right, 2 = left
 		if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
-		{			
+		{
 			if (simon1->isOnStairs == true)
 			{
 				simon1->SetPosition(simon1->x, simon1->y - 2);
@@ -1865,24 +2827,38 @@ int Scene2::CollisionBetSimonAndUpStairs()
 			else
 				if (simon1->isOnStairs == false)
 				{
-					simon1->SetPosition(listUpStairs1.at(i)->x+4, simon1->y);
-					if (listUpStairs1.at(i)->getType() == 1)
-					{
-						simon1->SetState(SIMON_STATE_DOWN_RIGHT);
-						simon1->directionOnStairs = false;// true=going up, false=going down
-					}
-					else
-						if (listUpStairs1.at(i)->getType() == 2)
+						if (simon1->x > listUpStairs1.at(i)->x + 5)
 						{
-							simon1->SetState(SIMON_STATE_DOWN_LEFT);
-							simon1->directionOnStairs = false;
+							simon1->SetState(SIMON_STATE_WALKING_LEFT);
 						}
+						else
+							if (simon1->x < listUpStairs1.at(i)->x + 3)
+							{
+								simon1->SetState(SIMON_STATE_WALKING_RIGHT);
+							}
+							else
+								if (simon1->x >= listUpStairs1.at(i)->x + 3 ||
+									simon1->x <= listUpStairs1.at(i)->x + 5)
+								{
+									if (listUpStairs1.at(i)->getType() == 1)
+									{
+										simon1->SetState(SIMON_STATE_DOWN_RIGHT);
+										simon1->directionOnStairs = false;// true=going up, false=going down
+									}
+									else
+										if (listUpStairs1.at(i)->getType() == 2)
+										{
+											simon1->SetState(SIMON_STATE_DOWN_LEFT);
+											simon1->directionOnStairs = false;
+										}
+									simon1->isOnStairs = true;
+									return true;
+								}
 
-					simon1->isOnStairs = true;
+						
 				}
-		return true;
+			return true;
 		}
-
 	}
 	return false;
 
@@ -1906,28 +2882,37 @@ int Scene2::CollisionBetSimonAndDownStairs()
 			else
 				if (simon1->isOnStairs == false)
 				{
-					
-					simon1->SetPosition(listDownStairs1.at(i)->x+6, simon1->y);
-
-					if (listDownStairs1.at(i)->getType() == 1)
+					if (simon1->x > listDownStairs1.at(i)->x + 7)
 					{
-
-						simon1->SetState(SIMON_STATE_UP_RIGHT);
-						
-						
-						simon1->directionOnStairs = true;// true=going up, false=going down
+						simon1->SetState(SIMON_STATE_WALKING_LEFT);
 					}
 					else
-						if (listDownStairs1.at(i)->getType() == 2)
+						if (simon1->x < listDownStairs1.at(i)->x + 5)
 						{
-							simon1->SetState(SIMON_STATE_UP_LEFT);
-							simon1->directionOnStairs = true;// true=going up, false=going down
+							simon1->SetState(SIMON_STATE_WALKING_RIGHT);
 						}
-				simon1->isOnStairs = true;
-				}
-			return true;
-		}
+						else
+							if (simon1->x >= listDownStairs1.at(i)->x + 5 || simon1->x <= listDownStairs1.at(i)->x + 7)
+							{
+								if (listDownStairs1.at(i)->getType() == 1)
+								{
 
+									simon1->SetState(SIMON_STATE_UP_RIGHT);
+									simon1->directionOnStairs = true;// true=going up, false=going down
+								}
+								else
+									if (listDownStairs1.at(i)->getType() == 2)
+									{
+										simon1->SetState(SIMON_STATE_UP_LEFT);
+										simon1->directionOnStairs = true;// true=going up, false=going down
+									}
+								simon1->isOnStairs = true;
+
+					
+							}
+					return true;
+				}
+		}
 	}
 	return false;
 

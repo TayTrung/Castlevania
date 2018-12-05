@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{0CEDCE73-9775-46A9-9D9D-B8424E7D599D}</ProjectGuid>
     <RootNamespace>My04Collision</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -123,11 +123,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Axe.h" />
+    <ClInclude Include="Axe1.h" />
     <ClInclude Include="Bat.h" />
     <ClInclude Include="BigHeart.h" />
     <ClInclude Include="Chicken.h" />
+    <ClInclude Include="Clock.h" />
+    <ClInclude Include="Clock1.h" />
+    <ClInclude Include="Cross1.h" />
     <ClInclude Include="Dagger.h" />
     <ClInclude Include="define.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="Ghou.h" />
     <ClInclude Include="GoldBag.h" />
     <ClInclude Include="Camera.h" />
@@ -137,6 +143,8 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="GroundEnemy.h" />
+    <ClInclude Include="HolyWater.h" />
+    <ClInclude Include="HolyWater1.h" />
     <ClInclude Include="Panther.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene1.h" />
@@ -157,11 +165,17 @@
     <ClInclude Include="Whip.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Axe.cpp" />
+    <ClCompile Include="Axe1.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="BigHeart.cpp" />
     <ClCompile Include="Chicken.cpp" />
+    <ClCompile Include="Clock.cpp" />
+    <ClCompile Include="Clock1.cpp" />
+    <ClCompile Include="Cross1.cpp" />
     <ClCompile Include="Dagger.cpp" />
     <ClCompile Include="define.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="Ghou.cpp" />
     <ClCompile Include="GoldBag.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -171,6 +185,8 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="GroundEnemy.cpp" />
+    <ClCompile Include="HolyWater.cpp" />
+    <ClCompile Include="HolyWater1.cpp" />
     <ClCompile Include="Panther.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Scene1.cpp" />

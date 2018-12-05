@@ -1,22 +1,17 @@
 #pragma once
-
-
+#pragma once
 #include "Item.h"
 
-
-class GoldBag : public Item
+class HolyWater1 : public Item
 {
 public:
-	int type;// 0 = white 1 = red 2 = blue
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 	void SetState(int state);
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 
-	GoldBag(int xtype);
-	~GoldBag();
+
+	HolyWater1();
+	~HolyWater1();
 };
-
-
-
 

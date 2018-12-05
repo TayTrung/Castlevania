@@ -24,12 +24,24 @@ void Ghou::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 
 	CalcPotentialCollisions(coObjects, coEvents);
+	if (GetTickCount() - freezeTime_Start > ENEMY_FREEZE_TIME)
+	{
+		freezeTime_Start = 0;
+		freezed = false;
+		if (nx == 1)
+			this->SetState(GHOU_STATE_ACTIVE_RIGHT);
+		else
+			this->SetState(GHOU_STATE_ACTIVE_LEFT);
 
+	}
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
-		x += dx;
-		y += dy;
+		if (freezed == false)
+		{
+			x += dx;
+			y += dy;
+		}
 	}
 	else
 	{
@@ -52,12 +64,12 @@ void Ghou::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	float x1, y1;
 	x1 = Camera::GetInstance()->GetPosition().x;
-	if (x1 > 1191)
+	if (x1 > 1160)
 	{
-		if (x <= x1 + 10 && this->GetState() == GHOU_STATE_ACTIVE_LEFT)
+		if (x <= x1+5 && this->GetState() == GHOU_STATE_ACTIVE_LEFT)
 			this->SetState(GHOU_STATE_ACTIVE_RIGHT);
 		else
-			if (x > (x1 + SCREEN_WIDTH - 100) && this->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+			if (x > (x1 + SCREEN_WIDTH - 40) && this->GetState() == GHOU_STATE_ACTIVE_RIGHT)
 				this->SetState(GHOU_STATE_ACTIVE_LEFT);
 	}
 	if (x<x1 || x>x1 + SCREEN_WIDTH)
@@ -85,6 +97,22 @@ void Ghou::Render()
 			animations[ani]->Render(x, y);
 			//RenderBoundingBox(100);
 		}
+		else
+			if (this->GetState() == ENEMY_STATE_FREEZE)
+			{
+
+				if (this->nx == 1)
+				{
+					ani = GHOU_ANI_FREEZE_RIGHT;
+					animations[ani]->Render(x, y);
+				}
+				else
+				{
+
+					ani = GHOU_ANI_FREEZE_LEFT;
+					animations[ani]->Render(x, y);
+				}
+			}
 
 
 }
@@ -102,7 +130,7 @@ void Ghou::SetState(int state)
 		vx = -GHOU_WALKING_SPEED;
 		nx = -1;
 		break;
-	case GHOU_STATE_INACTIVE:
+	case ENEMY_STATE_FREEZE:
 		vx = 0;
 		break;
 	}

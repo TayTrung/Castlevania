@@ -2,16 +2,20 @@
 #include "GameObject.h"
 #include "Whip.h"
 #include "Dagger.h"
-
+#include "Clock.h"
+#include "Axe.h"
+#include "HolyWater.h"
 
 class Simon : public CGameObject
 {
 public:
-	bool untouchable;
-	//bool isHavingSword;
 	Whip *whip;
+	bool untouchable;
 	DWORD untouchable_start;
 	Dagger *dagger;
+	Clock *clock;
+	Axe *axe;
+	HolyWater *holy;
 	//int heartCount;
 	bool isUsingDagger;
 	int ani;
@@ -25,7 +29,10 @@ public:
 		//isHavingSword = false;
 		untouchable = false;
 		whip = new Whip();
+		axe = new Axe();
 		dagger = new Dagger();
+		clock = new Clock();
+		holy = new HolyWater();
 		//	heartCount = 10;
 		isJumping = false;
 		isOnStairs = false;

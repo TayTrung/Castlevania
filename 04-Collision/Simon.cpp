@@ -92,6 +92,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				this->GetState() == SIMON_STATE_HURT_LEFT)
 			{
 				CGameObject::SetState(SIMON_STATE_IDLE);
+				this->isJumping = false;
 				StartUntouchable();
 			}
 
@@ -122,6 +123,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (dynamic_cast<Scene2 *>(a))
 		{
 			if (vx > 0 && x > MAP2_WIDTH - 22) x = MAP2_WIDTH - 22;
+			
 		}
 	}
 	if (vx < 0 && x < 1) x = 1;
@@ -420,61 +422,69 @@ void Simon::SetState(int state)
 	}else if (this->GetState()==SIMON_STATE_HURT_LEFT || this->GetState() == SIMON_STATE_HURT_RIGHT)
 		return;
 
-	CGameObject::SetState(state);
-	switch (state)
-	{
-	case SIMON_STATE_WALKING_RIGHT:
-		vx = SIMON_WALKING_SPEED;
-		nx = 1;
-		break;
-	case SIMON_STATE_WALKING_LEFT:
-		vx = -SIMON_WALKING_SPEED;
-		nx = -1;
-		break;
-	case SIMON_STATE_HURT_RIGHT:
-		vx = SIMON_JUMP_SPEED_Y/6;
-		vy = -SIMON_JUMP_SPEED_Y;
-		break;
-	case SIMON_STATE_HURT_LEFT:
-		vx = -SIMON_JUMP_SPEED_Y/6;
-		vy = -SIMON_JUMP_SPEED_Y;
-		break;
-	case SIMON_STATE_DOWN_RIGHT:
-		vx = SIMON_WALKING_SPEED/ 2.5;
-		vy = SIMON_WALKING_SPEED/ 2.5;
-		nx = 1;
-		break;
-	case SIMON_STATE_DOWN_LEFT:
-		vx = -SIMON_WALKING_SPEED/ 2.5;
-		vy =  SIMON_WALKING_SPEED/ 2.5;
-		nx = -1;
-		break;
-	case SIMON_STATE_UP_RIGHT:
+	
+		CGameObject::SetState(state);
+		switch (state)
+		{
+		case SIMON_STATE_WALKING_RIGHT:
+			vx = SIMON_WALKING_SPEED;
+			nx = 1;
+			break;
+		case SIMON_STATE_WALKING_LEFT:
+			vx = -SIMON_WALKING_SPEED;
+			nx = -1;
+			break;
+		case SIMON_STATE_HURT_RIGHT:
+			vx = SIMON_JUMP_SPEED_Y / 6;
+			vy = -SIMON_JUMP_SPEED_Y;
+			break;
+		case SIMON_STATE_HURT_LEFT:
+			vx = -SIMON_JUMP_SPEED_Y / 6;
+			vy = -SIMON_JUMP_SPEED_Y;
+			break;
+		case SIMON_STATE_DOWN_RIGHT:
 
-		vx = SIMON_WALKING_SPEED/ 2.5;
-		vy = -SIMON_WALKING_SPEED/ 2.5;
-		nx = 1;
-		break;
-	case SIMON_STATE_UP_LEFT:
-		vx = -SIMON_WALKING_SPEED/ 2.5;
-		vy = -SIMON_WALKING_SPEED/2.5;
-		nx = -1;
-		break;
-	case SIMON_STATE_JUMP:
-		vy = -SIMON_JUMP_SPEED_Y;
-		break;
-	case SIMON_STATE_IDLE:
-		vx = 0;		
-		break;
+			vx = SIMON_WALKING_SPEED / 2.5;
+			vy = SIMON_WALKING_SPEED / 2.5;
+			nx = 1;
 
-		//case	SIMON_STATE_HURT_RIGHT:
-		//	vy = -SIMON_HURT;
-		//	vx=-
-		//case	SIMON_STATE_HURT_LEFT:
-		/*case SIMON_STATE_DIE:
-			vy = -SIMON_DIE_DEFLECT_SPEED;
-			break;*/
+			break;
+		case SIMON_STATE_DOWN_LEFT:
+
+			vx = -SIMON_WALKING_SPEED / 2.5;
+			vy = SIMON_WALKING_SPEED / 2.5;
+			nx = -1;
+
+			break;
+		case SIMON_STATE_UP_RIGHT:
+
+			vx = SIMON_WALKING_SPEED / 2.5;
+			vy = -SIMON_WALKING_SPEED / 2.5;
+			nx = 1;
+
+			break;
+		case SIMON_STATE_UP_LEFT:
+
+			vx = -SIMON_WALKING_SPEED / 2.5;
+			vy = -SIMON_WALKING_SPEED / 2.5;
+			nx = -1;
+			break;
+		case SIMON_STATE_JUMP:
+			vy = -SIMON_JUMP_SPEED_Y;
+			break;
+		case SIMON_STATE_IDLE:
+			vx = 0;
+			break;
+
+			//case	SIMON_STATE_HURT_RIGHT:
+			//	vy = -SIMON_HURT;
+			//	vx=-
+			//case	SIMON_STATE_HURT_LEFT:
+			/*case SIMON_STATE_DIE:
+				vy = -SIMON_DIE_DEFLECT_SPEED;
+				break;*/
 	}
+	
 }
 
 

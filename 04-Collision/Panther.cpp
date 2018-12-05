@@ -28,11 +28,26 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if(offCollision==false)
 		CalcPotentialCollisions(coObjects, coEvents);
+	if (GetTickCount() - freezeTime_Start > ENEMY_FREEZE_TIME)
+	{
+		freezeTime_Start = 0;
+		if (freezed == true)
+		{
+			if (nx == 1)
+				this->SetState(PANTHER_STATE_ACTIVE_RIGHT);
+			else
+				this->SetState(PANTHER_STATE_ACTIVE_LEFT);
+		}
+		freezed = false;
+	}
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
-		x += dx;
-		y += dy;
+		//if (freezed == false)
+		{
+			x += dx;
+			y += dy;
+		}
 	}
 	else
 	{
@@ -82,7 +97,7 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	x1 = Camera::GetInstance()->GetPosition().x;
 	if (jumped == true)
 		if (x<x1 || x>x1 + SCREEN_WIDTH)
-			this->SetState(PANTHER_STATE_INACTIVE);
+		this->SetState(PANTHER_STATE_INACTIVE);
 }
 
 void Panther::Render()
@@ -123,20 +138,36 @@ void Panther::Render()
 	}
 	else
 	{
-
-		if (this->GetState() == PANTHER_STATE_SIT_RIGHT)
+		if (this->GetState() == ENEMY_STATE_FREEZE)
 		{
 
-			ani = PANTHER_ANI_SIT_RIGHT;
-			animations[ani]->Render(x, y);
-		}
-		else 
-			if (this->GetState() == PANTHER_STATE_SIT_LEFT)
+			if (this->nx == 1)
 			{
-
-				ani = PANTHER_ANI_SIT_LEFT;
+				ani = PANTHER_ANI_FREEZE_RIGHT;
 				animations[ani]->Render(x, y);
 			}
+			else
+			{
+
+				ani = PANTHER_ANI_FREEZE_LEFT;
+				animations[ani]->Render(x, y);
+			}
+		}
+		else
+
+			if (this->GetState() == PANTHER_STATE_SIT_RIGHT)
+			{
+
+				ani = PANTHER_ANI_SIT_RIGHT;
+				animations[ani]->Render(x, y);
+			}
+			else
+				if (this->GetState() == PANTHER_STATE_SIT_LEFT)
+				{
+
+					ani = PANTHER_ANI_SIT_LEFT;
+					animations[ani]->Render(x, y);
+				}
 	}
 	RenderBoundingBox(100);
 
@@ -165,6 +196,8 @@ void Panther::SetState(int state)
 		vy = -SIMON_JUMP_SPEED_Y ;
 		nx = -1;
 		break;
+
+	case ENEMY_STATE_FREEZE:
 	case PANTHER_STATE_SIT_LEFT:
 	case PANTHER_STATE_SIT_RIGHT:
 	case GHOU_STATE_INACTIVE:

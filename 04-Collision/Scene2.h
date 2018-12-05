@@ -14,10 +14,11 @@ public:
 	virtual void LoadResources();
 	virtual void Update(DWORD dt);
 	virtual void Render();
-
+	int randomIteminside();
 	void erasingObjThatInacitve();
 	void spawnGhou(float x, float y);
 	void spawnBat(Simon *simon, Camera *camera);
+	void freezeEnemyFunction();
 	void XuLyPanthera();
 	virtual void CollisionBetWeaponAndEnemy();
 	virtual void CollisionBetSimonAndItem();

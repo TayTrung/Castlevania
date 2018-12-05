@@ -378,7 +378,7 @@ void Scene1::LoadResources()
 #pragma region Co-ordinations of Item Morning Star
 
 	LPDIRECT3DTEXTURE9 texItemWhip = textures->Get(ID_TEX_ITEM_WHIP);
-	sprites->Add(00001, 0, 0, 16, 16, texItemWhip);
+	sprites->Add(00001, 0, 0, 15, 15, texItemWhip);
 
 #pragma endregion	
 
@@ -735,9 +735,19 @@ void Scene1::LoadResources()
 	ani->Add(00005);
 	animations->Add(778, ani);
 
+	ani = new CAnimation(100);
+	ani->Add(00004);
+	animations->Add(779, ani);
 
-	goldbag = new GoldBag();
+	ani = new CAnimation(100);
+	ani->Add(00006);
+	animations->Add(780, ani);
+	
+
+	goldbag = new GoldBag(0);
 	goldbag->AddAnimation(778);
+	goldbag->AddAnimation(779);
+	goldbag->AddAnimation(780);
 	
 
 #pragma endregion

@@ -1,8 +1,8 @@
-#include "GoldBag.h"
+#include "Clock1.h"
 
 
 
-void GoldBag::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
+void Clock1::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
@@ -44,55 +44,39 @@ void GoldBag::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-GoldBag::GoldBag(int xtype)
+Clock1::Clock1()
 {
-	state = ITEM_STATE_INACTIVE;
-	type = xtype;
+	state = ITEM_STATE_ACTIVE;
 }
 
 
-GoldBag::~GoldBag()
+Clock1::~Clock1()
 {
 }
 
 
-void GoldBag::GetBoundingBox(float &left, float &top, float &right, float &bottom)
+void Clock1::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	left = x;
 	top = y;
-	right = x + GOLDBAG_BBOX_WIDTH;
-	bottom = y + GOLDBAG_BBOX_HEIGHT;
+	right = x + CLOCK1_BBOX_WIDTH;
+	bottom = y + CLOCK1_BBOX_HEIGHT;
 }
 
 
 
-void GoldBag::Render()
+void Clock1::Render()
 {
 	if (this->GetState() == ITEM_STATE_ACTIVE)
 	{
-		int ani;
-		if (type == 0)
-		{
-			ani = GOLDBAG_ANI_WHITE;
-		}
-		else
-			if (type == 1)
-			{
-				ani = GOLDBAG_ANI_RED;
-			}
-			else
-				if (type == 2)
-				{
-					ani = GOLDBAG_ANI_BLUE;
-				}
-		animations[ani]->Render(x, y);
-	//	RenderBoundingBox(100);
+		animations[0]->Render(x, y);
+		//	RenderBoundingBox(100);
 	}
 
 
 }
 
-void GoldBag::SetState(int state)
+void Clock1::SetState(int state)
 {
 	this->state = state;
 
