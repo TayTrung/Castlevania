@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
+class Ground;
 
+typedef Ground * LPGROUND;
 
 class Ground : public CGameObject
 {

@@ -195,7 +195,6 @@ void Scene1::LoadResources()
 
 	//Objects
 	textures->Add(ID_TEX_SIMON, L"textures\\simon.png", D3DCOLOR_XRGB(255, 0, 255));
-	//textures->Add(ID_TEX_GROUND, L"textures\\Ground\\ground1.png", D3DCOLOR_XRGB(176, 224, 248));
 	textures->Add(ID_TEX_TORCH, L"textures\\Enemy\\0.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_WHIP, L"textures\\Weapon\\morningstar.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
@@ -204,6 +203,9 @@ void Scene1::LoadResources()
 	textures->Add(ID_TEX_ITEM_WHIP, L"textures\\Item\\3.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_SWORD, L"textures\\Item\\4.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_GOLD, L"textures\\Item\\2.png", D3DCOLOR_XRGB(255, 0, 255));
+
+	//Ground 0
+
 
 #pragma region Co-ordinations of Simon
 	LPDIRECT3DTEXTURE9 texMario = textures->Get(ID_TEX_SIMON);
@@ -629,12 +631,7 @@ void Scene1::LoadResources()
 
 #pragma region Adding Ground
 
-	ani = new CAnimation(100);
-	ani->Add(20001);
-
-
-	animations->Add(999, ani);
-
+	
 
 	ground = new Ground(1, BRICKMAP11_BBOX_WIDTH);
 	ground->SetPosition(0 , offsetMap+144);

@@ -20,6 +20,8 @@
 #include "Panther.h"
 #include "Stairs.h"
 #include "Bat.h"
+#include "Chicken.h"
+#include "GroundEnemy.h"
 class Scene
 {
 public:

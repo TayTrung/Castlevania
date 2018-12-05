@@ -57,7 +57,7 @@ void Ghou::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (x <= x1 + 10 && this->GetState() == GHOU_STATE_ACTIVE_LEFT)
 			this->SetState(GHOU_STATE_ACTIVE_RIGHT);
 		else
-			if (x >= (x1 + SCREEN_WIDTH - 80) && this->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+			if (x > (x1 + SCREEN_WIDTH - 100) && this->GetState() == GHOU_STATE_ACTIVE_RIGHT)
 				this->SetState(GHOU_STATE_ACTIVE_LEFT);
 	}
 	if (x<x1 || x>x1 + SCREEN_WIDTH)

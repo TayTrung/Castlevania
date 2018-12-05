@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{0CEDCE73-9775-46A9-9D9D-B8424E7D599D}</ProjectGuid>
     <RootNamespace>My04Collision</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClInclude Include="Bat.h" />
     <ClInclude Include="BigHeart.h" />
+    <ClInclude Include="Chicken.h" />
     <ClInclude Include="Dagger.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="Ghou.h" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="GroundEnemy.h" />
     <ClInclude Include="Panther.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene1.h" />
@@ -157,6 +159,7 @@
   <ItemGroup>
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="BigHeart.cpp" />
+    <ClCompile Include="Chicken.cpp" />
     <ClCompile Include="Dagger.cpp" />
     <ClCompile Include="define.cpp" />
     <ClCompile Include="Ghou.cpp" />
@@ -167,6 +170,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="GroundEnemy.cpp" />
     <ClCompile Include="Panther.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Scene1.cpp" />

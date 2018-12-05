@@ -1,24 +1,8 @@
 #include "Ground.h"
 
 void Ground::Render()
-{
-	
-		//if (this->type == 1 || this->type==21)
-		//{
-			//{
-				//animations[0]->Render(x, y);
-			//RenderBoundingBox(255);
-			//}
-		//}
-		//else
-		{
-			{
-				//animations[0]->Render(x, y);
-				RenderBoundingBox(150);
-			}
-
-		}
-	
+{			
+	RenderBoundingBox(150);
 }
 
 

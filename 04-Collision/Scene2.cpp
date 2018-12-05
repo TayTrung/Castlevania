@@ -22,6 +22,7 @@ SmallHeart *smallheart1;
 Ghou *ghou;
 Panther *pant;
 Stairs *stairs;
+Chicken *chick;
 
 int tickGhou = 350;
 int tickBat = 290;
@@ -410,15 +411,28 @@ void Scene2::LoadResources()
 
 	textures->Add(ID_TEX_GROUND, L"textures\\Ground\\ground2.png", D3DCOLOR_XRGB(176, 224, 248));
 	textures->Add(ID_TEX_ITEM_SMALLHEART, L"textures\\Item\\smallheart.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_ITEM_CHICKEN, L"textures\\Item\\10.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_GHOUL, L"textures\\Enemy\\Ghoul.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_BAT, L"textures\\Enemy\\Bat.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_PANTHER, L"textures\\Enemy\\Pant.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_CANDLE, L"textures\\Enemy\\1.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_GROUND3, L"textures\\Ground\\ground3.png", D3DCOLOR_XRGB(176, 224, 248));
+	textures->Add(ID_TEX_GROUND4, L"textures\\Ground\\ground4.png", D3DCOLOR_XRGB(176, 224, 248));
 
 #pragma region Co-ordinations of Ground
 
+	
+	//Ground 2
 	LPDIRECT3DTEXTURE9 texGround = textures->Get(ID_TEX_GROUND);
 	sprites->Add(20001, 0, 0, 16, 16, texGround);
+
+	//Ground 2
+	LPDIRECT3DTEXTURE9 texGround3 = textures->Get(ID_TEX_GROUND3);
+	sprites->Add(20002, 0, 0, 16, 16, texGround3);
+
+	//Ground 2
+	LPDIRECT3DTEXTURE9 texGround4 = textures->Get(ID_TEX_GROUND4);
+	sprites->Add(20003, 0, 0, 16, 16, texGround4);
 
 #pragma endregion
 
@@ -429,6 +443,7 @@ void Scene2::LoadResources()
 	sprites->Add(40002, 8, 0, 15, 15, texCandle);
 
 #pragma endregion
+
 #pragma region Co-orrdiantions of Bat
 
 	LPDIRECT3DTEXTURE9 texBat = textures->Get(ID_TEX_BAT);
@@ -442,6 +457,7 @@ void Scene2::LoadResources()
 	sprites->Add(22305, 32, 16, 47, 31, texBat);
 
 #pragma endregion
+
 #pragma region Co-ordinations of Ghoul
 
 	LPDIRECT3DTEXTURE9 texGhoul = textures->Get(ID_TEX_GHOUL);
@@ -474,10 +490,18 @@ void Scene2::LoadResources()
 
 
 #pragma endregion
+
 #pragma region Co-ordinations of SHeart
 
 	LPDIRECT3DTEXTURE9 texSHeart = textures->Get(ID_TEX_ITEM_SMALLHEART);
 	sprites->Add(23330, 0, 0, 8, 8, texSHeart);
+
+#pragma endregion
+
+#pragma region Co-ordinations of Chicken
+
+	LPDIRECT3DTEXTURE9 texChicken = textures->Get(ID_TEX_ITEM_CHICKEN);
+	sprites->Add(23331, 0, 0, 15, 12, texChicken);
 
 #pragma endregion
 
@@ -486,6 +510,15 @@ void Scene2::LoadResources()
 	ani = new CAnimation(100);
 	ani->Add(23330);
 	animations->Add(482, ani);
+
+
+#pragma endregion
+
+#pragma region Adding Chicken
+
+	ani = new CAnimation(100);
+	ani->Add(23331);
+	animations->Add(483, ani);
 
 
 #pragma endregion
@@ -588,7 +621,32 @@ void Scene2::LoadResources()
 
 	animations->Add(999, ani);
 
-// 3 ground neen
+	ani = new CAnimation(100);//ground 3
+	ani->Add(20002);
+	animations->Add(998, ani);
+
+	ani = new CAnimation(100);//ground 4
+	ani->Add(20003);
+	animations->Add(997, ani);
+	
+	
+
+	//2 mieng ground chicken
+	GroundEnemy *groundEnemy = new GroundEnemy();
+	groundEnemy->AddAnimation(998);
+	groundEnemy->SetPosition(1792, offsetMap + 128);
+	groundEnemy->SetState(ITEM_STATE_ACTIVE);
+	listEnemy1.push_back(groundEnemy);
+
+	groundEnemy = new GroundEnemy();
+	groundEnemy->AddAnimation(997);
+	groundEnemy->setItemInside(chickenInside);
+	groundEnemy->SetPosition(1792, offsetMap + 128+16);
+	groundEnemy->SetState(ITEM_STATE_ACTIVE);
+	listEnemy1.push_back(groundEnemy);
+
+
+	// 3 ground neen
 	Ground *ground = new Ground(1, BRICKMAP21_BBOX_WIDTH);
 	ground->SetPosition(0, offsetMap + 160);
 	listSurface1.push_back(ground);
@@ -624,6 +682,7 @@ void Scene2::LoadResources()
 
 	ground = new Ground(1, 3 * 16);
 	ground->SetPosition(1392+17*16, offsetMap + 160 - 16 * 4);
+
 	listSurface1.push_back(ground);
 
 	//wall bet 2 lvls
@@ -1008,7 +1067,7 @@ void Scene2::spawnGhou(float x,float y)
 			ghou->AddAnimation(531);
 			ghou->AddAnimation(532);
 			ghou->setItemInside(smallheartInside);
-			ghou->SetPosition(x + 5 + i * 20, y);
+			ghou->SetPosition(x + i * 16, y);
 			ghou->SetState(GHOU_STATE_ACTIVE_LEFT);
 			listEnemy1.push_back(ghou);
 		}
@@ -1211,6 +1270,35 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							}
 
 						}
+						else
+							if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
+							{
+								if (listEnemy1.at(i)->state == ITEM_STATE_ACTIVE) 
+								{
+									float x, y;
+									OutputDebugString(L"Collision Whip and Candle \n");
+									listEnemy1.at(i)->SetState(GROUND_STATE_INACTIVE);
+									listEnemy1.at(i)->GetPosition(x, y);
+
+									switch (listEnemy1.at(i)->itemInside)
+									{
+
+									case chickenInside:
+										chick = new Chicken();
+										chick->AddAnimation(483);
+										chick->SetState(ITEM_STATE_ACTIVE);
+										chick->SetPosition(x, y);
+										listItem1.push_back(chick);
+										break;
+
+									default:
+										break;
+									}
+									listEnemy1.erase(listEnemy1.begin() + i);
+									i = i - 1; //Optional cuz simon only can hit 1 torch at one moment
+								}
+
+							}
 			}
 		}
 		for (UINT i = 0; i < listTorches1.size(); i++)
@@ -1263,9 +1351,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 				}
 				
+
 			}
 		}
-
+	
 	}
 	else
 		if (simon1->dagger->state != DAGGER_STATE_INACTIVE && simon1->dagger->isOn == true && simon1->isUsingDagger == true)

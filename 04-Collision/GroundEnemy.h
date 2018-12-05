@@ -1,17 +1,17 @@
+
 #pragma once
 #include "Enemy.h"
 
 
 
-class Torch : public Enemy
+class GroundEnemy : public Enemy
 {
-	int type;
+
+public:
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
-public: 	
-	Torch(int type1);
-
-	~Torch();
+	GroundEnemy();
+	~GroundEnemy();
 	//virtual void SetState(int state);
 };

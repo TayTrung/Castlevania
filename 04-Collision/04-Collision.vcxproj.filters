@@ -136,6 +136,12 @@
     <ClInclude Include="Bat.h">
       <Filter>Framework\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Chicken.h">
+      <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundEnemy.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -231,5 +237,9 @@
     <ClCompile Include="Bat.cpp">
       <Filter>Framework\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Chicken.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="GroundEnemy.cpp" />
   </ItemGroup>
 </Project>

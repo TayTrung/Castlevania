@@ -40,6 +40,7 @@
 #define BRICKMAP22_BBOX_WIDTH 304
 #define BRICKMAP23_BBOX_WIDTH 896
 #define BRICK_BBOX_HEIGHT 16
+#define BRICK_BBOX_WIDTH 16
 
 #define INVIS_BRICK_BBOX_WIDTH	5
 #define INVIS_BRICK_BBOX_HEIGHT 5
@@ -67,7 +68,12 @@
 
 #pragma endregion
 
+#pragma region Ground Enemy
 
+#define GROUND_STATE_ACTIVE 100
+#define GROUND_STATE_INACTIVE 200
+
+#pragma endregion
 #pragma region Ghou
 
 #define GHOU_BBOX_WIDTH		16
@@ -143,13 +149,15 @@
 #define morningstarInside 2
 #define daggerInside 3
 #define smallheartInside 4
-
+#define	chickenInside 6
 #define checkpointBrick 5
 
 
 #define ID_TEX_SIMON 0
 #define ID_TEX_WHIP 10	
 #define ID_TEX_GROUND 20
+#define ID_TEX_GROUND3 21
+#define ID_TEX_GROUND4 22
 #define ID_TEX_TORCH 30
 #define ID_TEX_CANDLE 32
 #define ID_TEX_GHOUL 31
@@ -161,7 +169,8 @@
 #define ID_TEX_ITEM_WHIP 70
 #define ID_TEX_ITEM_GOLD 80
 #define ID_TEX_ITEM_SMALLHEART 90
- 
+
+#define ID_TEX_ITEM_CHICKEN 100
 #pragma region Scene2
 
 #define MAP2_WIDTH	2814
@@ -208,6 +217,13 @@
 
 #define GOLDBAG_BBOX_WIDTH 15
 #define GOLDBAG_BBOX_HEIGHT 15
+
+#pragma endregion
+
+#pragma region Chicken
+
+#define CHICKEN_BBOX_WIDTH 16
+#define CHICKEN_BBOX_HEIGHT 13
 
 #pragma endregion
 
