@@ -47,7 +47,7 @@ void Map::drawTileMap(Camera *camera, float ID)
 
 	for(int i=0;i<SCREEN_HEIGHT/ TileHeight;i++)
 	{
-		for (int j = 0; j <= SCREEN_WIDTH/ TileWidth; j++)
+		for (int j = 0; j <= (SCREEN_WIDTH/ TileWidth)+1; j++)
 		{
 			RECT rect = getTile(listTileMap[i+ numRow][j+ numCol]);
 			CGame::GetInstance()->Draw(j*TileWidth  -disX, i*TileHeight - disY + offsetMap,

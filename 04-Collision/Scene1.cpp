@@ -394,14 +394,14 @@ void Scene1::LoadResources()
 
 	LPDIRECT3DTEXTURE9 texHolyWater = textures->Get(ID_TEX_HOLYWATER);
 	
-	sprites->Add(54400, 0, 0, 14, 13, texHolyWater);//right
-	sprites->Add(54401, 15, 0, 29, 13, texHolyWater);//side
-	sprites->Add(54402, 30, 0, 44, 13, texHolyWater);//
+	sprites->Add(54400, 0, 0, 15, 12, texHolyWater);//left
+	sprites->Add(54401, 16, 0, 31, 12, texHolyWater);//side
+	sprites->Add(54402, 32, 0, 47, 12, texHolyWater);//
 
 	
-	sprites->Add(54410, 0, 0, 14, 13, texHolyWater);//left side
-	sprites->Add(54411, 15, 0, 29, 13, texHolyWater);//
-	sprites->Add(54412, 30, 0, 44, 13, texHolyWater);//
+	sprites->Add(54410, 32, 13, 47, 25, texHolyWater);//right side
+
+
 
 #pragma endregion	
 #pragma region Co-ordinations of Item Big Heart
@@ -744,6 +744,9 @@ void Scene1::LoadResources()
 	//dag->AddAnimation(767);
 
 	//dag->AddAnimation(766);
+
+	
+
 	simon->dagger->AddAnimation(767); //left
 	simon->dagger->AddAnimation(766); //right
 
@@ -753,7 +756,8 @@ void Scene1::LoadResources()
 #pragma endregion
 
 
-#pragma region Adding Item Axe
+#pragma region Adding Axe
+
 	ani = new CAnimation(100); //left side
 	ani->Add(54320);
 	ani->Add(54321);
@@ -771,6 +775,28 @@ void Scene1::LoadResources()
 	simon->axe->AddAnimation(054);
 	simon->axe->AddAnimation(053);
 #pragma endregion
+
+#pragma region Adding HolyWater
+
+	
+	ani = new CAnimation(100); //left side
+	ani->Add(54400);
+	animations->Add(032, ani);
+	ani = new CAnimation(100); //right side
+	ani->Add(54410);
+	animations->Add(033, ani);
+	ani = new CAnimation(300); //burn
+	ani->Add(54401);
+	ani->Add(54402);
+	ani->Add(54401);
+	ani->Add(54402);
+	animations->Add(034, ani);
+	
+	simon->holy->AddAnimation(032);
+	simon->holy->AddAnimation(033);
+	simon->holy->AddAnimation(034);
+
+#pragma endregion 
 #pragma region Adding Item Morning Star
 
 	ani = new CAnimation(100);
@@ -1074,7 +1100,6 @@ void Scene1::CollisionBetSimonAndItem()
 							{
 								
 								OutputDebugString(L"Proceed to lvl 2 \n");
-								simon->proceedToNextLevel = true;
 								SceneManager::GetInstance()->replaceScene(new Scene2(simon));
 							/*	delete simon;
 								for (int i=0;i<2;i++)

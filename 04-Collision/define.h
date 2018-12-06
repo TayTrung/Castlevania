@@ -56,7 +56,12 @@
 #define INVIS_BRICK_BBOX_WIDTH	5
 #define INVIS_BRICK_BBOX_HEIGHT 5
 
-#define INVIS_STATE_NEXT_LVL 1000
+#define INVIS_STATE_NEXT_LVL 900
+#define INVIS_STATE_OPENDOOR 1000
+#define INVIS_STATE_OPENDOOR2 1050
+#define INVIS_STATE_NEXT_LVL_UNDERGROUND 100
+#define INVIS_STATE_UPPERGROUND 1200
+#define INVIS_STATE_STAGE2 1300
 #define INVIS_STATE_INVIS_ITEM 2000
 #define INVIS_STATE_INACTIVE 3000
 
@@ -221,7 +226,7 @@
 
 #pragma region Scene2
 
-#define MAP2_WIDTH	2814
+#define MAP2_WIDTH	3325
 #define MAP2_HEIGHT	184
 
 #define MAP21_WIDTH		512
@@ -362,6 +367,27 @@
 
 #pragma endregion
 
+#pragma region Holy Water
+
+#define HOLYWATER_BBOX_WIDTH			16
+#define HOLYWATER_BBOX_HEIGHT			13
+
+#define HOLYWATER_STATE_ACTIVE_LEFT		100
+#define HOLYWATER_STATE_ACTIVE_RIGHT	200
+#define HOLYWATER_STATE_BURN			400
+#define HOLYWATER_STATE_INACTIVE		300
+
+#define HOLYWATER_ANI_LEFT				0
+#define HOLYWATER_ANI_RIGHT				1
+#define HOLYWATER_ANI_BURN			2
+#define HOLYWATER_ANI_INACTIVE			3
+
+#define HOLYWATER_FLYING_SPEED			0.2f 
+
+
+#define HOLYWATER_BURN_TIME				1600
+
+#pragma endregion
 
 #pragma region Axe
 
@@ -380,22 +406,6 @@
 
 #pragma endregion
 
-#pragma region HolyWater
-
-#define HOLYWATER_BBOX_WIDTH			15
-#define HOLYWATER_BBOX_HEIGHT			14
-
-#define HOLYWATER_STATE_ACTIVE_LEFT	100
-#define HOLYWATER_STATE_ACTIVE_RIGHT	200
-#define HOLYWATER_STATE_INACTIVE		300
-
-#define HOLYWATER_ANI_LEFT				0
-#define HOLYWATER_ANI_RIGHT			1
-#define HOLYWATER_ANI_INACTIVE			2
-
-#define HOLYWATER_FLYING_SPEED			0.1f 
-
-#pragma endregion
 #pragma region Simon
 
 #define SIMON_WALKING_SPEED					0.1f 

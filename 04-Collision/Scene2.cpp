@@ -23,7 +23,7 @@ Ghou *ghou;
 Panther *pant;
 Stairs *stairs;
 Chicken *chick;
-Door *door;
+Door *door,*door1;
 GroundEnemy *groundEnemy;
 GoldBag *goldbag1;
 Cross1 *cross1;
@@ -43,7 +43,7 @@ void Scene2::KeyState(BYTE * states)
 
 		if (game1->IsKeyDown(DIK_RIGHT))
 		{
-			if (simon1->proceedToNextLevel == false)
+			if (simon1->proceedThruDoor == false)
 			{
 				if (simon1->isOnStairs == false)
 				{
@@ -105,7 +105,7 @@ void Scene2::KeyState(BYTE * states)
 		else
 			if (game1->IsKeyDown(DIK_LEFT))
 			{
-				if (simon1->proceedToNextLevel == false)
+				if (simon1->proceedThruDoor == false)
 				{
 					if (simon1->isOnStairs == false)
 					{
@@ -169,7 +169,7 @@ void Scene2::KeyState(BYTE * states)
 			else
 				if (game1->IsKeyDown(DIK_DOWN))
 				{
-					if (simon1->proceedToNextLevel == false)
+					if (simon1->proceedThruDoor == false)
 					{
 						if (simon1->isOnStairs == false)
 						{
@@ -220,7 +220,7 @@ void Scene2::KeyState(BYTE * states)
 					if (game1->IsKeyDown(DIK_UP))
 					{
 
-						if (simon1->proceedToNextLevel == false)
+						if (simon1->proceedThruDoor == false)
 						{
 							if (simon1->isOnStairs == false)
 							{
@@ -274,7 +274,7 @@ void Scene2::KeyState(BYTE * states)
 
 						if (game1->IsKeyDown(DIK_SPACE))
 						{
-							if (simon1->proceedToNextLevel == false)
+							if (simon1->proceedThruDoor == false)
 							{
 								if (simon1->isOnStairs == false)
 								{
@@ -328,7 +328,7 @@ void Scene2::OnKeyDown(int KeyCode)
 		simon1->clock->turnOnClock();
 		break;
 	case DIK_SPACE:
-		if (simon1->proceedToNextLevel == false)
+		if (simon1->proceedThruDoor == false)
 		{
 			if (simon1->isOnStairs == false)
 			{
@@ -342,11 +342,11 @@ void Scene2::OnKeyDown(int KeyCode)
 		}
 		break;
 	case DIK_A: // reset
-		if (simon1->proceedToNextLevel == false)
+		if (simon1->proceedThruDoor == false)
 		{
 			simon1->SetState(SIMON_STATE_IDLE);
 			simon1->isOnStairs = false;
-			simon1->SetPosition(1190.0f, 0.0f);
+			simon1->SetPosition(1460, 0.0f);
 			simon1->SetSpeed(0, 0);
 			break;
 		}
@@ -354,7 +354,7 @@ void Scene2::OnKeyDown(int KeyCode)
 		//	simon1->SetState(SIMON_STATE_SIT);
 		//	break;
 	case DIK_S:
-		if (simon1->proceedToNextLevel == false)
+		if (simon1->proceedThruDoor == false)
 		{
 			if (simon1->isOnStairs == true)
 			{
@@ -380,7 +380,7 @@ void Scene2::OnKeyDown(int KeyCode)
 		break;
 	case DIK_D:
 	//	if (simon1->untouchable == false)
-		if (simon1->proceedToNextLevel == false)
+		if (simon1->proceedThruDoor == false)
 	
 		{
 			if (simon1->dagger->isOn == true && //dagger
@@ -514,19 +514,19 @@ void Scene2::OnKeyDown(int KeyCode)
 						simon1->holy->isOn == true &&
 						simon1->clock->isOn == false)
 					{
-						if (simon1->dagger->GetState() == DAGGER_STATE_INACTIVE)
+						if (simon1->holy->GetState() == HOLYWATER_STATE_INACTIVE)
 						{
 							float x, y;
 							simon1->GetPosition(x, y);
 							if (simon1->isOnStairs == true)
 							{
-								simon1->dagger->CreateWeapon(x, y, simon1->nx);
+								simon1->holy->CreateWeapon(x, y, simon1->nx);
 								if (simon1->isUsingDagger == false)
 								{
 									if (simon1->nx > 0)
-										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+										simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
 									else
-										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+										simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
 									simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
 									simon1->useDagger();
 
@@ -535,14 +535,14 @@ void Scene2::OnKeyDown(int KeyCode)
 							else
 								if (simon1->GetState() == SIMON_STATE_SIT)
 								{
-									simon1->dagger->CreateWeapon(x, y + 7, simon1->nx);
-
+									simon1->holy->CreateWeapon(x, y + 7, simon1->nx);
+									
 									if (simon1->isUsingDagger == false)
 									{
 										if (simon1->nx > 0)
-											simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+											simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
 										else
-											simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+											simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
 										simon1->SetState(SIMON_STATE_THROW_SITTING);
 										simon1->useDagger();
 
@@ -551,16 +551,14 @@ void Scene2::OnKeyDown(int KeyCode)
 								}
 								else
 								{
-
-
-									simon1->dagger->CreateWeapon(x, y, simon1->nx);
+									simon1->holy->CreateWeapon(x, y, simon1->nx);
 
 									if (simon1->isUsingDagger == false)
 									{
 										if (simon1->nx > 0)
-											simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+											simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
 										else
-											simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+											simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
 										simon1->SetState(SIMON_STATE_THROW);
 										simon1->useDagger();
 
@@ -635,7 +633,7 @@ void Scene2::OnKeyUp(int KeyCode)
 
 void Scene2::LoadResources()
 {
-	simon1->proceedToNextLevel = false;
+	simon1->proceedThruDoor = false;
 	camera1 = Camera::GetInstance();
 	CTextures * textures = CTextures::GetInstance();
 	CSprites * sprites = CSprites::GetInstance();
@@ -1047,8 +1045,61 @@ void Scene2::LoadResources()
 	ani->Add(20003);
 	animations->Add(997, ani);
 	
+
 	
 
+	// ground neen
+	Ground *ground = new Ground(1, BRICKMAP21_BBOX_WIDTH + BRICKMAP22_BBOX_WIDTH + BRICKMAP23_BBOX_WIDTH + 32);
+	ground->SetPosition(0, offsetMap + 160);
+	listSurface1.push_back(ground);
+
+	//Boxex de di tat
+	//to stage 3
+
+	/*ground = new Ground(0, 0);
+	ground->SetState(INVIS_STATE_NEXT_LVL_UNDERGROUND);
+	ground->SetPosition(1426, offsetMap + 43);
+	listItem1.push_back(ground);*/
+
+	//to stage 4
+
+	//ground = new Ground(0, 0);
+	//ground->SetState(INVIS_STATE_UPPERGROUND);
+	//ground->SetPosition(1426, offsetMap + 43);
+	//listItem1.push_back(ground);
+
+	//Stage 1
+	//3 ground len cau thang 
+
+	ground = new Ground(1, 3 * 16);
+	ground->SetPosition(688, offsetMap + 160 - 16 * 4);
+	listSurface1.push_back(ground);
+
+	ground = new Ground(1, 10 * 16);
+	ground->SetPosition(688 + 4 * 16, offsetMap + 160 - 16 * 6);
+	listSurface1.push_back(ground);
+
+
+	ground = new Ground(1, 6 * 16);
+	ground->SetPosition(688 + 15 * 16, offsetMap + 160 - 16 * 4);
+	listSurface1.push_back(ground);
+	
+	//Box proceed to open door
+	ground = new Ground(0, 0);
+	ground->SetState(INVIS_STATE_OPENDOOR);
+	ground->SetPosition(1520, offsetMap + 43);
+	listItem1.push_back(ground);
+
+	//Door
+	door = new Door();
+	door->SetState(DOOR_STATE_ACTIVE_CLOSED);
+	door->AddAnimation(495);
+	door->AddAnimation(496);
+	door->SetPosition(1528, offsetMap + 16);
+	listSurface1.push_back(door);
+
+
+	//Stage 2
 	//2 mieng ground chicken
 	groundEnemy = new GroundEnemy();
 	groundEnemy->AddAnimation(998);
@@ -1064,35 +1115,7 @@ void Scene2::LoadResources()
 	listEnemy1.push_back(groundEnemy);
 
 
-	// 3 ground neen
-	Ground *ground = new Ground(1, BRICKMAP21_BBOX_WIDTH);
-	ground->SetPosition(0, offsetMap + 160);
-	listSurface1.push_back(ground);
-
-	ground = new Ground(1, BRICKMAP22_BBOX_WIDTH);
-	ground->SetPosition(0 + 17 + BRICKMAP21_BBOX_WIDTH, offsetMap + 160);
-	listSurface1.push_back(ground);
-
-	ground = new Ground(1, BRICKMAP23_BBOX_WIDTH);
-	ground->SetPosition(0 + 17 * 2 + BRICKMAP21_BBOX_WIDTH + BRICKMAP22_BBOX_WIDTH, offsetMap + 160);
-	listSurface1.push_back(ground);
-
-	//3 ground len cau thang 
-
-	ground = new Ground(1, 3 * 16);
-	ground->SetPosition(688, offsetMap + 160 - 16 * 4);
-	listSurface1.push_back(ground);
-
-	ground = new Ground(1, 10 * 16);
-	ground->SetPosition(688 + 4 * 16, offsetMap + 160 - 16 * 6);
-	listSurface1.push_back(ground);
-
-
-	ground = new Ground(1,6 * 16);
-	ground->SetPosition(688 + 15 * 16, offsetMap + 160 - 16 * 4);
-	listSurface1.push_back(ground);
-
-	//2 ground len thang cuoi
+	//2 ground man 2
 
 	ground = new Ground(1, 17 * 16);
 	ground->SetPosition(1392, offsetMap + 160 - 16 * 6);
@@ -1102,29 +1125,89 @@ void Scene2::LoadResources()
 	ground->SetPosition(1392+17*16, offsetMap + 160 - 16 * 4);
 
 	listSurface1.push_back(ground);
-
-	//wall bet 2 lvls
-	ground = new Ground(1, 16);
-	ground->SetPosition(1528, offsetMap + 96);
-	listSurface1.push_back(ground);
-
-	ground = new Ground(1, 16);
-	ground->SetPosition(1528, offsetMap + 96+32);
-	listSurface1.push_back(ground);
-	//Box proceed to next lvl
-	ground = new Ground(0, 0);
-	ground->SetState(INVIS_STATE_NEXT_LVL);
-	ground->SetPosition(1520, offsetMap + 43);
-	listItem1.push_back(ground);
-
-	door = new Door();
-	door->SetState(DOOR_STATE_ACTIVE_CLOSED);
-	door->AddAnimation(495);
-	door->AddAnimation(496);
-	door->SetPosition(1528, offsetMap + 16);
-	listSurface1.push_back(door);
 	
 
+
+	//box proceed to level underground
+
+	ground = new Ground(0, 0);
+	ground->SetState(INVIS_STATE_NEXT_LVL_UNDERGROUND);
+	ground->SetPosition(1616, 184+55);
+	listItem1.push_back(ground);
+	
+	//Stage 3
+	//box to get out of level underground
+	ground = new Ground(0, 0);
+	ground->SetState(INVIS_STATE_UPPERGROUND);
+	ground->SetPosition(3192, offsetMap -5);
+	listItem1.push_back(ground);
+
+	//box to get to stage 2
+	ground = new Ground(0, 0);
+	ground->SetState(INVIS_STATE_STAGE2);
+	ground->SetPosition(3192-320, offsetMap - 5);
+	listItem1.push_back(ground);
+	//2910 47
+	//Mieng ground 2 in UNderGround
+	ground = new Ground(1, 16*2);
+	ground->SetPosition(2910, offsetMap + 47);
+	listSurface1.push_back(ground);
+
+	//MIeng to duoi chan
+	ground = new Ground(1, 16*14);
+	ground->SetPosition(2910-16*6, offsetMap + 47+16*2);
+	listSurface1.push_back(ground);
+	// Mieng 2 ke ben
+	ground = new Ground(1, 16 * 2);
+	ground->SetPosition(2910 - 16 * 6+16*16, offsetMap + 47 + 16 * 2);
+	listSurface1.push_back(ground);
+
+	//Mieng 10
+	ground = new Ground(1, 16 * 10);
+	ground->SetPosition(2910 - 16 * 6 + 16 * 20, offsetMap + 47 + 16 * 2);
+	listSurface1.push_back(ground);
+
+	//Mieng 2
+	ground = new Ground(1, 16 * 2);
+	ground->SetPosition(2910 - 16 * 6 + 16 * 30, offsetMap + 47 + 16 * 4);
+	listSurface1.push_back(ground);
+
+	//Stage 4
+	//box proceed to level underground
+
+	ground = new Ground(0, 0);
+	ground->SetState(INVIS_STATE_NEXT_LVL_UNDERGROUND);
+	ground->SetPosition(1937, 184 + 55);
+	listItem1.push_back(ground);
+
+	ground = new Ground(1, 3 * 16);
+	ground->SetPosition(1888, offsetMap + 160 - 16 * 4);
+	listSurface1.push_back(ground);
+
+	ground = new Ground(1, 6 * 16);
+	ground->SetPosition(1792, offsetMap + 160 - 16 * 5);
+	listSurface1.push_back(ground);
+
+	ground = new Ground(1, 13 * 16);
+	ground->SetPosition(1952, offsetMap + 160 - 16 * 6);
+	listSurface1.push_back(ground);
+
+
+	//Stage 5
+
+	//Box proceed to open door
+	ground = new Ground(0, 0);
+	ground->SetState(INVIS_STATE_OPENDOOR2);
+	ground->SetPosition(1520 + 514, offsetMap + 43);
+	listItem1.push_back(ground);
+
+	//Door
+	door1 = new Door();
+	door1->SetState(DOOR_STATE_ACTIVE_CLOSED);
+	door1->AddAnimation(495);
+	door1->AddAnimation(496);
+	door1->SetPosition(1528 + 514, offsetMap + 16);
+	listSurface1.push_back(door1);
 #pragma endregion
 
 #pragma region Adding Panther 
@@ -1249,6 +1332,39 @@ void Scene2::LoadResources()
 		stairs->SetPosition(1762, offsetMap + 159);
 		listDownStairs1.push_back(stairs);
 
+		//Stairs  to underwater
+
+		stairs = new Stairs(1, false);
+		stairs->SetPosition(1698-8*16, offsetMap + 99);
+		listUpStairs1.push_back(stairs);
+		
+		stairs = new Stairs(2, true);
+		stairs->SetPosition(2910-16, offsetMap + 46);
+		listDownStairs1.push_back(stairs);
+
+		//stairs out underwater
+
+	
+		stairs = new Stairs(1, false);
+		stairs->SetPosition(1888, offsetMap + 99);
+		listUpStairs1.push_back(stairs);
+
+		stairs = new Stairs(2, true);
+		stairs->SetPosition(2914 - 16 * 6 + 16 * 27, offsetMap + 46 + 16 * 2);
+		listDownStairs1.push_back(stairs);
+
+
+		//stairs stage 4
+		stairs = new Stairs(1, false);
+		stairs->SetPosition(1924, offsetMap + 35);
+		listUpStairs1.push_back(stairs);
+
+		stairs = new Stairs(2, true);
+		stairs->SetPosition(1986, offsetMap +159);
+		listDownStairs1.push_back(stairs);
+
+		
+
 #pragma endregion
 }
 void Scene2::XuLyPanthera()
@@ -1305,54 +1421,175 @@ void Scene2::XuLyPanthera()
 
 }
 
+bool x = true;
+bool y = false;
 void Scene2::Update(DWORD dt)
 {
 
-	
- 	if (simon1->proceedToNextLevel == false)
+	if (stage == 1)
 	{
-		camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
-		camera1->Update();
-		if (lvl2 == false)
+		if (simon1->x > 1528 && simon1->y > offsetMap + 80)
+			simon1->x = 1528;
+		
+		if (simon1->proceedThruDoor == false)
 		{
+			camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
+			camera1->Update();
 			if (camera1->GetPosition().x > 1191)
-				camera1->SetPosition(1190, camera1->GetPosition().y);
+				camera1->SetPosition(1190, camera1->GetPosition().y);//simon chua qua cua nen set camera di chuyen toi cua th
 		}
-		else
-			if (camera1->GetPosition().x <1536)
-				camera1->SetPosition(1536, camera1->GetPosition().y);
-	}
-	else
-	{
-		if (camera1->GetPosition().x <= 1387)
+		else//dung box de bat dau qua cua
 		{
-			camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);
-		}
-		else
-			if (camera1->GetPosition().x > 1387)
+			if (camera1->GetPosition().x <= 1387)
+			{
+				camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//di  chuyen camera truoc
+				
+			}
+			if (camera1->GetPosition().x > 1387)// neu camera dat vi tri x thi mo cua ra roi cho simon di qua
 			{
 
 				door->SetState(DOOR_STATE_ACTIVE_OPENED);
 				simon1->SetState(SIMON_STATE_WALKING_RIGHT);
-				if (simon1->x > 1584)
+				if (simon1->x > 1584)//neu simon di den 1 doan x thi set ve vi tri idle
 				{
 					simon1->SetState(SIMON_STATE_IDLE);
 
-					door->SetState(DOOR_STATE_ACTIVE_CLOSED);
+					door->SetState(DOOR_STATE_ACTIVE_CLOSED);//dong cua
 					if (camera1->GetPosition().x < 1536)
-						camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);
+						camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//keo camera qua hoan toan
 					if (camera1->GetPosition().x >= 1536)
 					{
-						lvl2 = true;
-
 						door->SetState(DOOR_STATE_INACTIVE);
-						simon1->proceedToNextLevel = false;
+						simon1->proceedThruDoor = false;
+						stage = 2;//simon dang o man 2
 					}
-				
+
 				}
 			}
+				
+		}
 	}
-		
+	else
+		if (stage == 2)
+		{
+			if (simon1->x < 1536)
+				simon1->x = 1536;
+			if (groundEnemy->GetState() == GROUND_STATE_INACTIVE)
+			{
+
+				if (simon1->x > 1808 - 16)
+					simon1->x = 1808 - 16;
+			}
+			else
+				if (simon1->x > 1792 - 16)
+					simon1->x = 1792 - 16;
+			if (x == false)
+			{
+				simon1->SetPosition(1920-320, 220);
+				x = true;
+			}
+			camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
+			camera1->Update();
+			
+			if (camera1->GetPosition().x < 1536)
+				camera1->SetPosition(1536, camera1->GetPosition().y);
+			
+		}
+		else
+			if (stage == 3)
+			{
+				if (simon1->x < 2815)
+					simon1->x = 2815;
+				if (x == true)
+				{
+					//Camera::GetInstance()->SetPosition(2814, 0);
+					simon1->SetPosition(2975 - 149 + 16 * 2, 35);
+					x = false;
+				}
+				if (y == true)
+				{
+					//Camera::GetInstance()->SetPosition(2814, 0);
+					simon1->SetPosition(2975 - 149 + 16 * 2 + 320, 35);
+					y = false;
+				}
+				camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
+				camera1->Update();
+				if (camera1->GetPosition().x < 2814)
+					camera1->SetPosition(2814, camera1->GetPosition().y);
+
+
+
+
+			}
+			else
+				if (stage == 4)
+				{
+					if (simon1->x > 2025 && simon1->y > offsetMap + 78)
+					{
+						simon1->x = 2025;
+					}
+					if (simon1->x < 1856 - 16 && simon1->y >offsetMap + 96)
+					{
+						simon1->x = 1856 - 16;
+					}
+					if (simon1->proceedThruDoor == false)
+					{
+						if (y == false)
+						{
+
+							//Camera::GetInstance()->SetPosition(1785, 0);
+							simon1->SetPosition(1920, 220);
+							y = true;
+						}
+						camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
+						camera1->Update();
+						if (camera1->GetPosition().x > 2055 + 8 - SCREEN_WIDTH)
+							camera1->SetPosition(2055 + 8 - SCREEN_WIDTH, camera1->GetPosition().y);
+						if (simon1->x < 1792 - 16)
+							stage = 2;
+					}
+					else//dung box de bat dau qua cua
+					{
+						if (camera1->GetPosition().x <= 1920)
+						{
+							camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//di  chuyen camera truoc
+
+						}
+						if (camera1->GetPosition().x > 1920)// neu camera dat vi tri x thi mo cua ra roi cho simon di qua
+						{
+
+							door1->SetState(DOOR_STATE_ACTIVE_OPENED);
+							simon1->SetState(SIMON_STATE_WALKING_RIGHT);
+							if (simon1->x > 2081)//neu simon di den 1 doan x thi set ve vi tri idle							{
+							{
+								simon1->SetState(SIMON_STATE_IDLE);
+
+								door1->SetState(DOOR_STATE_ACTIVE_CLOSED);//dong cua
+								if (camera1->GetPosition().x < 2049)
+									camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//keo camera qua hoan toan
+								if (camera1->GetPosition().x >= 2049)
+								{
+
+									door1->SetState(DOOR_STATE_INACTIVE);
+									simon1->proceedThruDoor = false;
+									stage = 5;
+								}
+							}
+								
+
+							
+						}
+
+					}
+				}
+				else
+					if (stage == 5)
+					{
+
+					}
+
+
+				
 	
 	
 
@@ -1372,7 +1609,7 @@ void Scene2::Update(DWORD dt)
 			tickGhou = 0;
 	}
 	tickBat += 1;
-	if (simon1->x > 1535 && simon1->x < 1807)//spawn Bat every 5 seconds/ fly speed 3 sec
+	if (simon1->x > 1535 && simon1->x < 2048)//spawn Bat every 5 seconds/ fly speed 3 sec
 	{
 		if (tickBat == 330)
 		{
@@ -1406,7 +1643,7 @@ void Scene2::Update(DWORD dt)
 		else
 			if (simon1->axe->isOn == true)
 			{
-				if ((simon1->axe->GetState() != DAGGER_STATE_INACTIVE) && simon1->axe->isOn == true && simon1->isUsingDagger == true)
+				if ((simon1->axe->GetState() != AXE_STATE_INACTIVE) && simon1->axe->isOn == true && simon1->isUsingDagger == true)
 					simon1->axe->Update(dt, &listSurface1);
 			
 				if (simon1->axe->GetState() == AXE_STATE_INACTIVE)
@@ -1414,6 +1651,17 @@ void Scene2::Update(DWORD dt)
 					simon1->notUseDagger();
 				}
 			}
+			else
+				if (simon1->holy->isOn == true)
+				{
+					if ((simon1->holy->GetState() != HOLYWATER_STATE_INACTIVE) && simon1->holy->isOn == true && simon1->isUsingDagger == true)
+						simon1->holy->Update(dt, &listSurface1);
+
+					if (simon1->holy->GetState() == HOLYWATER_STATE_INACTIVE)
+					{
+						simon1->notUseDagger();
+					}
+				}
 	}
 
 
@@ -1438,21 +1686,10 @@ void Scene2::Update(DWORD dt)
 	CollisionBetWeaponAndEnemy();
 
 	
-		simon1->Update(dt, &listSurface1);
-		if (lvl2 == true)
-		{
-			if (simon1->x < 1536)
-				simon1->x = 1536;
-			if (groundEnemy->GetState()== GROUND_STATE_INACTIVE)
-			{
-
-				if (simon1->x > 1808-16)
-					simon1->x=1808-16;
-			}
-			else
-				if (simon1->x > 1792-16)
-					simon1->x = 1792-16;
-		}
+	simon1->Update(dt, &listSurface1);
+		//if (walkThruDooor == true)
+	
+	
 		
 
 
@@ -1490,6 +1727,7 @@ void Scene2::Render()
 		simon1->Render();
 		simon1->dagger->Render();
 		simon1->axe->Render();
+		simon1->holy->Render();
 		simon1->whip->Render();
 		spriteHandler->End();
 		d3ddv->EndScene();
@@ -1573,7 +1811,7 @@ int Scene2::randomIteminside()
 Scene2::Scene2(Simon *simon)
 {
 	simon1 = simon;
-	lvl2 = false;
+	stage = 1;
 	LoadResources();
 }
 
@@ -2482,6 +2720,233 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 
 		}
+		else
+		if (simon1->holy->state != AXE_STATE_INACTIVE && simon1->holy->isOn == true && simon1->isUsingDagger == true)
+		{
+			for (UINT i = 0; i < listEnemy1.size(); i++)
+			{
+				if (simon1->holy->CheckCollision(listEnemy1.at(i)) == true)
+				{
+					if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
+					{
+						//simon1->notUseDagger();
+						if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
+						{
+							float x, y;
+							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
+							listEnemy1.at(i)->GetPosition(x, y);
+
+							switch (listEnemy1.at(i)->itemInside)
+							{
+							case 0:
+								break;
+							case bigheartInside:
+								bigheart1 = new BigHeart();
+								bigheart1->AddAnimation(765);
+								bigheart1->SetState(ITEM_STATE_ACTIVE);
+								bigheart1->SetPosition(x, y);
+								listItem1.push_back(bigheart1);
+								break;
+							case morningstarInside:
+								morningstar1 = new MorningStar();
+								morningstar1->AddAnimation(777);
+								morningstar1->SetState(ITEM_STATE_ACTIVE);
+								morningstar1->SetPosition(x, y);
+								listItem1.push_back(morningstar1);
+								break;
+							case daggerInside:
+								dagger1 = new Dagger1();
+								dagger1->AddAnimation(767);
+								dagger1->SetState(ITEM_STATE_ACTIVE);
+								dagger1->SetPosition(x, y);
+								listItem1.push_back(dagger1);
+								break;
+							case smallheartInside:
+								smallheart1 = new SmallHeart(x);
+								smallheart1->AddAnimation(482);
+								smallheart1->SetState(ITEM_STATE_ACTIVE);
+								smallheart1->SetPosition(x, y);
+								listItem1.push_back(smallheart1);
+								break;
+							case crossInside:
+								cross1 = new Cross1();
+								cross1->AddAnimation(483);
+								cross1->SetState(ITEM_STATE_ACTIVE);
+								cross1->SetPosition(x, y);
+								listItem1.push_back(cross1);
+								break;
+							case holywaterInside:
+								holy1 = new HolyWater1();
+								holy1->AddAnimation(491);
+								holy1->SetState(ITEM_STATE_ACTIVE);
+								holy1->SetPosition(x, y);
+								listItem1.push_back(holy1);
+								break;
+							case whitebagInside:
+								goldbag1 = new GoldBag(0);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case redbagInside:
+								goldbag1 = new GoldBag(1);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case bluebagInside:
+								goldbag1 = new GoldBag(2);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+
+							case chickenInside:
+								chick = new Chicken();
+								chick->AddAnimation(490);
+								chick->SetState(ITEM_STATE_ACTIVE);
+								chick->SetPosition(x, y);
+								listItem1.push_back(chick);
+								break;
+							case axeInside:
+								axe1 = new Axe1();
+								axe1->AddAnimation(427);
+								axe1->SetState(ITEM_STATE_ACTIVE);
+								axe1->SetPosition(x, y);
+								listItem1.push_back(axe1);
+							default:
+								break;
+							}
+
+							listEnemy1.erase(listEnemy1.begin() + i);
+							i = i - 1;
+						}
+					}
+
+				}
+			}
+			for (UINT i = 0; i < listTorches1.size(); i++)
+			{
+				if (simon1->holy->CheckCollision(listTorches1.at(i)) == true)
+				{
+					//simon1->notUseDagger();
+					if (dynamic_cast<Torch *>(listTorches1.at(i)))
+					{
+						if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
+						{
+							float x, y;
+							listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
+							listTorches1.at(i)->GetPosition(x, y);
+
+							switch (listEnemy1.at(i)->itemInside)
+							{
+							case 0:
+								break;
+							case bigheartInside:
+								bigheart1 = new BigHeart();
+								bigheart1->AddAnimation(765);
+								bigheart1->SetState(ITEM_STATE_ACTIVE);
+								bigheart1->SetPosition(x, y);
+								listItem1.push_back(bigheart1);
+								break;
+							case morningstarInside:
+								morningstar1 = new MorningStar();
+								morningstar1->AddAnimation(777);
+								morningstar1->SetState(ITEM_STATE_ACTIVE);
+								morningstar1->SetPosition(x, y);
+								listItem1.push_back(morningstar1);
+								break;
+							case daggerInside:
+								dagger1 = new Dagger1();
+								dagger1->AddAnimation(767);
+								dagger1->SetState(ITEM_STATE_ACTIVE);
+								dagger1->SetPosition(x, y);
+								listItem1.push_back(dagger1);
+								break;
+							case smallheartInside:
+								smallheart1 = new SmallHeart(x);
+								smallheart1->AddAnimation(482);
+								smallheart1->SetState(ITEM_STATE_ACTIVE);
+								smallheart1->SetPosition(x, y);
+								listItem1.push_back(smallheart1);
+								break;
+							case crossInside:
+								cross1 = new Cross1();
+								cross1->AddAnimation(483);
+								cross1->SetState(ITEM_STATE_ACTIVE);
+								cross1->SetPosition(x, y);
+								listItem1.push_back(cross1);
+								break;
+							case holywaterInside:
+								holy1 = new HolyWater1();
+								holy1->AddAnimation(491);
+								holy1->SetState(ITEM_STATE_ACTIVE);
+								holy1->SetPosition(x, y);
+								listItem1.push_back(holy1);
+								break;
+							case whitebagInside:
+								goldbag1 = new GoldBag(0);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case redbagInside:
+								goldbag1 = new GoldBag(1);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case bluebagInside:
+								goldbag1 = new GoldBag(2);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+
+							case chickenInside:
+								chick = new Chicken();
+								chick->AddAnimation(490);
+								chick->SetState(ITEM_STATE_ACTIVE);
+								chick->SetPosition(x, y);
+								listItem1.push_back(chick);
+								break;
+							case axeInside:
+								axe1 = new Axe1();
+								axe1->AddAnimation(427);
+								axe1->SetState(ITEM_STATE_ACTIVE);
+								axe1->SetPosition(x, y);
+								listItem1.push_back(axe1);
+							default:
+								break;
+							}
+
+							listTorches1.erase(listTorches1.begin() + i);
+							i = i - 1;
+						}
+					}
+				}
+			}
+
+
+		}
 
 }
 
@@ -2493,7 +2958,7 @@ void Scene2::CollisionBetSimonAndItem()
 		{
 			if (dynamic_cast<BigHeart *>(listItem1.at(i)))
 			{
-				if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
+				if (listItem1.at(i)->GetState() == ITEM_STATE_ACTIVE)
 				{
 
 					OutputDebugString(L"Simon and BigHeart \n");
@@ -2505,7 +2970,7 @@ void Scene2::CollisionBetSimonAndItem()
 			else
 				if (dynamic_cast<MorningStar *>(listItem1.at(i)))
 				{
-					if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
+					if (listItem1.at(i)->GetState() == ITEM_STATE_ACTIVE)
 					{
 						OutputDebugString(L"Simon and WHIP \n");
 						listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
@@ -2515,7 +2980,7 @@ void Scene2::CollisionBetSimonAndItem()
 				else
 					if (dynamic_cast<Dagger1 *>(listItem1.at(i)))
 					{
-						if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
+						if (listItem1.at(i)->GetState() == ITEM_STATE_ACTIVE)
 						{
 							OutputDebugString(L"Simon and DAGGER \n");
 							listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
@@ -2529,7 +2994,7 @@ void Scene2::CollisionBetSimonAndItem()
 					else
 						if (dynamic_cast<SmallHeart *>(listItem1.at(i)))
 						{
-							if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
+							if (listItem1.at(i)->GetState() == ITEM_STATE_ACTIVE)
 							{
 								OutputDebugString(L"Simon and SmallHeart \n");
 								listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
@@ -2538,13 +3003,43 @@ void Scene2::CollisionBetSimonAndItem()
 						else
 							if (dynamic_cast<Ground *>(listItem1.at(i)))
 							{
-								if (listItem1.at(i)->state == INVIS_STATE_NEXT_LVL)
+								if (listItem1.at(i)->GetState() == INVIS_STATE_OPENDOOR)
 								{
-									if (simon1->proceedToNextLevel == false)
-										simon1->proceedToNextLevel = true;
+									
+									if (simon1->proceedThruDoor == false)
+										simon1->proceedThruDoor = true;
+									
 									
 										
 								}
+								else
+									if (listItem1.at(i)->GetState() == INVIS_STATE_NEXT_LVL_UNDERGROUND)
+									{
+										if (simon1->GetState() == SIMON_STATE_DOWN_RIGHT)
+											stage = 3;
+										
+									}
+									else
+										if (listItem1.at(i)->GetState() == INVIS_STATE_UPPERGROUND)
+										{
+											if (simon1->GetState()==SIMON_STATE_UP_LEFT)
+											stage = 4;
+										}
+										else
+											if (listItem1.at(i)->GetState() == INVIS_STATE_STAGE2)
+											{
+												if (simon1->GetState() == SIMON_STATE_UP_LEFT)
+													stage = 2;
+											}
+											else
+												if (listItem1.at(i)->GetState() == INVIS_STATE_OPENDOOR2)
+												{
+													if (simon1->proceedThruDoor == false)
+														simon1->proceedThruDoor = true;
+												}
+
+								
+
 							}
 							else
 
@@ -2561,7 +3056,7 @@ void Scene2::CollisionBetSimonAndItem()
 
 									if (dynamic_cast<Cross1 *>(listItem1.at(i)))
 									{
-										if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
+										if (listItem1.at(i)->GetState() == ITEM_STATE_ACTIVE)
 										{
 											OutputDebugString(L"Cross \n");
 											listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
@@ -2586,7 +3081,7 @@ void Scene2::CollisionBetSimonAndItem()
 									else
 										if (dynamic_cast<Axe1 *>(listItem1.at(i)))
 										{
-											if (listItem1.at(i)->state == ITEM_STATE_ACTIVE)
+											if (listItem1.at(i)->GetState() == ITEM_STATE_ACTIVE)
 											{
 												OutputDebugString(L"Simon and Axe \n");
 												listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
@@ -2626,8 +3121,12 @@ void Scene2::CollisionBetSimonAndItem()
 														OutputDebugString(L"Clock on \n");
 													}
 												}
-			listItem1.erase(listItem1.begin() + i);
-			i = i - 1;
+												if (!dynamic_cast<Ground *>(listItem1.at(i)))
+												{
+													listItem1.erase(listItem1.begin() + i);
+													i = i - 1;
+												}
+			
 
 		}
 	}
