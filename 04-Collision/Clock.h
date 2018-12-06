@@ -3,6 +3,7 @@
 class Clock: public Weapon
 {
 public:
+	bool isFinished;
 	void turnOnClock();
 	void turnOffClock();
 	bool isOn; // true when eats Clock

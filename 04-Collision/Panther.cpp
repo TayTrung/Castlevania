@@ -16,7 +16,8 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	vy += ITEM_GRAVITY/1.1 * dt;
+	if (freezed == false)
+		vy += ITEM_GRAVITY / 1.1 * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -33,10 +34,29 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		freezeTime_Start = 0;
 		if (freezed == true)
 		{
-			if (nx == 1)
-				this->SetState(PANTHER_STATE_ACTIVE_RIGHT);
+			if (jumped == true && offCollision==false) // dang o duoi dat ma bi freeze
+			{
+				if (nx == 1)
+					this->SetState(PANTHER_STATE_ACTIVE_RIGHT);
+				else
+					this->SetState(PANTHER_STATE_ACTIVE_LEFT);
+			}
 			else
-				this->SetState(PANTHER_STATE_ACTIVE_LEFT);
+				if(jumped == true && offCollision == true) // dang bay
+				{
+					if (nx == 1)
+						this->SetState(PANTHER_STATE_JUMPING_RIGHT);
+					else
+						this->SetState(PANTHER_STATE_JUMPING_LEFT);
+				}
+				else
+					if (jumped == false && offCollision == false) // dang sit
+					{
+						if (nx == 1)
+							this->SetState(PANTHER_STATE_SIT_RIGHT);
+						else
+							this->SetState(PANTHER_STATE_SIT_LEFT);
+					}
 		}
 		freezed = false;
 	}
@@ -112,7 +132,7 @@ void Panther::Render()
 			//	RenderBoundingBox(100);
 		}
 		else
-			if (this->GetState() == GHOU_STATE_ACTIVE_LEFT)
+			if (this->GetState() == PANTHER_STATE_ACTIVE_LEFT)
 			{
 
 				ani = PANTHER_ANI_LEFT;
@@ -134,24 +154,62 @@ void Panther::Render()
 						animations[ani]->Render(x, y);
 						//RenderBoundingBox(100);
 					}
+					
 
 	}
 	else
 	{
 		if (this->GetState() == ENEMY_STATE_FREEZE)
 		{
-
-			if (this->nx == 1)
+			if (jumped == true && offCollision == false)// dang duoi dat di
 			{
-				ani = PANTHER_ANI_FREEZE_RIGHT;
-				animations[ani]->Render(x, y);
+				if (this->nx == 1)
+				{
+
+					ani = PANTHER_ANI_FREEZE_RIGHT;
+					animations[ani]->Render(x, y);
+				}
+				else
+					if (this->nx == -1)
+					{
+					ani = PANTHER_ANI_FREEZE_LEFT;
+					animations[ani]->Render(x, y);
+					}
 			}
 			else
-			{
+				if (jumped == true && offCollision == true)//dang bay
+				{
+					if (this->nx == 1)
+					{
 
-				ani = PANTHER_ANI_FREEZE_LEFT;
-				animations[ani]->Render(x, y);
-			}
+						ani = PANTHER_ANI_FREEZE_RIGHT_FLY;
+						animations[ani]->Render(x, y);
+					}
+					else
+						if (this->nx == -1)
+						{
+							ani = PANTHER_ANI_FREEZE_LEFT_FLY;
+							animations[ani]->Render(x, y);
+						}
+				}
+				else
+					if (jumped == false && offCollision == false)//dang sit
+					{
+
+						if (this->nx == 1)
+						{
+
+							ani = PANTHER_ANI_FREEZE_RIGHT_SIT;
+							animations[ani]->Render(x, y);
+						}
+						else
+							if (this->nx == -1)
+							{
+								ani = PANTHER_ANI_FREEZE_LEFT_SIT;
+								animations[ani]->Render(x, y);
+							}
+					}
+		
 		}
 		else
 
@@ -169,7 +227,7 @@ void Panther::Render()
 					animations[ani]->Render(x, y);
 				}
 	}
-	RenderBoundingBox(100);
+	//RenderBoundingBox(100);
 
 }
 
@@ -198,8 +256,15 @@ void Panther::SetState(int state)
 		break;
 
 	case ENEMY_STATE_FREEZE:
+		vy = 0; vx = 0;
+		break;
 	case PANTHER_STATE_SIT_LEFT:
+		nx = -1;
+		vx = 0;
+		break;
 	case PANTHER_STATE_SIT_RIGHT:
+		nx = 1; vx = 0;
+		break;
 	case GHOU_STATE_INACTIVE:
 		vx = 0;
 		break;

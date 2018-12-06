@@ -33,7 +33,7 @@
 
 #pragma endregion
 
-#pragma region Stairts
+#pragma region Door
 
 #define DOOR_STATE_ACTIVE_CLOSED 100
 #define DOOR_STATE_ACTIVE_OPENED 150
@@ -140,6 +140,10 @@
 #define PANTHER_ANI_JUMP_LEFT		5
 #define PANTHER_ANI_FREEZE_RIGHT	6
 #define PANTHER_ANI_FREEZE_LEFT		7
+#define PANTHER_ANI_FREEZE_RIGHT_FLY 8
+#define PANTHER_ANI_FREEZE_LEFT_FLY	 9
+#define PANTHER_ANI_FREEZE_RIGHT_SIT 10
+#define PANTHER_ANI_FREEZE_LEFT_SIT  11
 
 #define PANTHER_STATE_ACTIVE_RIGHT	50
 #define PANTHER_STATE_ACTIVE_LEFT	100
@@ -174,29 +178,36 @@
 #define morningstarInside 2
 #define daggerInside 3
 #define smallheartInside 4
-#define	chickenInside 6
-#define checkpointBrick 5
+#define	chickenInside 5
+
+#define checkpointBrick 6
+
 #define redbagInside   7
 #define whitebagInside 8
 #define bluebagInside  9
 #define holywaterInside  10
 #define crossInside  11
-#define watchInside 12
-#define axeInside 13
-#define clockInside 14
+#define axeInside 12
+#define clockInside 13
 
 #define ID_TEX_SIMON 0
+
 #define ID_TEX_WHIP 10	
+#define ID_TEX_HOLYWATER 11
+#define ID_TEX_AXE 12
+
 #define ID_TEX_GROUND 20
 #define ID_TEX_GROUND3 21
 #define ID_TEX_GROUND4 22
 #define ID_TEX_DOOR 23
+
 #define ID_TEX_TORCH 30
 #define ID_TEX_CANDLE 32
 #define ID_TEX_GHOUL 31
 #define ID_TEX_BAT 34
 #define ID_TEX_PANTHER 33
 #define ID_TEX_MOR 40
+
 #define ID_TEX_ITEM_BIGHEART 50
 #define ID_TEX_ITEM_SWORD 60
 #define ID_TEX_ITEM_WHIP 70
@@ -205,7 +216,8 @@
 #define ID_TEX_ITEM_CROSS 100
 #define ID_TEX_ITEM_HOLY 110
 #define ID_TEX_ITEM_CHICKEN 120
-#define ID_TEX_ITEM_CLOCK 120
+#define ID_TEX_ITEM_CLOCK 130
+#define ID_TEX_ITEM_AXE 140
 
 #pragma region Scene2
 
@@ -221,6 +233,13 @@
 
 #define ITEM_STATE_ACTIVE		100
 #define ITEM_STATE_INACTIVE		200
+
+#pragma endregion
+
+#pragma region Axe1
+
+#define AXE1_BBOX_WIDTH 15
+#define AXE1_BBOX_HEIGHT 14
 
 #pragma endregion
 
@@ -343,6 +362,40 @@
 
 #pragma endregion
 
+
+#pragma region Axe
+
+#define AXE_BBOX_WIDTH			15
+#define AXE_BBOX_HEIGHT			14
+
+#define AXE_STATE_ACTIVE_LEFT	100
+#define AXE_STATE_ACTIVE_RIGHT	200
+#define AXE_STATE_INACTIVE		300
+
+#define AXE_ANI_LEFT				0
+#define AXE_ANI_RIGHT				1
+#define AXE_ANI_INACTIVE			2
+
+#define AXE_FLYING_SPEED			0.2f 
+
+#pragma endregion
+
+#pragma region HolyWater
+
+#define HOLYWATER_BBOX_WIDTH			15
+#define HOLYWATER_BBOX_HEIGHT			14
+
+#define HOLYWATER_STATE_ACTIVE_LEFT	100
+#define HOLYWATER_STATE_ACTIVE_RIGHT	200
+#define HOLYWATER_STATE_INACTIVE		300
+
+#define HOLYWATER_ANI_LEFT				0
+#define HOLYWATER_ANI_RIGHT			1
+#define HOLYWATER_ANI_INACTIVE			2
+
+#define HOLYWATER_FLYING_SPEED			0.1f 
+
+#pragma endregion
 #pragma region Simon
 
 #define SIMON_WALKING_SPEED					0.1f 

@@ -20,7 +20,7 @@ void Bat::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		}
 		freezed = false;
 	}
-	// No collision occured, proceed normally
+	
 	//if (freezed == false)
 	{
 		x += dx;

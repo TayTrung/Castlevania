@@ -20,8 +20,8 @@ void Axe::GetBoundingBox(float & l, float & t, float & r, float & b)
 	{
 		l = x;
 		t = y;
-		r = l + DAGGER_BBOX_WIDTH;
-		b = t + DAGGER_BBOX_HEIGHT;
+		r = l + AXE_BBOX_WIDTH;
+		b = t + AXE_BBOX_HEIGHT;
 	}
 	/*else
 	{
@@ -33,37 +33,67 @@ void Axe::GetBoundingBox(float & l, float & t, float & r, float & b)
 
 }
 
-void Axe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void Axe::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
-	CGameObject::Update(dt, coObjects);
+	CGameObject::Update(dt);
 
-	x += dx;
-	float x1, y1;
-	x1 = Camera::GetInstance()->GetPosition().x;
-	y1 = Camera::GetInstance()->GetPosition().y;
-	if (x<x1 || x>(x1 + SCREEN_WIDTH))
+	// Simple fall down
+	vy += ITEM_GRAVITY * dt;
+
+
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+	CalcPotentialCollisions(colliable_objects, coEvents);
+
+	// No collision occured, proceed normally
+	if (coEvents.size() == 0)
 	{
+		x += dx;
+		y += dy;
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
 
-		this->SetState(DAGGER_STATE_INACTIVE);
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+
+		// block 
+		x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
+		y += min_ty * dy + ny * 0.4f;
+
+		if (nx != 0) vx = 0;
+		if (ny != 0)
+		{
+			vy = 0;
+			this->SetState(AXE_STATE_INACTIVE);
+		}
+			
 
 	}
+
+	//clean up collision events
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+
 
 }
 
 void Axe::Render()
 {
 	int ani;
-	if (this->GetState() == DAGGER_STATE_ACTIVE_LEFT)
+	if (this->GetState() == AXE_STATE_ACTIVE_LEFT)
 	{
-		ani = DAGGER_ANI_LEFT;
+		ani = AXE_ANI_LEFT;
 		animations[ani]->Render(x, y);
-		//RenderBoundingBox(50);
+		RenderBoundingBox(50);
 	}
-	else if (this->GetState() == DAGGER_STATE_ACTIVE_RIGHT)
+	else if (this->GetState() == AXE_STATE_ACTIVE_RIGHT)
 	{
-		ani = DAGGER_ANI_RIGHT;
+		ani = AXE_ANI_RIGHT;
 		animations[ani]->Render(x, y);
-		//	RenderBoundingBox(50);
+		RenderBoundingBox(50);
 	}
 
 	//else this->GetState() == DAGGER_STATE_INACTIVE;
@@ -77,15 +107,18 @@ void Axe::SetState(int state)
 
 	switch (state)
 	{
-	case DAGGER_STATE_ACTIVE_RIGHT:
-		vx = DAGGER_FLYING_SPEED;
+	case AXE_STATE_ACTIVE_RIGHT:
+		vx = AXE_FLYING_SPEED;
+		vy = -AXE_FLYING_SPEED ;
 		nx = 1;
 		break;
-	case DAGGER_STATE_ACTIVE_LEFT:
-		vx = -DAGGER_FLYING_SPEED;
+	case AXE_STATE_ACTIVE_LEFT:
+		vx = -AXE_FLYING_SPEED;
+		vy = -AXE_FLYING_SPEED ;
 		nx = -1;
 		break;
-	case DAGGER_STATE_INACTIVE:
+	case AXE_STATE_INACTIVE:
+		vy = 0;
 		vx = 0;
 		break;
 	}
@@ -96,7 +129,8 @@ void Axe::CreateWeapon(float x, float y, float nx)
 	this->SetPosition(x, y);
 	this->nx = nx;
 	isFinished = false;
-	vx = nx * DAGGER_FLYING_SPEED;
+	vx = nx * AXE_FLYING_SPEED;
+	vy = -AXE_FLYING_SPEED;
 	//if (nx == -1)
 	//{
 	//	this->SetState(DAGGER_STATE_ACTIVE_LEFT);
@@ -113,7 +147,7 @@ Axe::Axe()
 	isOn = false;
 	vx = 0;
 	isFinished = true;
-	this->SetState(DAGGER_STATE_INACTIVE);
+	this->SetState(AXE_STATE_INACTIVE);
 }
 
 

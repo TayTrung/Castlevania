@@ -80,6 +80,13 @@ void Scene1::OnKeyDown(int KeyCode)
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	switch (KeyCode)
 	{
+	case DIK_1:
+		simon->dagger->turnOnDagger();
+		simon->axe->turnOffAxe();
+		simon->holy->turnOffHolyWater();
+		simon->clock->turnOffClock();
+		break;
+
 	case DIK_SPACE:
 		if (simon->isJumping == false)
 		{
@@ -196,7 +203,11 @@ void Scene1::LoadResources()
 	//Objects
 	textures->Add(ID_TEX_SIMON, L"textures\\simon.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_TORCH, L"textures\\Enemy\\0.png", D3DCOLOR_XRGB(255, 0, 255));
+
 	textures->Add(ID_TEX_WHIP, L"textures\\Weapon\\morningstar.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_AXE, L"textures\\Weapon\\3.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_HOLYWATER, L"textures\\Weapon\\2.png", D3DCOLOR_XRGB(255, 0, 255));
+
 	textures->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 	//Items
 	textures->Add(ID_TEX_ITEM_BIGHEART, L"textures\\Item\\1.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -368,6 +379,31 @@ void Scene1::LoadResources()
 
 #pragma endregion	
 
+#pragma region Co-ordinations of Axe
+
+	LPDIRECT3DTEXTURE9 texAxe = textures->Get(ID_TEX_AXE);
+	sprites->Add(54320, 0, 0, 14, 13, texAxe);//right
+	sprites->Add(54321, 15, 0, 29, 13, texAxe);//side
+	sprites->Add(54322, 30, 0, 44, 13, texAxe);//
+	sprites->Add(54323, 45, 0, 59, 13, texAxe);//
+
+#pragma endregion	
+
+
+#pragma region Co-ordinations of HolyWater
+
+	LPDIRECT3DTEXTURE9 texHolyWater = textures->Get(ID_TEX_HOLYWATER);
+	
+	sprites->Add(54400, 0, 0, 14, 13, texHolyWater);//right
+	sprites->Add(54401, 15, 0, 29, 13, texHolyWater);//side
+	sprites->Add(54402, 30, 0, 44, 13, texHolyWater);//
+
+	
+	sprites->Add(54410, 0, 0, 14, 13, texHolyWater);//left side
+	sprites->Add(54411, 15, 0, 29, 13, texHolyWater);//
+	sprites->Add(54412, 30, 0, 44, 13, texHolyWater);//
+
+#pragma endregion	
 #pragma region Co-ordinations of Item Big Heart
 
 	LPDIRECT3DTEXTURE9 texItemBigHeart = textures->Get(ID_TEX_ITEM_BIGHEART);
@@ -706,6 +742,7 @@ void Scene1::LoadResources()
 
 	//dag = new Dagger();
 	//dag->AddAnimation(767);
+
 	//dag->AddAnimation(766);
 	simon->dagger->AddAnimation(767); //left
 	simon->dagger->AddAnimation(766); //right
@@ -715,6 +752,25 @@ void Scene1::LoadResources()
 
 #pragma endregion
 
+
+#pragma region Adding Item Axe
+	ani = new CAnimation(100); //left side
+	ani->Add(54320);
+	ani->Add(54321);
+	ani->Add(54322);
+	ani->Add(54323);
+	animations->Add(053, ani);
+
+	ani = new CAnimation(100); //left side
+	ani->Add(54323);
+	ani->Add(54322);
+	ani->Add(54321);
+	ani->Add(54320);
+	animations->Add(054, ani);
+
+	simon->axe->AddAnimation(054);
+	simon->axe->AddAnimation(053);
+#pragma endregion
 #pragma region Adding Item Morning Star
 
 	ani = new CAnimation(100);

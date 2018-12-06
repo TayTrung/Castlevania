@@ -29,6 +29,7 @@ GoldBag *goldbag1;
 Cross1 *cross1;
 HolyWater1 *holy1;
 Clock1 *clock1;
+Axe1 *axe1;
 
 int tickGhou = 300;
 int tickBat = 290;
@@ -302,6 +303,30 @@ void Scene2::OnKeyDown(int KeyCode)
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	switch (KeyCode)
 	{
+	case DIK_1: //On dagger
+		simon1->dagger->turnOnDagger();
+		simon1->axe->turnOffAxe();
+		simon1->holy->turnOffHolyWater();
+		simon1->clock->turnOffClock();
+		break;
+	case DIK_2://On Axe
+		simon1->dagger->turnOffDagger();
+		simon1->axe->turnOnAxe();
+		simon1->holy->turnOffHolyWater();
+		simon1->clock->turnOffClock();
+		break;
+	case DIK_3://On HOly
+		simon1->dagger->turnOffDagger();
+		simon1->axe->turnOffAxe();
+		simon1->holy->turnOnHolyWater();
+		simon1->clock->turnOffClock();
+		break;
+	case DIK_4://On Clock
+		simon1->dagger->turnOffDagger();
+		simon1->axe->turnOffAxe();
+		simon1->holy->turnOffHolyWater();
+		simon1->clock->turnOnClock();
+		break;
 	case DIK_SPACE:
 		if (simon1->proceedToNextLevel == false)
 		{
@@ -426,19 +451,19 @@ void Scene2::OnKeyDown(int KeyCode)
 					simon1->holy->isOn == false &&
 					simon1->clock->isOn == false)
 				{
-					if (simon1->dagger->GetState() == DAGGER_STATE_INACTIVE)
+					if (simon1->axe->GetState() == AXE_STATE_INACTIVE)
 					{
 						float x, y;
 						simon1->GetPosition(x, y);
 						if (simon1->isOnStairs == true)
 						{
-							simon1->dagger->CreateWeapon(x, y, simon1->nx);
+							simon1->axe->CreateWeapon(x, y, simon1->nx);
 							if (simon1->isUsingDagger == false)
 							{
 								if (simon1->nx > 0)
-									simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+									simon1->axe->SetState(AXE_STATE_ACTIVE_RIGHT);
 								else
-									simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+									simon1->axe->SetState(AXE_STATE_ACTIVE_LEFT);
 								simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
 								simon1->useDagger();
 
@@ -447,14 +472,14 @@ void Scene2::OnKeyDown(int KeyCode)
 						else
 							if (simon1->GetState() == SIMON_STATE_SIT)
 							{
-								simon1->dagger->CreateWeapon(x, y + 7, simon1->nx);
+								simon1->axe->CreateWeapon(x, y + 7, simon1->nx);
 
 								if (simon1->isUsingDagger == false)
 								{
 									if (simon1->nx > 0)
-										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+										simon1->axe->SetState(AXE_STATE_ACTIVE_RIGHT);
 									else
-										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+										simon1->axe->SetState(AXE_STATE_ACTIVE_LEFT);
 									simon1->SetState(SIMON_STATE_THROW_SITTING);
 									simon1->useDagger();
 
@@ -465,14 +490,14 @@ void Scene2::OnKeyDown(int KeyCode)
 							{
 
 
-								simon1->dagger->CreateWeapon(x, y, simon1->nx);
+								simon1->axe->CreateWeapon(x, y, simon1->nx);
 
 								if (simon1->isUsingDagger == false)
 								{
 									if (simon1->nx > 0)
-										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+										simon1->axe->SetState(AXE_STATE_ACTIVE_RIGHT);
 									else
-										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+										simon1->axe->SetState(AXE_STATE_ACTIVE_LEFT);
 									simon1->SetState(SIMON_STATE_THROW);
 									simon1->useDagger();
 
@@ -554,6 +579,8 @@ void Scene2::OnKeyDown(int KeyCode)
 						{
 							float x, y;
 							simon1->GetPosition(x, y);
+
+							simon1->clock->CreateWeapon(x, y, simon1->nx);
 							if (simon1->isOnStairs == true)
 								{
 										simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
@@ -623,11 +650,14 @@ void Scene2::LoadResources()
 	textures->Add(ID_TEX_GROUND, L"textures\\Ground\\ground2.png", D3DCOLOR_XRGB(176, 224, 248));
 	textures->Add(ID_TEX_DOOR, L"textures\\Ground\\Gate1.png", D3DCOLOR_XRGB(255, 0, 255));
 
+
+
 	textures->Add(ID_TEX_ITEM_SMALLHEART, L"textures\\Item\\smallheart.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_CROSS, L"textures\\Item\\cross.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_HOLY, L"textures\\Item\\holywater.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_CHICKEN, L"textures\\Item\\10.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_CLOCK, L"textures\\Item\\clock.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_ITEM_AXE, L"textures\\Item\\7.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	textures->Add(ID_TEX_GHOUL, L"textures\\Enemy\\Ghoul.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_BAT, L"textures\\Enemy\\Bat.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -738,6 +768,13 @@ void Scene2::LoadResources()
 
 #pragma endregion
 
+#pragma region Co-ordinations of Axe
+
+	LPDIRECT3DTEXTURE9 texAxe = textures->Get(ID_TEX_ITEM_AXE);
+	sprites->Add(23641, 0, 0, 14, 13, texAxe);
+
+#pragma endregion
+
 #pragma region Co-ordinations of Cross
 
 	LPDIRECT3DTEXTURE9 texCross = textures->Get(ID_TEX_ITEM_CROSS);
@@ -754,7 +791,7 @@ void Scene2::LoadResources()
 #pragma endregion
 
 	
-#pragma region Adding Clcok
+#pragma region Adding item Clcok
 
 	ani = new CAnimation(100);
 	ani->Add(23541);
@@ -763,7 +800,16 @@ void Scene2::LoadResources()
 
 #pragma endregion
 
-#pragma region Adding Cross
+#pragma region Adding item Axe1
+
+	ani = new CAnimation(100);
+	ani->Add(23641);
+	animations->Add(427, ani);
+
+
+#pragma endregion
+
+#pragma region Adding item Cross
 
 	ani = new CAnimation(100);
 	ani->Add(23042);
@@ -772,7 +818,7 @@ void Scene2::LoadResources()
 
 #pragma endregion
 
-#pragma region Adding HolyWater
+#pragma region Adding item HolyWater
 
 	ani = new CAnimation(100);
 	ani->Add(23041);
@@ -903,14 +949,14 @@ void Scene2::LoadResources()
 		Torch *candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(clockInside);
+		candle->setItemInside(chickenInside);
 		candle->SetPosition(29+i*(157-29), offsetMap +128);
 		listTorches1.push_back(candle);
 
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
+		candle->setItemInside(chickenInside);
 		candle->SetPosition(92 + i * (220 - 92), offsetMap + 97);
 		listTorches1.push_back(candle);
 		}
@@ -918,35 +964,35 @@ void Scene2::LoadResources()
 		Torch *candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
+		candle->setItemInside(chickenInside);
 		candle->SetPosition(673,offsetMap+39);
 		listTorches1.push_back(candle);
 
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
+		candle->setItemInside(chickenInside);
 		candle->SetPosition(735,130+offsetMap);
 		listTorches1.push_back(candle);
 
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(holywaterInside);
+		candle->setItemInside(chickenInside);
 		candle->SetPosition(799,offsetMap+8);
 		listTorches1.push_back(candle);
 
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
+		candle->setItemInside(chickenInside);
 		candle->SetPosition(992, offsetMap + 39);
 		listTorches1.push_back(candle);
 	
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
+		candle->setItemInside(chickenInside);
 		candle->SetPosition(929, offsetMap + 130);
 		listTorches1.push_back(candle);
 
@@ -955,7 +1001,7 @@ void Scene2::LoadResources()
 			candle = new Torch(1);
 			candle->AddAnimation(476);
 			candle->SetState(CANDLE_STATE_ACTIVE);
-			candle->setItemInside(randomIteminside());
+			candle->setItemInside(chickenInside);
 			candle->SetPosition(1055+i*64, offsetMap + 130);
 			listTorches1.push_back(candle);
 
@@ -965,21 +1011,21 @@ void Scene2::LoadResources()
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
+		candle->setItemInside(chickenInside);
 		candle->SetPosition(1366, offsetMap + 113);
 		listTorches1.push_back(candle);
-
+		
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
+		candle->setItemInside(chickenInside);
 		candle->SetPosition(1437, offsetMap + 33);
 		listTorches1.push_back(candle);
 
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(crossInside);
+		candle->setItemInside(chickenInside);
 		candle->SetPosition(1502, offsetMap + 4);
 		listTorches1.push_back(candle);
 #pragma endregion
@@ -1085,10 +1131,21 @@ void Scene2::LoadResources()
 	pant = new Panther(15);
 	pant->AddAnimation(550);
 	pant->AddAnimation(551);
+
 	pant->AddAnimation(552);
 	pant->AddAnimation(553);
+
 	pant->AddAnimation(554);
 	pant->AddAnimation(555);
+
+	pant->AddAnimation(554);
+	pant->AddAnimation(555);
+
+	pant->AddAnimation(554);
+	pant->AddAnimation(555);
+
+	pant->AddAnimation(552);//freeze sit right let
+	pant->AddAnimation(553);
 	pant->setItemInside(randomIteminside());
 	pant->SetState(PANTHER_STATE_SIT_LEFT);
 	pant->SetPosition(685, 0 + offsetMap);
@@ -1097,26 +1154,45 @@ void Scene2::LoadResources()
 	pant = new Panther(8 * 20);
 	pant->AddAnimation(550);
 	pant->AddAnimation(551);
+
 	pant->AddAnimation(552);
 	pant->AddAnimation(553);
+
 	pant->AddAnimation(554);
 	pant->AddAnimation(555);
+
 	pant->AddAnimation(554);
 	pant->AddAnimation(555);
+
+	pant->AddAnimation(554);
+	pant->AddAnimation(555);
+
+	pant->AddAnimation(552);//freeze sit right let
+	pant->AddAnimation(553);
 	pant->setItemInside(randomIteminside());
 	pant->SetState(PANTHER_STATE_SIT_LEFT);
 	pant->SetPosition(880, 0 + offsetMap);
 	listEnemy1.push_back(pant);
 
 	pant = new Panther(1 * 16);
-	pant->AddAnimation(550);
+	pant->AddAnimation(550);//right left
 	pant->AddAnimation(551);
-	pant->AddAnimation(552);
+
+	pant->AddAnimation(552);//sit right left
 	pant->AddAnimation(553);
-	pant->AddAnimation(554);
+
+	pant->AddAnimation(554);//jump right left
 	pant->AddAnimation(555);
-	pant->AddAnimation(554);
+
+	pant->AddAnimation(554);//freeze right left
+	pant->AddAnimation(555); 
+
+	pant->AddAnimation(554);//freeze fly right let
 	pant->AddAnimation(555);
+
+	pant->AddAnimation(552);//freeze sit right let
+	pant->AddAnimation(553);
+
 	pant->setItemInside(randomIteminside());
 	pant->SetState(PANTHER_STATE_SIT_LEFT);
 	pant->SetPosition(945, 0 + offsetMap);
@@ -1185,40 +1261,44 @@ void Scene2::XuLyPanthera()
 	{
 		if (dynamic_cast<Panther *>(listEnemy1.at(i)))
 		{
-			if ((listEnemy1.at(i)->x - simon1->x) <= 16 * 4)
+			
 			{
-				if (listEnemy1.at(i)->changeDirection == false)
-				{
-
-					if (listEnemy1.at(i)->GetState() == PANTHER_STATE_SIT_LEFT)
-						listEnemy1.at(i)->SetState(PANTHER_STATE_ACTIVE_LEFT);
-					if (listEnemy1.at(i)->GetState() == PANTHER_STATE_SIT_RIGHT)
-						listEnemy1.at(i)->SetState(PANTHER_STATE_ACTIVE_RIGHT);
-
-				}
-			}
-			if (listEnemy1.at(i)->jumped == true)
-			{
-				if (listEnemy1.at(i)->GetState() == PANTHER_STATE_ACTIVE_RIGHT ||
-					listEnemy1.at(i)->GetState() == PANTHER_STATE_ACTIVE_LEFT)
+				if ((listEnemy1.at(i)->x - simon1->x) <= 16 * 4)
 				{
 					if (listEnemy1.at(i)->changeDirection == false)
-
 					{
-						listEnemy1.at(i)->changeDirection = true;
-						if ((listEnemy1.at(i)->x - simon1->x) > 0)
-						{
-							listEnemy1.at(i)->SetState(PANTHER_STATE_ACTIVE_LEFT);
-						}
-						else
-							if ((listEnemy1.at(i)->x - simon1->x) < 0)
-							{
-								listEnemy1.at(i)->SetState(PANTHER_STATE_ACTIVE_RIGHT);
-							}
-					}
 
+						if (listEnemy1.at(i)->GetState() == PANTHER_STATE_SIT_LEFT)
+							listEnemy1.at(i)->SetState(PANTHER_STATE_ACTIVE_LEFT);
+						if (listEnemy1.at(i)->GetState() == PANTHER_STATE_SIT_RIGHT)
+							listEnemy1.at(i)->SetState(PANTHER_STATE_ACTIVE_RIGHT);
+
+					}
 				}
-			}
+				if (listEnemy1.at(i)->jumped == true)
+				{
+					if (listEnemy1.at(i)->GetState() == PANTHER_STATE_ACTIVE_RIGHT ||
+						listEnemy1.at(i)->GetState() == PANTHER_STATE_ACTIVE_LEFT)
+					{
+						if (listEnemy1.at(i)->changeDirection == false)
+
+						{
+							listEnemy1.at(i)->changeDirection = true;
+							if ((listEnemy1.at(i)->x - simon1->x) > 0)
+							{
+								listEnemy1.at(i)->SetState(PANTHER_STATE_ACTIVE_LEFT);
+							}
+							else
+								if ((listEnemy1.at(i)->x - simon1->x) < 0)
+								{
+									listEnemy1.at(i)->SetState(PANTHER_STATE_ACTIVE_RIGHT);
+								}
+						}
+
+					}
+				}
+				 }
+			
 
 		}
 	}
@@ -1308,10 +1388,13 @@ void Scene2::Update(DWORD dt)
 	if (simon1->x > 512 && simon1->x < 1120)//chi xu ly khi simon trong vung panter spawn
 		XuLyPanthera();
 	
-	if (simon1->dagger->isOn == true)
+	if (simon1->isUsingDagger == true)
 	{
-		if (simon1->isUsingDagger == true)
+		if (simon1->dagger->isOn == true)
 		{
+			if ((simon1->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon1->dagger->isOn == true && simon1->isUsingDagger == true)
+				simon1->dagger->Update(dt, &listSurface1);
+
 
 			if ((simon1->dagger->x) < x1 || (simon1->dagger->x) > (x1 + SCREEN_WIDTH))// bay ngoai man hinh thi cho dagger inactive
 			{
@@ -1320,7 +1403,19 @@ void Scene2::Update(DWORD dt)
 			}
 
 		}
+		else
+			if (simon1->axe->isOn == true)
+			{
+				if ((simon1->axe->GetState() != DAGGER_STATE_INACTIVE) && simon1->axe->isOn == true && simon1->isUsingDagger == true)
+					simon1->axe->Update(dt, &listSurface1);
+			
+				if (simon1->axe->GetState() == AXE_STATE_INACTIVE)
+				{
+					simon1->notUseDagger();
+				}
+			}
 	}
+
 
 	for (int i = 0; i < listItem1.size(); i++)
 	{
@@ -1359,8 +1454,7 @@ void Scene2::Update(DWORD dt)
 					simon1->x = 1792-16;
 		}
 		
-	if ((simon1->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon1->dagger->isOn == true && simon1->isUsingDagger == true)
-		simon1->dagger->Update(dt, &listSurface1);
+
 
 
 //	if(Item1.at(0)->GetState()==SMALLHEART_STATE_ACTIVE)
@@ -1395,6 +1489,7 @@ void Scene2::Render()
 
 		simon1->Render();
 		simon1->dagger->Render();
+		simon1->axe->Render();
 		simon1->whip->Render();
 		spriteHandler->End();
 		d3ddv->EndScene();
@@ -1405,10 +1500,13 @@ void Scene2::Render()
 }
 
 int Scene2::randomIteminside()
-{
+{//ti le la  12 sHeart : 2 bHeart: 2 mStar : 1 hWater : 1 cross
+//	: 1 redBag : 1 whiteBag : 1 blueBag : 1 axe : 1 watch :1 dagger : 1chicken
 	int randomNumber;
-	randomNumber = rand() % 19;
-	if (randomNumber == 0 || randomNumber == 1 || randomNumber == 2 || randomNumber == 3 || randomNumber == 18 || randomNumber ==17 )
+	randomNumber = rand() % 25;
+	if (randomNumber == 0 || randomNumber == 1 || randomNumber == 2 || randomNumber == 3 ||
+		randomNumber == 18 || randomNumber ==17 || randomNumber == 19 || randomNumber == 20 ||
+		randomNumber == 21 || randomNumber == 22 || randomNumber == 23 || randomNumber == 24)
 	{
 		return smallheartInside;
 	}
@@ -1455,7 +1553,7 @@ int Scene2::randomIteminside()
 									else
 										if (randomNumber == 14)
 										{
-											return watchInside;
+											return clockInside;
 										}
 										else
 											if (randomNumber == 15)
@@ -1601,7 +1699,102 @@ void Scene2::freezeEnemyFunction()
 		}
 	}
 }
+/*
+switch (listEnemy1.at(i)->itemInside)
+							{
+							case 0:
+								break;
+							case bigheartInside:
+								bigheart1 = new BigHeart();
+								bigheart1->AddAnimation(765);
+								bigheart1->SetState(ITEM_STATE_ACTIVE);
+								bigheart1->SetPosition(x, y);
+								listItem1.push_back(bigheart1);
+								break;
+							case morningstarInside:
+								morningstar1 = new MorningStar();
+								morningstar1->AddAnimation(777);
+								morningstar1->SetState(ITEM_STATE_ACTIVE);
+								morningstar1->SetPosition(x, y);
+								listItem1.push_back(morningstar1);
+								break;
+							case daggerInside:
+								dagger1 = new Dagger1();
+								dagger1->AddAnimation(767);
+								dagger1->SetState(ITEM_STATE_ACTIVE);
+								dagger1->SetPosition(x, y);
+								listItem1.push_back(dagger1);
+								break;
+							case smallheartInside:
+								smallheart1 = new SmallHeart(x);
+								smallheart1->AddAnimation(482);
+								smallheart1->SetState(ITEM_STATE_ACTIVE);
+								smallheart1->SetPosition(x, y);
+								listItem1.push_back(smallheart1);
+								break;
+							case crossInside:
+								cross1 = new Cross1();
+								cross1->AddAnimation(483);
+								cross1->SetState(ITEM_STATE_ACTIVE);
+								cross1->SetPosition(x, y);
+								listItem1.push_back(cross1);
+								break;
+							case holywaterInside:
+								holy1 = new HolyWater1();
+								holy1->AddAnimation(491);
+								holy1->SetState(ITEM_STATE_ACTIVE);
+								holy1->SetPosition(x, y);
+								listItem1.push_back(holy1);
+								break;
+							case whitebagInside:
+								goldbag1 = new GoldBag(0);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case redbagInside:
+								goldbag1 = new GoldBag(1);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case bluebagInside:
+								goldbag1 = new GoldBag(2);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
 
+							case chickenInside:
+								chick = new Chicken();
+								chick->AddAnimation(490);
+								chick->SetState(ITEM_STATE_ACTIVE);
+								chick->SetPosition(x, y);
+								listItem1.push_back(chick);
+								break;
+							case axeInside:
+								axe1 = new Axe1();
+								axe1->AddAnimation(427);
+								axe1->SetState(ITEM_STATE_ACTIVE);
+								axe1->SetPosition(x, y);
+								listItem1.push_back(axe1);
+							default:
+								break;
+							}
+
+							listEnemy1.erase(listEnemy1.begin() + i);
+							i = i-1;
+						}
+*/
 void Scene2::CollisionBetWeaponAndEnemy()
 {
 
@@ -1609,17 +1802,13 @@ void Scene2::CollisionBetWeaponAndEnemy()
 	{
 		for (UINT i = 0; i < listEnemy1.size(); i++)
 		{
-
 			if (simon1->whip->CheckCollision(listEnemy1.at(i)) == true)
 			{
-				if (dynamic_cast<Ghou *>(listEnemy1.at(i)))
+				if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
 				{
-						if (listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_LEFT ||
-							listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_RIGHT ||
-							listEnemy1.at(i)->state==ENEMY_STATE_FREEZE)
+						if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
 						{
 							float x, y;
-							OutputDebugString(L"Collision Whip and Ghou \n");
 							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 							listEnemy1.at(i)->GetPosition(x, y);
 
@@ -1697,7 +1886,19 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								listItem1.push_back(goldbag1);
 								break;
 
-
+							case chickenInside:
+								chick = new Chicken();
+								chick->AddAnimation(490);
+								chick->SetState(ITEM_STATE_ACTIVE);
+								chick->SetPosition(x, y);
+								listItem1.push_back(chick);
+								break;
+							case axeInside:
+								axe1 = new Axe1();
+								axe1->AddAnimation(427);
+								axe1->SetState(ITEM_STATE_ACTIVE);
+								axe1->SetPosition(x, y);
+								listItem1.push_back(axe1);
 							default:
 								break;
 							}
@@ -1705,28 +1906,140 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							listEnemy1.erase(listEnemy1.begin() + i);
 							i = i-1;
 						}
-					
 				}
-				else
-					if (dynamic_cast<Panther *>(listEnemy1.at(i)))
+			
+			}
+		}
+		for (UINT i = 0; i < listTorches1.size(); i++)
+		{
+
+			if (simon1->whip->CheckCollision(listTorches1.at(i)) == true)
+			{
+				if (dynamic_cast<Torch *>(listTorches1.at(i)))
+				{
+					if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
 					{
-						if (listEnemy1.at(i)->state == PANTHER_STATE_ACTIVE_LEFT ||
-							listEnemy1.at(i)->state == PANTHER_STATE_ACTIVE_RIGHT ||
-							listEnemy1.at(i)->state == PANTHER_STATE_JUMPING_LEFT ||
-							listEnemy1.at(i)->state == PANTHER_STATE_JUMPING_RIGHT ||
-							listEnemy1.at(i)->state == PANTHER_STATE_SIT_LEFT ||
-							listEnemy1.at(i)->state == PANTHER_STATE_SIT_RIGHT ||
-							listEnemy1.at(i)->state == ENEMY_STATE_FREEZE)
+						float x, y;
+						listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
+						listTorches1.at(i)->GetPosition(x, y);
+
+						switch (listEnemy1.at(i)->itemInside)
+						{
+						case 0:
+							break;
+						case bigheartInside:
+							bigheart1 = new BigHeart();
+							bigheart1->AddAnimation(765);
+							bigheart1->SetState(ITEM_STATE_ACTIVE);
+							bigheart1->SetPosition(x, y);
+							listItem1.push_back(bigheart1);
+							break;
+						case morningstarInside:
+							morningstar1 = new MorningStar();
+							morningstar1->AddAnimation(777);
+							morningstar1->SetState(ITEM_STATE_ACTIVE);
+							morningstar1->SetPosition(x, y);
+							listItem1.push_back(morningstar1);
+							break;
+						case daggerInside:
+							dagger1 = new Dagger1();
+							dagger1->AddAnimation(767);
+							dagger1->SetState(ITEM_STATE_ACTIVE);
+							dagger1->SetPosition(x, y);
+							listItem1.push_back(dagger1);
+							break;
+						case smallheartInside:
+							smallheart1 = new SmallHeart(x);
+							smallheart1->AddAnimation(482);
+							smallheart1->SetState(ITEM_STATE_ACTIVE);
+							smallheart1->SetPosition(x, y);
+							listItem1.push_back(smallheart1);
+							break;
+						case crossInside:
+							cross1 = new Cross1();
+							cross1->AddAnimation(483);
+							cross1->SetState(ITEM_STATE_ACTIVE);
+							cross1->SetPosition(x, y);
+							listItem1.push_back(cross1);
+							break;
+						case holywaterInside:
+							holy1 = new HolyWater1();
+							holy1->AddAnimation(491);
+							holy1->SetState(ITEM_STATE_ACTIVE);
+							holy1->SetPosition(x, y);
+							listItem1.push_back(holy1);
+							break;
+						case whitebagInside:
+							goldbag1 = new GoldBag(0);
+							goldbag1->AddAnimation(778);
+							goldbag1->AddAnimation(779);
+							goldbag1->AddAnimation(780);
+							goldbag1->SetState(ITEM_STATE_ACTIVE);
+							goldbag1->SetPosition(x, y);
+							listItem1.push_back(goldbag1);
+							break;
+						case redbagInside:
+							goldbag1 = new GoldBag(1);
+							goldbag1->AddAnimation(778);
+							goldbag1->AddAnimation(779);
+							goldbag1->AddAnimation(780);
+							goldbag1->SetState(ITEM_STATE_ACTIVE);
+							goldbag1->SetPosition(x, y);
+							listItem1.push_back(goldbag1);
+							break;
+						case bluebagInside:
+							goldbag1 = new GoldBag(2);
+							goldbag1->AddAnimation(778);
+							goldbag1->AddAnimation(779);
+							goldbag1->AddAnimation(780);
+							goldbag1->SetState(ITEM_STATE_ACTIVE);
+							goldbag1->SetPosition(x, y);
+							listItem1.push_back(goldbag1);
+							break;
+
+						case chickenInside:
+							chick = new Chicken();
+							chick->AddAnimation(490);
+							chick->SetState(ITEM_STATE_ACTIVE);
+							chick->SetPosition(x, y);
+							listItem1.push_back(chick);
+							break;
+						case axeInside:
+							axe1 = new Axe1();
+							axe1->AddAnimation(427);
+							axe1->SetState(ITEM_STATE_ACTIVE);
+							axe1->SetPosition(x, y);
+							listItem1.push_back(axe1);
+						default:
+							break;
+						}
+
+						listTorches1.erase(listTorches1.begin() + i);
+						i = i - 1;
+					}
+				}
+				
+
+			}
+		}
+	
+	}
+	else
+		if (simon1->dagger->state != DAGGER_STATE_INACTIVE && simon1->dagger->isOn == true && simon1->isUsingDagger == true)
+		{
+			for (UINT i = 0; i < listEnemy1.size(); i++)
+			{
+				if (simon1->dagger->CheckCollision(listEnemy1.at(i)) == true)
+				{
+					if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
+					{
+						simon1->notUseDagger();
+						simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
+						if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
 						{
 							float x, y;
-							OutputDebugString(L"Collision Dagger and Pant \n");
-							listEnemy1.at(i)->SetState(PANTHER_STATE_INACTIVE);
+							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 							listEnemy1.at(i)->GetPosition(x, y);
-							simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
-							simon1->notUseDagger();
-
-
-
 
 							switch (listEnemy1.at(i)->itemInside)
 							{
@@ -1802,563 +2115,27 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								listItem1.push_back(goldbag1);
 								break;
 
-
+							case chickenInside:
+								chick = new Chicken();
+								chick->AddAnimation(490);
+								chick->SetState(ITEM_STATE_ACTIVE);
+								chick->SetPosition(x, y);
+								listItem1.push_back(chick);
+								break;
+							case axeInside:
+								axe1 = new Axe1();
+								axe1->AddAnimation(427);
+								axe1->SetState(ITEM_STATE_ACTIVE);
+								axe1->SetPosition(x, y);
+								listItem1.push_back(axe1);
 							default:
 								break;
 							}
+
 							listEnemy1.erase(listEnemy1.begin() + i);
 							i = i - 1;
 						}
-
-
 					}
-					else
-						if (dynamic_cast<Bat *>(listEnemy1.at(i)))
-						{
-							if (listEnemy1.at(i)->state == BAT_STATE_ACTIVE_LEFT ||
-								listEnemy1.at(i)->state == BAT_STATE_ACTIVE_RIGHT ||
-								listEnemy1.at(i)->state == ENEMY_STATE_FREEZE)
-							{
-								float x, y;
-								OutputDebugString(L"Collision Whip and BAT \n");
-								listEnemy1.at(i)->SetState(BAT_STATE_INACTIVE);
-								listEnemy1.at(i)->GetPosition(x, y);
-
-								switch (listEnemy1.at(i)->itemInside)
-								{
-								case 0:
-									break;
-								case bigheartInside:
-									bigheart1 = new BigHeart();
-									bigheart1->AddAnimation(765);
-									bigheart1->SetState(ITEM_STATE_ACTIVE);
-									bigheart1->SetPosition(x, y);
-									listItem1.push_back(bigheart1);
-									break;
-								case morningstarInside:
-									morningstar1 = new MorningStar();
-									morningstar1->AddAnimation(777);
-									morningstar1->SetState(ITEM_STATE_ACTIVE);
-									morningstar1->SetPosition(x, y);
-									listItem1.push_back(morningstar1);
-									break;
-								case daggerInside:
-									dagger1 = new Dagger1();
-									dagger1->AddAnimation(767);
-									dagger1->SetState(ITEM_STATE_ACTIVE);
-									dagger1->SetPosition(x, y);
-									listItem1.push_back(dagger1);
-									break;
-								case smallheartInside:
-									smallheart1 = new SmallHeart(x);
-									smallheart1->AddAnimation(482);
-									smallheart1->SetState(ITEM_STATE_ACTIVE);
-									smallheart1->SetPosition(x, y);
-									listItem1.push_back(smallheart1);
-									break;
-								case crossInside:
-									cross1 = new Cross1();
-									cross1->AddAnimation(483);
-									cross1->SetState(ITEM_STATE_ACTIVE);
-									cross1->SetPosition(x, y);
-									listItem1.push_back(cross1);
-									break;
-								case holywaterInside:
-									holy1 = new HolyWater1();
-									holy1->AddAnimation(491);
-									holy1->SetState(ITEM_STATE_ACTIVE);
-									holy1->SetPosition(x, y);
-									listItem1.push_back(holy1);
-									break;
-								case whitebagInside:
-									goldbag1 = new GoldBag(0);
-									goldbag1->AddAnimation(778);
-									goldbag1->AddAnimation(779);
-									goldbag1->AddAnimation(780);
-									goldbag1->SetState(ITEM_STATE_ACTIVE);
-									goldbag1->SetPosition(x, y);
-									listItem1.push_back(goldbag1);
-									break;
-								case redbagInside:
-									goldbag1 = new GoldBag(1);
-									goldbag1->AddAnimation(778);
-									goldbag1->AddAnimation(779);
-									goldbag1->AddAnimation(780);
-									goldbag1->SetState(ITEM_STATE_ACTIVE);
-									goldbag1->SetPosition(x, y);
-									listItem1.push_back(goldbag1);
-									break;
-								case bluebagInside:
-									goldbag1 = new GoldBag(2);
-									goldbag1->AddAnimation(778);
-									goldbag1->AddAnimation(779);
-									goldbag1->AddAnimation(780);
-									goldbag1->SetState(ITEM_STATE_ACTIVE);
-									goldbag1->SetPosition(x, y);
-									listItem1.push_back(goldbag1);
-									break;
-
-
-								default:
-									break;
-								}
-
-								listEnemy1.erase(listEnemy1.begin() + i);
-								i = i - 1;
-							}
-
-						}
-						else
-							if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
-							{
-								if (listEnemy1.at(i)->state == ITEM_STATE_ACTIVE) 
-								{
-									float x, y;
-									OutputDebugString(L"Collision Whip and Candle \n");
-									listEnemy1.at(i)->SetState(GROUND_STATE_INACTIVE);
-									listEnemy1.at(i)->GetPosition(x, y);
-
-									switch (listEnemy1.at(i)->itemInside)
-									{
-
-									case chickenInside:
-										chick = new Chicken();
-										chick->AddAnimation(483);
-										chick->SetState(ITEM_STATE_ACTIVE);
-										chick->SetPosition(x, y);
-										listItem1.push_back(chick);
-										break;
-
-									default:
-										break;
-									}
-									listEnemy1.erase(listEnemy1.begin() + i);
-									i = i - 1; //Optional cuz simon only can hit 1 torch at one moment
-								}
-
-							}
-			}
-		}
-		for (UINT i = 0; i < listTorches1.size(); i++)
-		{
-
-			if (simon1->whip->CheckCollision(listTorches1.at(i)) == true)
-			{
-				if (dynamic_cast<Torch *>(listTorches1.at(i)))
-				{
-					if (listTorches1.at(i)->state == TORCH_STATE_ACTIVE)
-					{
-						float x, y;
-						OutputDebugString(L"Collision Whip and Candle \n");
-						listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
-						listTorches1.at(i)->GetPosition(x, y);
-
-						switch (listTorches1.at(i)->itemInside)
-						{
-						case 0:
-							break;
-						case bigheartInside:
-							bigheart1 = new BigHeart();
-							bigheart1->AddAnimation(765);
-							bigheart1->SetState(ITEM_STATE_ACTIVE);
-							bigheart1->SetPosition(x, y);
-							listItem1.push_back(bigheart1);
-							break;
-						case morningstarInside:
-							morningstar1 = new MorningStar();
-							morningstar1->AddAnimation(777);
-							morningstar1->SetState(ITEM_STATE_ACTIVE);
-							morningstar1->SetPosition(x, y);
-							listItem1.push_back(morningstar1);
-							break;
-						case daggerInside:
-							dagger1 = new Dagger1();
-							dagger1->AddAnimation(767);
-							dagger1->SetState(ITEM_STATE_ACTIVE);
-							dagger1->SetPosition(x, y);
-							listItem1.push_back(dagger1);
-							break;
-						case smallheartInside:
-							smallheart1 = new SmallHeart(x);
-							smallheart1->AddAnimation(482);
-							smallheart1->SetState(ITEM_STATE_ACTIVE);
-							smallheart1->SetPosition(x, y);
-							listItem1.push_back(smallheart1);
-							break;
-						case crossInside:
-							cross1 = new Cross1();
-							cross1->AddAnimation(483);
-							cross1->SetState(ITEM_STATE_ACTIVE);
-							cross1->SetPosition(x, y);
-							listItem1.push_back(cross1);
-							break;
-						case holywaterInside:
-							holy1 = new HolyWater1();
-							holy1->AddAnimation(491);
-							holy1->SetState(ITEM_STATE_ACTIVE);
-							holy1->SetPosition(x, y);
-							listItem1.push_back(holy1);
-							break;
-						case whitebagInside:
-							goldbag1 = new GoldBag(0);
-							goldbag1->AddAnimation(778);
-							goldbag1->AddAnimation(779);
-							goldbag1->AddAnimation(780);
-							goldbag1->SetState(ITEM_STATE_ACTIVE);
-							goldbag1->SetPosition(x, y);
-							listItem1.push_back(goldbag1);
-							break;
-						case redbagInside:
-							goldbag1 = new GoldBag(1);
-							goldbag1->AddAnimation(778);
-							goldbag1->AddAnimation(779);
-							goldbag1->AddAnimation(780);
-							goldbag1->SetState(ITEM_STATE_ACTIVE);
-							goldbag1->SetPosition(x, y);
-							listItem1.push_back(goldbag1);
-							break;
-						case bluebagInside:
-							goldbag1 = new GoldBag(2);
-							goldbag1->AddAnimation(778);
-							goldbag1->AddAnimation(779);
-							goldbag1->AddAnimation(780);
-							goldbag1->SetState(ITEM_STATE_ACTIVE);
-							goldbag1->SetPosition(x, y);
-							listItem1.push_back(goldbag1);
-							break;
-						case clockInside:
-							clock1 = new Clock1();
-							clock1->AddAnimation(426);
-							clock1->SetState(ITEM_STATE_ACTIVE);
-							clock1->SetPosition(x, y);
-							listItem1.push_back(clock1);
-						default:
-							break;
-						}
-						listTorches1.erase(listTorches1.begin() + i);
-						i = i - 1; //Optional cuz simon only can hit 1 torch at one moment
-					}
-
-				}
-				
-
-			}
-		}
-	
-	}
-	else
-		if (simon1->dagger->state != DAGGER_STATE_INACTIVE && simon1->dagger->isOn == true && simon1->isUsingDagger == true)
-		{
-			for (UINT i = 0; i < listEnemy1.size(); i++)
-			{
-				if (simon1->dagger->CheckCollision(listEnemy1.at(i)) == true)
-				{
-					if (dynamic_cast<Ghou *>(listEnemy1.at(i)))
-						{
-							if (listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_LEFT ||
-								listEnemy1.at(i)->state == GHOU_STATE_ACTIVE_RIGHT ||
-								listEnemy1.at(i)->state == ENEMY_STATE_FREEZE)
-							{
-								float x, y;
-								OutputDebugString(L"Collision DAGGER and Ghou \n");
-								listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
-								listEnemy1.at(i)->GetPosition(x, y);
-								simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
-								simon1->notUseDagger();
-
-
-
-
-								switch (listEnemy1.at(i)->itemInside)
-								{
-								case 0:
-									break;
-								case bigheartInside:
-									bigheart1 = new BigHeart();
-									bigheart1->AddAnimation(765);
-									bigheart1->SetState(ITEM_STATE_ACTIVE);
-									bigheart1->SetPosition(x, y);
-									listItem1.push_back(bigheart1);
-									break;
-								case morningstarInside:
-									morningstar1 = new MorningStar();
-									morningstar1->AddAnimation(777);
-									morningstar1->SetState(ITEM_STATE_ACTIVE);
-									morningstar1->SetPosition(x, y);
-									listItem1.push_back(morningstar1);
-									break;
-								case daggerInside:
-									dagger1 = new Dagger1();
-									dagger1->AddAnimation(767);
-									dagger1->SetState(ITEM_STATE_ACTIVE);
-									dagger1->SetPosition(x, y);
-									listItem1.push_back(dagger1);
-									break;
-								case smallheartInside:
-									smallheart1 = new SmallHeart(x);
-									smallheart1->AddAnimation(482);
-									smallheart1->SetState(ITEM_STATE_ACTIVE);
-									smallheart1->SetPosition(x, y);
-									listItem1.push_back(smallheart1);
-									break;
-								case crossInside:
-									cross1 = new Cross1();
-									cross1->AddAnimation(483);
-									cross1->SetState(ITEM_STATE_ACTIVE);
-									cross1->SetPosition(x, y);
-									listItem1.push_back(cross1);
-									break;
-								case holywaterInside:
-									holy1 = new HolyWater1();
-									holy1->AddAnimation(491);
-									holy1->SetState(ITEM_STATE_ACTIVE);
-									holy1->SetPosition(x, y);
-									listItem1.push_back(holy1);
-									break;
-								case whitebagInside:
-									goldbag1 = new GoldBag(0);
-									goldbag1->AddAnimation(778);
-									goldbag1->AddAnimation(779);
-									goldbag1->AddAnimation(780);
-									goldbag1->SetState(ITEM_STATE_ACTIVE);
-									goldbag1->SetPosition(x, y);
-									listItem1.push_back(goldbag1);
-									break;
-								case redbagInside:
-									goldbag1 = new GoldBag(1);
-									goldbag1->AddAnimation(778);
-									goldbag1->AddAnimation(779);
-									goldbag1->AddAnimation(780);
-									goldbag1->SetState(ITEM_STATE_ACTIVE);
-									goldbag1->SetPosition(x, y);
-									listItem1.push_back(goldbag1);
-									break;
-								case bluebagInside:
-									goldbag1 = new GoldBag(2);
-									goldbag1->AddAnimation(778);
-									goldbag1->AddAnimation(779);
-									goldbag1->AddAnimation(780);
-									goldbag1->SetState(ITEM_STATE_ACTIVE);
-									goldbag1->SetPosition(x, y);
-									listItem1.push_back(goldbag1);
-									break;
-
-
-								default:
-									break;
-								}
-								listEnemy1.erase(listEnemy1.begin() + i);
-								i = i - 1;
-							}
-
-
-					}
-					else
-						if (dynamic_cast<Panther *>(listEnemy1.at(i)))
-						{
-							if (listEnemy1.at(i)->state == PANTHER_STATE_ACTIVE_LEFT ||
-								listEnemy1.at(i)->state == PANTHER_STATE_ACTIVE_RIGHT ||
-								listEnemy1.at(i)->state == PANTHER_STATE_JUMPING_LEFT ||
-								listEnemy1.at(i)->state == PANTHER_STATE_JUMPING_RIGHT ||
-								listEnemy1.at(i)->state == PANTHER_STATE_SIT_LEFT ||
-								listEnemy1.at(i)->state == PANTHER_STATE_SIT_RIGHT ||
-								listEnemy1.at(i)->state == ENEMY_STATE_FREEZE)
-							{
-								float x, y;
-								OutputDebugString(L"Collision Dagger and Pant \n");
-								listEnemy1.at(i)->SetState(PANTHER_STATE_INACTIVE);
-								listEnemy1.at(i)->GetPosition(x, y);
-								simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
-								simon1->notUseDagger();
-
-
-
-
-								switch (listEnemy1.at(i)->itemInside)
-								{
-								case 0:
-									break;
-								case bigheartInside:
-									bigheart1 = new BigHeart();
-									bigheart1->AddAnimation(765);
-									bigheart1->SetState(ITEM_STATE_ACTIVE);
-									bigheart1->SetPosition(x, y);
-									listItem1.push_back(bigheart1);
-									break;
-								case morningstarInside:
-									morningstar1 = new MorningStar();
-									morningstar1->AddAnimation(777);
-									morningstar1->SetState(ITEM_STATE_ACTIVE);
-									morningstar1->SetPosition(x, y);
-									listItem1.push_back(morningstar1);
-									break;
-								case daggerInside:
-									dagger1 = new Dagger1();
-									dagger1->AddAnimation(767);
-									dagger1->SetState(ITEM_STATE_ACTIVE);
-									dagger1->SetPosition(x, y);
-									listItem1.push_back(dagger1);
-									break;
-								case smallheartInside:
-									smallheart1 = new SmallHeart(x);
-									smallheart1->AddAnimation(482);
-									smallheart1->SetState(ITEM_STATE_ACTIVE);
-									smallheart1->SetPosition(x, y);
-									listItem1.push_back(smallheart1);
-									break;
-								case crossInside:
-									cross1 = new Cross1();
-									cross1->AddAnimation(483);
-									cross1->SetState(ITEM_STATE_ACTIVE);
-									cross1->SetPosition(x, y);
-									listItem1.push_back(cross1);
-									break;
-								case holywaterInside:
-									holy1 = new HolyWater1();
-									holy1->AddAnimation(491);
-									holy1->SetState(ITEM_STATE_ACTIVE);
-									holy1->SetPosition(x, y);
-									listItem1.push_back(holy1);
-									break;
-								case whitebagInside:
-									goldbag1 = new GoldBag(0);
-									goldbag1->AddAnimation(778);
-									goldbag1->AddAnimation(779);
-									goldbag1->AddAnimation(780);
-									goldbag1->SetState(ITEM_STATE_ACTIVE);
-									goldbag1->SetPosition(x, y);
-									listItem1.push_back(goldbag1);
-									break;
-								case redbagInside:
-									goldbag1 = new GoldBag(1);
-									goldbag1->AddAnimation(778);
-									goldbag1->AddAnimation(779);
-									goldbag1->AddAnimation(780);
-									goldbag1->SetState(ITEM_STATE_ACTIVE);
-									goldbag1->SetPosition(x, y);
-									listItem1.push_back(goldbag1);
-									break;
-								case bluebagInside:
-									goldbag1 = new GoldBag(2);
-									goldbag1->AddAnimation(778);
-									goldbag1->AddAnimation(779);
-									goldbag1->AddAnimation(780);
-									goldbag1->SetState(ITEM_STATE_ACTIVE);
-									goldbag1->SetPosition(x, y);
-									listItem1.push_back(goldbag1);
-									break;
-
-
-								default:
-									break;
-								}
-								listEnemy1.erase(listEnemy1.begin() + i);
-								i = i - 1;
-							}
-
-
-						}
-						else
-							if (dynamic_cast<Bat *>(listEnemy1.at(i)))
-							{
-								if (listEnemy1.at(i)->state == BAT_STATE_ACTIVE_LEFT ||
-									listEnemy1.at(i)->state == BAT_STATE_ACTIVE_RIGHT ||
-									listEnemy1.at(i)->state == ENEMY_STATE_FREEZE)
-								{
-									float x, y;
-									OutputDebugString(L"Collision DAGGER and Bat \n");
-									listEnemy1.at(i)->SetState(BAT_STATE_INACTIVE);
-									listEnemy1.at(i)->GetPosition(x, y);
-									simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
-									simon1->notUseDagger();
-
-
-
-
-									switch (listEnemy1.at(i)->itemInside)
-									{
-									case 0:
-										break;
-									case bigheartInside:
-										bigheart1 = new BigHeart();
-										bigheart1->AddAnimation(765);
-										bigheart1->SetState(ITEM_STATE_ACTIVE);
-										bigheart1->SetPosition(x, y);
-										listItem1.push_back(bigheart1);
-										break;
-									case morningstarInside:
-										morningstar1 = new MorningStar();
-										morningstar1->AddAnimation(777);
-										morningstar1->SetState(ITEM_STATE_ACTIVE);
-										morningstar1->SetPosition(x, y);
-										listItem1.push_back(morningstar1);
-										break;
-									case daggerInside:
-										dagger1 = new Dagger1();
-										dagger1->AddAnimation(767);
-										dagger1->SetState(ITEM_STATE_ACTIVE);
-										dagger1->SetPosition(x, y);
-										listItem1.push_back(dagger1);
-										break;
-									case smallheartInside:
-										smallheart1 = new SmallHeart(x);
-										smallheart1->AddAnimation(482);
-										smallheart1->SetState(ITEM_STATE_ACTIVE);
-										smallheart1->SetPosition(x, y);
-										listItem1.push_back(smallheart1);
-										break;
-									case crossInside:
-										cross1 = new Cross1();
-										cross1->AddAnimation(483);
-										cross1->SetState(ITEM_STATE_ACTIVE);
-										cross1->SetPosition(x, y);
-										listItem1.push_back(cross1);
-										break;
-									case holywaterInside:
-										holy1 = new HolyWater1();
-										holy1->AddAnimation(491);
-										holy1->SetState(ITEM_STATE_ACTIVE);
-										holy1->SetPosition(x, y);
-										listItem1.push_back(holy1);
-										break;
-									case whitebagInside:
-										goldbag1 = new GoldBag(0);
-										goldbag1->AddAnimation(778);
-										goldbag1->AddAnimation(779);
-										goldbag1->AddAnimation(780);
-										goldbag1->SetState(ITEM_STATE_ACTIVE);
-										goldbag1->SetPosition(x, y);
-										listItem1.push_back(goldbag1);
-										break;
-									case redbagInside:
-										goldbag1 = new GoldBag(1);
-										goldbag1->AddAnimation(778);
-										goldbag1->AddAnimation(779);
-										goldbag1->AddAnimation(780);
-										goldbag1->SetState(ITEM_STATE_ACTIVE);
-										goldbag1->SetPosition(x, y);
-										listItem1.push_back(goldbag1);
-										break;
-									case bluebagInside:
-										goldbag1 = new GoldBag(2);
-										goldbag1->AddAnimation(778);
-										goldbag1->AddAnimation(779);
-										goldbag1->AddAnimation(780);
-										goldbag1->SetState(ITEM_STATE_ACTIVE);
-										goldbag1->SetPosition(x, y);
-										listItem1.push_back(goldbag1);
-										break;
-
-
-									default:
-										break;
-									}
-									listEnemy1.erase(listEnemy1.begin() + i);
-									i = i - 1;
-								}
-
-
-							}
 
 				}
 			}
@@ -2366,18 +2143,17 @@ void Scene2::CollisionBetWeaponAndEnemy()
 			{
 				if (simon1->dagger->CheckCollision(listTorches1.at(i)) == true)
 				{
+					simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
+					simon1->notUseDagger();
 					if (dynamic_cast<Torch *>(listTorches1.at(i)))
 					{
-						if (listTorches1.at(i)->state == TORCH_STATE_ACTIVE)
+						if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
 						{
 							float x, y;
-							OutputDebugString(L"Collision Whip and Candle \n");
 							listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
 							listTorches1.at(i)->GetPosition(x, y);
-							simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
-							simon1->notUseDagger();
 
-							switch (listTorches1.at(i)->itemInside)
+							switch (listEnemy1.at(i)->itemInside)
 							{
 							case 0:
 								break;
@@ -2451,20 +2227,262 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								listItem1.push_back(goldbag1);
 								break;
 
-
+							case chickenInside:
+								chick = new Chicken();
+								chick->AddAnimation(490);
+								chick->SetState(ITEM_STATE_ACTIVE);
+								chick->SetPosition(x, y);
+								listItem1.push_back(chick);
+								break;
+							case axeInside:
+								axe1 = new Axe1();
+								axe1->AddAnimation(427);
+								axe1->SetState(ITEM_STATE_ACTIVE);
+								axe1->SetPosition(x, y);
+								listItem1.push_back(axe1);
 							default:
 								break;
 							}
-							listTorches1.erase(listTorches1.begin() + i);
-							i = i - 1; //Optional cuz simon only can hit 1 torch at one moment
-						}
 
+							listTorches1.erase(listTorches1.begin() + i);
+							i = i - 1;
+						}
 					}
 				}
 			}
 
 
 		}
+		else
+		if (simon1->axe->state != AXE_STATE_INACTIVE && simon1->axe->isOn == true && simon1->isUsingDagger == true)
+		{
+			for (UINT i = 0; i < listEnemy1.size(); i++)
+			{
+				if (simon1->axe->CheckCollision(listEnemy1.at(i)) == true)
+				{
+					if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
+					{
+						simon1->axe->SetState(AXE_STATE_INACTIVE);
+						simon1->notUseDagger();
+						if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
+						{
+							float x, y;
+							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
+							listEnemy1.at(i)->GetPosition(x, y);
+
+							switch (listEnemy1.at(i)->itemInside)
+							{
+							case 0:
+								break;
+							case bigheartInside:
+								bigheart1 = new BigHeart();
+								bigheart1->AddAnimation(765);
+								bigheart1->SetState(ITEM_STATE_ACTIVE);
+								bigheart1->SetPosition(x, y);
+								listItem1.push_back(bigheart1);
+								break;
+							case morningstarInside:
+								morningstar1 = new MorningStar();
+								morningstar1->AddAnimation(777);
+								morningstar1->SetState(ITEM_STATE_ACTIVE);
+								morningstar1->SetPosition(x, y);
+								listItem1.push_back(morningstar1);
+								break;
+							case daggerInside:
+								dagger1 = new Dagger1();
+								dagger1->AddAnimation(767);
+								dagger1->SetState(ITEM_STATE_ACTIVE);
+								dagger1->SetPosition(x, y);
+								listItem1.push_back(dagger1);
+								break;
+							case smallheartInside:
+								smallheart1 = new SmallHeart(x);
+								smallheart1->AddAnimation(482);
+								smallheart1->SetState(ITEM_STATE_ACTIVE);
+								smallheart1->SetPosition(x, y);
+								listItem1.push_back(smallheart1);
+								break;
+							case crossInside:
+								cross1 = new Cross1();
+								cross1->AddAnimation(483);
+								cross1->SetState(ITEM_STATE_ACTIVE);
+								cross1->SetPosition(x, y);
+								listItem1.push_back(cross1);
+								break;
+							case holywaterInside:
+								holy1 = new HolyWater1();
+								holy1->AddAnimation(491);
+								holy1->SetState(ITEM_STATE_ACTIVE);
+								holy1->SetPosition(x, y);
+								listItem1.push_back(holy1);
+								break;
+							case whitebagInside:
+								goldbag1 = new GoldBag(0);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case redbagInside:
+								goldbag1 = new GoldBag(1);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case bluebagInside:
+								goldbag1 = new GoldBag(2);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+
+							case chickenInside:
+								chick = new Chicken();
+								chick->AddAnimation(490);
+								chick->SetState(ITEM_STATE_ACTIVE);
+								chick->SetPosition(x, y);
+								listItem1.push_back(chick);
+								break;
+							case axeInside:
+								axe1 = new Axe1();
+								axe1->AddAnimation(427);
+								axe1->SetState(ITEM_STATE_ACTIVE);
+								axe1->SetPosition(x, y);
+								listItem1.push_back(axe1);
+							default:
+								break;
+							}
+
+							listEnemy1.erase(listEnemy1.begin() + i);
+							i = i - 1;
+						}
+					}
+
+				}
+			}
+			for (UINT i = 0; i < listTorches1.size(); i++)
+			{
+				if (simon1->dagger->CheckCollision(listTorches1.at(i)) == true)
+				{
+					simon1->axe->SetState(AXE_STATE_INACTIVE);
+					simon1->notUseDagger();
+					if (dynamic_cast<Torch *>(listTorches1.at(i)))
+					{
+						if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
+						{
+							float x, y;
+							listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
+							listTorches1.at(i)->GetPosition(x, y);
+
+							switch (listEnemy1.at(i)->itemInside)
+							{
+							case 0:
+								break;
+							case bigheartInside:
+								bigheart1 = new BigHeart();
+								bigheart1->AddAnimation(765);
+								bigheart1->SetState(ITEM_STATE_ACTIVE);
+								bigheart1->SetPosition(x, y);
+								listItem1.push_back(bigheart1);
+								break;
+							case morningstarInside:
+								morningstar1 = new MorningStar();
+								morningstar1->AddAnimation(777);
+								morningstar1->SetState(ITEM_STATE_ACTIVE);
+								morningstar1->SetPosition(x, y);
+								listItem1.push_back(morningstar1);
+								break;
+							case daggerInside:
+								dagger1 = new Dagger1();
+								dagger1->AddAnimation(767);
+								dagger1->SetState(ITEM_STATE_ACTIVE);
+								dagger1->SetPosition(x, y);
+								listItem1.push_back(dagger1);
+								break;
+							case smallheartInside:
+								smallheart1 = new SmallHeart(x);
+								smallheart1->AddAnimation(482);
+								smallheart1->SetState(ITEM_STATE_ACTIVE);
+								smallheart1->SetPosition(x, y);
+								listItem1.push_back(smallheart1);
+								break;
+							case crossInside:
+								cross1 = new Cross1();
+								cross1->AddAnimation(483);
+								cross1->SetState(ITEM_STATE_ACTIVE);
+								cross1->SetPosition(x, y);
+								listItem1.push_back(cross1);
+								break;
+							case holywaterInside:
+								holy1 = new HolyWater1();
+								holy1->AddAnimation(491);
+								holy1->SetState(ITEM_STATE_ACTIVE);
+								holy1->SetPosition(x, y);
+								listItem1.push_back(holy1);
+								break;
+							case whitebagInside:
+								goldbag1 = new GoldBag(0);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case redbagInside:
+								goldbag1 = new GoldBag(1);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+							case bluebagInside:
+								goldbag1 = new GoldBag(2);
+								goldbag1->AddAnimation(778);
+								goldbag1->AddAnimation(779);
+								goldbag1->AddAnimation(780);
+								goldbag1->SetState(ITEM_STATE_ACTIVE);
+								goldbag1->SetPosition(x, y);
+								listItem1.push_back(goldbag1);
+								break;
+
+							case chickenInside:
+								chick = new Chicken();
+								chick->AddAnimation(490);
+								chick->SetState(ITEM_STATE_ACTIVE);
+								chick->SetPosition(x, y);
+								listItem1.push_back(chick);
+								break;
+							case axeInside:
+								axe1 = new Axe1();
+								axe1->AddAnimation(427);
+								axe1->SetState(ITEM_STATE_ACTIVE);
+								axe1->SetPosition(x, y);
+								listItem1.push_back(axe1);
+							default:
+								break;
+							}
+
+							listTorches1.erase(listTorches1.begin() + i);
+							i = i - 1;
+						}
+					}
+				}
+			}
+
+
+		}
+
 }
 
 void Scene2::CollisionBetSimonAndItem()

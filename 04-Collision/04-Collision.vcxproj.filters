@@ -285,11 +285,11 @@
     <ClCompile Include="Clock1.cpp">
       <Filter>Framework\Item</Filter>
     </ClCompile>
-    <ClCompile Include="Scene2.cpp">
-      <Filter>Framework\Item</Filter>
-    </ClCompile>
     <ClCompile Include="Axe1.cpp">
       <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene2.cpp">
+      <Filter>Framework\Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
