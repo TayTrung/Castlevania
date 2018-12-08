@@ -9,19 +9,10 @@ void Bat::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	if (GetTickCount() - freezeTime_Start > ENEMY_FREEZE_TIME)
 	{
 		freezeTime_Start = 0;
-		if (freezed == true)
-		{
-
-			if (nx == 1)
-				this->SetState(BAT_STATE_ACTIVE_RIGHT);
-			else
-				this->SetState(BAT_STATE_ACTIVE_LEFT);
-
-		}
 		freezed = false;
 	}
 	
-	//if (freezed == false)
+	if (freezed == false)
 	{
 		x += dx;
 		y += dy;
@@ -65,36 +56,37 @@ void Bat::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 void Bat::Render()
 {
 	int ani;
-	if (this->GetState() == BAT_STATE_ACTIVE_RIGHT)
+	if (this->freezed == true)
 	{
-		ani = BAT_ANI_RIGHT;
-		animations[ani]->Render(x, y);
-		//	RenderBoundingBox(100);
-	}
-	else
-		if (this->GetState() == BAT_STATE_ACTIVE_LEFT)
-		{
 
-			ani = BAT_ANI_LEFT;
+		if (this->nx == 1)
+		{
+			ani = BAT_ANI_FREEZE_RIGHT;
 			animations[ani]->Render(x, y);
-			//RenderBoundingBox(100);
 		}
 		else
-			if(this->GetState()==ENEMY_STATE_FREEZE)
-			{
-				
-				if (this->nx == 1)
-				{
-					ani = BAT_ANI_FREEZE_RIGHT;
-					animations[ani]->Render(x, y);
-				}
-				else
-				{
+		{
 
-					ani = BAT_ANI_FREEZE_LEFT;
-					animations[ani]->Render(x, y);
-				}
-			 }
+			ani = BAT_ANI_FREEZE_LEFT;
+			animations[ani]->Render(x, y);
+		}
+	}
+	else
+		if (this->GetState() == BAT_STATE_ACTIVE_RIGHT)
+		{
+			ani = BAT_ANI_RIGHT;
+			animations[ani]->Render(x, y);
+			//	RenderBoundingBox(100);
+		}
+		else
+			if (this->GetState() == BAT_STATE_ACTIVE_LEFT)
+			{
+
+				ani = BAT_ANI_LEFT;
+				animations[ani]->Render(x, y);
+				//RenderBoundingBox(100);
+			}
+			
 }
 
 void Bat::SetState(int state)
@@ -113,10 +105,6 @@ void Bat::SetState(int state)
 		nx = -1;
 		break;
 
-	case ENEMY_STATE_FREEZE:
-		vx = 0;
-		vy = 0;
-		break;
 	}
 
 }

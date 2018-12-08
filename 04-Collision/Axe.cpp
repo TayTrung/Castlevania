@@ -87,13 +87,13 @@ void Axe::Render()
 	{
 		ani = AXE_ANI_LEFT;
 		animations[ani]->Render(x, y);
-		RenderBoundingBox(50);
+		//RenderBoundingBox(50);
 	}
 	else if (this->GetState() == AXE_STATE_ACTIVE_RIGHT)
 	{
 		ani = AXE_ANI_RIGHT;
 		animations[ani]->Render(x, y);
-		RenderBoundingBox(50);
+		//RenderBoundingBox(50);
 	}
 
 	//else this->GetState() == DAGGER_STATE_INACTIVE;

@@ -134,6 +134,8 @@
     <ClInclude Include="Dagger.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="Effect.h" />
+    <ClInclude Include="FireBall.h" />
     <ClInclude Include="Ghou.h" />
     <ClInclude Include="GoldBag.h" />
     <ClInclude Include="Camera.h" />
@@ -145,6 +147,8 @@
     <ClInclude Include="GroundEnemy.h" />
     <ClInclude Include="HolyWater.h" />
     <ClInclude Include="HolyWater1.h" />
+    <ClInclude Include="Monster.h" />
+    <ClInclude Include="Numbah.h" />
     <ClInclude Include="Panther.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene1.h" />
@@ -176,6 +180,8 @@
     <ClCompile Include="Dagger.cpp" />
     <ClCompile Include="define.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="Ghou.cpp" />
     <ClCompile Include="GoldBag.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -187,6 +193,8 @@
     <ClCompile Include="GroundEnemy.cpp" />
     <ClCompile Include="HolyWater.cpp" />
     <ClCompile Include="HolyWater1.cpp" />
+    <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="Numbah.cpp" />
     <ClCompile Include="Panther.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Scene1.cpp" />

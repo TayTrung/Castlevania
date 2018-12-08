@@ -29,6 +29,9 @@
 #include "Clock.h"
 #include "Axe1.h"
 #include "Axe.h"
+#include "Effect.h"
+#include "Monster.h"
+#include "FireBall.h"
 class Scene
 {
 public:
@@ -43,6 +46,8 @@ public:
 	virtual void CollisionBetWeaponAndEnemy()=0;
 	virtual void CollisionBetSimonAndItem()=0;
 	virtual void CollisionBetSimonAndEnemy()=0;
+
+	virtual void spawnItemsAfterEffect()=0;
 	virtual int CollisionBetSimonAndUpStairs()=0;
 	virtual int CollisionBetSimonAndDownStairs()=0;
 	Scene();

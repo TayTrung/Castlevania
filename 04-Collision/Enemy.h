@@ -7,7 +7,7 @@ class Enemy : public CGameObject
 {
 
 public:
-
+	bool spawnFireBall;
 	bool freezed;
 	DWORD freezeTime_Start;
 	int itemInside;

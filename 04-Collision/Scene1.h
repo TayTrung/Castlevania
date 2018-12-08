@@ -13,12 +13,12 @@ public:
 	virtual void LoadResources();
 	virtual void Update(DWORD dt);
 	virtual void Render();
-	
+	bool proceedToLvl2;
 	virtual void CollisionBetWeaponAndEnemy();
 	virtual void CollisionBetSimonAndItem();
 
 	virtual void CollisionBetSimonAndEnemy();
-
+	virtual void spawnItemsAfterEffect();
 	virtual int CollisionBetSimonAndUpStairs();
 	virtual int CollisionBetSimonAndDownStairs();
 	Scene1();

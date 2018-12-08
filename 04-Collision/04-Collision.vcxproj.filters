@@ -44,6 +44,9 @@
     <Filter Include="Framework\Weapon">
       <UniqueIdentifier>{1329f0ab-9e16-4264-8842-32945ab586af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Effect">
+      <UniqueIdentifier>{ef5a9835-90ce-4536-b502-a83fcb6abec2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Whip.h">
@@ -154,9 +157,6 @@
     <ClInclude Include="Clock.h">
       <Filter>Framework\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="HolyWater.h">
-      <Filter>Framework\Weapon</Filter>
-    </ClInclude>
     <ClInclude Include="Axe.h">
       <Filter>Framework\Weapon</Filter>
     </ClInclude>
@@ -165,6 +165,21 @@
     </ClInclude>
     <ClInclude Include="Axe1.h">
       <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="HolyWater.h">
+      <Filter>Framework\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>Framework\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Numbah.h">
+      <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>Framework\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Framework\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -290,6 +305,18 @@
     </ClCompile>
     <ClCompile Include="Scene2.cpp">
       <Filter>Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>Framework\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Numbah.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>Framework\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Framework\Effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

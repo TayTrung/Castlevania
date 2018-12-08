@@ -93,7 +93,7 @@
 
 #pragma region Enemy
 
-#define ENEMY_FREEZE_TIME	1500
+#define ENEMY_FREEZE_TIME	4500
 
 #define ENEMY_STATE_FREEZE 495
 
@@ -116,6 +116,48 @@
 #define GHOU_WALKING_SPEED 0.05f
 #pragma endregion
 
+#pragma region Monster
+
+#define MONSTER_BBOX_WIDTH		16
+#define MONSTER_BBOX_HEIGHT		30
+
+
+#define MONSTER_ANI_RIGHT			0
+#define MONSTER_ANI_LEFT			1
+#define MONSTER_ANI_FIRE_RIGHT		2
+#define MONSTER_ANI_FIRE_LEFT		3
+#define MONSTER_ANI_UNDERWATER		4
+#define MONSTER_ANI_FREEZE_RIGHT	5
+#define MONSTER_ANI_FREEZE_LEFT		6
+#define MONSTER_ANI_FREEZE_FIRE_RIGHT 7
+#define MONSTER_ANI_FREEZE_FIRE_LEFT 8
+
+#define MONSTER_STATE_ACTIVE_RIGHT	50
+#define MONSTER_STATE_ACTIVE_LEFT	100
+#define MONSTER_STATE_FIRE_RIGHT	150
+#define MONSTER_STATE_FIRE_LEFT		250
+#define	MONSTER_STATE_UNDERWATER	300
+#define MONSTER_STATE_INACTIVE		200
+
+#define MONSTER_WALKING_SPEED 0.03f
+#define MONSTER_JUMP_SPEED 0.80f
+#pragma endregion
+
+#pragma region FireBall
+
+#define FIREBALL_BBOX_WIDTH 7
+#define FIREBALL_BBOX_HEIGHT 6
+
+#define FIREBALL_STATE_ACTIVE_RIGHT 0
+#define FIREBALL_STATE_ACTIVE_LEFT	100
+#define FIREBALL_STATE_INACTIVE		200
+
+#define FIREBALL_ANI_RIGHT			0
+#define FIREBALL_ANI_LEFT			1
+
+#define FIREBALL_SPEED 0.1f
+
+#pragma endregion
 #pragma region Bat
 
 #define BAT_BBOX_WIDTH		16
@@ -196,7 +238,7 @@
 #define clockInside 13
 
 #define ID_TEX_SIMON 0
-
+#define ID_TEX_EFFECT 99
 #define ID_TEX_WHIP 10	
 #define ID_TEX_HOLYWATER 11
 #define ID_TEX_AXE 12
@@ -204,14 +246,17 @@
 #define ID_TEX_GROUND 20
 #define ID_TEX_GROUND3 21
 #define ID_TEX_GROUND4 22
+#define ID_TEX_GROUND2 24
 #define ID_TEX_DOOR 23
 
 #define ID_TEX_TORCH 30
 #define ID_TEX_CANDLE 32
 #define ID_TEX_GHOUL 31
 #define ID_TEX_BAT 34
+#define ID_TEX_MONSTER 35
 #define ID_TEX_PANTHER 33
 #define ID_TEX_MOR 40
+#define ID_TEX_FIREBALL 41
 
 #define ID_TEX_ITEM_BIGHEART 50
 #define ID_TEX_ITEM_SWORD 60
@@ -237,8 +282,10 @@
 #pragma region Item
 
 #define ITEM_STATE_ACTIVE		100
+#define ITEM_STATE_DROPPED		300
 #define ITEM_STATE_INACTIVE		200
 
+#define ITEM_MAX_TIME_DROP 3000
 #pragma endregion
 
 #pragma region Axe1
@@ -247,7 +294,12 @@
 #define AXE1_BBOX_HEIGHT 14
 
 #pragma endregion
+#pragma region Numbah
 
+#define NUMBAH_BBOX_WIDTH	14
+#define NUMBAH_BBOX_HEIGHT	14
+
+#pragma endregion
 #pragma region BigHeart
 
 #define BIGHEART_BBOX_WIDTH  12
@@ -384,7 +436,6 @@
 
 #define HOLYWATER_FLYING_SPEED			0.2f 
 
-
 #define HOLYWATER_BURN_TIME				1600
 
 #pragma endregion
@@ -404,6 +455,16 @@
 
 #define AXE_FLYING_SPEED			0.2f 
 
+#pragma endregion
+#pragma region
+
+#define EFFECT_STATE_ACTIVE 150
+#define EFFECT_STATE_INACTIVE 300
+
+#define EFFECT_ANI_ACTIVE	0
+#define EFFECT_ANI_INACTIVE 1
+
+#define EFFECT_TIME 400
 #pragma endregion
 
 #pragma region Simon

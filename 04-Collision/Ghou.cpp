@@ -16,7 +16,8 @@ void Ghou::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	vy += ITEM_GRAVITY * dt;
+	if (freezed == false)
+		vy += ITEM_GRAVITY * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -28,10 +29,7 @@ void Ghou::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		freezeTime_Start = 0;
 		freezed = false;
-		if (nx == 1)
-			this->SetState(GHOU_STATE_ACTIVE_RIGHT);
-		else
-			this->SetState(GHOU_STATE_ACTIVE_LEFT);
+
 
 	}
 	// No collision occured, proceed normally
@@ -64,15 +62,8 @@ void Ghou::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	float x1, y1;
 	x1 = Camera::GetInstance()->GetPosition().x;
-	if (x1 > 1160)
-	{
-		if (x <= x1+5 && this->GetState() == GHOU_STATE_ACTIVE_LEFT)
-			this->SetState(GHOU_STATE_ACTIVE_RIGHT);
-		else
-			if (x > (x1 + SCREEN_WIDTH - 40) && this->GetState() == GHOU_STATE_ACTIVE_RIGHT)
-				this->SetState(GHOU_STATE_ACTIVE_LEFT);
-	}
-	if (x<x1 || x>x1 + SCREEN_WIDTH)
+	
+ 	if (x<x1 || x>x1 + SCREEN_WIDTH)
 		this->SetState(GHOU_STATE_INACTIVE);
 	
 
@@ -83,36 +74,38 @@ void Ghou::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void Ghou::Render()
 {
 	int ani;
-	if (this->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+	if (this->freezed==true)
 	{
-		ani = GHOU_ANI_RIGHT;
-		animations[ani]->Render(x, y);
-	//	RenderBoundingBox(100);
-	}
-	else 
-		if (this->GetState() == GHOU_STATE_ACTIVE_LEFT)
-		{
 
-			ani = GHOU_ANI_LEFT;
+		if (this->nx == 1)
+		{
+			ani = GHOU_ANI_FREEZE_RIGHT;
 			animations[ani]->Render(x, y);
-			//RenderBoundingBox(100);
 		}
 		else
-			if (this->GetState() == ENEMY_STATE_FREEZE)
+		{
+
+			ani = GHOU_ANI_FREEZE_LEFT;
+			animations[ani]->Render(x, y);
+		}
+	}
+
+	else
+		if (this->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+		{
+			ani = GHOU_ANI_RIGHT;
+			animations[ani]->Render(x, y);
+			//	RenderBoundingBox(100);
+		}
+		else
+			if (this->GetState() == GHOU_STATE_ACTIVE_LEFT)
 			{
 
-				if (this->nx == 1)
-				{
-					ani = GHOU_ANI_FREEZE_RIGHT;
-					animations[ani]->Render(x, y);
-				}
-				else
-				{
-
-					ani = GHOU_ANI_FREEZE_LEFT;
-					animations[ani]->Render(x, y);
-				}
+				ani = GHOU_ANI_LEFT;
+				animations[ani]->Render(x, y);
+				//RenderBoundingBox(100);
 			}
+
 
 
 }
@@ -129,9 +122,6 @@ void Ghou::SetState(int state)
 	case GHOU_STATE_ACTIVE_LEFT:
 		vx = -GHOU_WALKING_SPEED;
 		nx = -1;
-		break;
-	case ENEMY_STATE_FREEZE:
-		vx = 0;
 		break;
 	}
 }

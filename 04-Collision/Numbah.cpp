@@ -1,8 +1,8 @@
-#include "GoldBag.h"
+#include "Numbah.h"
 
 
 
-void GoldBag::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
+void Numbah::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
@@ -25,6 +25,7 @@ void GoldBag::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		dropTime_Start = 0;
 		dropped = false;
 	}
+
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
@@ -44,13 +45,10 @@ void GoldBag::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		if (nx != 0) vx = 0;
 		if (ny != 0)
 		{
-
 			this->SetState(ITEM_STATE_DROPPED);
 			StartCountTIme();
-
 			vy = 0;
 		}
-
 
 	}
 
@@ -58,55 +56,39 @@ void GoldBag::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-GoldBag::GoldBag(int xtype)
+Numbah::Numbah()
 {
-	state = ITEM_STATE_INACTIVE;
-	type = xtype;
+	state = ITEM_STATE_ACTIVE;
 }
 
 
-GoldBag::~GoldBag()
+Numbah::~Numbah()
 {
 }
 
 
-void GoldBag::GetBoundingBox(float &left, float &top, float &right, float &bottom)
+void Numbah::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	left = x;
 	top = y;
-	right = x + GOLDBAG_BBOX_WIDTH;
-	bottom = y + GOLDBAG_BBOX_HEIGHT;
+	right = x + AXE1_BBOX_WIDTH;
+	bottom = y + AXE1_BBOX_HEIGHT;
 }
 
 
 
-void GoldBag::Render()
+void Numbah::Render()
 {
 	if (this->GetState() == ITEM_STATE_ACTIVE || this->GetState() == ITEM_STATE_DROPPED)
 	{
-		int ani;
-		if (type == 0)
-		{
-			ani = GOLDBAG_ANI_WHITE;
-		}
-		else
-			if (type == 1)
-			{
-				ani = GOLDBAG_ANI_RED;
-			}
-			else
-				if (type == 2)
-				{
-					ani = GOLDBAG_ANI_BLUE;
-				}
-		animations[ani]->Render(x, y);
-	//	RenderBoundingBox(100);
+		animations[0]->Render(x, y);
+		//	RenderBoundingBox(100);
 	}
 
 
 }
 
-void GoldBag::SetState(int state)
+void Numbah::SetState(int state)
 {
 	this->state = state;
 

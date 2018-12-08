@@ -45,6 +45,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 	void SetState(int state);
+
 	void StartUntouchable() { untouchable = true; untouchable_start = GetTickCount(); }
 	//void PickedSword();
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);

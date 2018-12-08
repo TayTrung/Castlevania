@@ -36,7 +36,7 @@ void Torch::Render()
 	if (this->GetState() == TORCH_STATE_ACTIVE)
 	{
 		animations[0]->Render(x, y);
-	RenderBoundingBox(100);
+	//RenderBoundingBox(100);
 	}
 
 	
@@ -50,6 +50,10 @@ Torch::Torch(int type1)
 	else
 		state = CANDLE_STATE_ACTIVE;
 	//isKilled = false;
+}
+
+Torch::~Torch()
+{
 }
 
 

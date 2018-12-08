@@ -13,7 +13,7 @@ void SmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	//
 	// TO-DO: make sure Goomba can interact with the world and to each of them too!
 	// 
-	bool chamDat = false;
+	//bool chamDat = false;
 	
 	
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -22,6 +22,14 @@ void SmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	coEvents.clear();
 
 	CalcPotentialCollisions(colliable_objects, coEvents);
+
+	if (GetTickCount() - dropTime_Start > ITEM_MAX_TIME_DROP)
+	{
+		if (this->GetState() == ITEM_STATE_DROPPED)
+		this->SetState(ITEM_STATE_INACTIVE);
+		dropTime_Start = 0;
+		dropped = false;
+	}
 
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
@@ -42,15 +50,18 @@ void SmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		if (nx != 0) vx = 0;
 		if (ny != 0)
 		{
+
+			this->SetState(ITEM_STATE_DROPPED);
+			StartCountTIme();
+			//chamDat = true;
 			vy = 0;
-			chamDat = true;
 		}
 		
 
 
 
 	}
-	if (chamDat == false)
+	if (this->GetState()!=ITEM_STATE_DROPPED)//chamDat == false)
 	{
 		if (vx < 0 && x < this->x1 - 10) {
 			x = this->x1 - 10; vx = -vx;
@@ -93,7 +104,7 @@ void SmallHeart::GetBoundingBox(float &left, float &top, float &right, float &bo
 
 void SmallHeart::Render()
 {
-	if (this->GetState() == ITEM_STATE_ACTIVE)
+	if (this->GetState() == ITEM_STATE_ACTIVE || this->GetState() == ITEM_STATE_DROPPED)
 	{
 		animations[0]->Render(x, y);
 		//RenderBoundingBox(100);

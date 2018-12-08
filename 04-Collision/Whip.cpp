@@ -94,7 +94,7 @@ void Whip::Render()
 			ani = WHIP_ANI_RIGHT;
 			animations[ani]->Render(x, y);
 		}
-		RenderBoundingBox(100);
+	//	RenderBoundingBox(100);
 
 
 

@@ -18,6 +18,13 @@ void MorningStar::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 	CalcPotentialCollisions(colliable_objects, coEvents);
 
+	if (GetTickCount() - dropTime_Start > ITEM_MAX_TIME_DROP)
+	{
+		if (this->GetState() == ITEM_STATE_DROPPED)
+		this->SetState(ITEM_STATE_INACTIVE);
+		dropTime_Start = 0;
+		dropped = false;
+	}
 	//// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
@@ -38,7 +45,14 @@ void MorningStar::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		y += min_ty * dy + ny * 0.4f;
 
 		if (nx != 0) vx = 0;
-		if (ny != 0) vy = 0;
+		if (ny != 0)
+		{
+
+			this->SetState(ITEM_STATE_DROPPED);
+			StartCountTIme();
+
+			vy = 0;
+		}
 
 	}
 	// clean up collision events
@@ -47,7 +61,7 @@ void MorningStar::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 void MorningStar::Render()
 {
-	if (this->GetState() == ITEM_STATE_ACTIVE)
+	if (this->GetState() == ITEM_STATE_ACTIVE || this->GetState() == ITEM_STATE_DROPPED)
 	{
 		animations[0]->Render(x, y);
 		//RenderBoundingBox(100);

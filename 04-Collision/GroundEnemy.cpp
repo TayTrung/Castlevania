@@ -25,7 +25,7 @@ void GroundEnemy::Render()
 	if (this->GetState() == GROUND_STATE_ACTIVE)
 	{
 		animations[0]->Render(x, y);
-		RenderBoundingBox(100);
+		//RenderBoundingBox(100);
 	}
 
 

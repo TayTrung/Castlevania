@@ -1,8 +1,9 @@
 #include "Ground.h"
 
 void Ground::Render()
-{			
-	RenderBoundingBox(150);
+{		
+	if (type == 0)
+		RenderBoundingBox(150);
 }
 
 

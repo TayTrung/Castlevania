@@ -23,47 +23,49 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
+
 	if (offCollision == true)
 		if ((y > offsetMap + 140-20)&& (y<offsetMap+140))
 			offCollision = false;
 
 	if(offCollision==false)
 		CalcPotentialCollisions(coObjects, coEvents);
+
 	if (GetTickCount() - freezeTime_Start > ENEMY_FREEZE_TIME)
 	{
 		freezeTime_Start = 0;
-		if (freezed == true)
-		{
-			if (jumped == true && offCollision==false) // dang o duoi dat ma bi freeze
-			{
-				if (nx == 1)
-					this->SetState(PANTHER_STATE_ACTIVE_RIGHT);
-				else
-					this->SetState(PANTHER_STATE_ACTIVE_LEFT);
-			}
-			else
-				if(jumped == true && offCollision == true) // dang bay
-				{
-					if (nx == 1)
-						this->SetState(PANTHER_STATE_JUMPING_RIGHT);
-					else
-						this->SetState(PANTHER_STATE_JUMPING_LEFT);
-				}
-				else
-					if (jumped == false && offCollision == false) // dang sit
-					{
-						if (nx == 1)
-							this->SetState(PANTHER_STATE_SIT_RIGHT);
-						else
-							this->SetState(PANTHER_STATE_SIT_LEFT);
-					}
-		}
+		//if (freezed == true)
+		//{
+		//	if (jumped == true && offCollision==false) // dang o duoi dat ma bi freeze
+		//	{
+		//		if (nx == 1)
+		//			this->SetState(PANTHER_STATE_ACTIVE_RIGHT);
+		//		else
+		//			this->SetState(PANTHER_STATE_ACTIVE_LEFT);
+		//	}
+		//	else
+		//		if(jumped == true && offCollision == true) // dang bay
+		//		{
+		//			if (nx == 1)
+		//				this->SetState(PANTHER_STATE_JUMPING_RIGHT);
+		//			else
+		//				this->SetState(PANTHER_STATE_JUMPING_LEFT);
+		//		}
+		//		else
+		//			if (jumped == false && offCollision == false) // dang sit
+		//			{
+		//				if (nx == 1)
+		//					this->SetState(PANTHER_STATE_SIT_RIGHT);
+		//				else
+		//					this->SetState(PANTHER_STATE_SIT_LEFT);
+		//			}
+		//}
 		freezed = false;
 	}
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
-		//if (freezed == false)
+		if (freezed == false)
 		{
 			x += dx;
 			y += dy;
@@ -81,13 +83,16 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			y += min_ty * dy + ny * 0.4f;
 
 			//if (nx != 0) vx = 0;
-			if (ny != 0) vy = 0;
+			if (ny != 0)
+			{
+				vy = 0;
 
-			if (this->GetState() == PANTHER_STATE_JUMPING_LEFT)
-				this->SetState(PANTHER_STATE_ACTIVE_LEFT);
-			if (this->GetState() == PANTHER_STATE_JUMPING_RIGHT)
-				this->SetState(PANTHER_STATE_ACTIVE_RIGHT);
+				if (this->GetState() == PANTHER_STATE_JUMPING_LEFT)
+					this->SetState(PANTHER_STATE_ACTIVE_LEFT);
+				if (this->GetState() == PANTHER_STATE_JUMPING_RIGHT)
+					this->SetState(PANTHER_STATE_ACTIVE_RIGHT);
 
+			}
 
 	}
 
@@ -125,41 +130,7 @@ void Panther::Render()
 	int ani;
 	if (vx != 0)
 	{
-		if (this->GetState() == PANTHER_STATE_ACTIVE_RIGHT)
-		{
-			ani = PANTHER_ANI_RIGHT;
-			animations[ani]->Render(x, y);
-			//	RenderBoundingBox(100);
-		}
-		else
-			if (this->GetState() == PANTHER_STATE_ACTIVE_LEFT)
-			{
-
-				ani = PANTHER_ANI_LEFT;
-				animations[ani]->Render(x, y);
-				//RenderBoundingBox(100);
-			}
-			else
-				if (this->GetState() == PANTHER_STATE_JUMPING_RIGHT)
-				{
-					ani = PANTHER_ANI_JUMP_RIGHT;
-					animations[ani]->Render(x, y);
-					//	RenderBoundingBox(100);
-				}
-				else
-					if (this->GetState() == PANTHER_STATE_JUMPING_LEFT)
-					{
-
-						ani = PANTHER_ANI_JUMP_LEFT;
-						animations[ani]->Render(x, y);
-						//RenderBoundingBox(100);
-					}
-					
-
-	}
-	else
-	{
-		if (this->GetState() == ENEMY_STATE_FREEZE)
+		if (this->freezed == true)
 		{
 			if (jumped == true && offCollision == false)// dang duoi dat di
 			{
@@ -172,8 +143,8 @@ void Panther::Render()
 				else
 					if (this->nx == -1)
 					{
-					ani = PANTHER_ANI_FREEZE_LEFT;
-					animations[ani]->Render(x, y);
+						ani = PANTHER_ANI_FREEZE_LEFT;
+						animations[ani]->Render(x, y);
 					}
 			}
 			else
@@ -193,7 +164,7 @@ void Panther::Render()
 						}
 				}
 				else
-					if (jumped == false && offCollision == false)//dang sit
+					if (jumped == false && offCollision == false && this->x == this->X)//dang sit
 					{
 
 						if (this->nx == 1)
@@ -209,23 +180,76 @@ void Panther::Render()
 								animations[ani]->Render(x, y);
 							}
 					}
-		
+					else
+						if (jumped == false && offCollision == false)//dang chay ma chua nhay
+						{
+
+							if (this->nx == 1)
+							{
+
+								ani = PANTHER_ANI_FREEZE_RIGHT;
+								animations[ani]->Render(x, y);
+							}
+							else
+								if (this->nx == -1)
+								{
+									ani = PANTHER_ANI_FREEZE_LEFT;
+									animations[ani]->Render(x, y);
+								}
+						}
+
+
 		}
 		else
-
-			if (this->GetState() == PANTHER_STATE_SIT_RIGHT)
+			if (this->GetState() == PANTHER_STATE_ACTIVE_RIGHT)
 			{
-
-				ani = PANTHER_ANI_SIT_RIGHT;
+				ani = PANTHER_ANI_RIGHT;
 				animations[ani]->Render(x, y);
+				//	RenderBoundingBox(100);
 			}
 			else
-				if (this->GetState() == PANTHER_STATE_SIT_LEFT)
+				if (this->GetState() == PANTHER_STATE_ACTIVE_LEFT)
 				{
 
-					ani = PANTHER_ANI_SIT_LEFT;
+					ani = PANTHER_ANI_LEFT;
 					animations[ani]->Render(x, y);
+					//RenderBoundingBox(100);
 				}
+				else
+					if (this->GetState() == PANTHER_STATE_JUMPING_RIGHT)
+					{
+						ani = PANTHER_ANI_JUMP_RIGHT;
+						animations[ani]->Render(x, y);
+						//	RenderBoundingBox(100);
+					}
+					else
+						if (this->GetState() == PANTHER_STATE_JUMPING_LEFT)
+						{
+
+							ani = PANTHER_ANI_JUMP_LEFT;
+							animations[ani]->Render(x, y);
+							//RenderBoundingBox(100);
+						}
+
+
+	}
+	else
+	{
+
+
+		if (this->GetState() == PANTHER_STATE_SIT_RIGHT)
+		{
+
+			ani = PANTHER_ANI_SIT_RIGHT;
+			animations[ani]->Render(x, y);
+		}
+		else
+			if (this->GetState() == PANTHER_STATE_SIT_LEFT)
+			{
+
+				ani = PANTHER_ANI_SIT_LEFT;
+				animations[ani]->Render(x, y);
+			}
 	}
 	//RenderBoundingBox(100);
 
@@ -253,10 +277,6 @@ void Panther::SetState(int state)
 		vx = -PANTHER_WALKING_SPEED;
 		vy = -SIMON_JUMP_SPEED_Y ;
 		nx = -1;
-		break;
-
-	case ENEMY_STATE_FREEZE:
-		vy = 0; vx = 0;
 		break;
 	case PANTHER_STATE_SIT_LEFT:
 		nx = -1;

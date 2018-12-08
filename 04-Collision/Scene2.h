@@ -16,12 +16,15 @@ public:
 	virtual void Render();
 	int randomIteminside();
 	void erasingObjThatInacitve();
-	void spawnGhou(float x, float y);
+	void spawnGhou(float x, float y,int state);
 	void spawnBat(Simon *simon, Camera *camera);
 	void freezeEnemyFunction();
 	void XuLyPanthera();
+	void spawnFireBall();
+	void spawnMonster();
 	virtual void CollisionBetWeaponAndEnemy();
 	virtual void CollisionBetSimonAndItem();
+	virtual void spawnItemsAfterEffect();
 	virtual void CollisionBetSimonAndEnemy();
 	virtual int CollisionBetSimonAndUpStairs();
 	virtual int CollisionBetSimonAndDownStairs();

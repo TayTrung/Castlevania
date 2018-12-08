@@ -102,20 +102,20 @@ void HolyWater::Render()
 	{
 		ani = HOLYWATER_ANI_LEFT;
 		animations[ani]->Render(x, y);
-		RenderBoundingBox(50);
+		//RenderBoundingBox(50);
 	}
 	else if (this->GetState() == HOLYWATER_STATE_ACTIVE_RIGHT)
 	{
 		ani = HOLYWATER_ANI_RIGHT;
 		animations[ani]->Render(x, y);
-		RenderBoundingBox(50);
+		//RenderBoundingBox(50);
 	}
 	else
 		if (this->GetState() == HOLYWATER_STATE_BURN)
 		{
 			ani = HOLYWATER_ANI_BURN;
 			animations[ani]->Render(x, y);
-			RenderBoundingBox(50);
+			//RenderBoundingBox(50);
 		}
 
 	//else this->GetState() == DAGGER_STATE_INACTIVE;
