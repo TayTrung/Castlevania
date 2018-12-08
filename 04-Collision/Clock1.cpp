@@ -21,7 +21,7 @@ void Clock1::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	if (GetTickCount() - dropTime_Start > ITEM_MAX_TIME_DROP)
 	{
 		if (this->GetState() == ITEM_STATE_DROPPED)
-		this->SetState(ITEM_STATE_INACTIVE);
+			this->SetState(ITEM_STATE_INACTIVE);
 		dropTime_Start = 0;
 		dropped = false;
 	}
@@ -45,9 +45,12 @@ void Clock1::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		if (ny != 0)
 		{
 
-			this->SetState(ITEM_STATE_DROPPED);
-			StartCountTIme();
+			if (this->GetState() == ITEM_STATE_ACTIVE)
+			{
 
+				this->SetState(ITEM_STATE_DROPPED);
+				StartCountTIme();
+			}
 			vy = 0;
 		}
 

@@ -27,8 +27,11 @@ void Ghou::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CalcPotentialCollisions(coObjects, coEvents);
 	if (GetTickCount() - freezeTime_Start > ENEMY_FREEZE_TIME)
 	{
-		freezeTime_Start = 0;
-		freezed = false;
+		if (freezed == true)
+		{
+			freezeTime_Start = 0;
+			freezed = false;
+		}
 
 
 	}

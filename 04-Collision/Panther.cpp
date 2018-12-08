@@ -16,6 +16,7 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
+
 	if (freezed == false)
 		vy += ITEM_GRAVITY / 1.1 * dt;
 
@@ -33,34 +34,11 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (GetTickCount() - freezeTime_Start > ENEMY_FREEZE_TIME)
 	{
-		freezeTime_Start = 0;
-		//if (freezed == true)
-		//{
-		//	if (jumped == true && offCollision==false) // dang o duoi dat ma bi freeze
-		//	{
-		//		if (nx == 1)
-		//			this->SetState(PANTHER_STATE_ACTIVE_RIGHT);
-		//		else
-		//			this->SetState(PANTHER_STATE_ACTIVE_LEFT);
-		//	}
-		//	else
-		//		if(jumped == true && offCollision == true) // dang bay
-		//		{
-		//			if (nx == 1)
-		//				this->SetState(PANTHER_STATE_JUMPING_RIGHT);
-		//			else
-		//				this->SetState(PANTHER_STATE_JUMPING_LEFT);
-		//		}
-		//		else
-		//			if (jumped == false && offCollision == false) // dang sit
-		//			{
-		//				if (nx == 1)
-		//					this->SetState(PANTHER_STATE_SIT_RIGHT);
-		//				else
-		//					this->SetState(PANTHER_STATE_SIT_LEFT);
-		//			}
-		//}
-		freezed = false;
+		if (freezed == true)
+		{
+			freezeTime_Start = 0;
+			freezed = false;
+		}
 	}
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
@@ -82,7 +60,7 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
 			y += min_ty * dy + ny * 0.4f;
 
-			//if (nx != 0) vx = 0;
+			if (nx != 0) vx = 0;
 			if (ny != 0)
 			{
 				vy = 0;
@@ -197,8 +175,6 @@ void Panther::Render()
 									animations[ani]->Render(x, y);
 								}
 						}
-
-
 		}
 		else
 			if (this->GetState() == PANTHER_STATE_ACTIVE_RIGHT)

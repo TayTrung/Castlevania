@@ -14,6 +14,8 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	bool proceedToLvl2;
+
+	void erasingObjThatInacitve();
 	virtual void CollisionBetWeaponAndEnemy();
 	virtual void CollisionBetSimonAndItem();
 

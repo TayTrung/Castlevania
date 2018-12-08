@@ -907,6 +907,7 @@ void Scene1::Update(DWORD dt)
 	camera->SetPosition(simon->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon
 	camera->Update();
 	CollisionBetSimonAndItem();
+	erasingObjThatInacitve();
 	if (proceedToLvl2 == true)
 	{
 		if (simon->x > 703)
@@ -1025,6 +1026,17 @@ void Scene1::spawnItemsAfterEffect()
 		}
 
 
+	}
+}
+void Scene1::erasingObjThatInacitve()
+{
+	for (UINT i = 0; i < listItem.size(); i++)
+	{
+		if (listItem.at(i)->state == ITEM_STATE_INACTIVE)
+		{
+			listItem.erase(listItem.begin() + i);
+			i = i - 1;
+		}
 	}
 }
 void Scene1::CollisionBetWeaponAndEnemy()

@@ -15,6 +15,8 @@ void Monster::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	CGameObject::Update(dt);
 	// Simple fall down
+
+	if (freezed == false)
 	vy += ITEM_GRAVITY * dt;
 	
 	if (this->y < offsetMap + 40 - MONSTER_BBOX_HEIGHT)
@@ -30,8 +32,12 @@ void Monster::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (GetTickCount() - freezeTime_Start > ENEMY_FREEZE_TIME)
 	{
-		freezeTime_Start = 0;
-		freezed = false;
+	
+		if (freezed == true)
+		{
+			freezeTime_Start = 0;
+			freezed = false;
+		}
 	}
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
@@ -132,42 +138,43 @@ void Monster::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Monster::Render()
 {
-	if (vx != 0)
+	if (vx != 0 || vy != 0)
 	{
-		if (this->GetState() == MONSTER_STATE_ACTIVE_LEFT)
+		if (freezed == true)
 		{
-			ani = MONSTER_ANI_LEFT;
-			animations[ani]->Render(x, y);
-			//	RenderBoundingBox(100);
-		}
-		else
 			if (this->GetState() == MONSTER_STATE_ACTIVE_RIGHT)
 			{
 
-				ani = MONSTER_ANI_RIGHT;
-				animations[ani]->Render(x, y);
-				//RenderBoundingBox(100);
-			}
-
-
-
-	}
-	else
-	{
-			if (this->GetState() == MONSTER_STATE_FIRE_RIGHT)
-			{
-				ani = MONSTER_ANI_FIRE_RIGHT;
-				animations[ani]->Render(x, y);
-
-				
 			}
 			else
-				if (this->GetState() == MONSTER_STATE_FIRE_LEFT)
+				if (this->GetState() == MONSTER_STATE_ACTIVE_LEFT)
 				{
-					ani = MONSTER_ANI_FIRE_LEFT;
-					animations[ani]->Render(x, y);
 
-					
+				}
+				else
+					if (this->GetState() == MONSTER_STATE_UNDERWATER)
+					{
+						ani = MONSTER_ANI_UNDERWATER;
+						animations[ani]->Render(x, y);
+
+					}
+						
+		}
+		else
+
+			if (this->GetState() == MONSTER_STATE_ACTIVE_LEFT)
+			{
+				ani = MONSTER_ANI_LEFT;
+				animations[ani]->Render(x, y);
+				//	RenderBoundingBox(100);
+			}
+			else
+				if (this->GetState() == MONSTER_STATE_ACTIVE_RIGHT)
+				{
+
+					ani = MONSTER_ANI_RIGHT;
+					animations[ani]->Render(x, y);
+					//RenderBoundingBox(100);
 				}
 				else
 					if (this->GetState() == MONSTER_STATE_UNDERWATER)
@@ -175,6 +182,46 @@ void Monster::Render()
 						ani = MONSTER_ANI_UNDERWATER;
 						animations[ani]->Render(x, y);
 					}
+
+
+
+	}
+	else
+	{
+		if (freezed == true)
+		{
+
+			if (this->GetState() == MONSTER_STATE_FIRE_RIGHT)
+			{
+				ani = MONSTER_ANI_FIRE_RIGHT;
+				animations[ani]->Render(x, y);
+
+			}
+			else
+				if (this->GetState() == MONSTER_STATE_FIRE_LEFT)
+				{
+					ani = MONSTER_ANI_FIRE_LEFT;
+					animations[ani]->Render(x, y);
+				}
+		}
+		else
+
+			if (this->GetState() == MONSTER_STATE_FIRE_RIGHT)
+			{
+				ani = MONSTER_ANI_FIRE_RIGHT;
+				animations[ani]->Render(x, y);
+
+
+			}
+			else
+				if (this->GetState() == MONSTER_STATE_FIRE_LEFT)
+				{
+					ani = MONSTER_ANI_FIRE_LEFT;
+					animations[ani]->Render(x, y);
+
+
+				}
+
 	}
 
 }

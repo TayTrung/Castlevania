@@ -1938,7 +1938,7 @@ void Scene2::Update(DWORD dt)
 				}
 			}
 			if (j < 2)
-			//	spawnMonster();
+				spawnMonster();
 
 
 			spawnFireBall();
@@ -2275,11 +2275,12 @@ void Scene2::freezeEnemyFunction()
 	for (UINT i = 0; i < listEnemy1.size(); i++)
 	{
 
-
-		if (listEnemy1.at(i)->x > Camera::GetInstance()->GetPosition().x &&
-			listEnemy1.at(i)->x<Camera::GetInstance()->GetPosition().x + SCREEN_WIDTH &&
-			listEnemy1.at(i)->y>Camera::GetInstance()->GetPosition().y &&
-			listEnemy1.at(i)->y < Camera::GetInstance()->GetPosition().y + SCREEN_HEIGHT)
+		float x1 = Camera::GetInstance()->GetPosition().x;
+			float y1 = Camera::GetInstance()->GetPosition().y;
+		if (listEnemy1.at(i)->x > x1 &&
+			listEnemy1.at(i)->x<x1 + SCREEN_WIDTH &&
+			listEnemy1.at(i)->y>y1 &&
+			listEnemy1.at(i)->y < y1 + SCREEN_HEIGHT)
 		{
 			if (!(dynamic_cast<GroundEnemy *>(listEnemy1.at(i))))
 			{

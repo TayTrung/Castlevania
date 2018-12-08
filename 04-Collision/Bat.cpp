@@ -8,8 +8,11 @@ void Bat::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	CGameObject::Update(dt);
 	if (GetTickCount() - freezeTime_Start > ENEMY_FREEZE_TIME)
 	{
-		freezeTime_Start = 0;
-		freezed = false;
+		if (freezed == true)
+		{
+			freezeTime_Start = 0;
+			freezed = false;
+		}
 	}
 	
 	if (freezed == false)
