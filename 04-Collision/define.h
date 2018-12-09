@@ -236,6 +236,7 @@
 #define crossInside  11
 #define axeInside 12
 #define clockInside 13
+#define numbahInside 999
 
 #define ID_TEX_SIMON 0
 #define ID_TEX_EFFECT 99
@@ -268,6 +269,7 @@
 #define ID_TEX_ITEM_CHICKEN 120
 #define ID_TEX_ITEM_CLOCK 130
 #define ID_TEX_ITEM_AXE 140
+#define ID_TEX_ITEM_NUMBAH 150
 
 #pragma region Scene2
 

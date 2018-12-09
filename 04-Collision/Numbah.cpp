@@ -75,8 +75,8 @@ void Numbah::GetBoundingBox(float &left, float &top, float &right, float &bottom
 {
 	left = x;
 	top = y;
-	right = x + AXE1_BBOX_WIDTH;
-	bottom = y + AXE1_BBOX_HEIGHT;
+	right = x + NUMBAH_BBOX_WIDTH;
+	bottom = y + NUMBAH_BBOX_HEIGHT;
 }
 
 

@@ -82,10 +82,12 @@ void Monster::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	xc = Camera::GetInstance()->GetPosition().x;
 
 	//if (makeAFire == false)
+	if (freezed == false)
+	{
 
 		if (isWaitting == false)
 		{
-			if (((abs(x - this->x1)) <25) && ((abs(x - this->x1)) > 23))
+			if (((abs(x - this->x1)) < 25) && ((abs(x - this->x1)) > 23))
 			{
 				if (nx == 1)
 				{
@@ -103,29 +105,34 @@ void Monster::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 
 		}
-	
-	
-	if (isWaitting)
-	{
-		TimeWait += dt;
-		if (TimeWait >= 1000)
-		{
-			if (nx == 1)
-			{
-				this->SetState(MONSTER_STATE_ACTIVE_LEFT);
-				this->spawnFireBall = false;
-			}
-			else
-				if (nx == -1)
-				{
-					 this->SetState(MONSTER_STATE_ACTIVE_RIGHT);
-					 this->spawnFireBall = false;
-				}
-			isWaitting = false;
-			TimeWait = 0;
-		}
+
 	}
 
+	if (freezed == false)
+	{
+		if (isWaitting)
+		{
+			TimeWait += dt;
+			if (TimeWait >= 1000)
+			{
+				if (nx == 1)
+				{
+					this->SetState(MONSTER_STATE_ACTIVE_LEFT);
+					this->spawnFireBall = false;
+				}
+				else
+					if (nx == -1)
+					{
+						this->SetState(MONSTER_STATE_ACTIVE_RIGHT);
+						this->spawnFireBall = false;
+					}
+				isWaitting = false;
+				TimeWait = 0;
+			}
+		}
+
+	}
+	
 	if (x<xc || x>xc + SCREEN_WIDTH)
 		this->SetState(MONSTER_STATE_INACTIVE);
 	if(y>offsetMap+150)
@@ -138,26 +145,24 @@ void Monster::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Monster::Render()
 {
-	if (vx != 0 || vy != 0)
+	if (vx != 0)
 	{
 		if (freezed == true)
 		{
 			if (this->GetState() == MONSTER_STATE_ACTIVE_RIGHT)
 			{
+				ani = MONSTER_ANI_FREEZE_RIGHT;
 
+				animations[ani]->Render(x, y);
 			}
 			else
 				if (this->GetState() == MONSTER_STATE_ACTIVE_LEFT)
 				{
+					ani = MONSTER_ANI_FREEZE_LEFT;
+					animations[ani]->Render(x, y);
 
 				}
-				else
-					if (this->GetState() == MONSTER_STATE_UNDERWATER)
-					{
-						ani = MONSTER_ANI_UNDERWATER;
-						animations[ani]->Render(x, y);
 
-					}
 						
 		}
 		else
@@ -176,12 +181,8 @@ void Monster::Render()
 					animations[ani]->Render(x, y);
 					//RenderBoundingBox(100);
 				}
-				else
-					if (this->GetState() == MONSTER_STATE_UNDERWATER)
-					{
-						ani = MONSTER_ANI_UNDERWATER;
-						animations[ani]->Render(x, y);
-					}
+					else
+						int x = 0;
 
 
 
@@ -193,16 +194,23 @@ void Monster::Render()
 
 			if (this->GetState() == MONSTER_STATE_FIRE_RIGHT)
 			{
-				ani = MONSTER_ANI_FIRE_RIGHT;
+				ani = MONSTER_ANI_FREEZE_FIRE_RIGHT;
 				animations[ani]->Render(x, y);
 
 			}
 			else
 				if (this->GetState() == MONSTER_STATE_FIRE_LEFT)
 				{
-					ani = MONSTER_ANI_FIRE_LEFT;
+					ani = MONSTER_ANI_FREEZE_FIRE_LEFT;
 					animations[ani]->Render(x, y);
 				}
+				else
+					if (this->GetState() == MONSTER_STATE_UNDERWATER)
+					{
+						ani = MONSTER_ANI_UNDERWATER;
+						animations[ani]->Render(x, y);
+
+					}
 		}
 		else
 
@@ -221,6 +229,14 @@ void Monster::Render()
 
 
 				}
+				else
+					if(this->GetState() == MONSTER_STATE_UNDERWATER)
+				{
+					ani = MONSTER_ANI_UNDERWATER;
+					animations[ani]->Render(x, y);
+				}
+			
+				
 
 	}
 
