@@ -47,15 +47,15 @@ void Camera::Update()
 		mPositionOfCamera.x = 0;
 	if (dynamic_cast<Scene1 *>(a))
 	{
-		if (mPositionOfCamera.x > MAP1_WIDTH - SCREEN_WIDTH)
-			mPositionOfCamera.x = MAP1_WIDTH - SCREEN_WIDTH;
+		if (mPositionOfCamera.x > MAP1_WIDTH - SCREEN_WIDTH+16)
+			mPositionOfCamera.x = MAP1_WIDTH - SCREEN_WIDTH+16;
 	}
 	else
 	{
 		if (dynamic_cast<Scene2 *>(a))
 		{
-			if (mPositionOfCamera.x > MAP2_WIDTH-345)
-				mPositionOfCamera.x = MAP2_WIDTH-345;
+			if (mPositionOfCamera.x > MAP2_WIDTH- SCREEN_WIDTH+16)
+				mPositionOfCamera.x = MAP2_WIDTH- SCREEN_WIDTH+16;
 			
 		}
 	}

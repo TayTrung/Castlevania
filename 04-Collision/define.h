@@ -3,7 +3,7 @@
 #define WINDOW_CLASS_NAME L"SampleWindow"
 #define MAIN_WINDOW_TITLE L"04 - Collision"
 
-#define SCREEN_WIDTH	360
+#define SCREEN_WIDTH	320
 #define SCREEN_HEIGHT	285
 //FPS
 #define MAX_FRAME_RATE 90

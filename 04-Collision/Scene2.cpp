@@ -1670,6 +1670,7 @@ bool spawnedEnoughGhou;
 bool spawnedEnoughMonster;
 bool x = true;
 bool y = false;
+bool floor1 = true;
 void Scene2::Update(DWORD dt)
 {
 
@@ -1685,8 +1686,8 @@ void Scene2::Update(DWORD dt)
 		{
 			camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
 			camera1->Update();
-			if (camera1->GetPosition().x > 1191)
-				camera1->SetPosition(1190, camera1->GetPosition().y);//simon chua qua cua nen set camera di chuyen toi cua th
+			if (camera1->GetPosition().x > 1191+16*2.5)
+				camera1->SetPosition(1190+16*2.5, camera1->GetPosition().y);//simon chua qua cua nen set camera di chuyen toi cua th
 		}
 		else//dung box de bat dau qua cua
 		{
@@ -1857,6 +1858,10 @@ void Scene2::Update(DWORD dt)
 							camera1->SetPosition(2828 - SCREEN_WIDTH, camera1->GetPosition().y);
 						if (simon1->x > 2809 - 16)
 							simon1->x = 2809 - 16;
+						if (simon1->x < camera1->GetPosition().x)
+						{
+							simon1->x = camera1->GetPosition().x;
+						}
 					}
 
 	float x1, y1;
@@ -1865,6 +1870,8 @@ void Scene2::Update(DWORD dt)
 	
 	if (stage == 1)
 	{
+		if (simon1->proceedThruDoor == false)
+		{
 
 #pragma region spawnGhou
 		tickGhou += 1;
@@ -1928,6 +1935,7 @@ void Scene2::Update(DWORD dt)
 #pragma endregion
 
 
+		}
 
 		if (simon1->x > 512 && simon1->x < 1120)//chi xu ly khi simon trong vung panter spawn
 			XuLyPanthera();
@@ -1935,34 +1943,38 @@ void Scene2::Update(DWORD dt)
 	else
 	if (stage == 2 ||stage ==4)
 	{
+		if (simon1->proceedThruDoor == false)
+		{
+
 #pragma region spawnBat
-		tickBat += 1;
-		if (simon1->x > 1535 && simon1->x < 2048)//spawn Bat every 5 seconds/ fly speed 3 sec
-		{
-			if (tickBat == 330)
+			tickBat += 1;
+			if (simon1->x > 1535 && simon1->x < 2048)//spawn Bat every 5 seconds/ fly speed 3 sec
 			{
-				tickBat = 0;
-				spawnBat(simon1, camera1);
-			}
-			else if (tickBat > 330)
-			{
-				tickBat = 0;
-			}
-		}
-		if (x1 > 1702)
-		{
-			for (UINT i = 0; i < listEnemy1.size(); i++)
-			{
-				if (dynamic_cast<Bat *>(listEnemy1.at(i)))
+				if (tickBat == 330)
 				{
-					if (listEnemy1.at(i)->x >= 2040 && listEnemy1.at(i)->GetState() == BAT_STATE_ACTIVE_RIGHT)
-						listEnemy1.at(i)->SetState(BAT_STATE_INACTIVE);
-
-
+					tickBat = 0;
+					spawnBat(simon1, camera1);
+				}
+				else if (tickBat > 330)
+				{
+					tickBat = 0;
 				}
 			}
-		}
+			if (x1 > 1702)
+			{
+				for (UINT i = 0; i < listEnemy1.size(); i++)
+				{
+					if (dynamic_cast<Bat *>(listEnemy1.at(i)))
+					{
+						if (listEnemy1.at(i)->x >= 2040 && listEnemy1.at(i)->GetState() == BAT_STATE_ACTIVE_RIGHT)
+							listEnemy1.at(i)->SetState(BAT_STATE_INACTIVE);
+
+
+					}
+				}
+			}
 #pragma endregion
+		}
 
 	
 	}
@@ -2027,7 +2039,78 @@ void Scene2::Update(DWORD dt)
 		else
 			if(stage == 5)
 			{
-		
+				if (simon1->x > 2069 && simon1->x < 2496 - 16)
+				{
+					if (simon1->x <= 2210) //spawn 2 tang ghou
+					{
+#pragma region spawnGhou
+						tickGhou += 1;
+						{//spawn every 6 seconds
+					
+							{
+								if (floor1 == false)
+								{
+
+									if (tickGhou == 420 || tickGhou == 460)
+									{
+										spawnGhou(x1 + SCREEN_WIDTH - 60 + 30, 60 + offsetMap, GHOU_STATE_ACTIVE_LEFT);
+									}
+									else
+										if (tickGhou == 500)
+										{
+											spawnGhou(x1 + SCREEN_WIDTH - 60 + 30, 125 + offsetMap, GHOU_STATE_ACTIVE_LEFT);
+
+											floor1 = true;
+										}
+										else
+											if (tickGhou > 500)
+												tickGhou = 0;
+								}
+								else
+									if (floor1 == true)
+									{
+										if (tickGhou == 420 || tickGhou == 460)
+										{
+											spawnGhou(x1 + SCREEN_WIDTH - 60 + 30, 125 + offsetMap, GHOU_STATE_ACTIVE_LEFT);
+
+										}
+										else
+											if (tickGhou == 500)
+											{
+												spawnGhou(x1 + SCREEN_WIDTH - 60 + 30, 60 + offsetMap, GHOU_STATE_ACTIVE_LEFT);
+												floor1 = false;
+
+											}
+											else
+												if (tickGhou > 500)
+													tickGhou = 0;
+									}
+							}
+
+						}
+
+
+
+#pragma endregion
+
+					}
+					if (simon1->x > 2210)//spawn 1 tagn ghou
+					{
+						tickGhou += 1;
+						if (tickGhou == 420 || tickGhou == 460)
+						{
+							spawnGhou(x1 + SCREEN_WIDTH - 60 + 30, 125 + offsetMap, GHOU_STATE_ACTIVE_LEFT);
+						}
+						else
+							if (tickGhou == 500)
+							{
+								spawnGhou(x1 + SCREEN_WIDTH, 125 + offsetMap, GHOU_STATE_ACTIVE_RIGHT);
+							}
+							else
+								if (tickGhou > 500)
+									tickGhou = 0;
+					}
+				}
 			}
 
 	if (simon1->isUsingDagger == true)
@@ -2092,8 +2175,9 @@ void Scene2::Update(DWORD dt)
 	}
 	erasingObjThatInacitve();// xoa may enemy di ra khoi man hinh
 
-	if (simon1->untouchable == false)//bi untouchable thi k va cham voi enemy nua
-		CollisionBetSimonAndEnemy();
+	if (simon1->proceedThruDoor == false)//dang qua cua k xet va cham
+		if (simon1->untouchable == false)//bi untouchable thi k va cham voi enemy nua
+			CollisionBetSimonAndEnemy();
 
 	CollisionBetSimonAndItem();
 
