@@ -239,6 +239,7 @@
 #define numbahInside 999
 
 #define ID_TEX_SIMON 0
+#define ID_TEX_SIMON_DEATH 79979
 #define ID_TEX_EFFECT 99
 #define ID_TEX_WHIP 10	
 #define ID_TEX_HOLYWATER 11
@@ -494,6 +495,7 @@
 #define SIMON_STATE_UP_LEFT					1200
 #define SIMON_STATE_DOWN_RIGHT				1300
 #define SIMON_STATE_DOWN_LEFT				1400
+#define SIMON_STATE_DEAD					1500
 
 #define SIMON_UNTOUCHABLE_TIME				2000
 
@@ -539,7 +541,7 @@
 #define SIMON_ANI_ATTACK_OS_DOWN_RIGHT      28		
 #define SIMON_ANI_ATTACK_OS_DOWN_LEFT	    29
 
-//#define SIMON_ANI_DIE						14
+#define SIMON_ANI_DEAD					30
 
 
 #define SIMON_BIG_BBOX_WIDTH  16

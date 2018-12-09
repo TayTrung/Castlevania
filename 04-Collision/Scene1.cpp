@@ -19,6 +19,7 @@ Effect *effect;
 void Scene1::KeyState(BYTE * states)
 
 {
+
 	if (simon->whip->isFinished == true)
 	{
 
@@ -131,50 +132,54 @@ void Scene1::OnKeyDown(int KeyCode)
 	case DIK_D:
 	//	if (simon->GetState() != SIMON_STATE_WALKING_LEFT && simon->GetState() != SIMON_STATE_WALKING_RIGHT)
 		{
+
 			if (simon->dagger->isOn == true)
 			{
-				if (simon->dagger->GetState() == DAGGER_STATE_INACTIVE)
+				if (simon->heartCount > 0)
 				{
-
-					float x, y;
-					simon->GetPosition(x, y);
-					if (simon->GetState() == SIMON_STATE_SIT)
+					simon->heartCount -= 1;
+					if (simon->dagger->GetState() == DAGGER_STATE_INACTIVE)
 					{
-						simon->dagger->CreateWeapon(x, y + 7, simon->nx);
 
-						if (simon->isUsingDagger == false)
+						float x, y;
+						simon->GetPosition(x, y);
+						if (simon->GetState() == SIMON_STATE_SIT)
 						{
-							if (simon->nx > 0)
-								simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-							else
-								simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
-							simon->SetState(SIMON_STATE_THROW_SITTING);
-							simon->useDagger();
+							simon->dagger->CreateWeapon(x, y + 7, simon->nx);
+
+							if (simon->isUsingDagger == false)
+							{
+								if (simon->nx > 0)
+									simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+								else
+									simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+								simon->SetState(SIMON_STATE_THROW_SITTING);
+								simon->useDagger();
+
+							}
+
+						}
+						else
+						{
+
+
+							simon->dagger->CreateWeapon(x, y, simon->nx);
+
+							if (simon->isUsingDagger == false)
+							{
+								if (simon->nx > 0)
+									simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+								else
+									simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+								simon->SetState(SIMON_STATE_THROW);
+								simon->useDagger();
+
+							}
 
 						}
 
 					}
-					else
-					{
-
-
-						simon->dagger->CreateWeapon(x, y, simon->nx);
-
-						if (simon->isUsingDagger == false)
-						{
-							if (simon->nx > 0)
-								simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-							else
-								simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
-							simon->SetState(SIMON_STATE_THROW);
-							simon->useDagger();
-
-						}
-
-					}
-
 				}
-
 			}
 
 		}
@@ -208,8 +213,9 @@ void Scene1::LoadResources()
 	textures->Add(ID_TEX_EFFECT, L"textures\\Effect\\Kill.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	//Objects
-	textures->Add(ID_TEX_SIMON, L"textures\\simon.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_SIMON, L"textures\\simon.png", D3DCOLOR_XRGB(255, 0, 255)); 
 	textures->Add(ID_TEX_TORCH, L"textures\\Enemy\\0.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_SIMON_DEATH, L"textures\\simondeath.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	textures->Add(ID_TEX_WHIP, L"textures\\Weapon\\morningstar.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_AXE, L"textures\\Weapon\\3.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -331,6 +337,11 @@ void Scene1::LoadResources()
 	sprites->Add(10659, 66, 67, 89, 97, texMario);
 	sprites->Add(10660, 96, 67, 111, 97, texMario);
 	sprites->Add(10661, 121, 67, 141, 97, texMario);
+
+
+	LPDIRECT3DTEXTURE9 texMarioDeath = textures->Get(ID_TEX_SIMON_DEATH);
+	// death
+		sprites->Add(78888, 0, 0, 31, 30, texMarioDeath);
 	
 
 
@@ -592,7 +603,9 @@ void Scene1::LoadResources()
 	ani->Add(10356);
 	animations->Add(004, ani);
 
-
+	ani = new CAnimation(100);
+	ani->Add(78888);
+	animations->Add(706, ani);
 
 
 #pragma region Adding Animation for Whip //de trong simon vì bên duoi co new simon
@@ -644,6 +657,9 @@ void Scene1::LoadResources()
 #pragma endregion	
 
 	simon = new Simon();
+	simon->score = 0;
+	simon->healthCount =16;
+	simon->heartCount = 1;
 	simon->AddAnimation(400);		// idle right
 	simon->AddAnimation(401);		// idle left
 
@@ -686,6 +702,7 @@ void Scene1::LoadResources()
 	simon->AddAnimation(704);		//ATK_OS_DOWN_RIGHT
 	simon->AddAnimation(705);		//ATK_OS_DOWN_LEFT
 
+	simon->AddAnimation(706);//death
 
 	simon->SetPosition(50.0f, 0);
 	//objects.push_back(mario);
@@ -1119,7 +1136,7 @@ void Scene1::CollisionBetSimonAndItem()
 
 					OutputDebugString(L"Simon and BigHeart \n");
 					listItem.at(i)->SetState(ITEM_STATE_INACTIVE);
-					//simon->heartCount += 5;
+					simon->heartCount += 5;
 					listItem.erase(listItem.begin() + i);
 					i = i - 1;
 				}
@@ -1192,6 +1209,21 @@ void Scene1::CollisionBetSimonAndItem()
 								{
 									OutputDebugString(L"GoldBag \n");
 									listItem.at(i)->SetState(ITEM_STATE_INACTIVE);
+									GoldBag *newGoldBag = dynamic_cast<GoldBag *>(listItem.at(i));
+									if (newGoldBag->type == 0)
+									{
+										simon->score += 700;
+									}
+									else
+										if (newGoldBag->type == 1)
+										{
+											simon->score += 100;
+										}
+										else
+											if (newGoldBag->type == 2)
+											{
+												simon->score += 400;
+											}
 									listItem.erase(listItem.begin() + i);
 									i = i - 1;
 								}

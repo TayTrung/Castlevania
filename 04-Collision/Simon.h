@@ -16,7 +16,9 @@ public:
 	Clock *clock;
 	Axe *axe;
 	HolyWater *holy;
-	//int heartCount;
+	int heartCount;
+	int score;
+	int healthCount;
 	bool isUsingDagger;
 	int ani;
 	bool isOnStairs; 
@@ -46,7 +48,11 @@ public:
 	virtual void Render();
 	void SetState(int state);
 
-	void StartUntouchable() { untouchable = true; untouchable_start = GetTickCount(); }
+	void StartUntouchable() {
+		untouchable = true; 
+		untouchable_start = GetTickCount();
+		this->healthCount -= 2;
+	}
 	//void PickedSword();
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 };
