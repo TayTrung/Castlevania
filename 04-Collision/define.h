@@ -44,6 +44,7 @@
 #define DOOR_ANI_INACTIVE 2
 
 #pragma endregion
+
 #pragma region Ground
 
 #define BRICKMAP11_BBOX_WIDTH 768
@@ -237,9 +238,11 @@
 #define axeInside 12
 #define clockInside 13
 #define numbahInside 999
+#define potionInside 1999
 
 #define ID_TEX_SIMON 0
 #define ID_TEX_SIMON_DEATH 79979
+#define ID_TEX_SIMON2 79989
 #define ID_TEX_EFFECT 99
 #define ID_TEX_WHIP 10	
 #define ID_TEX_HOLYWATER 11
@@ -271,6 +274,7 @@
 #define ID_TEX_ITEM_CLOCK 130
 #define ID_TEX_ITEM_AXE 140
 #define ID_TEX_ITEM_NUMBAH 150
+#define ID_TEX_ITEM_POTION 160
 
 #pragma region Scene2
 
@@ -303,6 +307,16 @@
 #define NUMBAH_BBOX_HEIGHT	14
 
 #pragma endregion
+
+
+#pragma region Potion
+
+#define POTION_BBOX_WIDTH 13
+#define POTION_BBOX_HEIGHT 16
+
+
+#pragma endregion
+
 #pragma region BigHeart
 
 #define BIGHEART_BBOX_WIDTH  12
@@ -358,7 +372,7 @@
 #define GOLDBAG_ANI_WHITE 0
 #define GOLDBAG_ANI_RED 1
 #define GOLDBAG_ANI_BLUE 2
-
+#define GOLDBAG_ANI_3COLOR 3
 #pragma endregion
 
 #pragma region Chicken
@@ -464,8 +478,15 @@
 #define EFFECT_STATE_ACTIVE 150
 #define EFFECT_STATE_INACTIVE 300
 
-#define EFFECT_ANI_ACTIVE	0
-#define EFFECT_ANI_INACTIVE 1
+#define EFFECT_ANI_FIRE	0
+#define EFFECT_ANI_ROCK 1
+#define EFFECT_ANI_WATER 2
+
+#define EFFECT_ANI_SCORE_RED 0
+#define EFFECT_ANI_SCORE_BLUE 0
+#define EFFECT_ANI_SCORE_WHITE 2
+#define EFFECT_ANI_SCORE_3COLOR 3
+
 
 #define EFFECT_TIME 400
 #pragma endregion
@@ -496,8 +517,12 @@
 #define SIMON_STATE_DOWN_RIGHT				1300
 #define SIMON_STATE_DOWN_LEFT				1400
 #define SIMON_STATE_DEAD					1500
+#define SIMON_STATE_EAT_RIGHT				1600
+#define SIMON_STATE_EAT_LEFT				1700
 
 #define SIMON_UNTOUCHABLE_TIME				2000
+#define SIMON_EATING_ITEM_TIME				1000
+#define SIMON_INVIS_TIME				3000
 
 #define SIMON_ANI_IDLE_RIGHT				0
 #define SIMON_ANI_IDLE_LEFT					1
@@ -541,7 +566,10 @@
 #define SIMON_ANI_ATTACK_OS_DOWN_RIGHT      28		
 #define SIMON_ANI_ATTACK_OS_DOWN_LEFT	    29
 
-#define SIMON_ANI_DEAD					30
+#define SIMON_ANI_DEAD						30
+
+#define SIMON_ANI_EAT_RIGHT					31
+#define SIMON_ANI_EAT_LEFT					32
 
 
 #define SIMON_BIG_BBOX_WIDTH  16

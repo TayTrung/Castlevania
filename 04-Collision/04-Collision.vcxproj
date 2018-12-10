@@ -134,7 +134,8 @@
     <ClInclude Include="Dagger.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="Door.h" />
-    <ClInclude Include="Effect.h" />
+    <ClInclude Include="EffectBag.h" />
+    <ClInclude Include="EffectFire.h" />
     <ClInclude Include="FireBall.h" />
     <ClInclude Include="Ghou.h" />
     <ClInclude Include="GoldBag.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Numbah.h" />
     <ClInclude Include="Panther.h" />
+    <ClInclude Include="Potion.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene1.h" />
     <ClInclude Include="Scene2.h" />
@@ -180,7 +182,8 @@
     <ClCompile Include="Dagger.cpp" />
     <ClCompile Include="define.cpp" />
     <ClCompile Include="Door.cpp" />
-    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="EffectBag.cpp" />
+    <ClCompile Include="EffectFire.cpp" />
     <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="Ghou.cpp" />
     <ClCompile Include="GoldBag.cpp" />
@@ -196,6 +199,7 @@
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Numbah.cpp" />
     <ClCompile Include="Panther.cpp" />
+    <ClCompile Include="Potion.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="Scene2.cpp" />

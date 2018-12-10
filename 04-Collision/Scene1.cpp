@@ -9,17 +9,19 @@ Map *map;
 vector<LPENEMY> listEnemy;
 vector<LPGAMEOBJECT> listItem;
 vector<LPGAMEOBJECT> listSurface;
-vector<LPEFFECT>listEffect;
+vector<LPEFFECTFIRE>listEffectFire;
+vector<LPEFFECTBAG>listEffectBag;
 GoldBag *goldbag;
 Torch *torch;
 Dagger1 *dagger;
 MorningStar	*morningstar;
 BigHeart *bigheart;
-Effect *effect;
+EffectFire *effect;
+EffectBag *effectBag;
+ID3DXFont *_font;
 void Scene1::KeyState(BYTE * states)
 
 {
-
 	if (simon->whip->isFinished == true)
 	{
 
@@ -216,6 +218,7 @@ void Scene1::LoadResources()
 	textures->Add(ID_TEX_SIMON, L"textures\\simon.png", D3DCOLOR_XRGB(255, 0, 255)); 
 	textures->Add(ID_TEX_TORCH, L"textures\\Enemy\\0.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_SIMON_DEATH, L"textures\\simondeath.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_SIMON2, L"textures\\simon2.png", D3DCOLOR_XRGB(0, 128, 128));
 
 	textures->Add(ID_TEX_WHIP, L"textures\\Weapon\\morningstar.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_AXE, L"textures\\Weapon\\3.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -227,6 +230,7 @@ void Scene1::LoadResources()
 	textures->Add(ID_TEX_ITEM_WHIP, L"textures\\Item\\3.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_SWORD, L"textures\\Item\\4.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_GOLD, L"textures\\Item\\2.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_ITEM_POTION, L"textures\\Item\\potion.png", D3DCOLOR_XRGB(0, 0, 0));
 
 	//Ground 0
 
@@ -243,17 +247,55 @@ void Scene1::LoadResources()
 	ani->Add(01113);
 	animations->Add(578, ani);
 
-	effect = new Effect();
+	effect = new EffectFire();
 	effect->AddAnimation(578);
+
+	LPDIRECT3DTEXTURE9 texEffectBag = textures->Get(ID_TEX_ITEM_POTION);
+	sprites->Add(01114, 409, 46, 425, 53, texEffectBag);
+	sprites->Add(01115, 409, 71, 425, 78, texEffectBag);
+	sprites->Add(01116, 409, 95, 425, 102, texEffectBag);
+	sprites->Add(01117, 409, 125, 431, 132, texEffectBag);
 	
 
+	ani = new CAnimation(100);	// Effect
+	ani->Add(01114);
+	animations->Add(579, ani);
+
+	ani = new CAnimation(100);	// Effect
+	ani->Add(01115);
+	animations->Add(580, ani);
+
+	ani = new CAnimation(100);	// Effect
+	ani->Add(01116);
+	animations->Add(581, ani);
+
+	ani = new CAnimation(100);	// Effect
+	ani->Add(01117);
+	animations->Add(582, ani);
+
+	effectBag = new EffectBag();
+	effectBag->AddAnimation(579);
+	effectBag->AddAnimation(580);
+	effectBag->AddAnimation(581);
+	effectBag->AddAnimation(582);
 #pragma endregion
 
 #pragma region Co-ordinations of Simon
-	LPDIRECT3DTEXTURE9 texMario = textures->Get(ID_TEX_SIMON);
-	
-	sprites->Add(10011, 6, 1, 21, 31, texMario);
 
+	
+		LPDIRECT3DTEXTURE9 texSimon2 = textures->Get(ID_TEX_SIMON2);
+		//idle right when eating whip		
+		sprites->Add(11001, 3, 2, 18, 32, texSimon2);
+		sprites->Add(11002, 25, 2, 40, 32, texSimon2);
+		sprites->Add(11003, 48, 2, 63, 32, texSimon2);
+		//idle left when eating whip		
+		sprites->Add(11004, 72, 38, 87, 68, texSimon2);
+		sprites->Add(11005, 50, 38, 65, 68, texSimon2);
+		sprites->Add(11006, 27, 38, 42, 68, texSimon2);
+	LPDIRECT3DTEXTURE9 texMario = textures->Get(ID_TEX_SIMON);
+	//idle left
+	sprites->Add(10011, 6, 1, 21, 31, texMario);
+	
 	//Walking left		
 	sprites->Add(10003, 39, 1, 54, 31, texMario);
 	sprites->Add(10004, 69, 1, 89, 31, texMario);
@@ -603,9 +645,32 @@ void Scene1::LoadResources()
 	ani->Add(10356);
 	animations->Add(004, ani);
 
-	ani = new CAnimation(100);
+	ani = new CAnimation(100);//death
 	ani->Add(78888);
 	animations->Add(706, ani);
+	ani = new CAnimation(300);	// Eating whip left
+	ani->Add(11001);
+	ani->Add(11002);
+	ani->Add(11003);
+	ani->Add(10011);
+	animations->Add(152, ani);
+
+	ani = new CAnimation(300);	// Eatign whip right
+	ani->Add(11004);
+	ani->Add(11005);
+	ani->Add(11006);
+	ani->Add(10012);
+	animations->Add(153, ani);
+		
+		
+		
+		
+		
+
+		
+		
+		
+		
 
 
 #pragma region Adding Animation for Whip //de trong simon vì bên duoi co new simon
@@ -703,6 +768,9 @@ void Scene1::LoadResources()
 	simon->AddAnimation(705);		//ATK_OS_DOWN_LEFT
 
 	simon->AddAnimation(706);//death
+
+	simon->AddAnimation(153);		//Eating whip right
+	simon->AddAnimation(152);		//Eating whip left
 
 	simon->SetPosition(50.0f, 0);
 	//objects.push_back(mario);
@@ -867,12 +935,20 @@ void Scene1::LoadResources()
 	ani = new CAnimation(100);
 	ani->Add(00006);
 	animations->Add(780, ani);
+
+
+	ani = new CAnimation(100);
+	ani->Add(00006);
+	ani->Add(00004);
+	ani->Add(00005);
+	animations->Add(781, ani);
 	
 
-	goldbag = new GoldBag(0);
+	goldbag = new GoldBag(3);
 	goldbag->AddAnimation(778);
 	goldbag->AddAnimation(779);
 	goldbag->AddAnimation(780);
+	goldbag->AddAnimation(781);
 	
 
 #pragma endregion
@@ -906,11 +982,14 @@ void Scene1::Update(DWORD dt)
 		listItem.at(i)->Update(dt, &listSurface);
 	}
 
-	for (int i = 0; i < listEffect.size(); i++)
+	for (int i = 0; i < listEffectFire.size(); i++)
 	{
 		//if (listItem.at(i)->GetState() == ITEM_STATE_ACTIVE);
-		listEffect.at(i)->Update(dt, &listSurface);
+		listEffectFire.at(i)->Update(dt, &listSurface);
 	}
+
+	for (int i = 0; i < listEffectBag.size(); i++)//render ietms
+		listEffectBag[i]->Update(dt);
 	spawnItemsAfterEffect();
 	
 	if (goldbag->GetState() == ITEM_STATE_ACTIVE)
@@ -954,11 +1033,13 @@ void Scene1::Render()
 
 		for (int i = 0; i < listItem.size(); i++)//render ietms
 			listItem[i]->Render();
-		for (int i = 0; i < listEffect.size(); i++)//render ietms
-			listEffect[i]->Render();
-		
+		for (int i = 0; i < listEffectFire.size(); i++)//render ietms
+			listEffectFire[i]->Render();
 		goldbag->Render();
 		//
+
+		for (int i = 0; i < listEffectBag.size(); i++)//render ietms
+			listEffectBag[i]->Render();
 		simon->Render();
 		simon->dagger->Render();
 		simon->whip->Render();
@@ -1001,15 +1082,15 @@ Scene1::~Scene1()
 
 void Scene1::spawnItemsAfterEffect()
 {
-	for (UINT i = 0; i < listEffect.size(); i++)
+	for (UINT i = 0; i < listEffectFire.size(); i++)
 	{
 
-		if (listEffect.at(i)->state == EFFECT_STATE_INACTIVE)
+		if (listEffectFire.at(i)->state == EFFECT_STATE_INACTIVE)
 		{
 			float x, y;
-			listEffect.at(i)->GetPosition(x, y);
+			listEffectFire.at(i)->GetPosition(x, y);
 
-			switch (listEffect.at(i)->itemInside)
+			switch (listEffectFire.at(i)->itemInside)
 			{
 			case 0:
 				break;
@@ -1036,7 +1117,7 @@ void Scene1::spawnItemsAfterEffect()
 			}
 
 
-			listEffect.erase(listEffect.begin() + i);// Delete it from enemy since Simion killed it
+			listEffectFire.erase(listEffectFire.begin() + i);// Delete it from enemy since Simion killed it
 
 			i = i - 1; // Push back 1 cuz after deleting i+1 will replace i
 
@@ -1077,7 +1158,7 @@ void Scene1::CollisionBetWeaponAndEnemy()
 					effect->SetPosition(x, y);
 					effect->SetState(EFFECT_STATE_ACTIVE);
 					effect->itemInside = listEnemy.at(i)->itemInside;
-					listEffect.push_back(effect);
+					listEffectFire.push_back(effect);
 
 					listEnemy.erase(listEnemy.begin() + i);// Delete it from enemy since Simion killed it
 
@@ -1108,7 +1189,7 @@ void Scene1::CollisionBetWeaponAndEnemy()
 						effect->SetPosition(x, y);
 						effect->SetState(EFFECT_STATE_ACTIVE);
 						effect->itemInside = listEnemy.at(i)->itemInside;
-						listEffect.push_back(effect);
+						listEffectFire.push_back(effect);
 
 						listEnemy.erase(listEnemy.begin() + i);// Delete it from enemy since Simion killed it
 
@@ -1149,6 +1230,10 @@ void Scene1::CollisionBetSimonAndItem()
 					{
 						OutputDebugString(L"Simon and WHIP \n");
 						listItem.at(i)->SetState(ITEM_STATE_INACTIVE);
+						if (simon->nx == 1)
+							simon->SetState(SIMON_STATE_EAT_RIGHT);
+						else
+							simon->SetState(SIMON_STATE_EAT_LEFT);
 						simon->whip->levelUpWhip();
 						listItem.erase(listItem.begin() + i);
 						i = i - 1;
@@ -1210,6 +1295,11 @@ void Scene1::CollisionBetSimonAndItem()
 									OutputDebugString(L"GoldBag \n");
 									listItem.at(i)->SetState(ITEM_STATE_INACTIVE);
 									GoldBag *newGoldBag = dynamic_cast<GoldBag *>(listItem.at(i));
+									float x, y;
+									newGoldBag->GetPosition(x, y);
+									effectBag->SetPosition(x+5, y);
+									effectBag->type = newGoldBag->type;
+									effectBag->SetState(EFFECT_STATE_ACTIVE);
 									if (newGoldBag->type == 0)
 									{
 										simon->score += 700;
@@ -1224,6 +1314,7 @@ void Scene1::CollisionBetSimonAndItem()
 											{
 												simon->score += 400;
 											}
+									listEffectBag.push_back(effectBag);
 									listItem.erase(listItem.begin() + i);
 									i = i - 1;
 								}

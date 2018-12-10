@@ -1,12 +1,13 @@
 #pragma once
 #include "GameObject.h"
 
-class Effect;
-typedef Effect * LPEFFECT;
+class EffectBag;
+typedef EffectBag * LPEFFECTBAG;
 
-class Effect : public CGameObject
+class EffectBag : public CGameObject
 {
 public:
+	int type;// 0 = red, 1= blue , 3= white,4 3 color
 	int itemInside;
 	bool effectTime;
 	DWORD effectTime_start;
@@ -17,7 +18,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 	virtual void SetState(int state);
-	Effect();
-	~Effect();
+	EffectBag();
+	~EffectBag();
 };
 

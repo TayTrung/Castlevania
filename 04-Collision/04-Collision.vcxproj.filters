@@ -178,7 +178,13 @@
     <ClInclude Include="FireBall.h">
       <Filter>Framework\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Effect.h">
+    <ClInclude Include="Potion.h">
+      <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectFire.h">
+      <Filter>Framework\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectBag.h">
       <Filter>Framework\Effect</Filter>
     </ClInclude>
   </ItemGroup>
@@ -315,7 +321,13 @@
     <ClCompile Include="FireBall.cpp">
       <Filter>Framework\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Effect.cpp">
+    <ClCompile Include="Potion.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectFire.cpp">
+      <Filter>Framework\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectBag.cpp">
       <Filter>Framework\Effect</Filter>
     </ClCompile>
   </ItemGroup>

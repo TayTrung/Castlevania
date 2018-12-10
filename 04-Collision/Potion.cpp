@@ -1,8 +1,8 @@
-#include "GoldBag.h"
+#include "Potion.h"
 
 
 
-void GoldBag::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
+void Potion::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
@@ -18,13 +18,16 @@ void GoldBag::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 	CalcPotentialCollisions(colliable_objects, coEvents);
 
+
+	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - dropTime_Start > ITEM_MAX_TIME_DROP)
 	{
 		if (this->GetState() == ITEM_STATE_DROPPED)
-		this->SetState(ITEM_STATE_INACTIVE);
+			this->SetState(ITEM_STATE_INACTIVE);
 		dropTime_Start = 0;
 		dropped = false;
 	}
+
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
@@ -44,17 +47,14 @@ void GoldBag::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		if (nx != 0) vx = 0;
 		if (ny != 0)
 		{
-
 			if (this->GetState() == ITEM_STATE_ACTIVE)
 			{
 
 				this->SetState(ITEM_STATE_DROPPED);
 				StartCountTIme();
 			}
-
 			vy = 0;
 		}
-
 
 	}
 
@@ -62,60 +62,39 @@ void GoldBag::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-GoldBag::GoldBag(int xtype)
+Potion::Potion()
 {
-	state = ITEM_STATE_INACTIVE;
-	type = xtype;
+	state = ITEM_STATE_ACTIVE;
 }
 
 
-GoldBag::~GoldBag()
+Potion::~Potion()
 {
 }
 
 
-void GoldBag::GetBoundingBox(float &left, float &top, float &right, float &bottom)
+void Potion::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	left = x;
 	top = y;
-	right = x + GOLDBAG_BBOX_WIDTH;
-	bottom = y + GOLDBAG_BBOX_HEIGHT;
+	right = x + POTION_BBOX_WIDTH;
+	bottom = y + POTION_BBOX_HEIGHT;
 }
 
 
 
-void GoldBag::Render()
+void Potion::Render()
 {
 	if (this->GetState() == ITEM_STATE_ACTIVE || this->GetState() == ITEM_STATE_DROPPED)
 	{
-		int ani;
-		if (type == 0)
-		{
-			ani = GOLDBAG_ANI_WHITE;
-		}
-		else
-			if (type == 1)
-			{
-				ani = GOLDBAG_ANI_RED;
-			}
-			else
-				if (type == 2)
-				{
-					ani = GOLDBAG_ANI_BLUE;
-				}
-				else
-			if (type == 3)
-			{
-				ani = GOLDBAG_ANI_3COLOR;
-			}
-		animations[ani]->Render(x, y);
-	//	RenderBoundingBox(100);
+		animations[0]->Render(x, y);
+		//	RenderBoundingBox(100);
 	}
 
 
 }
 
-void GoldBag::SetState(int state)
+void Potion::SetState(int state)
 {
 	this->state = state;
 

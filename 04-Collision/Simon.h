@@ -12,6 +12,14 @@ public:
 	Whip *whip;
 	bool untouchable;
 	DWORD untouchable_start;
+
+	bool eatingItem;
+	DWORD eatingItemEffect_start;
+
+
+	bool isInvis;
+	DWORD invisTimeStart_start;
+
 	Dagger *dagger;
 	Clock *clock;
 	Axe *axe;
@@ -28,7 +36,8 @@ public:
 	Simon() : CGameObject()
 	{
 		isUsingDagger = false;
-		//isHavingSword = false;
+		eatingItem = false;
+		isInvis = false;
 		untouchable = false;
 		whip = new Whip();
 		axe = new Axe();
@@ -52,6 +61,15 @@ public:
 		untouchable = true; 
 		untouchable_start = GetTickCount();
 		this->healthCount -= 2;
+	}
+	void StartEatingItemStart() {
+		eatingItem = true;
+		eatingItemEffect_start = GetTickCount();
+	}
+
+	void StartInvisTime() {
+		isInvis = true;
+		invisTimeStart_start = GetTickCount();
 	}
 	//void PickedSword();
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);

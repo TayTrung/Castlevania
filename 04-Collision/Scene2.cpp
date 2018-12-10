@@ -13,7 +13,8 @@ vector<LPENEMY> listEnemy1;
 vector<LPENEMY> listTorches1;
 vector<LPSTAIRS> listUpStairs1;
 vector<LPSTAIRS> listDownStairs1;
-vector<LPEFFECT>listEffect1;
+vector<LPEFFECTFIRE>listEffectFire1;
+vector<LPEFFECTBAG>listEffectBag1;
 Camera *camera1 = Camera::GetInstance();
 Map *map1;
 Bat *bat1;
@@ -32,10 +33,12 @@ Cross1 *cross1;
 HolyWater1 *holy1;
 Clock1 *clock1;
 Axe1 *axe1;
-Effect *effect1;
+EffectFire *effectFire1;
+EffectBag *effectBag1;
 Monster *monster1;
 FireBall *fire;
 Numbah *num;
+Potion *potion;
 int tickGhou = 300;
 int tickBat = 290;
 int tickMonster = 290;
@@ -684,6 +687,7 @@ void Scene2::LoadResources()
 	textures->Add(ID_TEX_ITEM_CLOCK, L"textures\\Item\\clock.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_AXE, L"textures\\Item\\7.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_NUMBAH, L"textures\\Item\\11.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_ITEM_POTION, L"textures\\Item\\potion.png", D3DCOLOR_XRGB(0, 0, 0));
 
 	textures->Add(ID_TEX_GHOUL, L"textures\\Enemy\\Ghoul.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_BAT, L"textures\\Enemy\\Bat.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -863,7 +867,17 @@ void Scene2::LoadResources()
 	sprites->Add(23541, 0, 0, 14, 15, texClock);
 
 #pragma endregion
+#pragma region Co-ordinations of Potion
 
+		LPDIRECT3DTEXTURE9 texPotion = textures->Get(ID_TEX_ITEM_POTION);
+		sprites->Add(25471, 290, 102, 302, 117, texPotion);
+
+
+		ani = new CAnimation(100);
+		ani->Add(25471);
+		animations->Add(987, ani);
+
+#pragma endregion
 #pragma region Co-ordinations of Numbah
 
 	LPDIRECT3DTEXTURE9 texNum = textures->Get(ID_TEX_ITEM_NUMBAH);
@@ -986,8 +1000,16 @@ void Scene2::LoadResources()
 
 #pragma region Ađing Effect
 
-	effect1 = new Effect();
-	effect1->AddAnimation(578);
+	effectFire1 = new EffectFire();
+	effectFire1->AddAnimation(578);
+
+
+	effectBag1 = new EffectBag();
+	effectBag1->AddAnimation(579);
+	effectBag1->AddAnimation(580);
+	effectBag1->AddAnimation(581);
+	effectBag1->AddAnimation(582);
+
 
 #pragma endregion
 		
@@ -1058,7 +1080,7 @@ void Scene2::LoadResources()
 		Torch *candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
+		candle->setItemInside(potionInside);
 		candle->SetPosition(29+i*(157-29), offsetMap +128);
 		listTorches1.push_back(candle);
 
@@ -2157,11 +2179,13 @@ void Scene2::Update(DWORD dt)
 		listItem1.at(i)->Update(dt, &listSurface1);
 	}
 
-	for (int i = 0; i < listEffect1.size(); i++)
+	for (int i = 0; i < listEffectFire1.size(); i++)
 	{
-		listEffect1.at(i)->Update(dt, &listSurface1);
+		listEffectFire1.at(i)->Update(dt, &listSurface1);
 	}
 
+	for (int i = 0; i < listEffectBag1.size(); i++)//render ietms
+		listEffectBag1[i]->Update(dt);
 	spawnItemsAfterEffect();
 	if (stage != 3)
 	{
@@ -2177,7 +2201,8 @@ void Scene2::Update(DWORD dt)
 
 	if (simon1->proceedThruDoor == false)//dang qua cua k xet va cham
 		if (simon1->untouchable == false)//bi untouchable thi k va cham voi enemy nua
-			CollisionBetSimonAndEnemy();
+			if (simon1->isInvis == false)
+				CollisionBetSimonAndEnemy();
 
 	CollisionBetSimonAndItem();
 
@@ -2206,12 +2231,13 @@ void Scene2::Render()
 			listSurface1[i]->Render();
 		for (int i = 0; i < listTorches1.size(); i++)
 			listTorches1[i]->Render();
-		for (int i = 0; i < listEffect1.size(); i++)
-			listEffect1[i]->Render();
+		for (int i = 0; i < listEffectFire1.size(); i++)
+			listEffectFire1[i]->Render();
 		for (int i = 0; i < listEnemy1.size(); i++)
 			listEnemy1[i]->Render();
 		simon1->Render();
-		
+		for (int i = 0; i < listEffectBag1.size(); i++)//render ietms
+			listEffectBag1[i]->Render();
 		for (int i = 0; i < listItem1.size(); i++)
 			listItem1[i]->Render();
 		simon1->dagger->Render();
@@ -2566,10 +2592,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 							listEnemy1.at(i)->GetPosition(x, y);
 
-							effect1->SetPosition(x, y);
-							effect1->SetState(EFFECT_STATE_ACTIVE);
-							effect1->itemInside = listEnemy1.at(i)->itemInside;
-							listEffect1.push_back(effect1);
+							effectFire1->SetPosition(x, y);
+							effectFire1->SetState(EFFECT_STATE_ACTIVE);
+							effectFire1->itemInside = listEnemy1.at(i)->itemInside;
+							listEffectFire1.push_back(effectFire1);
 						
 							if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
 							{
@@ -2625,10 +2651,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 						listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
 						listTorches1.at(i)->GetPosition(x, y);
 
-						effect1->SetPosition(x, y);
-						effect1->SetState(EFFECT_STATE_ACTIVE);
-						effect1->itemInside = listTorches1.at(i)->itemInside;
-						listEffect1.push_back(effect1);
+						effectFire1->SetPosition(x, y);
+						effectFire1->SetState(EFFECT_STATE_ACTIVE);
+						effectFire1->itemInside = listTorches1.at(i)->itemInside;
+						listEffectFire1.push_back(effectFire1);
 
 						listTorches1.erase(listTorches1.begin() + i);
 						i = i - 1;
@@ -2657,10 +2683,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 							listEnemy1.at(i)->GetPosition(x, y);
 
-							effect1->SetPosition(x, y);
-							effect1->SetState(EFFECT_STATE_ACTIVE);
-							effect1->itemInside = listEnemy1.at(i)->itemInside;
-							listEffect1.push_back(effect1);
+							effectFire1->SetPosition(x, y);
+							effectFire1->SetState(EFFECT_STATE_ACTIVE);
+							effectFire1->itemInside = listEnemy1.at(i)->itemInside;
+							listEffectFire1.push_back(effectFire1);
 
 							listEnemy1.erase(listEnemy1.begin() + i);
 							i = i - 1;
@@ -2683,10 +2709,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
 							listTorches1.at(i)->GetPosition(x, y);
 
-							effect1->SetPosition(x, y);
-							effect1->SetState(EFFECT_STATE_ACTIVE);
-							effect1->itemInside = listTorches1.at(i)->itemInside;
-							listEffect1.push_back(effect1);
+							effectFire1->SetPosition(x, y);
+							effectFire1->SetState(EFFECT_STATE_ACTIVE);
+							effectFire1->itemInside = listTorches1.at(i)->itemInside;
+							listEffectFire1.push_back(effectFire1);
 
 							listTorches1.erase(listTorches1.begin() + i);
 							i = i - 1;
@@ -2714,10 +2740,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 							listEnemy1.at(i)->GetPosition(x, y);
 
-							effect1->SetPosition(x, y);
-							effect1->SetState(EFFECT_STATE_ACTIVE);
-							effect1->itemInside = listEnemy1.at(i)->itemInside;
-							listEffect1.push_back(effect1);
+							effectFire1->SetPosition(x, y);
+							effectFire1->SetState(EFFECT_STATE_ACTIVE);
+							effectFire1->itemInside = listEnemy1.at(i)->itemInside;
+							listEffectFire1.push_back(effectFire1);
 
 							listEnemy1.erase(listEnemy1.begin() + i);
 							i = i - 1;
@@ -2740,10 +2766,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
 							listTorches1.at(i)->GetPosition(x, y);
 
-							effect1->SetPosition(x, y);
-							effect1->SetState(EFFECT_STATE_ACTIVE);
-							effect1->itemInside = listTorches1.at(i)->itemInside;
-							listEffect1.push_back(effect1);
+							effectFire1->SetPosition(x, y);
+							effectFire1->SetState(EFFECT_STATE_ACTIVE);
+							effectFire1->itemInside = listTorches1.at(i)->itemInside;
+							listEffectFire1.push_back(effectFire1);
 
 							listTorches1.erase(listTorches1.begin() + i);
 							i = i - 1;
@@ -2772,10 +2798,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 							listEnemy1.at(i)->GetPosition(x, y);
 
-							effect1->SetPosition(x, y);
-							effect1->SetState(EFFECT_STATE_ACTIVE);
-							effect1->itemInside = listEnemy1.at(i)->itemInside;
-							listEffect1.push_back(effect1);
+							effectFire1->SetPosition(x, y);
+							effectFire1->SetState(EFFECT_STATE_ACTIVE);
+							effectFire1->itemInside = listEnemy1.at(i)->itemInside;
+							listEffectFire1.push_back(effectFire1);
 
 							listEnemy1.erase(listEnemy1.begin() + i);
 							i = i - 1;
@@ -2797,10 +2823,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
 							listTorches1.at(i)->GetPosition(x, y);
 
-							effect1->SetPosition(x, y);
-							effect1->SetState(EFFECT_STATE_ACTIVE);
-							effect1->itemInside = listTorches1.at(i)->itemInside;
-							listEffect1.push_back(effect1);
+							effectFire1->SetPosition(x, y);
+							effectFire1->SetState(EFFECT_STATE_ACTIVE);
+							effectFire1->itemInside = listTorches1.at(i)->itemInside;
+							listEffectFire1.push_back(effectFire1);
 
 							listTorches1.erase(listTorches1.begin() + i);
 							i = i - 1;
@@ -2932,6 +2958,10 @@ void Scene2::CollisionBetSimonAndItem()
 										OutputDebugString(L"GoldBag \n");
 										listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 										GoldBag *newGoldBag = dynamic_cast<GoldBag *>(listItem1.at(i));
+										effectBag1->SetPosition(x + 5, y);
+										effectBag1->type = newGoldBag->type;
+										effectBag1->SetState(EFFECT_STATE_ACTIVE);
+										listEffectBag1.push_back(effectBag1);
 										if (newGoldBag->type == 0)
 										{
 											simon1->score += 700;
@@ -2946,6 +2976,11 @@ void Scene2::CollisionBetSimonAndItem()
 												{
 													simon1->score += 400;
 												}
+												else
+													if (newGoldBag->type == 3)
+													{
+														simon1->score += 1000;
+													}
 										if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
 										{
 											listItem1.erase(listItem1.begin() + i);
@@ -3075,6 +3110,23 @@ void Scene2::CollisionBetSimonAndItem()
 															}
 
 														}
+														else
+															if (dynamic_cast<Potion *>(listItem1.at(i)))
+															{
+																if (listItem1.at(i)->state == ITEM_STATE_DROPPED)
+																{
+																	OutputDebugString(L"Numbah \n");
+																	listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
+																	simon1->StartInvisTime();
+
+																	if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
+																	{
+																		listItem1.erase(listItem1.begin() + i);
+																		i = i - 1;
+																	}
+																}
+
+															}
 
 													
 
@@ -3086,14 +3138,14 @@ void Scene2::CollisionBetSimonAndItem()
 
 void Scene2::spawnItemsAfterEffect()
 {
-	for (UINT i = 0; i < listEffect1.size(); i++)
+	for (UINT i = 0; i < listEffectFire1.size(); i++)
 	{
 
-		if (listEffect1.at(i)->state == EFFECT_STATE_INACTIVE)
+		if (listEffectFire1.at(i)->state == EFFECT_STATE_INACTIVE)
 		{
 			float x, y;
-			listEffect1.at(i)->GetPosition(x, y);
-			switch (listEffect1.at(i)->itemInside)
+			listEffectFire1.at(i)->GetPosition(x, y);
+			switch (listEffectFire1.at(i)->itemInside)
 			{
 
 			case 0:
@@ -3187,11 +3239,17 @@ void Scene2::spawnItemsAfterEffect()
 				num->SetState(ITEM_STATE_ACTIVE);
 				num->SetPosition(x, y);
 				listItem1.push_back(num);
+			case potionInside:
+				potion = new Potion();
+				potion->AddAnimation(987);
+				potion->SetState(ITEM_STATE_ACTIVE);
+				potion->SetPosition(x, y);
+				listItem1.push_back(potion);
 			default:
 				break;
 			}
 
-			listEffect1.erase(listEffect1.begin() + i);// Delete it from enemy since Simion killed it
+			listEffectFire1.erase(listEffectFire1.begin() + i);// Delete it from enemy since Simion killed it
 			i = i - 1; // Push back 1 cuz after deleting i+1 will replace i
 
 		}
