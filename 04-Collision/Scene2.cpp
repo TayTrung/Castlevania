@@ -49,8 +49,6 @@ void Scene2::KeyState(BYTE * states)
 	{
 		if (simon1->whip->isFinished == true)
 		{
-
-
 			if (game1->IsKeyDown(DIK_RIGHT))
 			{
 				if (simon1->proceedThruDoor == false)
@@ -671,7 +669,7 @@ void Scene2::LoadResources()
 	LPANIMATION ani;
 	simon1->SetPosition(50, 0);
 	camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
-	textures->Add(ID_TEX_MAP2, L"textures\\Map\\Map2.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_MAP2, L"textures\\Map\\Map2.png", D3DCOLOR_XRGB(5, 5, 5));
 
 	map1 = new Map(ID_TEX_MAP2, "textures\\Map\\Map2.csv");
 
@@ -1156,7 +1154,7 @@ void Scene2::LoadResources()
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
+		candle->setItemInside(crossInside);
 		candle->SetPosition(1502, offsetMap + 4);
 		listTorches1.push_back(candle);
 #pragma endregion
@@ -1380,7 +1378,7 @@ void Scene2::LoadResources()
 	groundEnemy1 = new GroundEnemy();
 	groundEnemy1->AddAnimation(996);
 	groundEnemy1->setItemInside(numbahInside);
-	groundEnemy1->SetPosition(2736, offsetMap + 128);
+	groundEnemy1->SetPosition(2735, offsetMap + 128);
 	groundEnemy1->SetState(ITEM_STATE_ACTIVE);
 
 	listEnemy1.push_back(groundEnemy1);
@@ -1693,9 +1691,23 @@ bool spawnedEnoughMonster;
 bool x = true;
 bool y = false;
 bool floor1 = true;
+bool changedColor = true;
+
+
+DWORD TimeWait;
 void Scene2::Update(DWORD dt)
 {
 
+	if (isEatingCross == true)
+	{
+		TimeWait += dt;
+		if (TimeWait >= 1000)
+		{
+
+			isEatingCross = false;
+			TimeWait = 0;
+		}
+	}
 	if (stage == 1)
 	{
 		
@@ -2221,6 +2233,23 @@ void Scene2::Render()
 	{
 		// Clear back buffer with a color
 		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
+		if (isEatingCross)
+		{
+			if (changedColor == true)
+			{
+
+				d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR2);
+				changedColor = false;
+
+			}
+			else
+				if (changedColor == false)
+				{
+					d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
+					changedColor = true;
+				}
+		}
+
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 		map1->drawTileMap(camera1, ID_TEX_MAP2);
 		for (int i = 0; i < listDownStairs1.size(); i++)
@@ -2329,6 +2358,7 @@ Scene2::Scene2(Simon *simon)
 	simon1 = simon;
 	stage = 1;
 	LoadResources();
+	isEatingCross = false;
 }
 
 
@@ -2997,6 +3027,7 @@ void Scene2::CollisionBetSimonAndItem()
 											OutputDebugString(L"Cross \n");
 											listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 											float xc, yc;
+											isEatingCross = true;
 											xc=Camera::GetInstance()->GetPosition().x;
 											yc= Camera::GetInstance()->GetPosition().y;
 											for (UINT i = 0; i < listEnemy1.size(); i++)

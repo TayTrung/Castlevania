@@ -103,7 +103,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
 		y += min_ty * dy + ny * 0.4f;
 
-		if (nx != 0) vx = 0;
+		if (nx != 0) 
+ 			vx = 0;
 		if (ny != 0)
 		{
 			vy = 0;
@@ -410,51 +411,60 @@ void Simon::Render()
 		}
 		else
 		{
-			if (this->GetState() == SIMON_STATE_HURT_RIGHT)
+		/*	if (this->GetState() == SIMON_STATE_JUMP_RIGHT)
 			{
-				ani = SIMON_ANI_HURT_RIGHT;
-
-
+				ani = SIMON_ANI_JUMPING_RIGHT;
 			}
 			else
-			{
-				if (this->GetState() == SIMON_STATE_HURT_LEFT)
+				if (this->GetState() == SIMON_STATE_JUMP_LEFT)
 				{
-					ani = SIMON_ANI_HURT_LEFT;
-
-
+					ani = SIMON_ANI_JUMPING_LEFT;
 				}
-				else
-				{
-					if (vx > 0)
+				else*/
+					if (this->GetState() == SIMON_STATE_HURT_RIGHT)
 					{
-						if (this->GetState() == SIMON_STATE_DOWN_RIGHT)
-							ani = SIMON_ANI_DOWN_RIGHT;
-						else
-							if (this->GetState() == SIMON_STATE_UP_RIGHT)
-								ani = SIMON_ANI_UP_RIGHT;
-							else
-								ani = SIMON_ANI_WALKING_RIGHT;
+						ani = SIMON_ANI_HURT_RIGHT;
 
 					}
 					else
 					{
-						if (vx < 0)
+						if (this->GetState() == SIMON_STATE_HURT_LEFT)
 						{
-							if (this->GetState() == SIMON_STATE_DOWN_LEFT)
-								ani = SIMON_ANI_DOWN_LEFT;
-							else
-								if (this->GetState() == SIMON_STATE_UP_LEFT)
-									ani = SIMON_ANI_UP_LEFT;
+							ani = SIMON_ANI_HURT_LEFT;
+
+
+						}
+						else
+						{
+							if (vx > 0)
+							{
+								if (this->GetState() == SIMON_STATE_DOWN_RIGHT)
+									ani = SIMON_ANI_DOWN_RIGHT;
 								else
-									ani = SIMON_ANI_WALKING_LEFT;
+									if (this->GetState() == SIMON_STATE_UP_RIGHT)
+										ani = SIMON_ANI_UP_RIGHT;
+									else
+										ani = SIMON_ANI_WALKING_RIGHT;
+
+							}
+							else
+							{
+								if (vx < 0)
+								{
+									if (this->GetState() == SIMON_STATE_DOWN_LEFT)
+										ani = SIMON_ANI_DOWN_LEFT;
+									else
+										if (this->GetState() == SIMON_STATE_UP_LEFT)
+											ani = SIMON_ANI_UP_LEFT;
+										else
+											ani = SIMON_ANI_WALKING_LEFT;
+								}
+							}
 						}
 					}
-				}
-			}
 		}
 	}
-	
+
 
 	int alpha = 255;
 	if (isInvis) alpha = 100;
@@ -500,7 +510,17 @@ void Simon::SetState(int state)
 		case SIMON_STATE_WALKING_RIGHT:
 			vx = SIMON_WALKING_SPEED;
 			nx = 1;
-			break;
+			break;	
+		//case SIMON_STATE_JUMP_RIGHT:
+		//		vx = SIMON_WALKING_SPEED;
+		//		vy = -SIMON_JUMP_SPEED_Y;
+		//		nx = 1;
+		//		break;
+		//case SIMON_STATE_JUMP_LEFT:
+		//	vx = SIMON_WALKING_SPEED;
+		//	vy = -SIMON_JUMP_SPEED_Y;
+		//	nx = 1;
+		//	break;
 		case SIMON_STATE_WALKING_LEFT:
 			vx = -SIMON_WALKING_SPEED;
 			nx = -1;
@@ -559,6 +579,11 @@ void Simon::SetState(int state)
 			vx = 0;
 			break;
 		case SIMON_STATE_DEAD:
+			vx = 0;
+			vy = 0;
+			break;
+		case SIMON_STATE_ATTACK_ON_STAIRS:
+		case SIMON_STATE_THROW_ON_STAIRS:
 			vx = 0;
 			vy = 0;
 			break;

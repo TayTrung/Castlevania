@@ -29,7 +29,7 @@ void Scene1::KeyState(BYTE * states)
 		{
 			if (game->IsKeyDown(DIK_RIGHT))
 			{ 
-				//if (simon->isJumping == false)
+				if (simon->isJumping == false)
 				{
 
 					if (game->IsKeyDown(DIK_S))
@@ -41,11 +41,13 @@ void Scene1::KeyState(BYTE * states)
 						else
 							simon->SetState(SIMON_STATE_WALKING_RIGHT);
 				}
+				else
+					simon->SetState(SIMON_STATE_JUMP_RIGHT);
 			}
 			else
 				if (game->IsKeyDown(DIK_LEFT))
 				{
-					//if (simon->isJumping == false)
+					if (simon->isJumping == false)
 					{
 						if (game->IsKeyDown(DIK_S))
 							simon->SetState(SIMON_STATE_ATTACK);
@@ -56,6 +58,8 @@ void Scene1::KeyState(BYTE * states)
 								
 									simon->SetState(SIMON_STATE_WALKING_LEFT);
 					}
+					else
+						simon->SetState(SIMON_STATE_JUMP_LEFT);
 				}
 				else
 					if (game->IsKeyDown(DIK_DOWN))

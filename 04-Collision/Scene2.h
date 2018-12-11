@@ -10,7 +10,7 @@ public:
 	virtual void KeyState(BYTE *states);
 	virtual void OnKeyDown(int KeyCode);
 	virtual void OnKeyUp(int KeyCode);
-
+	bool isEatingCross;
 	virtual void LoadResources();
 	virtual void Update(DWORD dt);
 	virtual void Render();
