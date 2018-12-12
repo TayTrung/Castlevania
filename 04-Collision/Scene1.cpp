@@ -121,26 +121,34 @@ void Scene1::OnKeyDown(int KeyCode)
 		SceneManager::GetInstance()->replaceScene(new Scene2(simon));
 		break;
 	case DIK_S:
-		if (simon->GetState() == SIMON_STATE_SIT)
+		if(simon->eatingItem==false)
 		{
-			simon->SetState(SIMON_STATE_ATTACK_SITTING);
-			simon->whip->CreateWeapon(simon->x, simon->y+7, simon->nx);
+			if (simon->GetState() == SIMON_STATE_SIT)
+			{
+				simon->SetState(SIMON_STATE_ATTACK_SITTING);
+				simon->whip->CreateWeapon(simon->x, simon->y + 7, simon->nx);
 
-		}
-		else
-		{
-			simon->SetState(SIMON_STATE_ATTACK);
-			simon->whip->CreateWeapon(simon->x, simon->y, simon->nx);
+			}
+			else
+			{
+				simon->SetState(SIMON_STATE_ATTACK);
+				simon->whip->CreateWeapon(simon->x, simon->y, simon->nx);
 
+			}
 		}
+
+		
 			
 		break;
 	case DIK_D:
 	//	if (simon->GetState() != SIMON_STATE_WALKING_LEFT && simon->GetState() != SIMON_STATE_WALKING_RIGHT)
+		if (simon->eatingItem == false)
+		
 		{
 
 			if (simon->dagger->isOn == true)
 			{
+				simon->numOfWeapon = 1;
 				if (simon->heartCount > 0)
 				{
 					simon->heartCount -= 1;
@@ -153,14 +161,14 @@ void Scene1::OnKeyDown(int KeyCode)
 						{
 							simon->dagger->CreateWeapon(x, y + 7, simon->nx);
 
-							if (simon->isUsingDagger == false)
+							if (simon->isUsing1stWeapon == false)
 							{
 								if (simon->nx > 0)
 									simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
 								else
 									simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
 								simon->SetState(SIMON_STATE_THROW_SITTING);
-								simon->useDagger();
+								simon->useWeapon();
 
 							}
 
@@ -171,14 +179,14 @@ void Scene1::OnKeyDown(int KeyCode)
 
 							simon->dagger->CreateWeapon(x, y, simon->nx);
 
-							if (simon->isUsingDagger == false)
+							if (simon->isUsing1stWeapon == false)
 							{
 								if (simon->nx > 0)
 									simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
 								else
 									simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
 								simon->SetState(SIMON_STATE_THROW);
-								simon->useDagger();
+								simon->useWeapon();
 
 							}
 
@@ -728,7 +736,7 @@ void Scene1::LoadResources()
 	simon = new Simon();
 	simon->score = 0;
 	simon->healthCount =16;
-	simon->heartCount = 1;
+	simon->heartCount = 1999999999999999;
 	simon->AddAnimation(400);		// idle right
 	simon->AddAnimation(401);		// idle left
 
@@ -864,7 +872,9 @@ void Scene1::LoadResources()
 
 	simon->dagger->AddAnimation(767); //left
 	simon->dagger->AddAnimation(766); //right
-
+	\
+		simon->dagger1->AddAnimation(767);
+		simon->dagger1->AddAnimation(766);
 	dagger = new Dagger1();
 	dagger->AddAnimation(767);
 
@@ -889,6 +899,8 @@ void Scene1::LoadResources()
 
 	simon->axe->AddAnimation(054);
 	simon->axe->AddAnimation(053);
+	simon->axe1->AddAnimation(054);
+	simon->axe1->AddAnimation(053);
 #pragma endregion
 
 #pragma region Adding HolyWater
@@ -910,6 +922,9 @@ void Scene1::LoadResources()
 	simon->holy->AddAnimation(032);
 	simon->holy->AddAnimation(033);
 	simon->holy->AddAnimation(034);
+	simon->holy1->AddAnimation(032);
+	simon->holy1->AddAnimation(033);
+	simon->holy1->AddAnimation(034);
 
 #pragma endregion 
 #pragma region Adding Item Morning Star
@@ -966,12 +981,12 @@ void Scene1::Update(DWORD dt)
 	y1 = Camera::GetInstance()->GetPosition().y;
 	if (simon->dagger->isOn == true)
 	{
-		if (simon->isUsingDagger == true)
+		if (simon->isUsing1stWeapon == true)
 		{
 
 		if ((simon->dagger->x) < x1+50|| (simon->dagger->x) > (x1 + SCREEN_WIDTH-50))// set lai dagger is not being used neu bay qua man hinh
 		{
-			simon->notUseDagger();
+			simon->notUseWeapon();
 			simon->dagger->SetState(DAGGER_STATE_INACTIVE);
 
 		}
@@ -1001,7 +1016,7 @@ void Scene1::Update(DWORD dt)
 
 	simon->Update(dt, &listSurface);
 	
-	if ((simon->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon->dagger->isOn == true && simon->isUsingDagger == true)//updating dagger when being used
+	if ((simon->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon->dagger->isOn == true && simon->isUsing1stWeapon == true)//updating dagger when being used
 		simon->dagger->Update(dt, &listSurface);
 
 	camera->SetPosition(simon->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon
@@ -1174,7 +1189,7 @@ void Scene1::CollisionBetWeaponAndEnemy()
 		}
 	}
 	else 
-		if (simon->dagger->state != DAGGER_STATE_INACTIVE && simon->dagger->isOn == true && simon->isUsingDagger == true)
+		if (simon->dagger->state != DAGGER_STATE_INACTIVE && simon->dagger->isOn == true && simon->isUsing1stWeapon == true)
 		{
 			for (UINT i = 0; i < listEnemy.size(); i++)
 			{
@@ -1188,7 +1203,7 @@ void Scene1::CollisionBetWeaponAndEnemy()
 						listEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
 						listEnemy.at(i)->GetPosition(x, y);
 						simon->dagger->SetState(DAGGER_STATE_INACTIVE);
-						simon->notUseDagger();
+						simon->notUseWeapon();
 
 						effect->SetPosition(x, y);
 						effect->SetState(EFFECT_STATE_ACTIVE);

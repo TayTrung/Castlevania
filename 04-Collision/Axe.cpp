@@ -38,7 +38,7 @@ void Axe::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	vy += ITEM_GRAVITY * dt;
+	vy += ITEM_GRAVITY/2 * dt;
 
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -109,12 +109,12 @@ void Axe::SetState(int state)
 	{
 	case AXE_STATE_ACTIVE_RIGHT:
 		vx = AXE_FLYING_SPEED;
-		vy = -AXE_FLYING_SPEED ;
+		vy = -2*AXE_FLYING_SPEED ;
 		nx = 1;
 		break;
 	case AXE_STATE_ACTIVE_LEFT:
 		vx = -AXE_FLYING_SPEED;
-		vy = -AXE_FLYING_SPEED ;
+		vy = -2*AXE_FLYING_SPEED ;
 		nx = -1;
 		break;
 	case AXE_STATE_INACTIVE:

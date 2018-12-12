@@ -7,44 +7,54 @@
 #include "Scene1.h"
 #include "Scene2.h"
 
-void Simon::useDagger()
+void Simon::useWeapon()
 {
-	isUsingDagger = true;
+	isUsing1stWeapon = true;
 }
 
-void Simon::notUseDagger()
+void Simon::notUseWeapon()
 {
-	isUsingDagger = false;
+	isUsing1stWeapon = false;
+}
+
+void Simon::useWeapon2()
+{
+	isUsing2ndWeapon = true;
+}
+
+void Simon::notUseWeapon2()
+{
+	isUsing2ndWeapon = false;
 }
 
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	
-	if ((this->GetState() == SIMON_STATE_ATTACK && this->whip->isFinished == true) ||//danh xong xet ve vi tri cu
-		(this->GetState() == SIMON_STATE_THROW && this->dagger->isFinished == true &&this->dagger->isOn==true) ||
-		(this->GetState() == SIMON_STATE_THROW && this->axe->isFinished == true && this->axe->isOn == true) ||
-		(this->GetState() == SIMON_STATE_THROW && this->holy->isFinished == true && this->holy->isOn == true) ||
-		(this->GetState() == SIMON_STATE_THROW && this->clock->isFinished == true && this->clock->isOn == true) ||
-		(this->GetState() == SIMON_STATE_ATTACK_ON_STAIRS && this->whip->isFinished == true) ||
-		(this->GetState() == SIMON_STATE_THROW_ON_STAIRS && this->dagger->isFinished == true && this->dagger->isOn == true) ||
-		(this->GetState() == SIMON_STATE_THROW_ON_STAIRS && this->axe->isFinished == true && this->axe->isOn == true) ||
-		(this->GetState() == SIMON_STATE_THROW_ON_STAIRS && this->holy->isFinished == true && this->holy->isOn == true) ||
-		(this->GetState() == SIMON_STATE_THROW_ON_STAIRS && this->clock->isFinished == true && this->clock->isOn == true)
-		)
-	{
-		//this->SetState(SIMON_STATE_IDLE);
-		CGameObject::SetState(SIMON_STATE_IDLE);
-	}
+	//if ((this->GetState() == SIMON_STATE_ATTACK && this->whip->isFinished == true) ||//danh xong xet ve vi tri cu
+	//	(this->GetState() == SIMON_STATE_THROW && this->dagger->isFinished == true &&this->dagger->isOn==true && numOfWeapon==1) ||
+	//	(this->GetState() == SIMON_STATE_THROW && this->axe->isFinished == true && this->axe->isOn == true) ||
+	//	(this->GetState() == SIMON_STATE_THROW && this->holy->isFinished == true && this->holy->isOn == true) ||
+	//	(this->GetState() == SIMON_STATE_THROW && this->clock->isFinished == true && this->clock->isOn == true) ||
+	//	(this->GetState() == SIMON_STATE_ATTACK_ON_STAIRS && this->whip->isFinished == true) ||
+	//	(this->GetState() == SIMON_STATE_THROW_ON_STAIRS && this->dagger->isFinished == true && this->dagger->isOn == true) ||
+	//	(this->GetState() == SIMON_STATE_THROW_ON_STAIRS && this->axe->isFinished == true && this->axe->isOn == true) ||
+	//	(this->GetState() == SIMON_STATE_THROW_ON_STAIRS && this->holy->isFinished == true && this->holy->isOn == true) ||
+	//	(this->GetState() == SIMON_STATE_THROW_ON_STAIRS && this->clock->isFinished == true && this->clock->isOn == true)
+	//	)
+	//{
+	//	//this->SetState(SIMON_STATE_IDLE);
+	//	CGameObject::SetState(SIMON_STATE_IDLE);
+	//}
 
-	if ((this->GetState() == SIMON_STATE_ATTACK_SITTING && this->whip->isFinished == true) ||////danh xong xet ve vi tri cu
-		(this->GetState() == SIMON_STATE_THROW_SITTING && this->dagger->isFinished == true && this->dagger->isOn == true) ||////danh xong xet ve vi tri cu
-		(this->GetState() == SIMON_STATE_THROW_SITTING && this->axe->isFinished == true && this->axe->isOn == true) ||////danh xong xet ve vi tri cu
-		(this->GetState() == SIMON_STATE_THROW_SITTING && this->holy->isFinished == true && this->holy->isOn == true) ||////danh xong xet ve vi tri cu
-		(this->GetState() == SIMON_STATE_THROW_SITTING && this->clock->isFinished == true && this->clock->isOn == true)
-		)
-	{
-		CGameObject::SetState(SIMON_STATE_SIT);
-	}
+	//if ((this->GetState() == SIMON_STATE_ATTACK_SITTING && this->whip->isFinished == true) ||////danh xong xet ve vi tri cu
+	//	(this->GetState() == SIMON_STATE_THROW_SITTING && this->dagger->isFinished == true && this->dagger->isOn == true) ||////danh xong xet ve vi tri cu
+	//	(this->GetState() == SIMON_STATE_THROW_SITTING && this->axe->isFinished == true && this->axe->isOn == true) ||////danh xong xet ve vi tri cu
+	//	(this->GetState() == SIMON_STATE_THROW_SITTING && this->holy->isFinished == true && this->holy->isOn == true) ||////danh xong xet ve vi tri cu
+	//	(this->GetState() == SIMON_STATE_THROW_SITTING && this->clock->isFinished == true && this->clock->isOn == true)
+	//	)
+	//{
+	//	CGameObject::SetState(SIMON_STATE_SIT);
+	//}
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
@@ -133,26 +143,58 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 
 	}
-	if (this->GetState() == SIMON_STATE_THROW || this->GetState() == SIMON_STATE_THROW_SITTING || 
+	//if (this->isUsing1stWeapon == true)
+	{
+		if (this->GetState() == SIMON_STATE_THROW || this->GetState() == SIMON_STATE_THROW_SITTING ||
+			this->GetState() == SIMON_STATE_THROW_ON_STAIRS)
+		{
+			if (this->numOfWeapon == 1)
+			{
+				if (animations[ani]->GetCurrentFrame() == 3)
+				{
+					if (this->dagger->isOn == true)
+						this->dagger->isFinished = true;
+					else
+						if (this->axe->isOn == true)
+							this->axe->isFinished = true;
+						else
+							if (this->clock->isOn == true)
+								this->clock->isFinished = true;
+							else
+								if (this->holy->isOn == true)
+									this->holy->isFinished = true;
+
+				}
+
+			}
+		}
+
+	}
+	
+	if (this->GetState() == SIMON_STATE_THROW || this->GetState() == SIMON_STATE_THROW_SITTING ||
 		this->GetState() == SIMON_STATE_THROW_ON_STAIRS)
 	{
-		if (animations[ani]->GetCurrentFrame() == 3)
+		if (this->numOfWeapon == 2)
 		{
-			if (this->dagger->isOn == true)
-				this->dagger->isFinished = true;
-			else
-				if (this->axe->isOn == true)
-					this->axe->isFinished = true;
-				else
-					if (this->clock->isOn == true)
-						this->clock->isFinished = true;
+			if (animations[ani]->GetCurrentFrame() == 3)
+			{
+				if (this->dagger->isOn == true)
+						this->dagger1->isFinished = true;
 					else
-						if (this->holy->isOn == true)
-							this->holy->isFinished = true;
-			
+						if (this->axe->isOn == true)
+							this->axe1->isFinished = true;
+						else
+							if (this->clock->isOn == true)
+								this->clock1->isFinished = true;
+							else
+								if (this->holy->isOn == true)
+									this->holy1->isFinished = true;
+
+			}
 		}
 	}
-
+	
+	
 	Scene *a = SceneManager::GetInstance()->getCurrentScene();
 
 	if (dynamic_cast<Scene1 *>(a))
@@ -176,6 +218,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 	//	this->SetState(SIMON_STATE_DEAD);
 	}
+	
 }
 
 void Simon::Render()
@@ -477,10 +520,14 @@ void Simon::SetState(int state)
 {
 	
 	if (this->whip->isFinished == false||
-		this->dagger->isFinished==false ||
-		this->clock->isFinished==false ||
-		this->holy->isFinished==false ||
-		this->axe->isFinished==false)
+		(this->dagger->isFinished==false && this->numOfWeapon==1) ||
+		(this->clock->isFinished==false && this->numOfWeapon == 1) ||
+		(this->holy->isFinished==false && this->numOfWeapon == 1) ||
+		(this->axe->isFinished==false && this->numOfWeapon == 1) ||
+		(this->dagger1->isFinished == false && this->numOfWeapon == 2) ||
+		(this->clock1->isFinished == false && this->numOfWeapon == 2) ||
+		(this->holy1->isFinished == false && this->numOfWeapon == 2) ||
+		(this->axe1->isFinished == false && this->numOfWeapon == 2))
 	{
 
 		if (this->GetState() == SIMON_STATE_ATTACK)

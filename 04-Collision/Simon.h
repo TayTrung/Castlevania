@@ -22,20 +22,29 @@ public:
 
 	Dagger *dagger;
 	Clock *clock;
+	Dagger *dagger1;
+	Clock *clock1;
 	Axe *axe;
+	Axe *axe1;
+	HolyWater *holy1;
 	HolyWater *holy;
 	int heartCount;
 	int score;
 	int healthCount;
-	bool isUsingDagger;
+	bool isUsing1stWeapon;
+	bool isUsing2ndWeapon;
 	int ani;
+	bool shotTwoWeaponOneTime;
 	bool isOnStairs; 
 	bool directionOnStairs; // true=going up, false=going down
 	bool proceedThruDoor;
+	int numOfWeapon;
 public:
 	Simon() : CGameObject()
 	{
-		isUsingDagger = false;
+		shotTwoWeaponOneTime = false;
+		isUsing1stWeapon = false;
+		isUsing2ndWeapon = false;
 		eatingItem = false;
 		isInvis = false;
 		untouchable = false;
@@ -44,15 +53,21 @@ public:
 		dagger = new Dagger();
 		clock = new Clock();
 		holy = new HolyWater();
+		axe1 = new Axe();
+		dagger1 = new Dagger();
+		clock1 = new Clock();
+		holy1 = new HolyWater();
 		//	heartCount = 10;
 		isJumping = false;
 		isOnStairs = false;
 		proceedThruDoor = false;
 
 	}
-	void useDagger();
 	bool isJumping;
-	void notUseDagger();
+	void useWeapon();
+	void notUseWeapon();
+	void useWeapon2();
+	void notUseWeapon2();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 	void SetState(int state);

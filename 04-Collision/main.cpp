@@ -13,7 +13,6 @@
 		CGameObject::SweptAABBEx
 		CGameObject::CalcPotentialCollisions
 		CGameObject::FilterCollision
-
 		CGameObject::GetBoundingBox
 		
 ================================================================ */

@@ -338,6 +338,9 @@ void Scene2::OnKeyDown(int KeyCode)
 		simon1->holy->turnOffHolyWater();
 		simon1->clock->turnOnClock();
 		break;
+	case DIK_5:
+		simon1->shotTwoWeaponOneTime = true;
+		break;
 	case DIK_SPACE:
 		if (simon1->proceedThruDoor == false)
 		{
@@ -403,19 +406,20 @@ void Scene2::OnKeyDown(int KeyCode)
 					simon1->heartCount -= 1;
 					if (simon1->dagger->GetState() == DAGGER_STATE_INACTIVE)
 					{
+						simon1->numOfWeapon = 1;
 						float x, y;
 						simon1->GetPosition(x, y);
 						if (simon1->isOnStairs == true)
 						{
 							simon1->dagger->CreateWeapon(x, y, simon1->nx);
-							if (simon1->isUsingDagger == false)
+							if (simon1->isUsing1stWeapon == false)
 							{
 								if (simon1->nx > 0)
 									simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
 								else
 									simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
 								simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
-								simon1->useDagger();
+								simon1->useWeapon();
 
 							}
 						}
@@ -424,14 +428,14 @@ void Scene2::OnKeyDown(int KeyCode)
 							{
 								simon1->dagger->CreateWeapon(x, y + 7, simon1->nx);
 
-								if (simon1->isUsingDagger == false)
+								if (simon1->isUsing1stWeapon == false)
 								{
 									if (simon1->nx > 0)
 										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
 									else
 										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
 									simon1->SetState(SIMON_STATE_THROW_SITTING);
-									simon1->useDagger();
+									simon1->useWeapon();
 
 								}
 
@@ -442,21 +446,86 @@ void Scene2::OnKeyDown(int KeyCode)
 
 								simon1->dagger->CreateWeapon(x, y, simon1->nx);
 
-								if (simon1->isUsingDagger == false)
+								if (simon1->isUsing1stWeapon == false)
 								{
 									if (simon1->nx > 0)
 										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
 									else
 										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
 									simon1->SetState(SIMON_STATE_THROW);
-									simon1->useDagger();
+									simon1->useWeapon();
 
 								}
 
 							}
 
 					}
+					else
+						if(simon1->shotTwoWeaponOneTime==true)
+						{
+							if (simon1->dagger->isFinished == true)
+							{
+								simon1->numOfWeapon = 2;
+								if (simon1->dagger1->GetState() == DAGGER_STATE_INACTIVE)
+								{
+									float x, y;
+									simon1->GetPosition(x, y);
+									if (simon1->isOnStairs == true)
+									{
+										simon1->dagger1->CreateWeapon(x, y, simon1->nx);
+										if (simon1->isUsing2ndWeapon == false)
+										{
+											if (simon1->nx > 0)
+												simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+											else
+												simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_LEFT);
+											simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
+											simon1->useWeapon2();
 
+										}
+									}
+									else
+										if (simon1->GetState() == SIMON_STATE_SIT)
+										{
+											simon1->dagger1->CreateWeapon(x, y + 7, simon1->nx);
+
+											if (simon1->isUsing2ndWeapon == false)
+											{
+												if (simon1->nx > 0)
+													simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+												else
+													simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_LEFT);
+												simon1->SetState(SIMON_STATE_THROW_SITTING);
+												simon1->useWeapon2();
+
+											}
+
+										}
+										else
+										{
+
+
+											simon1->dagger1->CreateWeapon(x, y, simon1->nx);
+
+											if (simon1->isUsing2ndWeapon == false)
+											{
+												if (simon1->nx > 0)
+													simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+												else
+													simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_LEFT);
+												simon1->SetState(SIMON_STATE_THROW);
+												simon1->useWeapon2();
+
+											}
+
+										}
+
+								}
+
+							}
+						
+						}
+					
 				}
 				
 			}
@@ -472,19 +541,21 @@ void Scene2::OnKeyDown(int KeyCode)
 
 						if (simon1->axe->GetState() == AXE_STATE_INACTIVE)
 						{
+
+							simon1->numOfWeapon = 1;
 							float x, y;
 							simon1->GetPosition(x, y);
 							if (simon1->isOnStairs == true)
 							{
 								simon1->axe->CreateWeapon(x, y, simon1->nx);
-								if (simon1->isUsingDagger == false)
+								if (simon1->isUsing1stWeapon == false)
 								{
 									if (simon1->nx > 0)
 										simon1->axe->SetState(AXE_STATE_ACTIVE_RIGHT);
 									else
 										simon1->axe->SetState(AXE_STATE_ACTIVE_LEFT);
 									simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
-									simon1->useDagger();
+									simon1->useWeapon();
 
 								}
 							}
@@ -493,14 +564,14 @@ void Scene2::OnKeyDown(int KeyCode)
 								{
 									simon1->axe->CreateWeapon(x, y + 7, simon1->nx);
 
-									if (simon1->isUsingDagger == false)
+									if (simon1->isUsing1stWeapon == false)
 									{
 										if (simon1->nx > 0)
 											simon1->axe->SetState(AXE_STATE_ACTIVE_RIGHT);
 										else
 											simon1->axe->SetState(AXE_STATE_ACTIVE_LEFT);
 										simon1->SetState(SIMON_STATE_THROW_SITTING);
-										simon1->useDagger();
+										simon1->useWeapon();
 
 									}
 
@@ -511,20 +582,85 @@ void Scene2::OnKeyDown(int KeyCode)
 
 									simon1->axe->CreateWeapon(x, y, simon1->nx);
 
-									if (simon1->isUsingDagger == false)
+									if (simon1->isUsing1stWeapon == false)
 									{
 										if (simon1->nx > 0)
 											simon1->axe->SetState(AXE_STATE_ACTIVE_RIGHT);
 										else
 											simon1->axe->SetState(AXE_STATE_ACTIVE_LEFT);
 										simon1->SetState(SIMON_STATE_THROW);
-										simon1->useDagger();
+										simon1->useWeapon();
 
 									}
 
 								}
 
 						}
+						else
+							if (simon1->shotTwoWeaponOneTime == true)
+							{
+								if (simon1->axe->isFinished == true)
+								{
+									simon1->numOfWeapon = 2;
+									if (simon1->axe1->GetState() == AXE_STATE_INACTIVE)
+									{
+										float x, y;
+										simon1->GetPosition(x, y);
+										if (simon1->isOnStairs == true)
+										{
+											simon1->axe1->CreateWeapon(x, y, simon1->nx);
+											if (simon1->isUsing2ndWeapon == false)
+											{
+												if (simon1->nx > 0)
+													simon1->axe1->SetState(AXE_STATE_ACTIVE_RIGHT);
+												else
+													simon1->axe1->SetState(AXE_STATE_ACTIVE_LEFT);
+												simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
+												simon1->useWeapon2();
+
+											}
+										}
+										else
+											if (simon1->GetState() == SIMON_STATE_SIT)
+											{
+												simon1->axe1->CreateWeapon(x, y + 7, simon1->nx);
+
+												if (simon1->isUsing2ndWeapon == false)
+												{
+													if (simon1->nx > 0)
+														simon1->axe1->SetState(AXE_STATE_ACTIVE_RIGHT);
+													else
+														simon1->axe1->SetState(AXE_STATE_ACTIVE_LEFT);
+													simon1->SetState(SIMON_STATE_THROW_SITTING);
+													simon1->useWeapon2();
+
+												}
+
+											}
+											else
+											{
+
+
+												simon1->axe1->CreateWeapon(x, y, simon1->nx);
+
+												if (simon1->isUsing2ndWeapon == false)
+												{
+													if (simon1->nx > 0)
+														simon1->axe1->SetState(AXE_STATE_ACTIVE_RIGHT);
+													else
+														simon1->axe1->SetState(AXE_STATE_ACTIVE_LEFT);
+													simon1->SetState(SIMON_STATE_THROW);
+													simon1->useWeapon2();
+
+												}
+
+											}
+
+									}
+
+								}
+
+							}
 					}
 				}
 				else
@@ -539,19 +675,21 @@ void Scene2::OnKeyDown(int KeyCode)
 
 						if (simon1->holy->GetState() == HOLYWATER_STATE_INACTIVE)
 						{
+
+							simon1->numOfWeapon = 1;
 							float x, y;
 							simon1->GetPosition(x, y);
 							if (simon1->isOnStairs == true)
 							{
 								simon1->holy->CreateWeapon(x, y, simon1->nx);
-								if (simon1->isUsingDagger == false)
+								if (simon1->isUsing1stWeapon == false)
 								{
 									if (simon1->nx > 0)
 										simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
 									else
 										simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
 									simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
-									simon1->useDagger();
+									simon1->useWeapon();
 
 								}
 							}
@@ -560,14 +698,14 @@ void Scene2::OnKeyDown(int KeyCode)
 								{
 									simon1->holy->CreateWeapon(x, y + 7, simon1->nx);
 
-									if (simon1->isUsingDagger == false)
+									if (simon1->isUsing1stWeapon == false)
 									{
 										if (simon1->nx > 0)
 											simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
 										else
 											simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
 										simon1->SetState(SIMON_STATE_THROW_SITTING);
-										simon1->useDagger();
+										simon1->useWeapon();
 
 									}
 
@@ -576,20 +714,85 @@ void Scene2::OnKeyDown(int KeyCode)
 								{
 									simon1->holy->CreateWeapon(x, y, simon1->nx);
 
-									if (simon1->isUsingDagger == false)
+									if (simon1->isUsing1stWeapon == false)
 									{
 										if (simon1->nx > 0)
 											simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
 										else
 											simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
 										simon1->SetState(SIMON_STATE_THROW);
-										simon1->useDagger();
+										simon1->useWeapon();
 
 									}
 
 								}
 
 						}
+						else
+							if (simon1->shotTwoWeaponOneTime == true)
+							{
+								if (simon1->holy1->isFinished == true)
+								{
+									simon1->numOfWeapon = 2;
+									if (simon1->holy1->GetState() == HOLYWATER_STATE_INACTIVE)
+									{
+										float x, y;
+										simon1->GetPosition(x, y);
+										if (simon1->isOnStairs == true)
+										{
+											simon1->holy1->CreateWeapon(x, y, simon1->nx);
+											if (simon1->isUsing2ndWeapon == false)
+											{
+												if (simon1->nx > 0)
+													simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
+												else						
+													simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
+												simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
+												simon1->useWeapon2();
+
+											}
+										}
+										else
+											if (simon1->GetState() == SIMON_STATE_SIT)
+											{
+												simon1->holy1->CreateWeapon(x, y + 7, simon1->nx);
+
+												if (simon1->isUsing2ndWeapon == false)
+												{
+													if (simon1->nx > 0)
+														simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
+													else					
+														simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
+													simon1->SetState(SIMON_STATE_THROW_SITTING);
+													simon1->useWeapon2();
+
+												}
+
+											}
+											else
+											{
+
+
+												simon1->holy1->CreateWeapon(x, y, simon1->nx);
+
+												if (simon1->isUsing2ndWeapon == false)
+												{
+													if (simon1->nx > 0)
+														simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
+													else
+														simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
+													simon1->SetState(SIMON_STATE_THROW);
+													simon1->useWeapon2();
+
+												}
+
+											}
+
+									}
+
+								}
+
+							}
 						}
 					}
 					else
@@ -2147,42 +2350,74 @@ void Scene2::Update(DWORD dt)
 				}
 			}
 
-	if (simon1->isUsingDagger == true)
+	if (simon1->isUsing1stWeapon == true || simon1->isUsing2ndWeapon==true)
 	{
 		if (simon1->dagger->isOn == true)
 		{
-			if ((simon1->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon1->dagger->isOn == true && simon1->isUsingDagger == true)
+			if ((simon1->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon1->isUsing1stWeapon == true)
 				simon1->dagger->Update(dt, &listSurface1);
 
 
 			if ((simon1->dagger->x) < x1 || (simon1->dagger->x) > (x1 + SCREEN_WIDTH))// bay ngoai man hinh thi cho dagger inactive
 			{
 				simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
-				simon1->notUseDagger();
+				simon1->notUseWeapon();
+			}
+			if(simon1->shotTwoWeaponOneTime==true)
+			{
+				if ((simon1->dagger1->GetState() != DAGGER_STATE_INACTIVE)  && simon1->isUsing2ndWeapon == true)
+					simon1->dagger1->Update(dt, &listSurface1);
+
+				if ((simon1->dagger1->x) < x1 || (simon1->dagger1->x) > (x1 + SCREEN_WIDTH))// bay ngoai man hinh thi cho dagger inactive
+				{
+					simon1->dagger1->SetState(DAGGER_STATE_INACTIVE);
+					simon1->notUseWeapon2();
+				}
 			}
 
 		}
 		
 		if (simon1->axe->isOn == true)
 			{
-				if ((simon1->axe->GetState() != AXE_STATE_INACTIVE) && simon1->axe->isOn == true && simon1->isUsingDagger == true)
+				if ((simon1->axe->GetState() != AXE_STATE_INACTIVE) && simon1->isUsing1stWeapon == true)
 					simon1->axe->Update(dt, &listSurface1);
 			
 				if (simon1->axe->GetState() == AXE_STATE_INACTIVE)
 				{
-					simon1->notUseDagger();
+					simon1->notUseWeapon();
+				}
+				if (simon1->shotTwoWeaponOneTime == true)
+				{
+					if ((simon1->axe1->GetState() != AXE_STATE_INACTIVE) && simon1->isUsing2ndWeapon == true)
+						simon1->axe1->Update(dt, &listSurface1);
+
+					if (simon1->axe1->GetState() == AXE_STATE_INACTIVE)
+					{
+						simon1->notUseWeapon2();
+					}
 				}
 			}
 		
 		if (simon1->holy->isOn == true)
 				{
-					if ((simon1->holy->GetState() != HOLYWATER_STATE_INACTIVE) && simon1->holy->isOn == true && simon1->isUsingDagger == true)
+					if ((simon1->holy->GetState() != HOLYWATER_STATE_INACTIVE)&& simon1->isUsing1stWeapon == true)
 						simon1->holy->Update(dt, &listSurface1);
 
 					if (simon1->holy->GetState() == HOLYWATER_STATE_INACTIVE)
 					{
-						simon1->notUseDagger();
+						simon1->notUseWeapon();
 					}
+					if (simon1->shotTwoWeaponOneTime == true)
+					{
+						if ((simon1->holy1->GetState() != HOLYWATER_STATE_INACTIVE) && simon1->isUsing2ndWeapon == true)
+							simon1->holy1->Update(dt, &listSurface1);
+
+						if (simon1->holy1->GetState() == HOLYWATER_STATE_INACTIVE)
+						{
+							simon1->notUseWeapon2();
+						}
+					}
+
 				}
 	}
 
@@ -2273,7 +2508,12 @@ void Scene2::Render()
 		simon1->axe->Render();
 		simon1->holy->Render();
 		simon1->whip->Render();
-		
+		if(simon1->shotTwoWeaponOneTime==true)
+		{
+			simon1->dagger1->Render();
+			simon1->axe1->Render();
+			simon1->holy1->Render();
+		}
 		spriteHandler->End();
 		d3ddv->EndScene();
 	}
@@ -2457,7 +2697,7 @@ void Scene2::spawnGhou(float x,float y,int state)
 			}
 		
 		ghou->setItemInside(randomIteminside());
-		listEnemy1.push_back(ghou);
+	//	listEnemy1.push_back(ghou);
 	
 }
 
@@ -2697,7 +2937,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 	
 	}
 	else
-		if (simon1->dagger->state != DAGGER_STATE_INACTIVE && simon1->dagger->isOn == true && simon1->isUsingDagger == true)
+		if (simon1->dagger->state != DAGGER_STATE_INACTIVE && simon1->dagger->isOn == true && simon1->isUsing1stWeapon == true)
 		{
 			for (UINT i = 0; i < listEnemy1.size(); i++)
 			{
@@ -2705,7 +2945,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 				{
 					if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
 					{
-						simon1->notUseDagger();
+						simon1->notUseWeapon();
 						simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
 						if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
 						{
@@ -2730,7 +2970,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 				if (simon1->dagger->CheckCollision(listTorches1.at(i)) == true)
 				{
 					simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
-					simon1->notUseDagger();
+					simon1->notUseWeapon();
 					if (dynamic_cast<Torch *>(listTorches1.at(i)))
 					{
 						if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
@@ -2754,7 +2994,65 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 		}
 		else
-		if (simon1->axe->state != AXE_STATE_INACTIVE && simon1->axe->isOn == true && simon1->isUsingDagger == true)
+			if (simon1->dagger1->state != DAGGER_STATE_INACTIVE  && simon1->isUsing2ndWeapon == true)
+			{
+				for (UINT i = 0; i < listEnemy1.size(); i++)
+				{
+					if (simon1->dagger1->CheckCollision(listEnemy1.at(i)) == true)
+					{
+						if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
+						{
+							simon1->notUseWeapon2();
+							simon1->dagger1->SetState(DAGGER_STATE_INACTIVE);
+							if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
+							{
+								float x, y;
+								listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
+								listEnemy1.at(i)->GetPosition(x, y);
+
+								effectFire1->SetPosition(x, y);
+								effectFire1->SetState(EFFECT_STATE_ACTIVE);
+								effectFire1->itemInside = listEnemy1.at(i)->itemInside;
+								listEffectFire1.push_back(effectFire1);
+
+								listEnemy1.erase(listEnemy1.begin() + i);
+								i = i - 1;
+							}
+						}
+
+					}
+				}
+				for (UINT i = 0; i < listTorches1.size(); i++)
+				{
+					if (simon1->dagger1->CheckCollision(listTorches1.at(i)) == true)
+					{
+						simon1->dagger1->SetState(DAGGER_STATE_INACTIVE);
+						simon1->notUseWeapon2();
+						if (dynamic_cast<Torch *>(listTorches1.at(i)))
+						{
+							if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
+							{
+								float x, y;
+								listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
+								listTorches1.at(i)->GetPosition(x, y);
+
+								effectFire1->SetPosition(x, y);
+								effectFire1->SetState(EFFECT_STATE_ACTIVE);
+								effectFire1->itemInside = listTorches1.at(i)->itemInside;
+								listEffectFire1.push_back(effectFire1);
+
+								listTorches1.erase(listTorches1.begin() + i);
+								i = i - 1;
+							}
+						}
+					}
+				}
+
+
+			}
+			else
+
+		if (simon1->axe->state != AXE_STATE_INACTIVE && simon1->axe->isOn == true && simon1->isUsing1stWeapon == true)
 		{
 			for (UINT i = 0; i < listEnemy1.size(); i++)
 			{
@@ -2763,7 +3061,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
 					{
 						simon1->axe->SetState(AXE_STATE_INACTIVE);
-						simon1->notUseDagger();
+						simon1->notUseWeapon();
 						if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
 						{
 							float x, y;
@@ -2787,7 +3085,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 				if (simon1->dagger->CheckCollision(listTorches1.at(i)) == true)
 				{
 					simon1->axe->SetState(AXE_STATE_INACTIVE);
-					simon1->notUseDagger();
+					simon1->notUseWeapon();
 					if (dynamic_cast<Torch *>(listTorches1.at(i)))
 					{
 						if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
@@ -2813,7 +3111,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 		}
 		else
-		if (simon1->holy->state != HOLYWATER_STATE_INACTIVE && simon1->holy->isOn == true && simon1->isUsingDagger == true)
+		if (simon1->holy->state != HOLYWATER_STATE_INACTIVE && simon1->holy->isOn == true && simon1->isUsing1stWeapon == true)
 		{
 			for (UINT i = 0; i < listEnemy1.size(); i++)
 			{
@@ -3133,7 +3431,8 @@ void Scene2::CollisionBetSimonAndItem()
 															{
 																OutputDebugString(L"Numbah \n");
 																listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
-																if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
+																simon1->shotTwoWeaponOneTime = true;
+																	if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
 																{
 																	listItem1.erase(listItem1.begin() + i);
 																	i = i - 1;
@@ -3312,8 +3611,8 @@ void Scene2::CollisionBetSimonAndEnemy()
 						if (x < x1)
 						{
 							OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
-							if (simon1->isUsingDagger == true)
-								simon1->notUseDagger();
+							if (simon1->isUsing1stWeapon == true)
+								simon1->notUseWeapon();
 							if (simon1->whip->isFinished == false)
 								simon1->whip->isFinished = true;
 							if (simon1->isOnStairs == true)
@@ -3329,8 +3628,8 @@ void Scene2::CollisionBetSimonAndEnemy()
 							if (x >= x1)
 							{
 								OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
-								if (simon1->isUsingDagger == true)
-									simon1->notUseDagger();
+								if (simon1->isUsing1stWeapon == true)
+									simon1->notUseWeapon();
 								if (simon1->whip->isFinished == false)
 									simon1->whip->isFinished = true;
 								if (simon1->isOnStairs == true)
