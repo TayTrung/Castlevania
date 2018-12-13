@@ -2697,7 +2697,7 @@ void Scene2::spawnGhou(float x,float y,int state)
 			}
 		
 		ghou->setItemInside(randomIteminside());
-	//	listEnemy1.push_back(ghou);
+		listEnemy1.push_back(ghou);
 	
 }
 
@@ -3596,6 +3596,128 @@ void Scene2::CollisionBetSimonAndEnemy()
 				float bl, bt, br, bb;
 				listEnemy1.at(i)->GetBoundingBox(al, at, ar, ab);
 				simon1->GetBoundingBox(bl, bt, br, bb);
+
+				LPCOLLISIONEVENT e = simon1->SweptAABBEx(listEnemy1.at(i));
+
+				if (e->t > 0 && e->t <= 1.0f)
+				{
+					if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
+					{
+						if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
+						{
+							//
+						}
+						else
+							if (e->nx == -1)
+							{
+
+								if (listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
+									listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+								{
+
+									OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+									//if (simon1->isUsing1stWeapon == true)
+									//	simon1->notUseWeapon();
+									if (simon1->whip->isFinished == false)
+										simon1->whip->isFinished = true;
+									if (simon1->isOnStairs == true)
+									{
+										simon1->StartUntouchable();
+									}
+									else
+									{
+										simon1->SetState(SIMON_STATE_HURT_LEFT);
+
+									}
+									//	if (simon1->nx = 1)
+									//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
+									//		else if(simon1->nx=-1)
+									//		simon1->SetState(SIMON_STATE_HURT_LEFT);
+									//simon->heartCount += 5;
+
+								}
+
+							}
+
+							else
+								if (e->nx == 1)
+								{
+									if (listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
+										listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+									{
+
+										OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+										//if (simon1->isUsingDagger == true)
+										//simon1->notUseDagger();
+										if (simon1->whip->isFinished == false)
+											simon1->whip->isFinished = true;
+										if (simon1->isOnStairs == true)
+										{
+											simon1->StartUntouchable();
+										}
+										else
+										{
+											simon1->SetState(SIMON_STATE_HURT_RIGHT);
+										}
+
+
+									}
+								}
+								else
+									if (e->nx == 0)
+									{
+										if (e->ny == -1)
+										{
+											float x, y;
+											simon1->GetPosition(x, y);
+											float x1, y1;
+											listEnemy1.at(i)->GetPosition(x1, y1);
+											if (x < x1)
+											{
+												OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+												//if (simon1->isUsingDagger == true)
+												//	simon1->notUseDagger();
+												if (simon1->whip->isFinished == false)
+													simon1->whip->isFinished = true;
+												if (simon1->isOnStairs == true)
+												{
+													simon1->StartUntouchable();
+												}
+												else
+												{
+													simon1->SetState(SIMON_STATE_HURT_LEFT);
+												}
+											}
+											else
+												if (x >= x1)
+												{
+													OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+													//if (simon1->isUsingDagger == true)
+													//	simon1->notUseDagger();
+													if (simon1->whip->isFinished == false)
+														simon1->whip->isFinished = true;
+
+													if (simon1->isOnStairs == true)
+													{
+														simon1->StartUntouchable();
+													}
+													else
+													{
+														simon1->SetState(SIMON_STATE_HURT_RIGHT);
+													}
+
+												}
+										}
+									}
+						if (dynamic_cast<Bat *>(listEnemy1.at(i)))
+						{
+							listEnemy1.at(i)->SetState(BAT_STATE_INACTIVE);
+						}
+					}
+				}
+
+
+				else
 				if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
 				{
 					if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
@@ -3668,18 +3790,18 @@ int Scene2::CollisionBetSimonAndUpStairs()
 		listUpStairs1.at(i)->GetBoundingBox(al, at, ar, ab);
 		simon1->GetBoundingBox(bl, bt, br, bb);
 		//1= right, 2 = left
-		if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
-		{
-			if (simon1->isOnStairs == true)
+			if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
 			{
-				simon1->SetPosition(simon1->x, simon1->y - 2);
-				simon1->dy = 9999999999999999999;
-				simon1->SetState(SIMON_STATE_IDLE);
-				simon1->isOnStairs = false;
-			}
-			else
-				if (simon1->isOnStairs == false)
+				if (simon1->isOnStairs == true)
 				{
+					simon1->SetPosition(simon1->x, simon1->y - 2);
+				//	simon1->dy = 9999999999999999999;
+					simon1->SetState(SIMON_STATE_IDLE);
+					simon1->isOnStairs = false;
+				}
+				else
+					if (simon1->isOnStairs == false)
+					{
 						if (simon1->x > listUpStairs1.at(i)->x + 5)
 						{
 							simon1->SetState(SIMON_STATE_WALKING_LEFT);
@@ -3708,12 +3830,12 @@ int Scene2::CollisionBetSimonAndUpStairs()
 									return true;
 								}
 
-						
-				}
-			return true;
+
+					}
+				return true;
+			}
 		}
-	}
-	return false;
+			return false;
 
 }
 

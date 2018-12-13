@@ -433,7 +433,7 @@
 #define DAGGER_ANI_RIGHT			1
 #define DAGGER_ANI_INACTIVE			2
 
-#define DAGGER_FLYING_SPEED			0.05f 
+#define DAGGER_FLYING_SPEED			0.1f 
 #pragma endregion
 
 #pragma region Holy Water
