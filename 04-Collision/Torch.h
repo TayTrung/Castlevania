@@ -5,11 +5,12 @@
 
 class Torch : public Enemy
 {
+public:
 	int type;
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
-public: 	
+	
 	Torch(int type1);
 
 	~Torch();

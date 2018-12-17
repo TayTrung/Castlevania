@@ -35,6 +35,7 @@
 #include "Monster.h"
 #include "FireBall.h"
 #include "Numbah.h"
+#include "Board.h"
 class Scene
 {
 public:

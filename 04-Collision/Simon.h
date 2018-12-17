@@ -31,6 +31,8 @@ public:
 	int heartCount;
 	int score;
 	int healthCount;
+	int playerLife;
+	int stage;
 	bool isUsing1stWeapon;
 	bool isUsing2ndWeapon;
 	int ani;
@@ -69,6 +71,7 @@ public:
 	void useWeapon2();
 	void notUseWeapon2();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
+	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Render();
 	void SetState(int state);
 
@@ -87,5 +90,4 @@ public:
 		invisTimeStart_start = GetTickCount();
 	}
 	//void PickedSword();
-	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 };

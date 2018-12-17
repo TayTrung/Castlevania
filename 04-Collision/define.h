@@ -159,6 +159,35 @@
 #define FIREBALL_SPEED 0.1f
 
 #pragma endregion
+#pragma region Board
+
+#define iconDagger	1
+#define iconAxe		2
+#define iconHoly	3
+#define iconClock	4
+
+#pragma endregion
+
+#pragma region Boss
+
+#define BOSS_BBOX_WIDTH		96
+#define BOSS_BBOX_HEIGHT	46
+
+#define BOSS_STATE_SLEEP	50
+#define BOSS_STATE_MOVE_RIGHT	100
+#define BOSS_STATE_MOVE_LEFT	110
+#define BOSS_STATE_MOVE_UP		120
+#define BOSS_STATE_MOVE_DOWN	130
+#define BOSS_STATE_ATTACK_RIGHT 140
+#define BOSS_STATE_ATTACK_LEFT	150
+
+#define BOSS_STATE_INACTIVE		200
+
+#define BOSS_ANI_SLEEP	0
+#define BOSS_ANI_ATTACK	1
+
+#pragma endregion 
+
 #pragma region Bat
 
 #define BAT_BBOX_WIDTH		16
@@ -174,6 +203,7 @@
 #define BAT_STATE_INACTIVE		200
 
 #pragma endregion
+
 #pragma region Panther
 
 #define PANTHER_BBOX_WIDTH		32
@@ -207,7 +237,7 @@
 
 #pragma region Scene1
 
-#define BACKGROUND_COLOR D3DCOLOR_XRGB(0, 0, 0)
+#define BACKGROUND_COLOR D3DCOLOR_XRGB(0, 0,0)
 #define BACKGROUND_COLOR2 D3DCOLOR_XRGB(188, 188, 188)
 
 
@@ -239,12 +269,16 @@
 #define axeInside 12
 #define clockInside 13
 #define numbahInside 999
-#define potionInside 1999
+#define potionInside 199
 
 #define ID_TEX_SIMON 0
+#define ID_TEX_BOARD 2
 #define ID_TEX_SIMON_DEATH 79979
 #define ID_TEX_SIMON2 79989
 #define ID_TEX_EFFECT 99
+#define ID_TEX_EFFECT1 991
+#define ID_TEX_EFFECT2 992
+
 #define ID_TEX_WHIP 10	
 #define ID_TEX_HOLYWATER 11
 #define ID_TEX_AXE 12
@@ -263,6 +297,7 @@
 #define ID_TEX_PANTHER 33
 #define ID_TEX_MOR 40
 #define ID_TEX_FIREBALL 41
+#define ID_TEX_BOSS 42
 
 #define ID_TEX_ITEM_BIGHEART 50
 #define ID_TEX_ITEM_SWORD 60

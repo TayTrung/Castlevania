@@ -1,24 +1,7 @@
 ﻿#include "Scene1.h"
 
 
-CGame *game = CGame::GetInstance();
-Ground *ground, *invisBox, *invisBox2;
-Camera *camera;
-Simon *simon;
-Map *map;
-vector<LPENEMY> listEnemy;
-vector<LPGAMEOBJECT> listItem;
-vector<LPGAMEOBJECT> listSurface;
-vector<LPEFFECTFIRE>listEffectFire;
-vector<LPEFFECTBAG>listEffectBag;
-GoldBag *goldbag;
-Torch *torch;
-Dagger1 *dagger;
-MorningStar	*morningstar;
-BigHeart *bigheart;
-EffectFire *effect;
-EffectBag *effectBag;
-ID3DXFont *_font;
+
 void Scene1::KeyState(BYTE * states)
 
 {
@@ -213,8 +196,7 @@ void Scene1::OnKeyUp(int KeyCode)
 
 void Scene1::LoadResources()
 {
-
-
+	
 	camera = Camera::GetInstance();
 	CTextures * textures = CTextures::GetInstance();
 	CSprites * sprites = CSprites::GetInstance();
@@ -223,8 +205,11 @@ void Scene1::LoadResources()
 	textures->Add(ID_TEX_MAP1, L"textures\\Map\\Map1.png", D3DCOLOR_XRGB(255, 0, 255));
 	map = new Map(ID_TEX_MAP1, "textures\\Map\\Map1.csv");
 	//Effect
-
 	textures->Add(ID_TEX_EFFECT, L"textures\\Effect\\Kill.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_EFFECT1, L"textures\\Effect\\brickbreak.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_EFFECT2, L"textures\\Effect\\water.png", D3DCOLOR_XRGB(255, 0, 255));
+	//board
+	textures->Add(ID_TEX_BOARD, L"textures\\board.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	//Objects
 	textures->Add(ID_TEX_SIMON, L"textures\\simon.png", D3DCOLOR_XRGB(255, 0, 255)); 
@@ -243,8 +228,16 @@ void Scene1::LoadResources()
 	textures->Add(ID_TEX_ITEM_SWORD, L"textures\\Item\\4.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_GOLD, L"textures\\Item\\2.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_POTION, L"textures\\Item\\potion.png", D3DCOLOR_XRGB(0, 0, 0));
+	textures->Add(ID_TEX_ITEM_CLOCK, L"textures\\Item\\clock.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_ITEM_HOLY, L"textures\\Item\\holywater.png", D3DCOLOR_XRGB(255, 0, 255));
+
 
 	//Ground 0
+	LPDIRECT3DTEXTURE9 texBoard = textures->Get(ID_TEX_BOARD);
+	sprites->Add(65412, 0, 0, 510, 95, texBoard);
+	ani = new CAnimation(1000);
+	ani->Add(65412);
+	animations->Add(547, ani);
 
 #pragma region Co-ordinations of Effect
 
@@ -253,7 +246,33 @@ void Scene1::LoadResources()
 	sprites->Add(01112, 21, 0, 41, 21, texEffect);
 	sprites->Add(01113, 42, 0, 62, 21, texEffect);
 
-	ani = new CAnimation(100);	// Effect
+	LPDIRECT3DTEXTURE9 texEffectBrick = textures->Get(ID_TEX_EFFECT1);
+	sprites->Add(02523, 0, 0, 103, 26, texEffectBrick);
+	sprites->Add(02524, 0, 27, 103, 53, texEffectBrick);
+	sprites->Add(02525, 0, 54, 103, 80, texEffectBrick);
+	sprites->Add(02526, 0, 81, 103, 107, texEffectBrick);
+
+
+	LPDIRECT3DTEXTURE9 texEffectWater = textures->Get(ID_TEX_EFFECT2);
+	sprites->Add(02530, 0, 0, 102, 52, texEffectWater);
+	sprites->Add(02531, 0, 54, 102, 106, texEffectWater);
+	sprites->Add(02532, 104, 0, 207, 52, texEffectWater);
+	sprites->Add(02533, 104, 54, 207, 106, texEffectWater);
+
+	ani = new CAnimation(200);
+	ani->Add(02530);
+	ani->Add(02531);
+	ani->Add(02532);
+	ani->Add(02533);
+	animations->Add(576, ani);
+	ani = new CAnimation(200);
+	ani->Add(02523);
+	ani->Add(02524);
+	ani->Add(02525);
+	ani->Add(02526);
+	animations->Add(577, ani);
+
+	ani = new CAnimation(100);	// Effect fire
 	ani->Add(01111);
 	ani->Add(01112);
 	ani->Add(01113);
@@ -261,6 +280,7 @@ void Scene1::LoadResources()
 
 	effect = new EffectFire();
 	effect->AddAnimation(578);
+	
 
 	LPDIRECT3DTEXTURE9 texEffectBag = textures->Get(ID_TEX_ITEM_POTION);
 	sprites->Add(01114, 409, 46, 425, 53, texEffectBag);
@@ -479,7 +499,6 @@ void Scene1::LoadResources()
 
 #pragma endregion	
 
-
 #pragma region Co-ordinations of HolyWater
 
 	LPDIRECT3DTEXTURE9 texHolyWater = textures->Get(ID_TEX_HOLYWATER);
@@ -518,6 +537,21 @@ void Scene1::LoadResources()
 
 #pragma endregion
 
+#pragma region Co-ordinations of Clock
+
+	LPDIRECT3DTEXTURE9 texClock = textures->Get(ID_TEX_ITEM_CLOCK);
+	sprites->Add(23541, 0, 0, 14, 15, texClock);
+
+#pragma endregion
+
+#pragma region Adding item Clcok
+
+	ani = new CAnimation(100);
+	ani->Add(23541);
+	animations->Add(426, ani);
+
+
+#pragma endregion
 #pragma region Adding Animations for Simon
 
 	ani = new CAnimation(100);	// idle right
@@ -736,7 +770,9 @@ void Scene1::LoadResources()
 	simon = new Simon();
 	simon->score = 0;
 	simon->healthCount =16;
-	simon->heartCount = 1999999999999999;
+	simon->heartCount = 15;
+	simon->playerLife = 3;
+	simon->stage = 01;
 	simon->AddAnimation(400);		// idle right
 	simon->AddAnimation(401);		// idle left
 
@@ -837,6 +873,7 @@ void Scene1::LoadResources()
 	}
 
 
+	
 #pragma endregion
 
 #pragma region Adding Item BigHeart
@@ -872,7 +909,7 @@ void Scene1::LoadResources()
 
 	simon->dagger->AddAnimation(767); //left
 	simon->dagger->AddAnimation(766); //right
-	\
+	
 		simon->dagger1->AddAnimation(767);
 		simon->dagger1->AddAnimation(766);
 	dagger = new Dagger1();
@@ -897,6 +934,11 @@ void Scene1::LoadResources()
 	ani->Add(54320);
 	animations->Add(054, ani);
 
+	ani = new CAnimation(100); //left side
+	ani->Add(54320);
+	animations->Add(055, ani);
+
+	
 	simon->axe->AddAnimation(054);
 	simon->axe->AddAnimation(053);
 	simon->axe1->AddAnimation(054);
@@ -927,6 +969,7 @@ void Scene1::LoadResources()
 	simon->holy1->AddAnimation(034);
 
 #pragma endregion 
+
 #pragma region Adding Item Morning Star
 
 	ani = new CAnimation(100);
@@ -969,14 +1012,23 @@ void Scene1::LoadResources()
 	goldbag->AddAnimation(780);
 	goldbag->AddAnimation(781);
 	
-
+	newBoard = new Board();
+	newBoard->SetPosition(0, 0);
+	newBoard->typeOfWeaopon = 0;
 #pragma endregion
 }
 
 void Scene1::Update(DWORD dt)
 {
-	
-	float x1, y1;
+	if (simon->shotTwoWeaponOneTime == true)
+	{
+		newBoard->simonHasNumbah = true;
+	}
+	newBoard->heartCount = simon->heartCount;
+	newBoard->playerLife = simon->playerLife;
+	newBoard->stage = simon->stage;
+
+		float x1, y1;
 	x1 = Camera::GetInstance()->GetPosition().x;
 	y1 = Camera::GetInstance()->GetPosition().y;
 	if (simon->dagger->isOn == true)
@@ -1042,10 +1094,12 @@ void Scene1::Render()
 		// Clear back buffer with a color
 		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
+		newBoard->Render();
+	//	DrawTextA(NULL, message.c_str(),-1,	&rect, DT_LEFT | DT_NOCLIP,);
 		map->drawTileMap(camera, ID_TEX_MAP1);
 		//All items are rendered if state = active
 		for (int i = 0; i < listSurface.size(); i++)//render surface
-			listSurface[i]->Render();
+		listSurface[i]->Render();
 
 		for (int i = 0; i < listEnemy.size(); i++)//render torches
 			listEnemy[i]->Render();
@@ -1057,10 +1111,10 @@ void Scene1::Render()
 		goldbag->Render();
 		//
 
-		for (int i = 0; i < listEffectBag.size(); i++)//render ietms
-			listEffectBag[i]->Render();
-		simon->Render();
-		simon->dagger->Render();
+	for (int i = 0; i < listEffectBag.size(); i++)//render ietms
+		listEffectBag[i]->Render();
+	simon->Render();
+	simon->dagger->Render();
 		simon->whip->Render();
 		spriteHandler->End();
 		d3ddv->EndScene();
@@ -1145,6 +1199,7 @@ void Scene1::spawnItemsAfterEffect()
 
 	}
 }
+
 void Scene1::erasingObjThatInacitve()
 {
 	for (UINT i = 0; i < listItem.size(); i++)
@@ -1176,6 +1231,7 @@ void Scene1::CollisionBetWeaponAndEnemy()
 
 					effect->SetPosition(x, y);
 					effect->SetState(EFFECT_STATE_ACTIVE);
+					effect->type = 0;
 					effect->itemInside = listEnemy.at(i)->itemInside;
 					listEffectFire.push_back(effect);
 
@@ -1269,6 +1325,7 @@ void Scene1::CollisionBetSimonAndItem()
 							simon->dagger->turnOnDagger();
 							OutputDebugString(L"Dagger on \n");
 							listItem.erase(listItem.begin() + i);
+							newBoard->typeOfWeaopon = 1;
 							i = i - 1;
 						}
 						

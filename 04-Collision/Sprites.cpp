@@ -24,8 +24,16 @@ void CSprite::Draw(float x, float y, int alpha)
 {
 	CGame * game = CGame::GetInstance();
 
+	
 	D3DXVECTOR2 pos = Camera::GetInstance()->Transform(x, y);
 	game->Draw(pos.x, pos.y, texture, left, top, right, bottom, alpha);
+}
+
+void CSprite::DrawWithoutTrans(float x, float y, int alpha)
+{
+	CGame * game = CGame::GetInstance();
+	game->Draw(x, y, texture, left, top, right, bottom, alpha);
+
 }
 
 void CSprites::Add(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex)
@@ -98,6 +106,7 @@ void CAnimation::Render(float x, float y, int alpha)
 		frames[currentFrame]->GetSprite()->Draw(x - 44, y + 8, alpha); //Special Offset for 3rd whip 3rd frame left
 	else
 		frames[currentFrame]->GetSprite()->Draw(x, y, alpha);
+
 
 
 }

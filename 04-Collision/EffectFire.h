@@ -10,6 +10,8 @@ class EffectFire : public CGameObject
 public:
 	int type;// 0 = fire, 1= rock , 3= water
 	int itemInside;
+	bool isFinished;
+	int ani;
 	bool effectTime;
 	DWORD effectTime_start;
 	void StartEffect() { effectTime = true; effectTime_start = GetTickCount(); }

@@ -3,45 +3,7 @@
 
 
 
-CGame *game1 = CGame::GetInstance();
-Ground *ground1;
-Simon *simon1;
-vector<LPGAMEOBJECT> listItem1;
-vector<LPGAMEOBJECT> listSurface1;
-vector<LPGAMEOBJECT> listSurfaceUnderGround;
-vector<LPENEMY> listEnemy1;
-vector<LPENEMY> listTorches1;
-vector<LPSTAIRS> listUpStairs1;
-vector<LPSTAIRS> listDownStairs1;
-vector<LPEFFECTFIRE>listEffectFire1;
-vector<LPEFFECTBAG>listEffectBag1;
-Camera *camera1 = Camera::GetInstance();
-Map *map1;
-Bat *bat1;
-BigHeart *bigheart1;
-MorningStar *morningstar1;
-Dagger1 *dagger1;
-SmallHeart *smallheart1;
-Ghou *ghou;
-Panther *pant;
-Stairs *stairs;
-Chicken *chick;
-Door *door,*door1;
-GroundEnemy *groundEnemy, *groundEnemy1;
-GoldBag *goldbag1;
-Cross1 *cross1;
-HolyWater1 *holy1;
-Clock1 *clock1;
-Axe1 *axe1;
-EffectFire *effectFire1;
-EffectBag *effectBag1;
-Monster *monster1;
-FireBall *fire;
-Numbah *num;
-Potion *potion;
-int tickGhou = 300;
-int tickBat = 290;
-int tickMonster = 290;
+
 void Scene2::KeyState(BYTE * states)
 {
 	
@@ -341,6 +303,36 @@ void Scene2::OnKeyDown(int KeyCode)
 	case DIK_5:
 		simon1->shotTwoWeaponOneTime = true;
 		break;
+	case DIK_T:
+		if (simon1->proceedThruDoor == false)
+		{
+			simon1->SetState(SIMON_STATE_IDLE);
+			simon1->isOnStairs = false;
+			simon1->SetPosition(2667, 0.0f);
+			stage = 5;
+			simon1->SetSpeed(0, 0);
+			break;
+		}
+	case DIK_Y:
+		if (simon1->proceedThruDoor == false)
+		{
+			simon1->SetState(SIMON_STATE_IDLE);
+			simon1->isOnStairs = false;
+			simon1->SetPosition(3238, 0.0f);
+			stage = 3;
+			simon1->SetSpeed(0, 0);
+			break;
+		}
+	case DIK_U:
+		if (simon1->proceedThruDoor == false)
+		{
+			simon1->SetState(SIMON_STATE_IDLE);
+			simon1->isOnStairs = false;
+			simon1->SetPosition(1690, 0.0f);
+			stage = 2;
+			simon1->SetSpeed(0, 0);
+			break;
+		}
 	case DIK_SPACE:
 		if (simon1->proceedThruDoor == false)
 		{
@@ -871,6 +863,20 @@ void Scene2::LoadResources()
 	CAnimations * animations = CAnimations::GetInstance();
 	LPANIMATION ani;
 	simon1->SetPosition(50, 0);
+	board = new Board();
+
+	if (simon1->dagger->isOn)
+		board->typeOfWeaopon = 1;
+	else
+		if (simon1->axe->isOn)
+			board->typeOfWeaopon = 2;
+		else
+			if (simon1->holy->isOn)
+				board->typeOfWeaopon = 3;
+			else
+				if (simon1->clock->isOn)
+					board->typeOfWeaopon = 4;
+	board->SetPosition(0, 0);
 	camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
 	textures->Add(ID_TEX_MAP2, L"textures\\Map\\Map2.png", D3DCOLOR_XRGB(5, 5, 5));
 
@@ -883,9 +889,7 @@ void Scene2::LoadResources()
 
 	textures->Add(ID_TEX_ITEM_SMALLHEART, L"textures\\Item\\smallheart.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_CROSS, L"textures\\Item\\cross.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_ITEM_HOLY, L"textures\\Item\\holywater.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_CHICKEN, L"textures\\Item\\10.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_ITEM_CLOCK, L"textures\\Item\\clock.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_AXE, L"textures\\Item\\7.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_NUMBAH, L"textures\\Item\\11.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_POTION, L"textures\\Item\\potion.png", D3DCOLOR_XRGB(0, 0, 0));
@@ -896,6 +900,7 @@ void Scene2::LoadResources()
 	textures->Add(ID_TEX_CANDLE, L"textures\\Enemy\\1.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_MONSTER, L"textures\\Enemy\\3.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_FIREBALL, L"textures\\Enemy\\fireball.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_BOSS, L"textures\\Enemy\\boss.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	textures->Add(ID_TEX_GROUND3, L"textures\\Ground\\ground3.png", D3DCOLOR_XRGB(176, 224, 248));
 	textures->Add(ID_TEX_GROUND4, L"textures\\Ground\\ground4.png", D3DCOLOR_XRGB(176, 224, 248));
@@ -951,6 +956,15 @@ void Scene2::LoadResources()
 
 #pragma endregion
 
+#pragma region Co-orrdiantions of Boss
+
+	LPDIRECT3DTEXTURE9 texBoss = textures->Get(ID_TEX_BOSS);
+
+	sprites->Add(26540, 0, 0, 95,45, texBoss);
+	sprites->Add(26541, 96, 0, 191, 45, texBoss);
+	sprites->Add(26542, 192, 0, 287, 45, texBoss);
+
+#pragma endregion
 #pragma region Co-ordinations of Ghoul
 
 	LPDIRECT3DTEXTURE9 texGhoul = textures->Get(ID_TEX_GHOUL);
@@ -1062,12 +1076,7 @@ void Scene2::LoadResources()
 
 #pragma endregion
 
-#pragma region Co-ordinations of Clock
 
-	LPDIRECT3DTEXTURE9 texClock = textures->Get(ID_TEX_ITEM_CLOCK);
-	sprites->Add(23541, 0, 0, 14, 15, texClock);
-
-#pragma endregion
 #pragma region Co-ordinations of Potion
 
 		LPDIRECT3DTEXTURE9 texPotion = textures->Get(ID_TEX_ITEM_POTION);
@@ -1112,14 +1121,7 @@ void Scene2::LoadResources()
 
 #pragma endregion
 
-#pragma region Adding item Clcok
 
-	ani = new CAnimation(100);
-	ani->Add(23541);
-	animations->Add(426, ani);
-
-
-#pragma endregion
 
 #pragma region Adding item Axe1
 
@@ -1202,16 +1204,12 @@ void Scene2::LoadResources()
 #pragma region Ađing Effect
 
 	effectFire1 = new EffectFire();
-	effectFire1->AddAnimation(578);
-
 
 	effectBag1 = new EffectBag();
 	effectBag1->AddAnimation(579);
 	effectBag1->AddAnimation(580);
 	effectBag1->AddAnimation(581);
 	effectBag1->AddAnimation(582);
-
-
 #pragma endregion
 		
 #pragma region Adding Ghou
@@ -1839,14 +1837,30 @@ void Scene2::spawnMonster()
 	monster1->AddAnimation(848);
 	monster1->setItemInside(randomIteminside());
 	monster1->SetState(MONSTER_STATE_UNDERWATER);
-	if (tickTime % 2==1)
-		monster1->SetPosition(simon1->x-16*5,offsetMap+150);
+
+	effectFire1 = new EffectFire();
+	effectFire1->AddAnimation(578);
+	effectFire1->AddAnimation(577);
+	effectFire1->AddAnimation(576);
+	effectFire1->SetState(EFFECT_STATE_ACTIVE);
+	effectFire1->itemInside = 0;
+	effectFire1->type = 2;
+	if (tickTime % 2 == 1)
+	{
+		monster1->SetPosition(simon1->x - 16 * 5, offsetMap + 150);
+	}
 	else
-		monster1->SetPosition(simon1->x + 16*5, offsetMap + 150);
+	{
+		monster1->SetPosition(simon1->x + 16 * 5, offsetMap + 150);
+	}
+
+	effectFire1->SetPosition(monster1->x, monster1->y);
 	if (monster1->x - simon1->x > 0)
 		monster1->nx = -1;
 	else
 		monster1->nx = 1;
+
+	listEffectFire1.push_back(effectFire1);
 	listEnemy1.push_back(monster1);
 }
 
@@ -1889,18 +1903,17 @@ void Scene2::spawnFireBall()
 	}
 }
 
-bool spawnedEnoughGhou;
-bool spawnedEnoughMonster;
-bool x = true;
-bool y = false;
-bool floor1 = true;
-bool changedColor = true;
 
-
-DWORD TimeWait;
 void Scene2::Update(DWORD dt)
 {
+	if (simon1->shotTwoWeaponOneTime == true)
+	{
+		board->simonHasNumbah = true;
+	}
+	board->heartCount = simon1->heartCount;
 
+	board->playerLife = simon1->playerLife;
+	board->stage = simon1->stage;
 	if (isEatingCross == true)
 	{
 		TimeWait += dt;
@@ -1911,6 +1924,7 @@ void Scene2::Update(DWORD dt)
 			TimeWait = 0;
 		}
 	}
+
 	if (stage == 1)
 	{
 		
@@ -1941,8 +1955,9 @@ void Scene2::Update(DWORD dt)
 				if (simon1->x > 1584)//neu simon di den 1 doan x thi set ve vi tri idle
 				{
 					simon1->SetState(SIMON_STATE_IDLE);
-
+					
 					door->SetState(DOOR_STATE_ACTIVE_CLOSED);//dong cua
+					simon1->stage = 02;
 					if (camera1->GetPosition().x < 1536)
 						camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//keo camera qua hoan toan
 					if (camera1->GetPosition().x >= 1536)
@@ -2486,6 +2501,7 @@ void Scene2::Render()
 		}
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
+		board->Render();
 		map1->drawTileMap(camera1, ID_TEX_MAP2);
 		for (int i = 0; i < listDownStairs1.size(); i++)
 			listDownStairs1[i]->Render();
@@ -2495,8 +2511,6 @@ void Scene2::Render()
 			listSurface1[i]->Render();
 		for (int i = 0; i < listTorches1.size(); i++)
 			listTorches1[i]->Render();
-		for (int i = 0; i < listEffectFire1.size(); i++)
-			listEffectFire1[i]->Render();
 		for (int i = 0; i < listEnemy1.size(); i++)
 			listEnemy1[i]->Render();
 		simon1->Render();
@@ -2504,6 +2518,8 @@ void Scene2::Render()
 			listEffectBag1[i]->Render();
 		for (int i = 0; i < listItem1.size(); i++)
 			listItem1[i]->Render();
+		for (int i = 0; i < listEffectFire1.size(); i++)
+			listEffectFire1[i]->Render();
 		simon1->dagger->Render();
 		simon1->axe->Render();
 		simon1->holy->Render();
@@ -2862,13 +2878,17 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 							listEnemy1.at(i)->GetPosition(x, y);
 
-							effectFire1->SetPosition(x, y);
+							effectFire1 = new EffectFire();
+							effectFire1->AddAnimation(578);
+							effectFire1->AddAnimation(577);
+							effectFire1->AddAnimation(576);
 							effectFire1->SetState(EFFECT_STATE_ACTIVE);
 							effectFire1->itemInside = listEnemy1.at(i)->itemInside;
-							listEffectFire1.push_back(effectFire1);
-						
 							if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
 							{
+							
+								effectFire1->SetPosition(x-35, y-5);
+								effectFire1->type = 1;
 								float x1, y1;
 								listEnemy1.at(i)->GetPosition(x1,y1);
 								for (UINT ij = 0; ij < listSurface1.size(); ij++)
@@ -2900,6 +2920,13 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								}
 
 							}
+							else
+							{
+								effectFire1->SetPosition(x, y);
+								effectFire1->type = 0;
+							}
+
+							listEffectFire1.push_back(effectFire1);
 							listEnemy1.erase(listEnemy1.begin() + i);
 							i = i-1;
 						}
@@ -2920,10 +2947,14 @@ void Scene2::CollisionBetWeaponAndEnemy()
 						float x, y;
 						listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
 						listTorches1.at(i)->GetPosition(x, y);
-
-						effectFire1->SetPosition(x, y);
+						effectFire1 = new EffectFire();
+						effectFire1->AddAnimation(578);
+						effectFire1->AddAnimation(577);
+						effectFire1->AddAnimation(576);
 						effectFire1->SetState(EFFECT_STATE_ACTIVE);
+						effectFire1->type = 0;
 						effectFire1->itemInside = listTorches1.at(i)->itemInside;
+						effectFire1->SetPosition(x, y);
 						listEffectFire1.push_back(effectFire1);
 
 						listTorches1.erase(listTorches1.begin() + i);
@@ -2953,6 +2984,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 							listEnemy1.at(i)->GetPosition(x, y);
 
+							effectFire1 = new EffectFire();
+							effectFire1->AddAnimation(578);
+							effectFire1->AddAnimation(577);
+							effectFire1->AddAnimation(576);
 							effectFire1->SetPosition(x, y);
 							effectFire1->SetState(EFFECT_STATE_ACTIVE);
 							effectFire1->itemInside = listEnemy1.at(i)->itemInside;
@@ -2979,6 +3014,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
 							listTorches1.at(i)->GetPosition(x, y);
 
+							effectFire1 = new EffectFire();
+							effectFire1->AddAnimation(578);
+							effectFire1->AddAnimation(577);
+							effectFire1->AddAnimation(576);
 							effectFire1->SetPosition(x, y);
 							effectFire1->SetState(EFFECT_STATE_ACTIVE);
 							effectFire1->itemInside = listTorches1.at(i)->itemInside;
@@ -3213,6 +3252,7 @@ void Scene2::CollisionBetSimonAndItem()
 							simon1->axe->turnOffAxe();
 							simon1->clock->turnOffClock();
 							simon1->holy->turnOffHolyWater();
+							board->typeOfWeaopon = 1;
 							OutputDebugString(L"Dagger on \n");
 							if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
 							{
@@ -3359,6 +3399,7 @@ void Scene2::CollisionBetSimonAndItem()
 												simon1->axe->turnOnAxe();
 												simon1->clock->turnOffClock();
 												simon1->holy->turnOffHolyWater();
+												board->typeOfWeaopon = 2;
 												OutputDebugString(L"Axe on \n");
 												if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
 												{
@@ -3378,6 +3419,7 @@ void Scene2::CollisionBetSimonAndItem()
 													simon1->axe->turnOffAxe();
 													simon1->clock->turnOffClock();
 													simon1->holy->turnOnHolyWater();
+													board->typeOfWeaopon = 3;
 													OutputDebugString(L"HolyWater on \n");
 													if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
 													{
@@ -3398,6 +3440,7 @@ void Scene2::CollisionBetSimonAndItem()
 														simon1->axe->turnOffAxe();
 														simon1->clock->turnOnClock();
 														simon1->holy->turnOffHolyWater();
+														board->typeOfWeaopon = 4;
 														OutputDebugString(L"Clock on \n");
 														if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
 														{
@@ -3475,6 +3518,11 @@ void Scene2::spawnItemsAfterEffect()
 		{
 			float x, y;
 			listEffectFire1.at(i)->GetPosition(x, y);
+			if (listEffectFire1.at(i)->type != 0)
+			{
+				x = x + 35;
+				y = y -25;
+			}
 			switch (listEffectFire1.at(i)->itemInside)
 			{
 
@@ -3563,23 +3611,26 @@ void Scene2::spawnItemsAfterEffect()
 				axe1->SetState(ITEM_STATE_ACTIVE);
 				axe1->SetPosition(x, y);
 				listItem1.push_back(axe1);
+				break;
 			case numbahInside:
 				num = new Numbah();
 				num->AddAnimation(935);
 				num->SetState(ITEM_STATE_ACTIVE);
 				num->SetPosition(x, y);
 				listItem1.push_back(num);
+				break;
 			case potionInside:
 				potion = new Potion();
 				potion->AddAnimation(987);
 				potion->SetState(ITEM_STATE_ACTIVE);
 				potion->SetPosition(x, y);
 				listItem1.push_back(potion);
+				break;
 			default:
 				break;
 			}
 
-			listEffectFire1.erase(listEffectFire1.begin() + i);// Delete it from enemy since Simion killed it
+			listEffectFire1.erase(listEffectFire1.begin() + i);// Delete it from effect since Simion killed it
 			i = i - 1; // Push back 1 cuz after deleting i+1 will replace i
 
 		}
@@ -3802,34 +3853,38 @@ int Scene2::CollisionBetSimonAndUpStairs()
 				else
 					if (simon1->isOnStairs == false)
 					{
-						if (simon1->x > listUpStairs1.at(i)->x + 5)
+						if(simon1->y > listUpStairs1.at(i)->y+STAIRS_BBOX_HEIGHT-1)
 						{
-							simon1->SetState(SIMON_STATE_WALKING_LEFT);
-						}
-						else
-							if (simon1->x < listUpStairs1.at(i)->x + 3)
+							if (simon1->x > listUpStairs1.at(i)->x + 5)
 							{
-								simon1->SetState(SIMON_STATE_WALKING_RIGHT);
+								simon1->SetState(SIMON_STATE_WALKING_LEFT);
 							}
 							else
-								if (simon1->x >= listUpStairs1.at(i)->x + 3 ||
-									simon1->x <= listUpStairs1.at(i)->x + 5)
+								if (simon1->x < listUpStairs1.at(i)->x + 3)
 								{
-									if (listUpStairs1.at(i)->getType() == 1)
-									{
-										simon1->SetState(SIMON_STATE_DOWN_RIGHT);
-										simon1->directionOnStairs = false;// true=going up, false=going down
-									}
-									else
-										if (listUpStairs1.at(i)->getType() == 2)
-										{
-											simon1->SetState(SIMON_STATE_DOWN_LEFT);
-											simon1->directionOnStairs = false;
-										}
-									simon1->isOnStairs = true;
-									return true;
+									simon1->SetState(SIMON_STATE_WALKING_RIGHT);
 								}
+								else
+									if (simon1->x >= listUpStairs1.at(i)->x + 3 ||
+										simon1->x <= listUpStairs1.at(i)->x + 5)
+									{
+										if (listUpStairs1.at(i)->getType() == 1)
+										{
+											simon1->SetState(SIMON_STATE_DOWN_RIGHT);
+											simon1->directionOnStairs = false;// true=going up, false=going down
+										}
+										else
+											if (listUpStairs1.at(i)->getType() == 2)
+											{
+												simon1->SetState(SIMON_STATE_DOWN_LEFT);
+												simon1->directionOnStairs = false;
+											}
+										simon1->isOnStairs = true;
+										return true;
+									}
 
+						}
+						
 
 					}
 				return true;

@@ -187,6 +187,12 @@
     <ClInclude Include="EffectBag.h">
       <Filter>Framework\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Framework\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -329,6 +335,12 @@
     </ClCompile>
     <ClCompile Include="EffectBag.cpp">
       <Filter>Framework\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Framework\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

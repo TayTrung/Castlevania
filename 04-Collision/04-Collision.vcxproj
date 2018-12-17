@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{0CEDCE73-9775-46A9-9D9D-B8424E7D599D}</ProjectGuid>
     <RootNamespace>My04Collision</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -127,6 +127,8 @@
     <ClInclude Include="Axe1.h" />
     <ClInclude Include="Bat.h" />
     <ClInclude Include="BigHeart.h" />
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="Chicken.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="Clock1.h" />
@@ -175,6 +177,8 @@
     <ClCompile Include="Axe1.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="BigHeart.cpp" />
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Chicken.cpp" />
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="Clock1.cpp" />
