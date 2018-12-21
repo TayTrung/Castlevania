@@ -31,7 +31,7 @@ void Scene2::KeyState(BYTE * states)
 							{
 								if (simon1->nx == 1)
 								{
-									if (CollisionBetSimonAndUpStairs() == false)
+									if (CollisionBetSimonAndUpStairs(listUpStairs1) == false)
 									{
 										simon1->SetState(SIMON_STATE_UP_RIGHT);
 									}
@@ -40,7 +40,7 @@ void Scene2::KeyState(BYTE * states)
 								else
 									if (simon1->nx == -1)
 									{
-										if (CollisionBetSimonAndUpStairs() == false)
+										if (CollisionBetSimonAndUpStairs(listUpStairs1) == false)
 										{
 											simon1->directionOnStairs = false;
 											simon1->SetState(SIMON_STATE_DOWN_RIGHT);
@@ -53,7 +53,7 @@ void Scene2::KeyState(BYTE * states)
 								{
 									if (simon1->nx == 1)
 									{
-										if (CollisionBetSimonAndDownStairs() == false)
+										if (CollisionBetSimonAndDownStairs(listDownStairs1) == false)
 										{
 											simon1->SetState(SIMON_STATE_DOWN_RIGHT);
 										}
@@ -61,7 +61,7 @@ void Scene2::KeyState(BYTE * states)
 									else
 										if (simon1->nx == -1)
 										{
-											if (CollisionBetSimonAndUpStairs() == false)
+											if (CollisionBetSimonAndUpStairs(listUpStairs1) == false)
 											{
 												simon1->directionOnStairs = true;
 												simon1->SetState(SIMON_STATE_UP_RIGHT);
@@ -93,7 +93,7 @@ void Scene2::KeyState(BYTE * states)
 
 									if (simon1->nx == -1)
 									{
-										if (CollisionBetSimonAndUpStairs() == false)
+										if (CollisionBetSimonAndUpStairs(listUpStairs1) == false)
 										{
 											simon1->SetState(SIMON_STATE_UP_LEFT);
 										}
@@ -101,7 +101,7 @@ void Scene2::KeyState(BYTE * states)
 									else
 										if (simon1->nx == 1)
 										{
-											if (CollisionBetSimonAndUpStairs() == false)
+											if (CollisionBetSimonAndUpStairs(listUpStairs1) == false)
 											{
 												simon1->directionOnStairs = false;
 												simon1->SetState(SIMON_STATE_DOWN_LEFT);
@@ -114,7 +114,7 @@ void Scene2::KeyState(BYTE * states)
 									{
 										if (simon1->nx == -1)
 										{
-											if (CollisionBetSimonAndDownStairs() == false)
+											if (CollisionBetSimonAndDownStairs(listDownStairs1) == false)
 											{
 
 												simon1->SetState(SIMON_STATE_DOWN_LEFT);
@@ -123,7 +123,7 @@ void Scene2::KeyState(BYTE * states)
 										else
 											if (simon1->nx == 1)
 											{
-												if (CollisionBetSimonAndUpStairs() == false)
+												if (CollisionBetSimonAndUpStairs(listUpStairs1) == false)
 												{
 													simon1->directionOnStairs = true;
 													simon1->SetState(SIMON_STATE_UP_LEFT);
@@ -145,7 +145,7 @@ void Scene2::KeyState(BYTE * states)
 							{
 								if (simon1->isJumping == false)
 								{
-									if (CollisionBetSimonAndUpStairs() == false)
+									if (CollisionBetSimonAndUpStairs(listUpStairs1) == false)
 									{
 										simon1->SetState(SIMON_STATE_SIT);
 									}
@@ -154,7 +154,7 @@ void Scene2::KeyState(BYTE * states)
 							else
 								if (simon1->isOnStairs == true)
 								{
-									if (CollisionBetSimonAndDownStairs() == false)
+									if (CollisionBetSimonAndDownStairs(listDownStairs1) == false)
 									{
 										if (simon1->directionOnStairs == false)
 										{
@@ -197,13 +197,13 @@ void Scene2::KeyState(BYTE * states)
 									if (simon1->isJumping == false)
 									{
 
-										CollisionBetSimonAndDownStairs();
+										CollisionBetSimonAndDownStairs(listDownStairs1);
 									}
 								}
 								else
 									if (simon1->isOnStairs == true)
 									{
-										if (CollisionBetSimonAndUpStairs() == false)
+										if (CollisionBetSimonAndUpStairs(listUpStairs1) == false)
 										{
 											if (simon1->directionOnStairs == true)
 											{
@@ -308,7 +308,7 @@ void Scene2::OnKeyDown(int KeyCode)
 		{
 			simon1->SetState(SIMON_STATE_IDLE);
 			simon1->isOnStairs = false;
-			simon1->SetPosition(2667, 0.0f);
+			simon1->SetPosition(2400, 0.0f);
 			stage = 5;
 			simon1->SetSpeed(0, 0);
 			break;
@@ -333,6 +333,12 @@ void Scene2::OnKeyDown(int KeyCode)
 			simon1->SetSpeed(0, 0);
 			break;
 		}
+		case DIK_J:
+		{
+			simon1->SetState(SIMON_STATE_DEAD);
+			simon1->healthCount = 0;
+		}
+			
 	case DIK_SPACE:
 		if (simon1->proceedThruDoor == false)
 		{
@@ -395,7 +401,7 @@ void Scene2::OnKeyDown(int KeyCode)
 			{
 				if (simon1->heartCount > 0)
 				{
-					simon1->heartCount -= 1;
+				
 					if (simon1->dagger->GetState() == DAGGER_STATE_INACTIVE)
 					{
 						simon1->numOfWeapon = 1;
@@ -460,6 +466,8 @@ void Scene2::OnKeyDown(int KeyCode)
 								simon1->numOfWeapon = 2;
 								if (simon1->dagger1->GetState() == DAGGER_STATE_INACTIVE)
 								{
+
+									simon1->heartCount -= 1;
 									float x, y;
 									simon1->GetPosition(x, y);
 									if (simon1->isOnStairs == true)
@@ -529,11 +537,11 @@ void Scene2::OnKeyDown(int KeyCode)
 				{
 					if (simon1->heartCount > 0)
 					{
-						simon1->heartCount -= 1;
 
 						if (simon1->axe->GetState() == AXE_STATE_INACTIVE)
 						{
 
+							simon1->heartCount -= 1;
 							simon1->numOfWeapon = 1;
 							float x, y;
 							simon1->GetPosition(x, y);
@@ -596,6 +604,7 @@ void Scene2::OnKeyDown(int KeyCode)
 									simon1->numOfWeapon = 2;
 									if (simon1->axe1->GetState() == AXE_STATE_INACTIVE)
 									{
+										simon1->heartCount -= 1;
 										float x, y;
 										simon1->GetPosition(x, y);
 										if (simon1->isOnStairs == true)
@@ -663,11 +672,11 @@ void Scene2::OnKeyDown(int KeyCode)
 					{
 						if (simon1->heartCount > 0)
 						{
-							simon1->heartCount -= 1;
 
 						if (simon1->holy->GetState() == HOLYWATER_STATE_INACTIVE)
 						{
 
+							simon1->heartCount -= 1;
 							simon1->numOfWeapon = 1;
 							float x, y;
 							simon1->GetPosition(x, y);
@@ -728,6 +737,7 @@ void Scene2::OnKeyDown(int KeyCode)
 									simon1->numOfWeapon = 2;
 									if (simon1->holy1->GetState() == HOLYWATER_STATE_INACTIVE)
 									{
+										simon1->heartCount -= 1;
 										float x, y;
 										simon1->GetPosition(x, y);
 										if (simon1->isOnStairs == true)
@@ -795,8 +805,8 @@ void Scene2::OnKeyDown(int KeyCode)
 						{
 							if (simon1->heartCount > 4)
 							{
-								simon1->heartCount -= 5;
 
+								simon1->heartCount -= 5;
 								float x, y;
 								simon1->GetPosition(x, y);
 
@@ -856,6 +866,8 @@ void Scene2::OnKeyUp(int KeyCode)
 
 void Scene2::LoadResources()
 {
+	newGrid1 = new Grid();
+	time1 = new Time();
 	simon1->proceedThruDoor = false;
 	camera1 = Camera::GetInstance();
 	CTextures * textures = CTextures::GetInstance();
@@ -960,10 +972,26 @@ void Scene2::LoadResources()
 
 	LPDIRECT3DTEXTURE9 texBoss = textures->Get(ID_TEX_BOSS);
 
-	sprites->Add(26540, 0, 0, 95,45, texBoss);
-	sprites->Add(26541, 96, 0, 191, 45, texBoss);
-	sprites->Add(26542, 192, 0, 287, 45, texBoss);
+	sprites->Add(26540, 0, 0, 47,22, texBoss);
+	sprites->Add(26541, 48, 0, 95, 22, texBoss);
+	sprites->Add(26542, 96, 0, 143, 22, texBoss);
 
+	ani = new CAnimation(100);//sleep
+	ani->Add(26540);
+	animations->Add(333, ani);
+
+	ani = new CAnimation(200);//alive
+	ani->Add(26541);
+	ani->Add(26542);
+	animations->Add(334, ani);
+	boss = new Boss();
+	boss->AddAnimation(333);
+	boss->AddAnimation(334);
+	boss->SetPosition(2660, 5+offsetMap);
+	boss->setItemInside(bluebagInside);
+	boss->SetState(BOSS_STATE_SLEEP);
+	//newGrid1->insertObjectIntoGrid(boss);
+	listEnemy1.push_back(boss);
 #pragma endregion
 #pragma region Co-ordinations of Ghoul
 
@@ -1279,16 +1307,18 @@ void Scene2::LoadResources()
 		Torch *candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(potionInside);
+		candle->setItemInside(randomIteminside());
 		candle->SetPosition(29+i*(157-29), offsetMap +128);
-		listTorches1.push_back(candle);
+		newGrid1->insertObjectIntoGrid(candle);
+		//listTorches1.push_back(candle);
 
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
 		candle->setItemInside(randomIteminside());
 		candle->SetPosition(92 + i * (220 - 92), offsetMap + 97);
-		listTorches1.push_back(candle);
+		newGrid1->insertObjectIntoGrid(candle);
+		//listTorches1.push_back(candle);
 		}
 		
 		Torch *candle = new Torch(1);
@@ -1296,35 +1326,42 @@ void Scene2::LoadResources()
 		candle->SetState(CANDLE_STATE_ACTIVE);
 		candle->setItemInside(randomIteminside());
 		candle->SetPosition(673,offsetMap+39);
-		listTorches1.push_back(candle);
+		newGrid1->insertObjectIntoGrid(candle);
+		//listTorches1.push_back(candle);
 
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
 		candle->setItemInside(randomIteminside());
 		candle->SetPosition(735,130+offsetMap);
-		listTorches1.push_back(candle);
+
+		newGrid1->insertObjectIntoGrid(candle); 
+		//listTorches1.push_back(candle);
 
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
 		candle->setItemInside(randomIteminside());
 		candle->SetPosition(799,offsetMap+8);
-		listTorches1.push_back(candle);
+
+		newGrid1->insertObjectIntoGrid(candle);
+		//listTorches1.push_back(candle);
 
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
 		candle->setItemInside(randomIteminside());
 		candle->SetPosition(992, offsetMap + 39);
-		listTorches1.push_back(candle);
+		newGrid1->insertObjectIntoGrid(candle);
+		//		listTorches1.push_back(candle);
 	
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
 		candle->setItemInside(randomIteminside());
 		candle->SetPosition(929, offsetMap + 130);
-		listTorches1.push_back(candle);
+		newGrid1->insertObjectIntoGrid(candle);
+		//listTorches1.push_back(candle);
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -1333,7 +1370,8 @@ void Scene2::LoadResources()
 			candle->SetState(CANDLE_STATE_ACTIVE);
 			candle->setItemInside(randomIteminside());
 			candle->SetPosition(1055+i*64, offsetMap + 130);
-			listTorches1.push_back(candle);
+			newGrid1->insertObjectIntoGrid(candle);
+			//listTorches1.push_back(candle);
 
 		}
 
@@ -1343,21 +1381,25 @@ void Scene2::LoadResources()
 		candle->SetState(CANDLE_STATE_ACTIVE);
 		candle->setItemInside(randomIteminside());
 		candle->SetPosition(1366, offsetMap + 113);
-		listTorches1.push_back(candle);
+		newGrid1->insertObjectIntoGrid(candle);
+		//listTorches1.push_back(candle);
 		
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
 		candle->setItemInside(randomIteminside());
 		candle->SetPosition(1437, offsetMap + 33);
-		listTorches1.push_back(candle);
+		newGrid1->insertObjectIntoGrid(candle);
+		//listTorches1.push_back(candle);
 
 		candle = new Torch(1);
 		candle->AddAnimation(476);
 		candle->SetState(CANDLE_STATE_ACTIVE);
 		candle->setItemInside(crossInside);
 		candle->SetPosition(1502, offsetMap + 4);
-		listTorches1.push_back(candle);
+		newGrid1->insertObjectIntoGrid(candle);
+		
+	//	listTorches1.push_back(candle);
 #pragma endregion
 
 #pragma region Adding Ground
@@ -1385,44 +1427,34 @@ void Scene2::LoadResources()
 	// ground neen
 	Ground *ground = new Ground(1, BRICKMAP21_BBOX_WIDTH + BRICKMAP22_BBOX_WIDTH + BRICKMAP23_BBOX_WIDTH + 32);
 	ground->SetPosition(0, offsetMap + 160);
-	listSurface1.push_back(ground);
-
-	//Boxex de di tat
-	//to stage 3
-
-	//ground = new Ground(0, 0);
-	//ground->SetState(INVIS_STATE_NEXT_LVL_UNDERGROUND);
-	//ground->SetPosition(1426, offsetMap + 43);
-	//listItem1.push_back(ground);
-
-	//to stage 4
-
-	//ground = new Ground(0, 0);
-	//ground->SetState(INVIS_STATE_UPPERGROUND);
-	//ground->SetPosition(1426, offsetMap + 43);
-	//listItem1.push_back(ground);
-
+	//listSurface1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
+	
 	//Stage 1
 	//3 ground len cau thang 
 
 	ground = new Ground(1, 3 * 16);
 	ground->SetPosition(688, offsetMap + 160 - 16 * 4);
-	listSurface1.push_back(ground);
+	//listSurface1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	ground = new Ground(1, 10 * 16);
 	ground->SetPosition(688 + 4 * 16, offsetMap + 160 - 16 * 6);
-	listSurface1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
+	//listSurface1.push_back(ground);
 
 
 	ground = new Ground(1, 6 * 16);
 	ground->SetPosition(688 + 15 * 16, offsetMap + 160 - 16 * 4);
-	listSurface1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
+	//listSurface1.push_back(ground);
 	
 	//Box proceed to open door
 	ground = new Ground(0, 0);
 	ground->SetState(INVIS_STATE_OPENDOOR);
 	ground->SetPosition(1520, offsetMap + 43);
-	listItem1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
+	//listItem1.push_back(ground);
 
 	//Door
 	door = new Door();
@@ -1430,35 +1462,38 @@ void Scene2::LoadResources()
 	door->AddAnimation(495);
 	door->AddAnimation(496);
 	door->SetPosition(1528, offsetMap + 16);
-	listSurface1.push_back(door);
-
-
+	//listSurface1.push_back(door);
+	newGrid1->insertObjectIntoGrid(door);
+	//listCheckBox1.push_back(door);
 	//Stage 2
 	//2 mieng ground chicken
 	groundEnemy = new GroundEnemy();
 	groundEnemy->AddAnimation(998);
 	groundEnemy->SetPosition(1792, offsetMap + 128);
 	groundEnemy->SetState(ITEM_STATE_ACTIVE);
-	listEnemy1.push_back(groundEnemy);
+	//listEnemy1.push_back(groundEnemy);
+	newGrid1->insertObjectIntoGrid(groundEnemy);
 
 	groundEnemy = new GroundEnemy();
 	groundEnemy->AddAnimation(997);
 	groundEnemy->setItemInside(chickenInside);
 	groundEnemy->SetPosition(1792, offsetMap + 128+16);
 	groundEnemy->SetState(ITEM_STATE_ACTIVE);
-	listEnemy1.push_back(groundEnemy);
+	//listEnemy1.push_back(groundEnemy);
+	newGrid1->insertObjectIntoGrid(groundEnemy);
 
 
 	//2 ground man 2
 
 	ground = new Ground(1, 17 * 16);
 	ground->SetPosition(1392, offsetMap + 160 - 16 * 6);
-	listSurface1.push_back(ground);
+	//listSurface1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	ground = new Ground(1, 3 * 16);
 	ground->SetPosition(1392+17*16, offsetMap + 160 - 16 * 4);
-
-	listSurface1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
+	//listSurface1.push_back(ground);
 	
 
 
@@ -1467,63 +1502,81 @@ void Scene2::LoadResources()
 	ground = new Ground(0, 0);
 	ground->SetState(INVIS_STATE_NEXT_LVL_UNDERGROUND);
 	ground->SetPosition(1616, 184+55);
-	listItem1.push_back(ground);
-	
+	//listItem1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
+
 	//Stage 3
 	//box to get out of level underground
 	ground = new Ground(0, 0);
 	ground->SetState(INVIS_STATE_UPPERGROUND);
 	ground->SetPosition(3192, offsetMap -5);
-	listItem1.push_back(ground);
+	//listItem1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	//box to get to stage 2
 	ground = new Ground(0, 0);
 	ground->SetState(INVIS_STATE_STAGE2);
 	ground->SetPosition(3192-320, offsetMap - 5);
-	listItem1.push_back(ground);
+	//listItem1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
+	
+	ground = new Ground(0, 335);
+	ground->SetState(INVIS_STATE_DIE_BOX);
+	ground->SetPosition(2990, offsetMap+170);
+	//listItem1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
+
 	//2910 47
 	//Mieng ground 2 in UNderGround
-	ground = new Ground(1, 16*2);
+	ground = new Ground(1, 16 * 2);
 	ground->SetPosition(2910, offsetMap + 47);
 	listSurface1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	//MIeng to duoi chan
 	ground = new Ground(1, 16*14);
 	ground->SetPosition(2910-16*6, offsetMap + 47+16*2);
-	listSurface1.push_back(ground);
-	listSurfaceUnderGround.push_back(ground);
+	//listSurface1.push_back(ground);
+	//listSurfaceUnderGround.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
+
 	// Mieng 2 ke ben
 	ground = new Ground(1, 16 * 2);
 	ground->SetPosition(2910 - 16 * 6+16*16, offsetMap + 47 + 16 * 2);
-	listSurface1.push_back(ground);
-	listSurfaceUnderGround.push_back(ground);
+	//listSurface1.push_back(ground);
+	//listSurfaceUnderGround.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	//Mieng 10
 	ground = new Ground(1, 16 * 9);
 	ground->SetPosition(2910 - 16 * 6 + 16 * 20, offsetMap + 47 + 16 * 2);
-	listSurface1.push_back(ground);
-	listSurfaceUnderGround.push_back(ground);
+	//listSurface1.push_back(ground);
+	//listSurfaceUnderGround.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	//Mieng 2
 	ground = new Ground(1, 16 * 2);
 	ground->SetPosition(2910 - 16 * 6 + 16 * 30, offsetMap + 47 + 16 * 4);
-	listSurface1.push_back(ground);
-	listSurfaceUnderGround.push_back(ground);
+	//listSurface1.push_back(ground);
+	//listSurfaceUnderGround.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	//Mieng 2 o duoi cung
 	ground = new Ground(1, 16 * 2);
 	ground->SetPosition(2910 - 16 * 8 + 16 * 30, offsetMap + 47 + 16 * 6);
-	listSurface1.push_back(ground);
-	listSurfaceUnderGround.push_back(ground);
+	//listSurface1.push_back(ground);
+	//listSurfaceUnderGround.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	//1 mieng ground No ITem
 	groundEnemy1 = new GroundEnemy();
 	groundEnemy1->AddAnimation(996);
 	groundEnemy1->SetPosition(2910 - 16 * 7 + 16 * 30, offsetMap + 47 + 16 * 2);
 	groundEnemy1->SetState(ITEM_STATE_ACTIVE);
-	listEnemy1.push_back(groundEnemy1);
-	listSurface1.push_back(groundEnemy1);
-	listSurfaceUnderGround.push_back(groundEnemy1);
+	newGrid1->insertObjectIntoGrid(groundEnemy1);
+	//listEnemy1.push_back(groundEnemy1);
+	//listSurface1.push_back(groundEnemy1);
+	//listSurfaceUnderGround.push_back(groundEnemy1);
 
 	//Stage 4
 
@@ -1532,19 +1585,23 @@ void Scene2::LoadResources()
 	ground = new Ground(0, 0);
 	ground->SetState(INVIS_STATE_NEXT_LVL_UNDERGROUND);
 	ground->SetPosition(1937, 184 + 55);
-	listItem1.push_back(ground);
+	//listItem1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	ground = new Ground(1, 3 * 16);
 	ground->SetPosition(1888, offsetMap + 160 - 16 * 4);
-	listSurface1.push_back(ground);
+	//listSurface1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	ground = new Ground(1, 6 * 16);
 	ground->SetPosition(1792, offsetMap + 160 - 16 * 5);
-	listSurface1.push_back(ground);
+	//listSurface1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	ground = new Ground(1, 13 * 16);
 	ground->SetPosition(1952, offsetMap + 160 - 16 * 6);
-	listSurface1.push_back(ground);
+//	listSurface1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 
 	//Stage 5
@@ -1553,7 +1610,8 @@ void Scene2::LoadResources()
 	ground = new Ground(0, 0);
 	ground->SetState(INVIS_STATE_OPENDOOR2);
 	ground->SetPosition(1520 + 514, offsetMap + 43);
-	listItem1.push_back(ground);
+	//listItem1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	//Door
 	door1 = new Door();
@@ -1561,19 +1619,23 @@ void Scene2::LoadResources()
 	door1->AddAnimation(495);
 	door1->AddAnimation(496);
 	door1->SetPosition(1528 + 514, offsetMap + 16);
-	listSurface1.push_back(door1);
+	//listSurface1.push_back(door1);
+	newGrid1->insertObjectIntoGrid(door1);
 
 	ground = new Ground(1, 11 * 16);
 	ground->SetPosition(2176, offsetMap + 160 - 16 * 4);
-	listSurface1.push_back(ground);
+	//listSurface1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	ground = new Ground(1, 3 * 16);
 	ground->SetPosition(2768, offsetMap + 160 - 16 * 4);
-	listSurface1.push_back(ground);
+	//listSurface1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	ground = new Ground(1, 1 * 16);
 	ground->SetPosition(2720, offsetMap + 160 - 16 * 2);
-	listSurface1.push_back(ground);
+	//listSurface1.push_back(ground);
+	newGrid1->insertObjectIntoGrid(ground);
 
 	//1 mieng ground item 2nd
 	groundEnemy1 = new GroundEnemy();
@@ -1582,8 +1644,9 @@ void Scene2::LoadResources()
 	groundEnemy1->SetPosition(2735, offsetMap + 128);
 	groundEnemy1->SetState(ITEM_STATE_ACTIVE);
 
-	listEnemy1.push_back(groundEnemy1);
-	listSurface1.push_back(groundEnemy1);
+	newGrid1->insertObjectIntoGrid(groundEnemy1);
+	//listEnemy1.push_back(groundEnemy1);
+	//listSurface1.push_back(groundEnemy1);
 
 #pragma endregion
 
@@ -1611,6 +1674,7 @@ void Scene2::LoadResources()
 	pant->SetState(PANTHER_STATE_SIT_LEFT);
 	pant->SetPosition(685, 0 + offsetMap);
 	listEnemy1.push_back(pant);
+	//newGrid1->insertObjectIntoGrid(pant);
 
 	pant = new Panther(8 * 20);
 	pant->AddAnimation(550);
@@ -1634,6 +1698,7 @@ void Scene2::LoadResources()
 	pant->SetState(PANTHER_STATE_SIT_LEFT);
 	pant->SetPosition(880, 0 + offsetMap);
 	listEnemy1.push_back(pant);
+	//newGrid1->insertObjectIntoGrid(pant);
 
 	pant = new Panther(1 * 16);
 	pant->AddAnimation(550);//right left
@@ -1658,6 +1723,7 @@ void Scene2::LoadResources()
 	pant->SetState(PANTHER_STATE_SIT_LEFT);
 	pant->SetPosition(945, 0 + offsetMap);
 	listEnemy1.push_back(pant);
+	//newGrid1->insertObjectIntoGrid(pant);
 
 
 #pragma endregion
@@ -1667,106 +1733,127 @@ void Scene2::LoadResources()
 		////1st stair
 		stairs = new Stairs(1,true);
 		stairs->SetPosition(611, offsetMap + 159);
-		listDownStairs1.push_back(stairs);
+		//listDownStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		stairs = new Stairs(2,false);
 		stairs->SetPosition(675, offsetMap + 35);
-		listUpStairs1.push_back(stairs);
+		//listUpStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		//2nd stair
 		stairs = new Stairs(1, true);
 		stairs->SetPosition(707, offsetMap + 95);
-		listDownStairs1.push_back(stairs);
+		//listDownStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		stairs = new Stairs(2, false);
 		stairs->SetPosition(752-14, offsetMap + 4);
-		listUpStairs1.push_back(stairs);
+		//listUpStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 		//1= right, 2 = left
 		////3rd stair
 		stairs = new Stairs(1, false);
 		stairs->SetPosition(878+20, offsetMap + 4);
-		listUpStairs1.push_back(stairs);
+		//listUpStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		stairs = new Stairs(2, true);
 		stairs->SetPosition(928, offsetMap + 95);
-		listDownStairs1.push_back(stairs);
+		//listDownStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		//4th stair
 		stairs = new Stairs(1, true);
 		stairs->SetPosition(1283, offsetMap + 159);
-		listDownStairs1.push_back(stairs);
+		//listDownStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		stairs = new Stairs(2, false);
 		stairs->SetPosition(1392-14, offsetMap + 4);
-		listUpStairs1.push_back(stairs);
+		//listUpStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		//5th stair
 		stairs = new Stairs(1, false);
 		stairs->SetPosition(1698,  offsetMap + 35);
-		listUpStairs1.push_back(stairs);
+		//listUpStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 		//offsetMap + 160 - 16 * 4
 		stairs = new Stairs(2, true);
 		stairs->SetPosition(1762, offsetMap + 159);
-		listDownStairs1.push_back(stairs);
+		//listDownStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		//Stairs  to underwater
 
 		stairs = new Stairs(1, false);
 		stairs->SetPosition(1698-8*16, offsetMap + 99);
-		listUpStairs1.push_back(stairs);
+		//listUpStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 		
 		stairs = new Stairs(2, true);
 		stairs->SetPosition(2910-16, offsetMap + 46);
-		listDownStairs1.push_back(stairs);
+		//listDownStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		//stairs out underwater
 
 	
 		stairs = new Stairs(1, false);
 		stairs->SetPosition(1888, offsetMap + 99);
-		listUpStairs1.push_back(stairs);
+	//	listUpStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		stairs = new Stairs(2, true);
 		stairs->SetPosition(2914 - 16 * 6 + 16 * 27, offsetMap + 46 + 16 * 2);
-		listDownStairs1.push_back(stairs);
+		//listDownStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 
 		//stairs stage 4
 		stairs = new Stairs(1, false);
 		stairs->SetPosition(1924, offsetMap + 35);
-		listUpStairs1.push_back(stairs);
+		//listUpStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		stairs = new Stairs(2, true);
 		stairs->SetPosition(1986, offsetMap +159);
-		listDownStairs1.push_back(stairs);
+		//listDownStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 
 		//stirs stage 5
 		stairs = new Stairs(1, false);
 		stairs->SetPosition(2148, offsetMap + 160 - 16 * 6-61);
-		listUpStairs1.push_back(stairs);
+		//listUpStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		stairs = new Stairs(2, true);
 		stairs->SetPosition(2180, offsetMap + 159- 16 * 4);
-		listDownStairs1.push_back(stairs);
+		//listDownStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 		
 
 		stairs = new Stairs(1, false);
 		stairs->SetPosition(2340, offsetMap + 160 - 16 * 4 - 61);
-		listUpStairs1.push_back(stairs);
+		//listUpStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		stairs = new Stairs(2, true);
 		stairs->SetPosition(2404, offsetMap + 159);
-		listDownStairs1.push_back(stairs);
+		//listDownStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		stairs = new Stairs(2, false);
 		stairs->SetPosition(2769-16, offsetMap + 160 - 16 * 4 - 61);
-		listUpStairs1.push_back(stairs);
+		//listUpStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 
 		stairs = new Stairs(1, true);
 		stairs->SetPosition(2720, offsetMap + 159-16*2);
-		listDownStairs1.push_back(stairs);
-
+		//listDownStairs1.push_back(stairs);
+		newGrid1->insertObjectIntoGrid(stairs);
 #pragma endregion
 }
 void Scene2::XuLyPanthera()
@@ -1906,14 +1993,106 @@ void Scene2::spawnFireBall()
 
 void Scene2::Update(DWORD dt)
 {
+	if (simon1->healthCount == 0)
+	{
+			TimeWaitToRefresh += dt;
+			if (TimeWaitToRefresh >= 3000)
+			{
+				if (simon1->playerLife > 0)
+				{
+					simon1->playerLife -= 1;
+					simon1->CGameObject::SetState(SIMON_STATE_IDLE);
+					simon1->healthCount = 16;
+					if (stage == 1)
+					{
+						simon1->SetPosition(50, 0);
+					}
+					else
+						if (stage == 2)
+						{
+							simon1->SetPosition(1550, 0);
+
+						}
+						else
+							if ((stage == 3) || (stage == 4))
+							{
+								stage = 3;
+								simon1->SetPosition(2917, 0);
+							}
+							else
+								if (stage == 5)
+								{
+									simon1->SetPosition(2062, 0);
+								}
+				}
+				TimeWaitToRefresh = 0;
+			}	
+	}
+	if (simon1->healthCount > 0)
+		time1->Update(dt);
+	newGrid1->getListOfObjects(listColliableObjects1, camera1);
+
+	DebugOut(L"[INFO] Number of Objects: %d\n", listColliableObjects1.size());
+	listCheckBox1.clear();
+	listSurface1.clear();
+	listUpStairs1.clear();
+	listDownStairs1.clear();
+	listTorches1.clear(); 
+	listGroundEnemy.clear();
+	listDoor.clear();
+	for (int i = 0; i < listColliableObjects1.size(); i++)
+	{
+		if (listColliableObjects1.at(i)->tag == eTag::TORCHES)
+		{
+			Torch *tor = dynamic_cast<Torch *>(listColliableObjects1.at(i));
+			listTorches1.push_back(tor);
+		}
+		else
+			if (listColliableObjects1.at(i)->tag == eTag::CHECK_BOX)
+			{
+				listCheckBox1.push_back(listColliableObjects1.at(i));
+			}
+			else
+				if (listColliableObjects1.at(i)->tag == eTag::GROUND)
+				{
+					listSurface1.push_back(listColliableObjects1.at(i));
+				}
+				else
+					if (listColliableObjects1.at(i)->tag == eTag::GROUND_ENEMY)
+					{
+						GroundEnemy *ge = dynamic_cast<GroundEnemy *>(listColliableObjects1.at(i));
+						listGroundEnemy.push_back(ge);
+					}
+					else
+						if (listColliableObjects1.at(i)->tag == eTag::STAIR_BOT)
+						{
+							Stairs *newStair = dynamic_cast<Stairs *>(listColliableObjects1.at(i));
+							listDownStairs1.push_back(newStair);
+						}
+						else
+							if (listColliableObjects1.at(i)->tag == eTag::STAIR_TOP)
+							{
+								Stairs *newStair = dynamic_cast<Stairs *>(listColliableObjects1.at(i));
+								listUpStairs1.push_back(newStair);
+							}
+							else
+								if (listColliableObjects1.at(i)->tag == eTag::DOOR)
+								{
+
+									listDoor.push_back(listColliableObjects1.at(i));
+								}
+	}
+
 	if (simon1->shotTwoWeaponOneTime == true)
 	{
 		board->simonHasNumbah = true;
 	}
 	board->heartCount = simon1->heartCount;
-
+	board->healthCount = simon1->healthCount;
 	board->playerLife = simon1->playerLife;
 	board->stage = simon1->stage;
+	board->bossHealth = boss->hp;
+	board->time = time1->x;
 	if (isEatingCross == true)
 	{
 		TimeWait += dt;
@@ -2106,14 +2285,27 @@ void Scene2::Update(DWORD dt)
 						camera1->Update();
 						if (camera1->GetPosition().x < 2050 )
 							camera1->SetPosition(2050, camera1->GetPosition().y);
-						if (camera1->GetPosition().x > 2828 -SCREEN_WIDTH)
+						if (camera1->GetPosition().x > 2828 - SCREEN_WIDTH)
+						{
+
 							camera1->SetPosition(2828 - SCREEN_WIDTH, camera1->GetPosition().y);
+							bossOn = true;
+						}
+						if (bossOn)
+						{
+							if (camera1->GetPosition().x < 2827 - SCREEN_WIDTH)
+							{
+								camera1->SetPosition(2827 - SCREEN_WIDTH, camera1->GetPosition().y);
+
+							}
+						}
 						if (simon1->x > 2809 - 16)
 							simon1->x = 2809 - 16;
 						if (simon1->x < camera1->GetPosition().x)
 						{
 							simon1->x = camera1->GetPosition().x;
 						}
+						
 					}
 
 	float x1, y1;
@@ -2449,23 +2641,21 @@ void Scene2::Update(DWORD dt)
 	for (int i = 0; i < listEffectBag1.size(); i++)//render ietms
 		listEffectBag1[i]->Update(dt);
 	spawnItemsAfterEffect();
-	if (stage != 3)
-	{
-		for (int i = 0; i < listEnemy1.size(); i++)
-			listEnemy1[i]->Update(dt, &listSurface1);
-	}
-	else
-	{
-		for (int i = 0; i < listEnemy1.size(); i++)
-			listEnemy1[i]->Update(dt, &listSurfaceUnderGround);
-	}
+	if (stage == 5)
+		boss->Update(dt, simon1);
+	for (int i = 0; i < listEnemy1.size(); i++)
+		listEnemy1[i]->Update(dt, &listSurface1);
+
+	for (int i = 0; i < listGroundEnemy.size(); i++)
+		listGroundEnemy[i]->Update(dt, &listSurface1);
+
 	erasingObjThatInacitve();// xoa may enemy di ra khoi man hinh
 
 	if (simon1->proceedThruDoor == false)//dang qua cua k xet va cham
 		if (simon1->untouchable == false)//bi untouchable thi k va cham voi enemy nua
 			if (simon1->isInvis == false)
 				CollisionBetSimonAndEnemy();
-
+	CollisionBetSimonAndCheckBox();
 	CollisionBetSimonAndItem();
 
 	CollisionBetWeaponAndEnemy();
@@ -2513,11 +2703,16 @@ void Scene2::Render()
 			listTorches1[i]->Render();
 		for (int i = 0; i < listEnemy1.size(); i++)
 			listEnemy1[i]->Render();
+		for (int i = 0; i < listDoor.size(); i++)
+			listDoor[i]->Render();
+		boss->Render();
 		simon1->Render();
 		for (int i = 0; i < listEffectBag1.size(); i++)//render ietms
 			listEffectBag1[i]->Render();
 		for (int i = 0; i < listItem1.size(); i++)
 			listItem1[i]->Render();
+		for (int i = 0; i < listGroundEnemy.size(); i++)
+			listGroundEnemy[i]->Render();
 		for (int i = 0; i < listEffectFire1.size(); i++)
 			listEffectFire1[i]->Render();
 		simon1->dagger->Render();
@@ -2765,102 +2960,6 @@ void Scene2::freezeEnemyFunction()
 		}
 	}
 }
-/*
-switch (listEnemy1.at(i)->itemInside)
-							{
-							case 0:
-								break;
-							case bigheartInside:
-								bigheart1 = new BigHeart();
-								bigheart1->AddAnimation(765);
-								bigheart1->SetState(ITEM_STATE_ACTIVE);
-								bigheart1->SetPosition(x, y);
-								listItem1.push_back(bigheart1);
-								break;
-							case morningstarInside:
-								morningstar1 = new MorningStar();
-								morningstar1->AddAnimation(777);
-								morningstar1->SetState(ITEM_STATE_ACTIVE);
-								morningstar1->SetPosition(x, y);
-								listItem1.push_back(morningstar1);
-								break;
-							case daggerInside:
-								dagger1 = new Dagger1();
-								dagger1->AddAnimation(767);
-								dagger1->SetState(ITEM_STATE_ACTIVE);
-								dagger1->SetPosition(x, y);
-								listItem1.push_back(dagger1);
-								break;
-							case smallheartInside:
-								smallheart1 = new SmallHeart(x);
-								smallheart1->AddAnimation(482);
-								smallheart1->SetState(ITEM_STATE_ACTIVE);
-								smallheart1->SetPosition(x, y);
-								listItem1.push_back(smallheart1);
-								break;
-							case crossInside:
-								cross1 = new Cross1();
-								cross1->AddAnimation(483);
-								cross1->SetState(ITEM_STATE_ACTIVE);
-								cross1->SetPosition(x, y);
-								listItem1.push_back(cross1);
-								break;
-							case holywaterInside:
-								holy1 = new HolyWater1();
-								holy1->AddAnimation(491);
-								holy1->SetState(ITEM_STATE_ACTIVE);
-								holy1->SetPosition(x, y);
-								listItem1.push_back(holy1);
-								break;
-							case whitebagInside:
-								goldbag1 = new GoldBag(0);
-								goldbag1->AddAnimation(778);
-								goldbag1->AddAnimation(779);
-								goldbag1->AddAnimation(780);
-								goldbag1->SetState(ITEM_STATE_ACTIVE);
-								goldbag1->SetPosition(x, y);
-								listItem1.push_back(goldbag1);
-								break;
-							case redbagInside:
-								goldbag1 = new GoldBag(1);
-								goldbag1->AddAnimation(778);
-								goldbag1->AddAnimation(779);
-								goldbag1->AddAnimation(780);
-								goldbag1->SetState(ITEM_STATE_ACTIVE);
-								goldbag1->SetPosition(x, y);
-								listItem1.push_back(goldbag1);
-								break;
-							case bluebagInside:
-								goldbag1 = new GoldBag(2);
-								goldbag1->AddAnimation(778);
-								goldbag1->AddAnimation(779);
-								goldbag1->AddAnimation(780);
-								goldbag1->SetState(ITEM_STATE_ACTIVE);
-								goldbag1->SetPosition(x, y);
-								listItem1.push_back(goldbag1);
-								break;
-
-							case chickenInside:
-								chick = new Chicken();
-								chick->AddAnimation(490);
-								chick->SetState(ITEM_STATE_ACTIVE);
-								chick->SetPosition(x, y);
-								listItem1.push_back(chick);
-								break;
-							case axeInside:
-								axe1 = new Axe1();
-								axe1->AddAnimation(427);
-								axe1->SetState(ITEM_STATE_ACTIVE);
-								axe1->SetPosition(x, y);
-								listItem1.push_back(axe1);
-							default:
-								break;
-							}
-
-							listEnemy1.erase(listEnemy1.begin() + i);
-							i = i-1;
-						}
-*/
 void Scene2::CollisionBetWeaponAndEnemy()
 {
 
@@ -2870,77 +2969,35 @@ void Scene2::CollisionBetWeaponAndEnemy()
 		{
 			if (simon1->whip->CheckCollision(listEnemy1.at(i)) == true)
 			{
-				if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
-				{
-						if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
-						{
-							float x, y;
-							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
-							listEnemy1.at(i)->GetPosition(x, y);
+					if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
+					{
+						float x, y;
+						listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
+						listEnemy1.at(i)->GetPosition(x, y);
 
-							effectFire1 = new EffectFire();
-							effectFire1->AddAnimation(578);
-							effectFire1->AddAnimation(577);
-							effectFire1->AddAnimation(576);
-							effectFire1->SetState(EFFECT_STATE_ACTIVE);
-							effectFire1->itemInside = listEnemy1.at(i)->itemInside;
-							if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
-							{
-							
-								effectFire1->SetPosition(x-35, y-5);
-								effectFire1->type = 1;
-								float x1, y1;
-								listEnemy1.at(i)->GetPosition(x1,y1);
-								for (UINT ij = 0; ij < listSurface1.size(); ij++)
-								{
-									if (dynamic_cast<GroundEnemy *>(listSurface1.at(ij)))
-									{
-										float x2, y2;
-										listSurface1.at(ij)->GetPosition(x2, y2);
-										if (x2 == x1 && y2 == y1)
-										{
-											listSurface1.erase(listSurface1.begin() + ij);
-											ij = ij - 1;
-										}
-									}
-								}
-								for (UINT ij = 0; ij < listSurfaceUnderGround.size(); ij++)
-								{
-									if (dynamic_cast<GroundEnemy *>(listSurfaceUnderGround.at(ij)))
-									{
-										float x2, y2;
-										listSurfaceUnderGround.at(ij)->GetPosition(x2, y2);
-										if (x2 == x1 && y2 == y1)
-										{
+						effectFire1 = new EffectFire();
+						effectFire1->AddAnimation(578);
+						effectFire1->AddAnimation(577);
+						effectFire1->AddAnimation(576);
+						effectFire1->SetState(EFFECT_STATE_ACTIVE);
+						effectFire1->itemInside = listEnemy1.at(i)->itemInside;
+						effectFire1->SetPosition(x, y);
+						effectFire1->type = 0;
+						listEffectFire1.push_back(effectFire1);
+						listEnemy1.erase(listEnemy1.begin() + i);
+						i = i - 1;
+					}
 
-											listSurfaceUnderGround.erase(listSurfaceUnderGround.begin() + ij);
-											ij = ij - 1;
-										}
-									}
-								}
-
-							}
-							else
-							{
-								effectFire1->SetPosition(x, y);
-								effectFire1->type = 0;
-							}
-
-							listEffectFire1.push_back(effectFire1);
-							listEnemy1.erase(listEnemy1.begin() + i);
-							i = i-1;
-						}
-						
 				}
+
 			
-			}
 		}
 		for (UINT i = 0; i < listTorches1.size(); i++)
 		{
 
 			if (simon1->whip->CheckCollision(listTorches1.at(i)) == true)
 			{
-				if (dynamic_cast<Torch *>(listTorches1.at(i)))
+				
 				{
 					if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
 					{
@@ -2961,11 +3018,75 @@ void Scene2::CollisionBetWeaponAndEnemy()
 						i = i - 1;
 					}
 				}
-				
+
 
 			}
 		}
-	
+		if (simon1->whip->CheckCollision(boss) == true)
+		{
+			if (boss->untouchable == false)
+			{
+				float x, y;
+				boss->GetPosition(x, y);
+				boss->StartUntouchable();
+				if (simon1->whip->type = VAMPIRE_KILLER)
+					boss->hp -= 1;
+				else
+					boss->hp -= 2;
+
+
+				effectFire1 = new EffectFire();
+				effectFire1->AddAnimation(578);
+				effectFire1->AddAnimation(577);
+				effectFire1->AddAnimation(576);
+				effectFire1->SetState(EFFECT_STATE_ACTIVE);
+				if (boss->hp == 0)
+					effectFire1->itemInside = boss->itemInside;
+				effectFire1->SetPosition(x, y);
+				effectFire1->type = 0;
+
+
+				listEffectFire1.push_back(effectFire1);
+
+
+			}
+
+
+
+		}
+		for (UINT i = 0; i < listGroundEnemy.size(); i++)
+		{
+
+			if (simon1->whip->CheckCollision(listGroundEnemy.at(i)) == true)
+			{
+
+				{
+					if (listGroundEnemy.at(i)->tag == eTag::GROUND_ENEMY)
+					{
+						if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
+						{
+							float x, y;
+							listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
+							listGroundEnemy.at(i)->GetPosition(x, y);
+							effectFire1 = new EffectFire();
+							effectFire1->AddAnimation(578);
+							effectFire1->AddAnimation(577);
+							effectFire1->AddAnimation(576);
+							effectFire1->SetState(EFFECT_STATE_ACTIVE);
+							effectFire1->type = 0;
+							effectFire1->itemInside = listGroundEnemy.at(i)->itemInside;
+							effectFire1->SetPosition(x - 35, y - 5);
+							effectFire1->type = 1;
+							listEffectFire1.push_back(effectFire1);
+							listGroundEnemy.erase(listGroundEnemy.begin() + i);
+							i = i - 1;
+						}
+					
+					}
+				}
+			}
+		}
+
 	}
 	else
 		if (simon1->dagger->state != DAGGER_STATE_INACTIVE && simon1->dagger->isOn == true && simon1->isUsing1stWeapon == true)
@@ -2974,73 +3095,127 @@ void Scene2::CollisionBetWeaponAndEnemy()
 			{
 				if (simon1->dagger->CheckCollision(listEnemy1.at(i)) == true)
 				{
-					if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
+					if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
 					{
+
 						simon1->notUseWeapon();
 						simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
-						if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
-						{
-							float x, y;
-							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
-							listEnemy1.at(i)->GetPosition(x, y);
+						float x, y;
+						listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
+						listEnemy1.at(i)->GetPosition(x, y);
 
-							effectFire1 = new EffectFire();
-							effectFire1->AddAnimation(578);
-							effectFire1->AddAnimation(577);
-							effectFire1->AddAnimation(576);
-							effectFire1->SetPosition(x, y);
-							effectFire1->SetState(EFFECT_STATE_ACTIVE);
-							effectFire1->itemInside = listEnemy1.at(i)->itemInside;
-							listEffectFire1.push_back(effectFire1);
+						effectFire1 = new EffectFire();
+						effectFire1->AddAnimation(578);
+						effectFire1->AddAnimation(577);
+						effectFire1->AddAnimation(576);
+						effectFire1->SetPosition(x, y);
+						effectFire1->SetState(EFFECT_STATE_ACTIVE);
+						effectFire1->itemInside = listEnemy1.at(i)->itemInside;
+						listEffectFire1.push_back(effectFire1);
 
-							listEnemy1.erase(listEnemy1.begin() + i);
-							i = i - 1;
-						}
+						listEnemy1.erase(listEnemy1.begin() + i);
+						i = i - 1;
 					}
-
 				}
+
 			}
 			for (UINT i = 0; i < listTorches1.size(); i++)
 			{
 				if (simon1->dagger->CheckCollision(listTorches1.at(i)) == true)
 				{
-					simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
-					simon1->notUseWeapon();
-					if (dynamic_cast<Torch *>(listTorches1.at(i)))
+					if (listTorches1.at(i)->state == TORCH_STATE_ACTIVE)
 					{
-						if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
+						simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
+						simon1->notUseWeapon();
+						float x, y;
+						listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
+						listTorches1.at(i)->GetPosition(x, y);
+
+						effectFire1 = new EffectFire();
+						effectFire1->AddAnimation(578);
+						effectFire1->AddAnimation(577);
+						effectFire1->AddAnimation(576);
+						effectFire1->SetPosition(x, y);
+						effectFire1->SetState(EFFECT_STATE_ACTIVE);
+						effectFire1->itemInside = listTorches1.at(i)->itemInside;
+						listEffectFire1.push_back(effectFire1);
+
+						listTorches1.erase(listTorches1.begin() + i);
+						i = i - 1;
+					}
+
+				}
+			}
+			if (simon1->dagger->CheckCollision(boss) == true)
+			{
+				if (boss->untouchable == false)
+				{
+					float x, y;
+					boss->GetPosition(x, y);
+					boss->StartUntouchable();
+						boss->hp -= 2;
+
+
+					effectFire1 = new EffectFire();
+					effectFire1->AddAnimation(578);
+					effectFire1->AddAnimation(577);
+					effectFire1->AddAnimation(576);
+					effectFire1->SetState(EFFECT_STATE_ACTIVE);
+					if (boss->hp == 0)
+						effectFire1->itemInside = boss->itemInside;
+					effectFire1->SetPosition(x, y);
+					effectFire1->type = 0;
+
+
+					listEffectFire1.push_back(effectFire1);
+
+
+				}
+
+
+
+			}
+			for (UINT i = 0; i < listGroundEnemy.size(); i++)
+			{
+
+				if (simon1->dagger->CheckCollision(listGroundEnemy.at(i)) == true)
+				{
+
+					{
+						if (listGroundEnemy.at(i)->tag == eTag::GROUND_ENEMY)
 						{
-							float x, y;
-							listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
-							listTorches1.at(i)->GetPosition(x, y);
+							if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
+							{
+								float x, y;
+								listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
+								listGroundEnemy.at(i)->GetPosition(x, y);
+								effectFire1 = new EffectFire();
+								effectFire1->AddAnimation(578);
+								effectFire1->AddAnimation(577);
+								effectFire1->AddAnimation(576);
+								effectFire1->SetState(EFFECT_STATE_ACTIVE);
+								effectFire1->type = 0;
+								effectFire1->itemInside = listGroundEnemy.at(i)->itemInside;
+								effectFire1->SetPosition(x - 35, y - 5);
+								effectFire1->type = 1;
+								listEffectFire1.push_back(effectFire1);
+								listGroundEnemy.erase(listGroundEnemy.begin() + i);
+								i = i - 1;
+							}
 
-							effectFire1 = new EffectFire();
-							effectFire1->AddAnimation(578);
-							effectFire1->AddAnimation(577);
-							effectFire1->AddAnimation(576);
-							effectFire1->SetPosition(x, y);
-							effectFire1->SetState(EFFECT_STATE_ACTIVE);
-							effectFire1->itemInside = listTorches1.at(i)->itemInside;
-							listEffectFire1.push_back(effectFire1);
-
-							listTorches1.erase(listTorches1.begin() + i);
-							i = i - 1;
 						}
 					}
 				}
 			}
-		
-
 		}
 		else
-			if (simon1->dagger1->state != DAGGER_STATE_INACTIVE  && simon1->isUsing2ndWeapon == true)
+			if (simon1->dagger1->state != DAGGER_STATE_INACTIVE && simon1->isUsing2ndWeapon == true)
 			{
 				for (UINT i = 0; i < listEnemy1.size(); i++)
 				{
 					if (simon1->dagger1->CheckCollision(listEnemy1.at(i)) == true)
 					{
-						if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
-						{
+					{
 							simon1->notUseWeapon2();
 							simon1->dagger1->SetState(DAGGER_STATE_INACTIVE);
 							if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
@@ -3065,12 +3240,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 				{
 					if (simon1->dagger1->CheckCollision(listTorches1.at(i)) == true)
 					{
-						simon1->dagger1->SetState(DAGGER_STATE_INACTIVE);
-						simon1->notUseWeapon2();
-						if (dynamic_cast<Torch *>(listTorches1.at(i)))
-						{
-							if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
+						if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
 							{
+								simon1->dagger1->SetState(DAGGER_STATE_INACTIVE);
+								simon1->notUseWeapon2();
 								float x, y;
 								listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
 								listTorches1.at(i)->GetPosition(x, y);
@@ -3085,124 +3258,539 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							}
 						}
 					}
+				if (simon1->dagger1->CheckCollision(boss) == true)
+				{
+					if (boss->untouchable == false)
+					{
+						float x, y;
+						boss->GetPosition(x, y);
+						boss->StartUntouchable();
+						boss->hp -= 2;
+
+
+						effectFire1 = new EffectFire();
+						effectFire1->AddAnimation(578);
+						effectFire1->AddAnimation(577);
+						effectFire1->AddAnimation(576);
+						effectFire1->SetState(EFFECT_STATE_ACTIVE);
+						if (boss->hp == 0)
+							effectFire1->itemInside = boss->itemInside;
+						effectFire1->SetPosition(x, y);
+						effectFire1->type = 0;
+
+
+						listEffectFire1.push_back(effectFire1);
+
+
+					}
+
+
+
 				}
+				for (UINT i = 0; i < listGroundEnemy.size(); i++)
+				{
 
+					if (simon1->dagger1->CheckCollision(listGroundEnemy.at(i)) == true)
+					{
 
+						{
+							if (listGroundEnemy.at(i)->tag == eTag::GROUND_ENEMY)
+							{
+								if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
+								{
+									float x, y;
+									listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
+									listGroundEnemy.at(i)->GetPosition(x, y);
+									effectFire1 = new EffectFire();
+									effectFire1->AddAnimation(578);
+									effectFire1->AddAnimation(577);
+									effectFire1->AddAnimation(576);
+									effectFire1->SetState(EFFECT_STATE_ACTIVE);
+									effectFire1->type = 0;
+									effectFire1->itemInside = listGroundEnemy.at(i)->itemInside;
+									effectFire1->SetPosition(x - 35, y - 5);
+									effectFire1->type = 1;
+									listEffectFire1.push_back(effectFire1);
+									listGroundEnemy.erase(listGroundEnemy.begin() + i);
+									i = i - 1;
+								}
+
+							}
+						}
+					}
+				}
 			}
 			else
-
-		if (simon1->axe->state != AXE_STATE_INACTIVE && simon1->axe->isOn == true && simon1->isUsing1stWeapon == true)
-		{
-			for (UINT i = 0; i < listEnemy1.size(); i++)
-			{
-				if (simon1->axe->CheckCollision(listEnemy1.at(i)) == true)
+				if (simon1->axe->state != AXE_STATE_INACTIVE && simon1->axe->isOn == true && simon1->isUsing1stWeapon == true)
 				{
-					if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
+					for (UINT i = 0; i < listEnemy1.size(); i++)
 					{
-						simon1->axe->SetState(AXE_STATE_INACTIVE);
-						simon1->notUseWeapon();
-						if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
+						if (simon1->axe->CheckCollision(listEnemy1.at(i)) == true)
 						{
-							float x, y;
-							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
-							listEnemy1.at(i)->GetPosition(x, y);
+							{
 
-							effectFire1->SetPosition(x, y);
-							effectFire1->SetState(EFFECT_STATE_ACTIVE);
-							effectFire1->itemInside = listEnemy1.at(i)->itemInside;
-							listEffectFire1.push_back(effectFire1);
+								if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
+								{
+									simon1->axe->SetState(AXE_STATE_INACTIVE);
+									simon1->notUseWeapon();
+									float x, y;
+									listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
+									listEnemy1.at(i)->GetPosition(x, y);
 
-							listEnemy1.erase(listEnemy1.begin() + i);
-							i = i - 1;
+									effectFire1->SetPosition(x, y);
+									effectFire1->SetState(EFFECT_STATE_ACTIVE);
+									effectFire1->itemInside = listEnemy1.at(i)->itemInside;
+									listEffectFire1.push_back(effectFire1);
+
+									listEnemy1.erase(listEnemy1.begin() + i);
+									i = i - 1;
+								}
+							}
+
 						}
 					}
-
-				}
-			}
-			for (UINT i = 0; i < listTorches1.size(); i++)
-			{
-				if (simon1->dagger->CheckCollision(listTorches1.at(i)) == true)
-				{
-					simon1->axe->SetState(AXE_STATE_INACTIVE);
-					simon1->notUseWeapon();
-					if (dynamic_cast<Torch *>(listTorches1.at(i)))
+					for (UINT i = 0; i < listTorches1.size(); i++)
 					{
-						if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
+						if (simon1->axe->CheckCollision(listTorches1.at(i)) == true)
 						{
-							float x, y;
-							listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
-							listTorches1.at(i)->GetPosition(x, y);
 
-							effectFire1->SetPosition(x, y);
+							if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
+							{
+								simon1->axe->SetState(AXE_STATE_INACTIVE);
+								simon1->notUseWeapon();
+
+								float x, y;
+								listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
+								listTorches1.at(i)->GetPosition(x, y);
+
+								effectFire1->SetPosition(x, y);
+								effectFire1->SetState(EFFECT_STATE_ACTIVE);
+								effectFire1->itemInside = listTorches1.at(i)->itemInside;
+								listEffectFire1.push_back(effectFire1);
+
+								listTorches1.erase(listTorches1.begin() + i);
+								i = i - 1;
+							}
+						}
+
+					}
+					if (simon1->axe->CheckCollision(boss) == true)
+					{
+						if (boss->untouchable == false)
+						{
+							simon1->axe->SetState(AXE_STATE_INACTIVE);
+							simon1->notUseWeapon();
+							float x, y;
+							boss->GetPosition(x, y);
+							boss->StartUntouchable();
+							boss->hp -= 2;
+
+
+							effectFire1 = new EffectFire();
+							effectFire1->AddAnimation(578);
+							effectFire1->AddAnimation(577);
+							effectFire1->AddAnimation(576);
 							effectFire1->SetState(EFFECT_STATE_ACTIVE);
-							effectFire1->itemInside = listTorches1.at(i)->itemInside;
+							if (boss->hp == 0)
+								effectFire1->itemInside = boss->itemInside;
+							effectFire1->SetPosition(x, y);
+							effectFire1->type = 0;
+
+
 							listEffectFire1.push_back(effectFire1);
 
-							listTorches1.erase(listTorches1.begin() + i);
-							i = i - 1;
+
+						}
+
+
+
+					}
+					for (UINT i = 0; i < listGroundEnemy.size(); i++)
+					{
+
+						if (simon1->axe->CheckCollision(listGroundEnemy.at(i)) == true)
+						{
+
+							{
+								if (listGroundEnemy.at(i)->tag == eTag::GROUND_ENEMY)
+								{
+									if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
+									{
+										simon1->axe->SetState(AXE_STATE_INACTIVE);
+										simon1->notUseWeapon();
+										float x, y;
+										listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
+										listGroundEnemy.at(i)->GetPosition(x, y);
+										effectFire1 = new EffectFire();
+										effectFire1->AddAnimation(578);
+										effectFire1->AddAnimation(577);
+										effectFire1->AddAnimation(576);
+										effectFire1->SetState(EFFECT_STATE_ACTIVE);
+										effectFire1->type = 0;
+										effectFire1->itemInside = listGroundEnemy.at(i)->itemInside;
+										effectFire1->SetPosition(x - 35, y - 5);
+										effectFire1->type = 1;
+										listEffectFire1.push_back(effectFire1);
+										listGroundEnemy.erase(listGroundEnemy.begin() + i);
+										i = i - 1;
+									}
+
+								}
+							}
 						}
 					}
 				}
-			}
-		
-
-			
-
-		}
-		else
-		if (simon1->holy->state != HOLYWATER_STATE_INACTIVE && simon1->holy->isOn == true && simon1->isUsing1stWeapon == true)
-		{
-			for (UINT i = 0; i < listEnemy1.size(); i++)
-			{
-				if (simon1->holy->CheckCollision(listEnemy1.at(i)) == true)
+				else
+				if (simon1->axe1->state != AXE_STATE_INACTIVE  && simon1->isUsing2ndWeapon == true)
 				{
-					if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
+					for (UINT i = 0; i < listEnemy1.size(); i++)
 					{
-						//simon1->notUseDagger();
-						if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
+						if (simon1->axe1->CheckCollision(listEnemy1.at(i)) == true)
 						{
-							float x, y;
-							listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
-							listEnemy1.at(i)->GetPosition(x, y);
+							{
 
-							effectFire1->SetPosition(x, y);
-							effectFire1->SetState(EFFECT_STATE_ACTIVE);
-							effectFire1->itemInside = listEnemy1.at(i)->itemInside;
-							listEffectFire1.push_back(effectFire1);
+								if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
+								{
+									simon1->axe1->SetState(AXE_STATE_INACTIVE);
+									simon1->notUseWeapon2();
+									float x, y;
+									listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
+									listEnemy1.at(i)->GetPosition(x, y);
 
-							listEnemy1.erase(listEnemy1.begin() + i);
-							i = i - 1;
+									effectFire1->SetPosition(x, y);
+									effectFire1->SetState(EFFECT_STATE_ACTIVE);
+									effectFire1->itemInside = listEnemy1.at(i)->itemInside;
+									listEffectFire1.push_back(effectFire1);
+
+									listEnemy1.erase(listEnemy1.begin() + i);
+									i = i - 1;
+								}
+							}
+
 						}
 					}
-
-				}
-			}
-			for (UINT i = 0; i < listTorches1.size(); i++)
-			{
-				if (simon1->holy->CheckCollision(listTorches1.at(i)) == true)
-				{
-					//simon1->notUseDagger();
-					if (dynamic_cast<Torch *>(listTorches1.at(i)))
+					for (UINT i = 0; i < listTorches1.size(); i++)
 					{
-						if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
+						if (simon1->axe1->CheckCollision(listTorches1.at(i)) == true)
 						{
-							float x, y;
-							listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
-							listTorches1.at(i)->GetPosition(x, y);
 
-							effectFire1->SetPosition(x, y);
+							if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
+							{
+								simon1->axe1->SetState(AXE_STATE_INACTIVE);
+								simon1->notUseWeapon2();
+
+								float x, y;
+								listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
+								listTorches1.at(i)->GetPosition(x, y);
+
+								effectFire1->SetPosition(x, y);
+								effectFire1->SetState(EFFECT_STATE_ACTIVE);
+								effectFire1->itemInside = listTorches1.at(i)->itemInside;
+								listEffectFire1.push_back(effectFire1);
+
+								listTorches1.erase(listTorches1.begin() + i);
+								i = i - 1;
+							}
+						}
+
+					}
+					if (simon1->axe1->CheckCollision(boss) == true)
+					{
+						if (boss->untouchable == false)
+						{
+							simon1->axe1->SetState(AXE_STATE_INACTIVE);
+							simon1->notUseWeapon2();
+							float x, y;
+							boss->GetPosition(x, y);
+							boss->StartUntouchable();
+							boss->hp -= 2;
+
+
+							effectFire1 = new EffectFire();
+							effectFire1->AddAnimation(578);
+							effectFire1->AddAnimation(577);
+							effectFire1->AddAnimation(576);
 							effectFire1->SetState(EFFECT_STATE_ACTIVE);
-							effectFire1->itemInside = listTorches1.at(i)->itemInside;
+							if (boss->hp == 0)
+								effectFire1->itemInside = boss->itemInside;
+							effectFire1->SetPosition(x, y);
+							effectFire1->type = 0;
+
+
 							listEffectFire1.push_back(effectFire1);
 
-							listTorches1.erase(listTorches1.begin() + i);
-							i = i - 1;
+
+						}
+
+
+
+					}
+					for (UINT i = 0; i < listGroundEnemy.size(); i++)
+					{
+
+						if (simon1->axe1->CheckCollision(listGroundEnemy.at(i)) == true)
+						{
+
+							{
+								if (listGroundEnemy.at(i)->tag == eTag::GROUND_ENEMY)
+								{
+									if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
+									{
+										simon1->axe1->SetState(AXE_STATE_INACTIVE);
+										simon1->notUseWeapon2();
+										float x, y;
+										listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
+										listGroundEnemy.at(i)->GetPosition(x, y);
+										effectFire1 = new EffectFire();
+										effectFire1->AddAnimation(578);
+										effectFire1->AddAnimation(577);
+										effectFire1->AddAnimation(576);
+										effectFire1->SetState(EFFECT_STATE_ACTIVE);
+										effectFire1->type = 0;
+										effectFire1->itemInside = listGroundEnemy.at(i)->itemInside;
+										effectFire1->SetPosition(x - 35, y - 5);
+										effectFire1->type = 1;
+										listEffectFire1.push_back(effectFire1);
+										listGroundEnemy.erase(listGroundEnemy.begin() + i);
+										i = i - 1;
+									}
+
+								}
+							}
 						}
 					}
 				}
-			}
-		}
+				else
+					if (simon1->holy->state != HOLYWATER_STATE_INACTIVE && simon1->holy->isOn == true && simon1->isUsing1stWeapon == true)
+					{
+						for (UINT i = 0; i < listEnemy1.size(); i++)
+						{
+							if (simon1->holy->CheckCollision(listEnemy1.at(i)) == true)
+							{
+								{
+									if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
+									{
+										//simon1->notUseWeapon();
 
+										float x, y;
+										listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
+										listEnemy1.at(i)->GetPosition(x, y);
+
+										effectFire1->SetPosition(x, y);
+										effectFire1->SetState(EFFECT_STATE_ACTIVE);
+										effectFire1->itemInside = listEnemy1.at(i)->itemInside;
+										listEffectFire1.push_back(effectFire1);
+
+										listEnemy1.erase(listEnemy1.begin() + i);
+										i = i - 1;
+									}
+								}
+
+							}
+						}
+						for (UINT i = 0; i < listTorches1.size(); i++)
+						{
+							if (simon1->holy->CheckCollision(listTorches1.at(i)) == true)
+							{
+								{
+									if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
+									{
+									//	simon1->notUseWeapon();
+										float x, y;
+										listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
+										listTorches1.at(i)->GetPosition(x, y);
+
+										effectFire1->SetPosition(x, y);
+										effectFire1->SetState(EFFECT_STATE_ACTIVE);
+										effectFire1->itemInside = listTorches1.at(i)->itemInside;
+										listEffectFire1.push_back(effectFire1);
+
+										listTorches1.erase(listTorches1.begin() + i);
+										i = i - 1;
+									}
+								}
+							}
+						}
+						if (simon1->holy->CheckCollision(boss) == true)
+						{
+							if (boss->untouchable == false)
+							{
+							//	simon1->notUseWeapon();
+								float x, y;
+								boss->GetPosition(x, y);
+								boss->StartUntouchable();
+								boss->hp -= 2;
+
+
+								effectFire1 = new EffectFire();
+								effectFire1->AddAnimation(578);
+								effectFire1->AddAnimation(577);
+								effectFire1->AddAnimation(576);
+								effectFire1->SetState(EFFECT_STATE_ACTIVE);
+								if (boss->hp == 0)
+									effectFire1->itemInside = boss->itemInside;
+								effectFire1->SetPosition(x, y);
+								effectFire1->type = 0;
+
+
+								listEffectFire1.push_back(effectFire1);
+
+
+							}
+
+
+
+						}
+						for (UINT i = 0; i < listGroundEnemy.size(); i++)
+						{
+
+							if (simon1->holy->CheckCollision(listGroundEnemy.at(i)) == true)
+							{
+
+								{
+									if (listGroundEnemy.at(i)->tag == eTag::GROUND_ENEMY)
+									{
+										if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
+										{
+										//	simon1->notUseWeapon();
+											float x, y;
+											listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
+											listGroundEnemy.at(i)->GetPosition(x, y);
+											effectFire1 = new EffectFire();
+											effectFire1->AddAnimation(578);
+											effectFire1->AddAnimation(577);
+											effectFire1->AddAnimation(576);
+											effectFire1->SetState(EFFECT_STATE_ACTIVE);
+											effectFire1->type = 0;
+											effectFire1->itemInside = listGroundEnemy.at(i)->itemInside;
+											effectFire1->SetPosition(x - 35, y - 5);
+											effectFire1->type = 1;
+											listEffectFire1.push_back(effectFire1);
+											listGroundEnemy.erase(listGroundEnemy.begin() + i);
+											i = i - 1;
+										}
+
+									}
+								}
+							}
+						}
+					}
+					else
+						if (simon1->holy1->state != HOLYWATER_STATE_INACTIVE &&  simon1->isUsing2ndWeapon == true)
+						{
+							for (UINT i = 0; i < listEnemy1.size(); i++)
+							{
+								if (simon1->holy->CheckCollision(listEnemy1.at(i)) == true)
+								{
+									{
+									//	simon1->notUseWeapon2();
+										if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
+										{
+
+											float x, y;
+											listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
+											listEnemy1.at(i)->GetPosition(x, y);
+
+											effectFire1->SetPosition(x, y);
+											effectFire1->SetState(EFFECT_STATE_ACTIVE);
+											effectFire1->itemInside = listEnemy1.at(i)->itemInside;
+											listEffectFire1.push_back(effectFire1);
+
+											listEnemy1.erase(listEnemy1.begin() + i);
+											i = i - 1;
+										}
+									}
+
+								}
+							}
+							for (UINT i = 0; i < listTorches1.size(); i++)
+							{
+								if (simon1->holy1->CheckCollision(listTorches1.at(i)) == true)
+								{
+									{
+										if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
+
+										{
+										//	simon1->notUseWeapon2();
+											float x, y;
+											listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
+											listTorches1.at(i)->GetPosition(x, y);
+
+											effectFire1->SetPosition(x, y);
+											effectFire1->SetState(EFFECT_STATE_ACTIVE);
+											effectFire1->itemInside = listTorches1.at(i)->itemInside;
+											listEffectFire1.push_back(effectFire1);
+
+											listTorches1.erase(listTorches1.begin() + i);
+											i = i - 1;
+										}
+									}
+								}
+							}
+							if (simon1->holy1->CheckCollision(boss) == true)
+							{
+								if (boss->untouchable == false)
+								{
+								//	simon1->notUseWeapon2();
+									float x, y;
+									boss->GetPosition(x, y);
+									boss->StartUntouchable();
+									boss->hp -= 2;
+
+
+									effectFire1 = new EffectFire();
+									effectFire1->AddAnimation(578);
+									effectFire1->AddAnimation(577);
+									effectFire1->AddAnimation(576);
+									effectFire1->SetState(EFFECT_STATE_ACTIVE);
+									if (boss->hp == 0)
+										effectFire1->itemInside = boss->itemInside;
+									effectFire1->SetPosition(x, y);
+									effectFire1->type = 0;
+
+
+									listEffectFire1.push_back(effectFire1);
+
+
+								}
+
+
+
+							}
+							for (UINT i = 0; i < listGroundEnemy.size(); i++)
+							{
+
+								if (simon1->holy1->CheckCollision(listGroundEnemy.at(i)) == true)
+								{
+
+									{
+										if (listGroundEnemy.at(i)->tag == eTag::GROUND_ENEMY)
+										{
+											if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
+											{
+										//		simon1->notUseWeapon2();
+												float x, y;
+												listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
+												listGroundEnemy.at(i)->GetPosition(x, y);
+												effectFire1 = new EffectFire();
+												effectFire1->AddAnimation(578);
+												effectFire1->AddAnimation(577);
+												effectFire1->AddAnimation(576);
+												effectFire1->SetState(EFFECT_STATE_ACTIVE);
+												effectFire1->type = 0;
+												effectFire1->itemInside = listGroundEnemy.at(i)->itemInside;
+												effectFire1->SetPosition(x - 35, y - 5);
+												effectFire1->type = 1;
+												listEffectFire1.push_back(effectFire1);
+												listGroundEnemy.erase(listGroundEnemy.begin() + i);
+												i = i - 1;
+											}
+
+										}
+									}
+								}
+							}
+						}
 }
 
 void Scene2::CollisionBetSimonAndItem()
@@ -3278,48 +3866,7 @@ void Scene2::CollisionBetSimonAndItem()
 							}
 						}
 						else
-							if (dynamic_cast<Ground *>(listItem1.at(i)))
-							{
-								if (listItem1.at(i)->GetState() == INVIS_STATE_OPENDOOR)
-								{
-									
-									if (simon1->proceedThruDoor == false)
-										simon1->proceedThruDoor = true;
-									
-									
-										
-								}
-								else
-									if (listItem1.at(i)->GetState() == INVIS_STATE_NEXT_LVL_UNDERGROUND)
-									{
-									if (simon1->GetState() == SIMON_STATE_DOWN_RIGHT)
-											stage = 3;
-										
-									}
-									else
-										if (listItem1.at(i)->GetState() == INVIS_STATE_UPPERGROUND)
-										{
-											if (simon1->GetState()==SIMON_STATE_UP_LEFT)
-											stage = 4;
-										}
-										else
-											if (listItem1.at(i)->GetState() == INVIS_STATE_STAGE2)
-											{
-												if (simon1->GetState() == SIMON_STATE_UP_LEFT)
-													stage = 2;
-											}
-											else
-												if (listItem1.at(i)->GetState() == INVIS_STATE_OPENDOOR2)
-												{
-													if (simon1->proceedThruDoor == false)
-														simon1->proceedThruDoor = true;
-												}
-
-								
-
-							}
-							else
-								if (dynamic_cast<GoldBag *>(listItem1.at(i)))
+							if (dynamic_cast<GoldBag *>(listItem1.at(i)))
 								{
 									if (listItem1.at(i)->state == ITEM_STATE_DROPPED)
 									{
@@ -3831,14 +4378,14 @@ void Scene2::CollisionBetSimonAndEnemy()
 
 }
 
-int Scene2::CollisionBetSimonAndUpStairs()
+int Scene2::CollisionBetSimonAndUpStairs(vector<LPSTAIRS> xStair)
 {
-	for (UINT i = 0; i < listUpStairs1.size(); i++)
+	for (UINT i = 0; i < xStair.size(); i++)
 	{
 
 		float al, at, ar, ab;
 		float bl, bt, br, bb;
-		listUpStairs1.at(i)->GetBoundingBox(al, at, ar, ab);
+		xStair.at(i)->GetBoundingBox(al, at, ar, ab);
 		simon1->GetBoundingBox(bl, bt, br, bb);
 		//1= right, 2 = left
 			if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
@@ -3853,28 +4400,28 @@ int Scene2::CollisionBetSimonAndUpStairs()
 				else
 					if (simon1->isOnStairs == false)
 					{
-						if(simon1->y > listUpStairs1.at(i)->y+STAIRS_BBOX_HEIGHT-1)
+						if(simon1->y > xStair.at(i)->y+STAIRS_BBOX_HEIGHT-5)
 						{
-							if (simon1->x > listUpStairs1.at(i)->x + 5)
+							if (simon1->x > xStair.at(i)->x + 5)
 							{
 								simon1->SetState(SIMON_STATE_WALKING_LEFT);
 							}
 							else
-								if (simon1->x < listUpStairs1.at(i)->x + 3)
+								if (simon1->x < xStair.at(i)->x + 3)
 								{
 									simon1->SetState(SIMON_STATE_WALKING_RIGHT);
 								}
 								else
-									if (simon1->x >= listUpStairs1.at(i)->x + 3 ||
-										simon1->x <= listUpStairs1.at(i)->x + 5)
+									if (simon1->x >= xStair.at(i)->x + 3 ||
+										simon1->x <= xStair.at(i)->x + 5)
 									{
-										if (listUpStairs1.at(i)->getType() == 1)
+										if (xStair.at(i)->getType() == 1)
 										{
 											simon1->SetState(SIMON_STATE_DOWN_RIGHT);
 											simon1->directionOnStairs = false;// true=going up, false=going down
 										}
 										else
-											if (listUpStairs1.at(i)->getType() == 2)
+											if (xStair.at(i)->getType() == 2)
 											{
 												simon1->SetState(SIMON_STATE_DOWN_LEFT);
 												simon1->directionOnStairs = false;
@@ -3894,13 +4441,13 @@ int Scene2::CollisionBetSimonAndUpStairs()
 
 }
 
-int Scene2::CollisionBetSimonAndDownStairs()
+int Scene2::CollisionBetSimonAndDownStairs(vector<LPSTAIRS> xStair)
 {
-	for (UINT i = 0; i < listDownStairs1.size(); i++)
+	for (UINT i = 0; i < xStair.size(); i++)
 	{
 		float al, at, ar, ab;
 		float bl, bt, br, bb;
-		listDownStairs1.at(i)->GetBoundingBox(al, at, ar, ab);
+		xStair.at(i)->GetBoundingBox(al, at, ar, ab);
 		simon1->GetBoundingBox(bl, bt, br, bb);
 		//1= right, 2 = left	
 		if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
@@ -3912,26 +4459,26 @@ int Scene2::CollisionBetSimonAndDownStairs()
 			else
 				if (simon1->isOnStairs == false)
 				{
-					if (simon1->x > listDownStairs1.at(i)->x + 7)
+					if (simon1->x > xStair.at(i)->x + 7)
 					{
 						simon1->SetState(SIMON_STATE_WALKING_LEFT);
 					}
 					else
-						if (simon1->x < listDownStairs1.at(i)->x + 5)
+						if (simon1->x < xStair.at(i)->x + 5)
 						{
 							simon1->SetState(SIMON_STATE_WALKING_RIGHT);
 						}
 						else
-							if (simon1->x >= listDownStairs1.at(i)->x + 5 || simon1->x <= listDownStairs1.at(i)->x + 7)
+							if (simon1->x >= xStair.at(i)->x + 5 || simon1->x <= xStair.at(i)->x + 7)
 							{
-								if (listDownStairs1.at(i)->getType() == 1)
+								if (xStair.at(i)->getType() == 1)
 								{
 
 									simon1->SetState(SIMON_STATE_UP_RIGHT);
 									simon1->directionOnStairs = true;// true=going up, false=going down
 								}
 								else
-									if (listDownStairs1.at(i)->getType() == 2)
+									if (xStair.at(i)->getType() == 2)
 									{
 										simon1->SetState(SIMON_STATE_UP_LEFT);
 										simon1->directionOnStairs = true;// true=going up, false=going down
@@ -3947,4 +4494,57 @@ int Scene2::CollisionBetSimonAndDownStairs()
 	return false;
 
 }
+
+void Scene2::CollisionBetSimonAndCheckBox()
+{
+	for (UINT i = 0; i < listCheckBox1.size(); i++)
+	{
+		if (simon1->CheckCollision(listCheckBox1.at(i)) == true)
+		{
+
+			if (listCheckBox1.at(i)->GetState() == INVIS_STATE_OPENDOOR)
+			{
+
+				if (simon1->proceedThruDoor == false)
+					simon1->proceedThruDoor = true;
+
+
+
+			}
+			else
+				if (listCheckBox1.at(i)->GetState() == INVIS_STATE_NEXT_LVL_UNDERGROUND)
+				{
+					if (simon1->GetState() == SIMON_STATE_DOWN_RIGHT)
+						stage = 3;
+
+				}
+				else
+					if (listCheckBox1.at(i)->GetState() == INVIS_STATE_UPPERGROUND)
+					{
+						if (simon1->GetState() == SIMON_STATE_UP_LEFT)
+							stage = 4;
+					}
+					else
+						if (listCheckBox1.at(i)->GetState() == INVIS_STATE_STAGE2)
+						{
+							if (simon1->GetState() == SIMON_STATE_UP_LEFT)
+								stage = 2;
+						}
+						else
+							if (listCheckBox1.at(i)->GetState() == INVIS_STATE_OPENDOOR2)
+							{
+								if (simon1->proceedThruDoor == false)
+									simon1->proceedThruDoor = true;
+							}
+							else
+								if (listCheckBox1.at(i)->GetState() == INVIS_STATE_DIE_BOX)
+								{
+									simon1->healthCount = 0;
+								}
+			
+
+		}
+	}
+}
+
 

@@ -43,6 +43,13 @@ Stairs::Stairs(float xtype,bool x)
 {
 	type = xtype;
 	isDownStairs = x;
+	if (isDownStairs == false)
+	{
+		tag = eTag::STAIR_TOP;
+	}
+	else
+		if (isDownStairs == true)
+			tag = eTag::STAIR_BOT;
 }
 
 Stairs::~Stairs()

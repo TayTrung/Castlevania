@@ -12,7 +12,7 @@ void Scene1::KeyState(BYTE * states)
 		{
 			if (game->IsKeyDown(DIK_RIGHT))
 			{ 
-				if (simon->isJumping == false)
+			//	if (simon->isJumping == false)
 				{
 
 					if (game->IsKeyDown(DIK_S))
@@ -24,13 +24,13 @@ void Scene1::KeyState(BYTE * states)
 						else
 							simon->SetState(SIMON_STATE_WALKING_RIGHT);
 				}
-				else
-					simon->SetState(SIMON_STATE_JUMP_RIGHT);
+				//else
+				//	simon->SetState(SIMON_STATE_JUMP_RIGHT);
 			}
 			else
 				if (game->IsKeyDown(DIK_LEFT))
 				{
-					if (simon->isJumping == false)
+					//if (simon->isJumping == false)
 					{
 						if (game->IsKeyDown(DIK_S))
 							simon->SetState(SIMON_STATE_ATTACK);
@@ -41,8 +41,8 @@ void Scene1::KeyState(BYTE * states)
 								
 									simon->SetState(SIMON_STATE_WALKING_LEFT);
 					}
-					else
-						simon->SetState(SIMON_STATE_JUMP_LEFT);
+					//else
+					//	simon->SetState(SIMON_STATE_JUMP_LEFT);
 				}
 				else
 					if (game->IsKeyDown(DIK_DOWN))
@@ -196,7 +196,8 @@ void Scene1::OnKeyUp(int KeyCode)
 
 void Scene1::LoadResources()
 {
-	
+	newGrid = new Grid();
+	time = new Time();
 	camera = Camera::GetInstance();
 	CTextures * textures = CTextures::GetInstance();
 	CSprites * sprites = CSprites::GetInstance();
@@ -210,6 +211,7 @@ void Scene1::LoadResources()
 	textures->Add(ID_TEX_EFFECT2, L"textures\\Effect\\water.png", D3DCOLOR_XRGB(255, 0, 255));
 	//board
 	textures->Add(ID_TEX_BOARD, L"textures\\board.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add(ID_TEX_HEALTH, L"textures\\heal.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	//Objects
 	textures->Add(ID_TEX_SIMON, L"textures\\simon.png", D3DCOLOR_XRGB(255, 0, 255)); 
@@ -230,6 +232,8 @@ void Scene1::LoadResources()
 	textures->Add(ID_TEX_ITEM_POTION, L"textures\\Item\\potion.png", D3DCOLOR_XRGB(0, 0, 0));
 	textures->Add(ID_TEX_ITEM_CLOCK, L"textures\\Item\\clock.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_HOLY, L"textures\\Item\\holywater.png", D3DCOLOR_XRGB(255, 0, 255));
+
+
 
 
 	//Ground 0
@@ -830,17 +834,20 @@ void Scene1::LoadResources()
 
 	ground = new Ground(1, BRICKMAP11_BBOX_WIDTH);
 	ground->SetPosition(0 , offsetMap+144);
-	listSurface.push_back(ground);
+	newGrid->insertObjectIntoGrid(ground);
+	//listSurface.push_back(ground);
 		
 	invisBox = new Ground(0,0);
 	invisBox->SetPosition(689, 140+offsetMap);
 	invisBox->SetState(INVIS_STATE_NEXT_LVL);
-	listItem.push_back(invisBox);
+	newGrid->insertObjectIntoGrid(invisBox);
+	//listItem.push_back(invisBox);
 
 	invisBox2 = new Ground(0,0);
 	invisBox2->SetPosition(MAP1_WIDTH - 24, offsetMap + 140);
 	invisBox2->SetState(INVIS_STATE_INVIS_ITEM);
-	listItem.push_back(invisBox2);
+	newGrid->insertObjectIntoGrid(invisBox2);
+	//listItem.push_back(invisBox2);
 
 
 #pragma endregion
@@ -868,8 +875,9 @@ void Scene1::LoadResources()
 			if (i == 4)
 				torch->setItemInside(daggerInside);
 
-			
-			listEnemy.push_back(torch);
+
+			newGrid->insertObjectIntoGrid(torch);
+			//listEnemy.push_back(torch);
 	}
 
 
@@ -1020,13 +1028,41 @@ void Scene1::LoadResources()
 
 void Scene1::Update(DWORD dt)
 {
+	time->Update(dt);
+	newGrid->getListOfObjects(listColliableObjects, camera);
+	listCheckBox.clear();
+	listEnemy.clear();
+	listSurface.clear();
+	for (int i = 0; i < listColliableObjects.size(); i++)
+	{
+		if (listColliableObjects.at(i)->tag == eTag::TORCHES)
+		{
+			Torch *tor = dynamic_cast<Torch *>(listColliableObjects.at(i));
+			listEnemy.push_back(tor);
+		}
+		else
+			if (listColliableObjects.at(i)->tag == eTag::CHECK_BOX)
+			{
+				listCheckBox.push_back(listColliableObjects.at(i));
+			}
+			else
+				if (listColliableObjects.at(i)->tag == eTag::GROUND)
+				{
+					listSurface.push_back(listColliableObjects.at(i));
+				}
+	}
+
 	if (simon->shotTwoWeaponOneTime == true)
 	{
 		newBoard->simonHasNumbah = true;
 	}
 	newBoard->heartCount = simon->heartCount;
+	newBoard->healthCount = simon->healthCount;
 	newBoard->playerLife = simon->playerLife;
 	newBoard->stage = simon->stage;
+	newBoard->score = simon->score;
+	newBoard->bossHealth = 16;
+	newBoard->time = time->x;
 
 		float x1, y1;
 	x1 = Camera::GetInstance()->GetPosition().x;
@@ -1036,8 +1072,9 @@ void Scene1::Update(DWORD dt)
 		if (simon->isUsing1stWeapon == true)
 		{
 
-		if ((simon->dagger->x) < x1+50|| (simon->dagger->x) > (x1 + SCREEN_WIDTH-50))// set lai dagger is not being used neu bay qua man hinh
+		if ((simon->dagger->x) < x1|| (simon->dagger->x) > (x1 + SCREEN_WIDTH))// set lai dagger is not being used neu bay qua man hinh
 		{
+
 			simon->notUseWeapon();
 			simon->dagger->SetState(DAGGER_STATE_INACTIVE);
 
@@ -1073,6 +1110,7 @@ void Scene1::Update(DWORD dt)
 
 	camera->SetPosition(simon->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon
 	camera->Update();
+	CollisionBetSimonAndCheckBox();
 	CollisionBetSimonAndItem();
 	erasingObjThatInacitve();
 	if (proceedToLvl2 == true)
@@ -1128,14 +1166,15 @@ void Scene1::Render()
 
 void Scene1::CollisionBetSimonAndEnemy()
 {
+
 }
 
-int Scene1::CollisionBetSimonAndUpStairs()
+int Scene1::CollisionBetSimonAndUpStairs(vector <Stairs *>x)
 {
 
 	return true;
 }
-int Scene1::CollisionBetSimonAndDownStairs()
+int Scene1::CollisionBetSimonAndDownStairs(vector <Stairs *>x)
 {
 
 	return true;
@@ -1390,6 +1429,11 @@ void Scene1::CollisionBetSimonAndItem()
 											{
 												simon->score += 400;
 											}
+											else
+												if (newGoldBag->type == 3)
+												{
+													simon->score += 1000;
+												}
 									listEffectBag.push_back(effectBag);
 									listItem.erase(listItem.begin() + i);
 									i = i - 1;
@@ -1397,6 +1441,37 @@ void Scene1::CollisionBetSimonAndItem()
 								
 							}
 			
+		}
+	}
+}
+
+void Scene1::CollisionBetSimonAndCheckBox()
+{
+	for (UINT i = 0; i < listCheckBox.size(); i++)
+	{
+		if (simon->CheckCollision(listCheckBox.at(i)) == true)
+		{
+						if (dynamic_cast<Ground *>(listCheckBox.at(i)))
+						{
+							if (listCheckBox.at(i)->state == INVIS_STATE_NEXT_LVL)
+							{
+								simon->SetState(SIMON_STATE_WALKING_RIGHT);
+								proceedToLvl2 = true;
+								OutputDebugString(L"Proceed to lvl 2 \n");
+							}
+							else
+								if (listCheckBox.at(i)->state == INVIS_STATE_INVIS_ITEM)
+								{
+									OutputDebugString(L"Invis item appear \n");
+									listCheckBox.at(i)->SetState(INVIS_STATE_INACTIVE);
+									goldbag->SetPosition(660, 125 + offsetMap);
+									goldbag->SetState(ITEM_STATE_ACTIVE);
+									goldbag->type = 3;
+									listItem.push_back(goldbag);
+								}
+						}
+		
+
 		}
 	}
 }

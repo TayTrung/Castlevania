@@ -55,11 +55,13 @@ void Monster::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 
 		// block 
-		x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
+		x +=dx;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
+	
+		if(ny == - 1)
 		y += min_ty * dy + ny * 0.4f;
 
-		if (nx != 0) vx = 0;
-		if (ny != 0)
+		//if (nx !=0) vx = 0;
+		if (ny ==-1)
 		{
 			vy = 0;
 			if (this->GetState() == MONSTER_STATE_UNDERWATER)

@@ -1,4 +1,5 @@
 #pragma once
+#include"Time.h"
 #include "Game.h"
 #include "Camera.h"
 #include "GameObject.h"
@@ -36,6 +37,8 @@
 #include "FireBall.h"
 #include "Numbah.h"
 #include "Board.h"
+#include "Boss.h"
+#include "Grid.h"
 class Scene
 {
 public:
@@ -49,11 +52,12 @@ public:
 
 	virtual void CollisionBetWeaponAndEnemy()=0;
 	virtual void CollisionBetSimonAndItem()=0;
-	virtual void CollisionBetSimonAndEnemy()=0;
+	virtual void CollisionBetSimonAndEnemy()=0; 
+	virtual void CollisionBetSimonAndCheckBox()=0;
 
 	virtual void spawnItemsAfterEffect()=0;
-	virtual int CollisionBetSimonAndUpStairs()=0;
-	virtual int CollisionBetSimonAndDownStairs()=0;
+	virtual int CollisionBetSimonAndUpStairs(vector <Stairs *>x)=0;
+	virtual int CollisionBetSimonAndDownStairs(vector<Stairs *>x)=0;
 	Scene();
 	~Scene();
 };

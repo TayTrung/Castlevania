@@ -18,6 +18,20 @@
 //GameObj.h
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 
+enum eTag
+{
+	STAIR_TOP,
+	STAIR_BOT,
+	TORCHES,
+	GROUND,
+	GROUND_ENEMY,
+	CHECK_BOX,
+	DOOR,
+	PANT
+
+};
+
+
 #pragma region Map
 
 #define offsetMap 64
@@ -61,6 +75,7 @@
 #define INVIS_STATE_OPENDOOR 1000
 #define INVIS_STATE_OPENDOOR2 1050
 #define INVIS_STATE_NEXT_LVL_UNDERGROUND 100
+#define INVIS_STATE_DIE_BOX 110
 #define INVIS_STATE_UPPERGROUND 1200
 #define INVIS_STATE_STAGE2 1300
 #define INVIS_STATE_INVIS_ITEM 2000
@@ -170,8 +185,8 @@
 
 #pragma region Boss
 
-#define BOSS_BBOX_WIDTH		96
-#define BOSS_BBOX_HEIGHT	46
+#define BOSS_BBOX_WIDTH		48
+#define BOSS_BBOX_HEIGHT	23
 
 #define BOSS_STATE_SLEEP	50
 #define BOSS_STATE_MOVE_RIGHT	100
@@ -271,6 +286,7 @@
 #define numbahInside 999
 #define potionInside 199
 
+#define ID_TEX_HEALTH 656
 #define ID_TEX_SIMON 0
 #define ID_TEX_BOARD 2
 #define ID_TEX_SIMON_DEATH 79979

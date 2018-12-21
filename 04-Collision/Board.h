@@ -13,7 +13,8 @@ public:
 	int score;
 	int stage;
 	int playerLife;
-	
+	int bossHealth;
+	int time;
 	std::string mess;
 	int typeOfWeaopon;
 	bool simonHasNumbah;

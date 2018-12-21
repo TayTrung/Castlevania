@@ -280,6 +280,7 @@ Panther::Panther(float xdistance)
 	changeDirection = false;
 	jumped = false;
 	offCollision = false;
+	tag = eTag::PANT;
 }
 
 

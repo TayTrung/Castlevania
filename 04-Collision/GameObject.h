@@ -30,8 +30,12 @@ struct CCollisionEvent
 
 
 class CGameObject
-{
+{ 
 public:
+	eTag tag;
+
+	int id;
+
 	float x; 
 	float y;
 

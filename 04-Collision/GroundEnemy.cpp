@@ -33,7 +33,7 @@ void GroundEnemy::Render()
 
 GroundEnemy::GroundEnemy()
 {
-	
+	tag = eTag::GROUND_ENEMY;
 }
 
 GroundEnemy::~GroundEnemy()

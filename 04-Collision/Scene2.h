@@ -18,6 +18,10 @@ private:
 	vector<LPSTAIRS> listDownStairs1;
 	vector<LPEFFECTFIRE>listEffectFire1;
 	vector<LPEFFECTBAG>listEffectBag1;
+	vector<LPGAMEOBJECT>listCheckBox1;
+	vector<LPGAMEOBJECT>listColliableObjects1;
+	vector<LPENEMY>listGroundEnemy;
+	vector<LPGAMEOBJECT>listDoor;
 	Camera *camera1 = Camera::GetInstance();
 	Map *map1;
 	Bat *bat1;
@@ -27,6 +31,7 @@ private:
 	SmallHeart *smallheart1;
 	Ghou *ghou;
 	Panther *pant;
+	Boss *boss;
 	Stairs *stairs;
 	Chicken *chick;
 	Door *door, *door1;
@@ -41,7 +46,10 @@ private:
 	Monster *monster1;
 	FireBall *fire;
 	Numbah *num;
+	Grid *newGrid1;
 	Potion *potion;
+	Time *time1;
+	bool isWaittingToRefresh;
 	int tickGhou = 300;
 	int tickBat = 290;
 	int tickMonster = 290; 
@@ -51,10 +59,11 @@ private:
 	bool y = false;
 	bool floor1 = true;
 	bool changedColor = true;
+	bool bossOn = false;
 
 
 	DWORD TimeWait;
-
+	DWORD TimeWaitToRefresh;
 	int stage;
 public:
 	virtual void KeyState(BYTE *states);
@@ -76,8 +85,9 @@ public:
 	virtual void CollisionBetSimonAndItem();
 	virtual void spawnItemsAfterEffect();
 	virtual void CollisionBetSimonAndEnemy();
-	virtual int CollisionBetSimonAndUpStairs();
-	virtual int CollisionBetSimonAndDownStairs();
+	virtual int CollisionBetSimonAndUpStairs(vector<LPSTAIRS> listUpStairs1);
+	virtual int CollisionBetSimonAndDownStairs(vector<LPSTAIRS> listDownStairs1);
+	virtual void CollisionBetSimonAndCheckBox();
 	Scene2(Simon *simon);
 	~Scene2();
 };

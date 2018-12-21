@@ -216,7 +216,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	if (this->healthCount == 0)
 	{
-	//	this->SetState(SIMON_STATE_DEAD);
+		this->SetState(SIMON_STATE_DEAD);
 	}
 	
 }

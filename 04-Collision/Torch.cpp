@@ -49,6 +49,7 @@ Torch::Torch(int type1)
 		state = TORCH_STATE_ACTIVE;
 	else
 		state = CANDLE_STATE_ACTIVE;
+	tag = eTag::TORCHES;
 	//isKilled = false;
 }
 

@@ -2,7 +2,10 @@
 
 void Door::GetBoundingBox(float & l, float & t, float & r, float & b)
 {
-	l = t = r = b = 0;
+	l = x;
+	t = y;
+	r = x;
+	b = y;
 }
 
 void Door::Render()
@@ -29,7 +32,7 @@ void Door::Render()
 
 Door::Door()
 {
-
+	tag = eTag::DOOR;
 }
 
 Door::~Door()

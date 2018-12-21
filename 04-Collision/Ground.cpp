@@ -2,8 +2,8 @@
 
 void Ground::Render()
 {		
-	if (type == 0)
-		RenderBoundingBox(150);
+	//if (type == 0)
+		RenderBoundingBox(250);
 }
 
 
@@ -13,7 +13,11 @@ void Ground::GetBoundingBox(float &l, float &t, float &r, float &b)
 	t = y;
 	if (type == 0)
 	{
-		r = x + INVIS_BRICK_BBOX_WIDTH;
+		if (Bbox_WIDTH == 0)
+			r = x + INVIS_BRICK_BBOX_WIDTH;
+		else
+			r = x + Bbox_WIDTH;
+
 		b = y + INVIS_BRICK_BBOX_HEIGHT;
 	}
 	else 
@@ -30,6 +34,10 @@ Ground::Ground(int xtype,int xbbox_WIDTH)
 {
 	type = xtype;
 	Bbox_WIDTH = xbbox_WIDTH;
+	if (type == 1)
+		tag = eTag::GROUND;
+	else
+		tag = eTag::CHECK_BOX;
 }
 
 Ground::~Ground()
