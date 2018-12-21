@@ -22,6 +22,7 @@ private:
 	vector<LPGAMEOBJECT>listColliableObjects1;
 	vector<LPENEMY>listGroundEnemy;
 	vector<LPGAMEOBJECT>listDoor;
+	vector<LPENEMY>listPanther;
 	Camera *camera1 = Camera::GetInstance();
 	Map *map1;
 	Bat *bat1;
@@ -48,6 +49,7 @@ private:
 	Numbah *num;
 	Grid *newGrid1;
 	Potion *potion;
+	Heal *heal;
 	Time *time1;
 	bool isWaittingToRefresh;
 	int tickGhou = 300;

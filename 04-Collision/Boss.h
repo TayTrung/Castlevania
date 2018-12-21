@@ -5,8 +5,11 @@
 class Boss : public Enemy
 {
 public:
-	int hp = 16;
-
+	int hp;
+	DWORD waitTime;
+	int tick=0;
+	bool fired;
+	int xz;
 	bool untouchable;
 	DWORD untouchable_start;
 	void StartUntouchable() {

@@ -8,6 +8,7 @@
 #include "Simon.h"
 #include "Torch.h"
 #include "Map.h"
+#include "Heal.h"
 #include "BigHeart.h"
 #include "Dagger1.h"
 #include "MorningStar.h"

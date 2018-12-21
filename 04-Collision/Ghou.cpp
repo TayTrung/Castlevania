@@ -119,11 +119,11 @@ void Ghou::SetState(int state)
 	switch (state)
 	{
 	case GHOU_STATE_ACTIVE_RIGHT:
-		vx = GHOU_WALKING_SPEED;
+		vx = GHOU_WALKING_SPEED*0.75;
 		nx = 1;
 		break;
 	case GHOU_STATE_ACTIVE_LEFT:
-		vx = -GHOU_WALKING_SPEED;
+		vx = -GHOU_WALKING_SPEED*0.75;
 		nx = -1;
 		break;
 	}

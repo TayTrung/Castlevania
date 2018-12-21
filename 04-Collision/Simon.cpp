@@ -60,7 +60,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// Simple fall down
 	if (this->isOnStairs == false)
-		vy += SIMON_GRAVITY * dt;
+		vy += SIMON_GRAVITY/2 * dt;
 
 	
 
@@ -146,7 +146,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	//if (this->isUsing1stWeapon == true)
 	{
 		if (this->GetState() == SIMON_STATE_THROW || this->GetState() == SIMON_STATE_THROW_SITTING ||
-			this->GetState() == SIMON_STATE_THROW_ON_STAIRS)
+			this->GetState() == SIMON_STATE_THROW_ON_STAIRS )
 		{
 			if (this->numOfWeapon == 1)
 			{
@@ -167,6 +167,42 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 
 			}
+		}
+		if (this->GetState() == SIMON_STATE_HURT_LEFT || this->GetState() == SIMON_STATE_HURT_RIGHT)
+		{
+
+			if (this->numOfWeapon == 1)
+			{
+
+				if (this->dagger->isOn == true)
+				{
+					this->dagger->isFinished = true;
+				}
+				else
+					if (this->axe->isOn == true)
+						this->axe->isFinished = true;
+					else
+						if (this->clock->isOn == true)
+							this->clock->isFinished = true;
+						else
+							if (this->holy->isOn == true)
+								this->holy->isFinished = true;
+			}
+			else
+				if (this->numOfWeapon == 2)
+				{
+					if (this->dagger->isOn == true)
+						this->dagger1->isFinished = true;
+					else
+						if (this->axe->isOn == true)
+							this->axe1->isFinished = true;
+						else
+							if (this->clock->isOn == true)
+								this->clock1->isFinished = true;
+							else
+								if (this->holy->isOn == true)
+									this->holy1->isFinished = true;
+				}
 		}
 
 	}
@@ -555,7 +591,7 @@ void Simon::SetState(int state)
 		switch (state)
 		{
 		case SIMON_STATE_WALKING_RIGHT:
-			vx = SIMON_WALKING_SPEED;
+			vx = SIMON_WALKING_SPEED*0.75;
 			nx = 1;
 			break;	
 		//case SIMON_STATE_JUMP_RIGHT:
@@ -569,7 +605,7 @@ void Simon::SetState(int state)
 		//	nx = 1;
 		//	break;
 		case SIMON_STATE_WALKING_LEFT:
-			vx = -SIMON_WALKING_SPEED;
+			vx = -SIMON_WALKING_SPEED*0.75;
 			nx = -1;
 			break;
 		case SIMON_STATE_HURT_RIGHT:

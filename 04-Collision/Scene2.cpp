@@ -404,6 +404,8 @@ void Scene2::OnKeyDown(int KeyCode)
 				
 					if (simon1->dagger->GetState() == DAGGER_STATE_INACTIVE)
 					{
+
+						simon1->heartCount -= 1;
 						simon1->numOfWeapon = 1;
 						float x, y;
 						simon1->GetPosition(x, y);
@@ -905,6 +907,7 @@ void Scene2::LoadResources()
 	textures->Add(ID_TEX_ITEM_AXE, L"textures\\Item\\7.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_NUMBAH, L"textures\\Item\\11.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_ITEM_POTION, L"textures\\Item\\potion.png", D3DCOLOR_XRGB(0, 0, 0));
+	textures->Add(ID_TEX_ITEM_HEAL, L"textures\\Item\\13.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	textures->Add(ID_TEX_GHOUL, L"textures\\Enemy\\Ghoul.png", D3DCOLOR_XRGB(255, 0, 255));
 	textures->Add(ID_TEX_BAT, L"textures\\Enemy\\Bat.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -937,7 +940,17 @@ void Scene2::LoadResources()
 	sprites->Add(20003, 0, 0, 16, 16, texGround4);
 
 #pragma endregion
+#pragma region Co-ordinations of Heal
 
+	LPDIRECT3DTEXTURE9 texHeal = textures->Get(ID_TEX_ITEM_HEAL);
+	sprites->Add(25554, 0, 0, 13, 15, texHeal);
+	sprites->Add(25555, 14, 0, 27, 15, texHeal);
+
+	ani = new CAnimation(100);//sleep
+	ani->Add(25554);
+	ani->Add(25555);
+	animations->Add(682, ani);
+#pragma endregion
 #pragma region Co-ordinations of Candle
 
 	LPDIRECT3DTEXTURE9 texCandle = textures->Get(ID_TEX_CANDLE);
@@ -987,11 +1000,12 @@ void Scene2::LoadResources()
 	boss = new Boss();
 	boss->AddAnimation(333);
 	boss->AddAnimation(334);
+	
 	boss->SetPosition(2660, 5+offsetMap);
-	boss->setItemInside(bluebagInside);
+	boss->setItemInside(healInside);
 	boss->SetState(BOSS_STATE_SLEEP);
 	//newGrid1->insertObjectIntoGrid(boss);
-	listEnemy1.push_back(boss);
+	//listEnemy1.push_back(boss);
 #pragma endregion
 #pragma region Co-ordinations of Ghoul
 
@@ -1672,9 +1686,9 @@ void Scene2::LoadResources()
 	pant->AddAnimation(553);
 	pant->setItemInside(randomIteminside());
 	pant->SetState(PANTHER_STATE_SIT_LEFT);
-	pant->SetPosition(685, 0 + offsetMap);
-	listEnemy1.push_back(pant);
-	//newGrid1->insertObjectIntoGrid(pant);
+	pant->SetPosition(685, 0+ offsetMap);
+	//listEnemy1.push_back(pant);
+	newGrid1->insertObjectIntoGrid(pant);
 
 	pant = new Panther(8 * 20);
 	pant->AddAnimation(550);
@@ -1696,9 +1710,9 @@ void Scene2::LoadResources()
 	pant->AddAnimation(553);
 	pant->setItemInside(randomIteminside());
 	pant->SetState(PANTHER_STATE_SIT_LEFT);
-	pant->SetPosition(880, 0 + offsetMap);
-	listEnemy1.push_back(pant);
-	//newGrid1->insertObjectIntoGrid(pant);
+	pant->SetPosition(880, 0+ offsetMap);
+	//listEnemy1.push_back(pant);
+	newGrid1->insertObjectIntoGrid(pant);
 
 	pant = new Panther(1 * 16);
 	pant->AddAnimation(550);//right left
@@ -1721,9 +1735,9 @@ void Scene2::LoadResources()
 
 	pant->setItemInside(randomIteminside());
 	pant->SetState(PANTHER_STATE_SIT_LEFT);
-	pant->SetPosition(945, 0 + offsetMap);
-	listEnemy1.push_back(pant);
-	//newGrid1->insertObjectIntoGrid(pant);
+	pant->SetPosition(945, 0+offsetMap );
+	//listEnemy1.push_back(pant);
+	newGrid1->insertObjectIntoGrid(pant);
 
 
 #pragma endregion
@@ -1858,41 +1872,41 @@ void Scene2::LoadResources()
 }
 void Scene2::XuLyPanthera()
 {
-	for (int i = 0; i < listEnemy1.size(); i++)
+	for (int i = 0; i < listPanther.size(); i++)
 	{
-		if (dynamic_cast<Panther *>(listEnemy1.at(i)))
+		if (dynamic_cast<Panther *>(listPanther.at(i)))
 		{
 			
 			{
-				if ((listEnemy1.at(i)->x - simon1->x) <= 16 * 4)
+				if ((listPanther.at(i)->x - simon1->x) <= 16 * 4)
 				{
-					if (listEnemy1.at(i)->changeDirection == false)
+					if (listPanther.at(i)->changeDirection == false)
 					{
 
-						if (listEnemy1.at(i)->GetState() == PANTHER_STATE_SIT_LEFT)
-							listEnemy1.at(i)->SetState(PANTHER_STATE_ACTIVE_LEFT);
-						if (listEnemy1.at(i)->GetState() == PANTHER_STATE_SIT_RIGHT)
-							listEnemy1.at(i)->SetState(PANTHER_STATE_ACTIVE_RIGHT);
+						if (listPanther.at(i)->GetState() == PANTHER_STATE_SIT_LEFT)
+							listPanther.at(i)->SetState(PANTHER_STATE_ACTIVE_LEFT);
+						if (listPanther.at(i)->GetState() == PANTHER_STATE_SIT_RIGHT)
+							listPanther.at(i)->SetState(PANTHER_STATE_ACTIVE_RIGHT);
 
 					}
 				}
-				if (listEnemy1.at(i)->jumped == true)
+				if (listPanther.at(i)->jumped == true)
 				{
-					if (listEnemy1.at(i)->GetState() == PANTHER_STATE_ACTIVE_RIGHT ||
-						listEnemy1.at(i)->GetState() == PANTHER_STATE_ACTIVE_LEFT)
+					if (listPanther.at(i)->GetState() == PANTHER_STATE_ACTIVE_RIGHT ||
+						listPanther.at(i)->GetState() == PANTHER_STATE_ACTIVE_LEFT)
 					{
-						if (listEnemy1.at(i)->changeDirection == false)
+						if (listPanther.at(i)->changeDirection == false)
 
 						{
-							listEnemy1.at(i)->changeDirection = true;
-							if ((listEnemy1.at(i)->x - simon1->x) > 0)
+							listPanther.at(i)->changeDirection = true;
+							if ((listPanther.at(i)->x - simon1->x) > 0)
 							{
-								listEnemy1.at(i)->SetState(PANTHER_STATE_ACTIVE_LEFT);
+								listPanther.at(i)->SetState(PANTHER_STATE_ACTIVE_LEFT);
 							}
 							else
-								if ((listEnemy1.at(i)->x - simon1->x) < 0)
+								if ((listPanther.at(i)->x - simon1->x) < 0)
 								{
-									listEnemy1.at(i)->SetState(PANTHER_STATE_ACTIVE_RIGHT);
+									listPanther.at(i)->SetState(PANTHER_STATE_ACTIVE_RIGHT);
 								}
 						}
 
@@ -1953,26 +1967,13 @@ void Scene2::spawnMonster()
 
 void Scene2::spawnFireBall()
 {
-
-	for (UINT i = 0; i < listEnemy1.size(); i++)
+	if (stage == 3)
 	{
-		if (dynamic_cast<Monster *>(listEnemy1.at(i)))
+		for (UINT i = 0; i < listEnemy1.size(); i++)
 		{
-			if (listEnemy1.at(i)->GetState() == MONSTER_STATE_FIRE_LEFT )
+			if (dynamic_cast<Monster *>(listEnemy1.at(i)))
 			{
-				if (listEnemy1.at(i)->spawnFireBall == false)
-				{
-					listEnemy1.at(i)->spawnFireBall = true;
-					fire = new FireBall();
-					fire->AddAnimation(899);
-					fire->AddAnimation(900);
-					fire->SetState(FIREBALL_STATE_ACTIVE_LEFT);
-					fire->SetPosition(listEnemy1.at(i)->x, listEnemy1.at(i)->y+5);
-					listEnemy1.push_back(fire);
-				}
-			}
-			else
-				if (listEnemy1.at(i)->GetState() == MONSTER_STATE_FIRE_RIGHT)
+				if (listEnemy1.at(i)->GetState() == MONSTER_STATE_FIRE_LEFT)
 				{
 					if (listEnemy1.at(i)->spawnFireBall == false)
 					{
@@ -1980,19 +1981,63 @@ void Scene2::spawnFireBall()
 						fire = new FireBall();
 						fire->AddAnimation(899);
 						fire->AddAnimation(900);
-						fire->SetState(FIREBALL_STATE_ACTIVE_RIGHT);
-						fire->SetPosition(listEnemy1.at(i)->x, listEnemy1.at(i)->y);
+						fire->SetState(FIREBALL_STATE_ACTIVE_LEFT);
+						fire->SetPosition(listEnemy1.at(i)->x, listEnemy1.at(i)->y + 5);
 						listEnemy1.push_back(fire);
 					}
 				}
-				
+				else
+					if (listEnemy1.at(i)->GetState() == MONSTER_STATE_FIRE_RIGHT)
+					{
+						if (listEnemy1.at(i)->spawnFireBall == false)
+						{
+							listEnemy1.at(i)->spawnFireBall = true;
+							fire = new FireBall();
+							fire->AddAnimation(899);
+							fire->AddAnimation(900);
+							fire->SetState(FIREBALL_STATE_ACTIVE_RIGHT);
+							fire->SetPosition(listEnemy1.at(i)->x, listEnemy1.at(i)->y);
+							listEnemy1.push_back(fire);
+						}
+					}
+
+			}
 		}
+
 	}
+	else
+		if (stage == 5)
+		{
+			if (bossOn == true)
+			{
+				if (boss->GetState() == BOSS_STATE_AFK)
+				{
+					if (boss->fired == false)
+					{
+						fire = new FireBall();
+						fire->AddAnimation(899);
+						fire->AddAnimation(900);
+						fire->SetState(FIREBALL_STATE_ACTIVE_LEFT);
+						float x1, y1;
+						x1 = (simon1->x-boss->x);
+						y1 = abs(simon1->y - boss->y);
+						fire->vx = x1 / 1000;
+						fire->vy = y1 / 1000;
+						fire->SetPosition(boss->x + 24, boss->y + 23);
+						listEnemy1.push_back(fire);
+						boss->fired = true;
+					}	
+				}
+			}
+		}
 }
 
 
 void Scene2::Update(DWORD dt)
 {
+
+	if (time1->x == 0)
+		simon1->healthCount = 0;
 	if (simon1->healthCount == 0)
 	{
 			TimeWaitToRefresh += dt;
@@ -2006,11 +2051,13 @@ void Scene2::Update(DWORD dt)
 					if (stage == 1)
 					{
 						simon1->SetPosition(50, 0);
+						time1->x = 300;
 					}
 					else
 						if (stage == 2)
 						{
 							simon1->SetPosition(1550, 0);
+							time1->x = 300;
 
 						}
 						else
@@ -2018,11 +2065,20 @@ void Scene2::Update(DWORD dt)
 							{
 								stage = 3;
 								simon1->SetPosition(2917, 0);
+								time1->x = 300;
 							}
 							else
 								if (stage == 5)
 								{
 									simon1->SetPosition(2062, 0);
+									time1->x = 300;
+									bossOn = false;
+									boss = new Boss();
+									boss->AddAnimation(333);
+									boss->AddAnimation(334);
+									boss->SetPosition(2660, 5 + offsetMap);
+									boss->setItemInside(bluebagInside);
+									boss->SetState(BOSS_STATE_SLEEP);
 								}
 				}
 				TimeWaitToRefresh = 0;
@@ -2042,18 +2098,26 @@ void Scene2::Update(DWORD dt)
 	listDoor.clear();
 	for (int i = 0; i < listColliableObjects1.size(); i++)
 	{
-		if (listColliableObjects1.at(i)->tag == eTag::TORCHES)
-		{
-			Torch *tor = dynamic_cast<Torch *>(listColliableObjects1.at(i));
-			listTorches1.push_back(tor);
-		}
-		else
-			if (listColliableObjects1.at(i)->tag == eTag::CHECK_BOX)
+			if (listColliableObjects1.at(i)->tag == eTag::TORCHES)
 			{
-				listCheckBox1.push_back(listColliableObjects1.at(i));
+
+				Torch *tor = dynamic_cast<Torch *>(listColliableObjects1.at(i));
+				listTorches1.push_back(tor);
+			
 			}
 			else
-				if (listColliableObjects1.at(i)->tag == eTag::GROUND)
+				if (listColliableObjects1.at(i)->tag == eTag::PANT)
+				{
+					Panther *pant = dynamic_cast<Panther *>(listColliableObjects1.at(i));
+					listPanther.push_back(pant);
+				}
+				else
+					if (listColliableObjects1.at(i)->tag == eTag::CHECK_BOX)
+					{
+						listCheckBox1.push_back(listColliableObjects1.at(i));
+					}
+					else
+						if (listColliableObjects1.at(i)->tag == eTag::GROUND)
 				{
 					listSurface1.push_back(listColliableObjects1.at(i));
 				}
@@ -2324,7 +2388,6 @@ void Scene2::Update(DWORD dt)
 			int xz = 0;
 			if (spawnedEnoughGhou == true)
 			{
-
 				for (int z = 0; z < listEnemy1.size(); z++)
 				{
 					if (dynamic_cast<Ghou*>(listEnemy1.at(z)))
@@ -2555,9 +2618,10 @@ void Scene2::Update(DWORD dt)
 									tickGhou = 0;
 					}
 				}
+				spawnFireBall();
 			}
 
-	if (simon1->isUsing1stWeapon == true || simon1->isUsing2ndWeapon==true)
+	//if (simon1->isUsing1stWeapon == true || simon1->isUsing2ndWeapon==true)
 	{
 		if (simon1->dagger->isOn == true)
 		{
@@ -2645,6 +2709,8 @@ void Scene2::Update(DWORD dt)
 		boss->Update(dt, simon1);
 	for (int i = 0; i < listEnemy1.size(); i++)
 		listEnemy1[i]->Update(dt, &listSurface1);
+	for (int i = 0; i < listPanther.size(); i++)
+		listPanther[i]->Update(dt,&listSurface1);
 
 	for (int i = 0; i < listGroundEnemy.size(); i++)
 		listGroundEnemy[i]->Update(dt, &listSurface1);
@@ -2711,6 +2777,9 @@ void Scene2::Render()
 			listEffectBag1[i]->Render();
 		for (int i = 0; i < listItem1.size(); i++)
 			listItem1[i]->Render();
+		for (int i = 0; i < listPanther.size(); i++)
+			listPanther[i]->Render();
+		
 		for (int i = 0; i < listGroundEnemy.size(); i++)
 			listGroundEnemy[i]->Render();
 		for (int i = 0; i < listEffectFire1.size(); i++)
@@ -3896,11 +3965,10 @@ void Scene2::CollisionBetSimonAndItem()
 													{
 														simon1->score += 1000;
 													}
-										if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
-										{
+										
 											listItem1.erase(listItem1.begin() + i);
 											i = i - 1;
-										}
+										
 									}
 
 								}
@@ -3927,11 +3995,10 @@ void Scene2::CollisionBetSimonAndItem()
 													i = i - 1; //Optional cuz simon only can hit 1 torch at one moment
 												}
 											}
-											if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
-											{
+											
 												listItem1.erase(listItem1.begin() + i);
 												i = i - 1;
-											}
+											
 										}
 
 									}
@@ -3948,11 +4015,10 @@ void Scene2::CollisionBetSimonAndItem()
 												simon1->holy->turnOffHolyWater();
 												board->typeOfWeaopon = 2;
 												OutputDebugString(L"Axe on \n");
-												if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
-												{
+												
 													listItem1.erase(listItem1.begin() + i);
 													i = i - 1;
-												}
+												
 											}
 										}
 										else
@@ -3968,11 +4034,10 @@ void Scene2::CollisionBetSimonAndItem()
 													simon1->holy->turnOnHolyWater();
 													board->typeOfWeaopon = 3;
 													OutputDebugString(L"HolyWater on \n");
-													if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
-													{
+													
 														listItem1.erase(listItem1.begin() + i);
 														i = i - 1;
-													}
+													
 												}
 
 											}
@@ -3989,11 +4054,10 @@ void Scene2::CollisionBetSimonAndItem()
 														simon1->holy->turnOffHolyWater();
 														board->typeOfWeaopon = 4;
 														OutputDebugString(L"Clock on \n");
-														if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
-														{
+														
 															listItem1.erase(listItem1.begin() + i);
 															i = i - 1;
-														}
+														
 													}
 
 												}
@@ -4005,12 +4069,11 @@ void Scene2::CollisionBetSimonAndItem()
 															OutputDebugString(L"Chicken \n");
 															listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 															simon1->healthCount += 2;
-															if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
-															{
+															
 																
 																listItem1.erase(listItem1.begin() + i);
 																i = i - 1;
-															}
+															
 														}
 
 													}
@@ -4022,11 +4085,10 @@ void Scene2::CollisionBetSimonAndItem()
 																OutputDebugString(L"Numbah \n");
 																listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 																simon1->shotTwoWeaponOneTime = true;
-																	if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
-																{
+															
 																	listItem1.erase(listItem1.begin() + i);
 																	i = i - 1;
-																}
+																
 															}
 
 														}
@@ -4039,14 +4101,29 @@ void Scene2::CollisionBetSimonAndItem()
 																	listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 																	simon1->StartInvisTime();
 
-																	if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
-																	{
+																
 																		listItem1.erase(listItem1.begin() + i);
 																		i = i - 1;
-																	}
+																	
 																}
 
 															}
+															else
+																if (dynamic_cast<Heal *>(listItem1.at(i)))
+																{
+																	if (listItem1.at(i)->state == ITEM_STATE_DROPPED)
+																	{
+																		OutputDebugString(L"Numbah \n");
+																		listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
+																		simon1->healthCount = simon1->healthCount + (16 - simon1->healthCount);
+
+																		
+																			listItem1.erase(listItem1.begin() + i);
+																			i = i - 1;
+																		
+																	}
+
+																}
 
 													
 
@@ -4173,6 +4250,13 @@ void Scene2::spawnItemsAfterEffect()
 				potion->SetPosition(x, y);
 				listItem1.push_back(potion);
 				break;
+			case healInside:
+
+				heal = new Heal();
+				heal->AddAnimation(682);
+				heal->SetState(ITEM_STATE_ACTIVE);
+				heal->SetPosition(x, y);
+				listItem1.push_back(heal);
 			default:
 				break;
 			}
@@ -4186,36 +4270,68 @@ void Scene2::spawnItemsAfterEffect()
 
 void Scene2::CollisionBetSimonAndEnemy()
 {
+	//with enemy
 	if (simon1->GetState() != SIMON_STATE_HURT_LEFT || simon1->GetState() != SIMON_STATE_HURT_RIGHT)
 	{
 		for (UINT i = 0; i < listEnemy1.size(); i++)
 		{
-				float al, at, ar, ab;
-				float bl, bt, br, bb;
-				listEnemy1.at(i)->GetBoundingBox(al, at, ar, ab);
-				simon1->GetBoundingBox(bl, bt, br, bb);
+			float al, at, ar, ab;
+			float bl, bt, br, bb;
+			listEnemy1.at(i)->GetBoundingBox(al, at, ar, ab);
+			simon1->GetBoundingBox(bl, bt, br, bb);
 
-				LPCOLLISIONEVENT e = simon1->SweptAABBEx(listEnemy1.at(i));
+			LPCOLLISIONEVENT e = simon1->SweptAABBEx(listEnemy1.at(i));
 
-				if (e->t > 0 && e->t <= 1.0f)
+			if (e->t > 0 && e->t <= 1.0f)
+			{
+				if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
 				{
-					if (dynamic_cast<Enemy *>(listEnemy1.at(i)))
+					if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
 					{
-						if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
+						//
+					}
+					else
+						if (e->nx == -1)
 						{
-							//
-						}
-						else
-							if (e->nx == -1)
+
+							if (listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
+								listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
 							{
 
+								OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+								//if (simon1->isUsing1stWeapon == true)
+								//	simon1->notUseWeapon();
+								if (simon1->whip->isFinished == false)
+									simon1->whip->isFinished = true;
+								if (simon1->isOnStairs == true)
+								{
+									simon1->StartUntouchable();
+								}
+								else
+								{
+									simon1->SetState(SIMON_STATE_HURT_LEFT);
+
+								}
+								//	if (simon1->nx = 1)
+								//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
+								//		else if(simon1->nx=-1)
+								//		simon1->SetState(SIMON_STATE_HURT_LEFT);
+								//simon->heartCount += 5;
+
+							}
+
+						}
+
+						else
+							if (e->nx == 1)
+							{
 								if (listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
 									listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
 								{
 
-									OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
-									//if (simon1->isUsing1stWeapon == true)
-									//	simon1->notUseWeapon();
+									OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+									//if (simon1->isUsingDagger == true)
+									//simon1->notUseDagger();
 									if (simon1->whip->isFinished == false)
 										simon1->whip->isFinished = true;
 									if (simon1->isOnStairs == true)
@@ -4224,98 +4340,67 @@ void Scene2::CollisionBetSimonAndEnemy()
 									}
 									else
 									{
-										simon1->SetState(SIMON_STATE_HURT_LEFT);
-
+										simon1->SetState(SIMON_STATE_HURT_RIGHT);
 									}
-									//	if (simon1->nx = 1)
-									//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
-									//		else if(simon1->nx=-1)
-									//		simon1->SetState(SIMON_STATE_HURT_LEFT);
-									//simon->heartCount += 5;
+
 
 								}
-
 							}
-
 							else
-								if (e->nx == 1)
+								if (e->nx == 0)
 								{
-									if (listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
-										listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+									if (e->ny == -1)
 									{
-
-										OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
-										//if (simon1->isUsingDagger == true)
-										//simon1->notUseDagger();
-										if (simon1->whip->isFinished == false)
-											simon1->whip->isFinished = true;
-										if (simon1->isOnStairs == true)
+										float x, y;
+										simon1->GetPosition(x, y);
+										float x1, y1;
+										listEnemy1.at(i)->GetPosition(x1, y1);
+										if (x < x1)
 										{
-											simon1->StartUntouchable();
+											OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+											//if (simon1->isUsingDagger == true)
+											//	simon1->notUseDagger();
+											if (simon1->whip->isFinished == false)
+												simon1->whip->isFinished = true;
+											if (simon1->isOnStairs == true)
+											{
+												simon1->StartUntouchable();
+											}
+											else
+											{
+												simon1->SetState(SIMON_STATE_HURT_LEFT);
+											}
 										}
 										else
-										{
-											simon1->SetState(SIMON_STATE_HURT_RIGHT);
-										}
-
-
-									}
-								}
-								else
-									if (e->nx == 0)
-									{
-										if (e->ny == -1)
-										{
-											float x, y;
-											simon1->GetPosition(x, y);
-											float x1, y1;
-											listEnemy1.at(i)->GetPosition(x1, y1);
-											if (x < x1)
+											if (x >= x1)
 											{
-												OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+												OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
 												//if (simon1->isUsingDagger == true)
 												//	simon1->notUseDagger();
 												if (simon1->whip->isFinished == false)
 													simon1->whip->isFinished = true;
+
 												if (simon1->isOnStairs == true)
 												{
 													simon1->StartUntouchable();
 												}
 												else
 												{
-													simon1->SetState(SIMON_STATE_HURT_LEFT);
+													simon1->SetState(SIMON_STATE_HURT_RIGHT);
 												}
+
 											}
-											else
-												if (x >= x1)
-												{
-													OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
-													//if (simon1->isUsingDagger == true)
-													//	simon1->notUseDagger();
-													if (simon1->whip->isFinished == false)
-														simon1->whip->isFinished = true;
-
-													if (simon1->isOnStairs == true)
-													{
-														simon1->StartUntouchable();
-													}
-													else
-													{
-														simon1->SetState(SIMON_STATE_HURT_RIGHT);
-													}
-
-												}
-										}
 									}
-						if (dynamic_cast<Bat *>(listEnemy1.at(i)))
-						{
-							listEnemy1.at(i)->SetState(BAT_STATE_INACTIVE);
-						}
+								}
+					if (dynamic_cast<Bat *>(listEnemy1.at(i)))
+					{
+						listEnemy1.at(i)->SetState(BAT_STATE_INACTIVE);
 					}
 				}
+			}
 
 
-				else
+			else
 				if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
 				{
 					if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
@@ -4375,6 +4460,153 @@ void Scene2::CollisionBetSimonAndEnemy()
 				}
 		}
 	}
+	//withboss
+	if (boss->GetState() != BOSS_STATE_INACTIVE)
+	{
+		float al, at, ar, ab;
+		float bl, bt, br, bb;
+		boss->GetBoundingBox(al, at, ar, ab);
+		simon1->GetBoundingBox(bl, bt, br, bb);
+
+		LPCOLLISIONEVENT e = simon1->SweptAABBEx(boss);
+
+		if (e->t > 0 && e->t <= 1.0f)
+		{
+			if (e->nx == -1)
+			{
+
+				OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+				if (simon1->whip->isFinished == false)
+					simon1->whip->isFinished = true;
+				if (simon1->isOnStairs == true)
+				{
+					simon1->StartUntouchable();
+				}
+				else
+				{
+					simon1->SetState(SIMON_STATE_HURT_LEFT);
+
+				}
+				//	if (simon1->nx = 1)
+				//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
+				//		else if(simon1->nx=-1)
+				//		simon1->SetState(SIMON_STATE_HURT_LEFT);
+				//simon->heartCount += 5;
+
+
+			}
+
+			else
+				if (e->nx == 1)
+				{
+					OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+					//if (simon1->isUsingDagger == true)
+					//simon1->notUseDagger();
+					if (simon1->whip->isFinished == false)
+						simon1->whip->isFinished = true;
+					if (simon1->isOnStairs == true)
+					{
+						simon1->StartUntouchable();
+					}
+					else
+					{
+						simon1->SetState(SIMON_STATE_HURT_RIGHT);
+					}
+				}
+				else
+					if (e->nx == 0)
+					{
+						if (e->ny == -1)
+						{
+							float x, y;
+							simon1->GetPosition(x, y);
+							float x1, y1;
+							boss->GetPosition(x1, y1);
+							if (x < x1)
+							{
+								OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+								//if (simon1->isUsingDagger == true)
+								//	simon1->notUseDagger();
+								if (simon1->whip->isFinished == false)
+									simon1->whip->isFinished = true;
+								if (simon1->isOnStairs == true)
+								{
+									simon1->StartUntouchable();
+								}
+								else
+								{
+									simon1->SetState(SIMON_STATE_HURT_LEFT);
+								}
+							}
+							else
+								if (x >= x1)
+								{
+									OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+									//if (simon1->isUsingDagger == true)
+									//	simon1->notUseDagger();
+									if (simon1->whip->isFinished == false)
+										simon1->whip->isFinished = true;
+
+									if (simon1->isOnStairs == true)
+									{
+										simon1->StartUntouchable();
+									}
+									else
+									{
+										simon1->SetState(SIMON_STATE_HURT_RIGHT);
+									}
+
+								}
+						}
+					}
+
+
+		}
+		else
+			if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
+			{
+
+				float x, y;
+				simon1->GetPosition(x, y);
+				float x1, y1;
+				boss->GetPosition(x1, y1);
+				if (x < x1)
+				{
+					OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+					//	if (simon1->isUsing1stWeapon == true)
+					//		simon1->notUseWeapon();
+					if (simon1->whip->isFinished == false)
+						simon1->whip->isFinished = true;
+					if (simon1->isOnStairs == true)
+					{
+						simon1->StartUntouchable();
+					}
+					else
+					{
+						simon1->SetState(SIMON_STATE_HURT_LEFT);
+					}
+				}
+				else
+					if (x >= x1)
+					{
+						OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+						//	if (simon1->isUsing1stWeapon == true)
+						//		simon1->notUseWeapon();
+						if (simon1->whip->isFinished == false)
+							simon1->whip->isFinished = true;
+						if (simon1->isOnStairs == true)
+						{
+							simon1->StartUntouchable();
+						}
+						else
+						{
+							simon1->SetState(SIMON_STATE_HURT_RIGHT);
+						}
+					}
+			}
+	}
+	
+
 
 }
 

@@ -1028,6 +1028,8 @@ void Scene1::LoadResources()
 
 void Scene1::Update(DWORD dt)
 {
+	if (time->x == 0)
+		simon->healthCount = 0;
 	time->Update(dt);
 	newGrid->getListOfObjects(listColliableObjects, camera);
 	listCheckBox.clear();

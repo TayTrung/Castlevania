@@ -237,11 +237,11 @@ void Panther::SetState(int state)
 	switch (state)
 	{
 	case PANTHER_STATE_ACTIVE_RIGHT:
-		vx = GHOU_WALKING_SPEED;
+		vx = 1.5*GHOU_WALKING_SPEED;
 		nx = 1;
 		break;
 	case PANTHER_STATE_ACTIVE_LEFT:
-		vx = -GHOU_WALKING_SPEED;
+		vx = -1.5*GHOU_WALKING_SPEED;
 		nx = -1;
 		break;
 	case PANTHER_STATE_JUMPING_LEFT:

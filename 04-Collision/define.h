@@ -195,6 +195,7 @@ enum eTag
 #define BOSS_STATE_MOVE_DOWN	130
 #define BOSS_STATE_ATTACK_RIGHT 140
 #define BOSS_STATE_ATTACK_LEFT	150
+#define BOSS_STATE_AFK			160
 
 #define BOSS_STATE_INACTIVE		200
 
@@ -285,6 +286,7 @@ enum eTag
 #define clockInside 13
 #define numbahInside 999
 #define potionInside 199
+#define healInside  200
 
 #define ID_TEX_HEALTH 656
 #define ID_TEX_SIMON 0
@@ -327,6 +329,7 @@ enum eTag
 #define ID_TEX_ITEM_AXE 140
 #define ID_TEX_ITEM_NUMBAH 150
 #define ID_TEX_ITEM_POTION 160
+#define ID_TEX_ITEM_HEAL 170
 
 #pragma region Scene2
 
@@ -346,7 +349,12 @@ enum eTag
 
 #define ITEM_MAX_TIME_DROP 3000
 #pragma endregion
+#pragma region Heal
 
+#define HEAL_BBOX_WIDTH 14
+#define HEAL_BBOX_HEIGHT 16
+
+#pragma endregion
 #pragma region Axe1
 
 #define AXE1_BBOX_WIDTH 15
@@ -545,7 +553,7 @@ enum eTag
 #pragma region Simon
 
 #define SIMON_WALKING_SPEED					0.1f 
-#define SIMON_JUMP_SPEED_Y					0.4f
+#define SIMON_JUMP_SPEED_Y					0.3f
 #define SIMON_JUMP_DEFLECT_SPEED			0.2f
 #define SIMON_GRAVITY						0.002f
 #define SIMON_DIE_DEFLECT_SPEED				0.5f

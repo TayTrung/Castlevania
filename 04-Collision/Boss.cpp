@@ -10,14 +10,17 @@ void Boss::Update(DWORD dt, Simon *simon1)
 	}
 	else
 	{
+
+		CGameObject::Update(dt);
+		x += dx;
+		y += dy;
+
 		if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
 		{
 			untouchable_start = 0;
 			untouchable = false;
 		}
-		CGameObject::Update(dt);
-		x += dx;
-		y += dy;
+
 		if (this->GetState() == BOSS_STATE_SLEEP)
 		{
 			if (simon1->x > this->x + 20)
@@ -25,6 +28,7 @@ void Boss::Update(DWORD dt, Simon *simon1)
 				this->SetState(BOSS_STATE_MOVE_DOWN);
 			}
 		}
+
 		if (this->GetState() == BOSS_STATE_MOVE_DOWN)
 		{
 			if ((simon1->y) < (150 - SIMON_BIG_BBOX_HEIGHT))
@@ -58,21 +62,30 @@ void Boss::Update(DWORD dt, Simon *simon1)
 		float z;
 		z = Camera::GetInstance()->GetPosition().x;
 
-		if (this->GetState() == BOSS_STATE_ATTACK_LEFT || this->GetState() == BOSS_STATE_ATTACK_RIGHT)
-		{
 
-			if (this->x < z)
+		if (tick == 2)
+		{
+			if (waitTime == 0)
 			{
-				if (this->y > 80 + offsetMap)
-				{
-					vx = -vx;
-					vy = -2 * vy;
-				}
-				else
-					this->SetState(BOSS_STATE_ATTACK_RIGHT);
+
+				xz = this->GetState();
+			}	
+			this->SetState(BOSS_STATE_AFK);
+			waitTime += dt;
+			if (waitTime > 2000)
+			{
+
+				this->SetState(xz);
+				fired = false;
+				waitTime = 0;
+				tick = 0;
 			}
-			else
-				if (this->x > z + SCREEN_WIDTH - BOSS_BBOX_WIDTH)
+		}
+		else
+		{
+			if (this->GetState() == BOSS_STATE_ATTACK_LEFT || this->GetState() == BOSS_STATE_ATTACK_RIGHT)
+			{
+				if (this->x < z)
 				{
 					if (this->y > 80 + offsetMap)
 					{
@@ -80,18 +93,61 @@ void Boss::Update(DWORD dt, Simon *simon1)
 						vy = -2 * vy;
 					}
 					else
-						this->SetState(BOSS_STATE_ATTACK_LEFT);
+					{
+						vx = 0;
+						vy = 0;
+						waitTime += dt;
+						if (waitTime > 1000)
+						{
+							this->SetState(BOSS_STATE_ATTACK_RIGHT);
+							waitTime = 0;
+							tick += 1;
+						}
+					}
 				}
 				else
-				{
-					/*	if ((simon1->y) < (123 + offsetMap) && simon1->isJumping==false && (simon1->GetState()!=SIMON_STATE_HURT_LEFT && simon1->GetState() != SIMON_STATE_HURT_RIGHT))
+					if (this->x > z + SCREEN_WIDTH - BOSS_BBOX_WIDTH)
+					{
+						if (this->y > 80 + offsetMap)
+						{
+							vx = -vx;
+							vy = -2 * vy;
+						}
+						else
+						{
+							vx = 0;
+							vy = 0;
+							waitTime += dt;
+							if (waitTime > 1000)
+							{
+								this->SetState(BOSS_STATE_ATTACK_LEFT);
+								waitTime = 0;
+								tick += 1;
+							}
+						}
+					}
+					else
+					{
+
 						{
 							if (this->y < offsetMap + 20)
 							{
+
 								if (simon1->x > this->x)
 								{
 									if (simon1->x - this->x > 130)
-										this->SetState(BOSS_STATE_ATTACK_RIGHT);
+									{
+										vx = 0;
+										vy = 0;
+										waitTime += dt;
+										if (waitTime > 1000)
+										{
+											this->SetState(BOSS_STATE_ATTACK_RIGHT);
+											waitTime = 0;
+											tick += 1;
+										}
+
+									}
 									else
 									{
 										this->vy = 0;
@@ -101,7 +157,17 @@ void Boss::Update(DWORD dt, Simon *simon1)
 								else
 								{
 									if (this->x - simon1->x > 130)
-										this->SetState(BOSS_STATE_ATTACK_LEFT);
+									{
+										vx = 0;
+										vy = 0;
+										waitTime += dt;
+										if (waitTime > 1000)
+										{
+											this->SetState(BOSS_STATE_ATTACK_LEFT);
+											waitTime = 0;
+											tick += 1;
+										}
+									}
 									else
 									{
 										this->vy = 0;
@@ -109,58 +175,33 @@ void Boss::Update(DWORD dt, Simon *simon1)
 									}
 								}
 							}
-							else
-							{
-								vx = 0;
-								vy = -GHOU_WALKING_SPEED;
-							}
-						}
-						else*/
-						//	if ((simon1->y) > (123+offsetMap ))
-					{
-						if (this->y < offsetMap + 20)
-						{
-
-							if (simon1->x > this->x)
-							{
-								if (simon1->x - this->x > 130)
-									this->SetState(BOSS_STATE_ATTACK_RIGHT);
-								else
-								{
-									this->vy = 0;
-									this->vx = -GHOU_WALKING_SPEED;
-								}
-							}
-							else
-							{
-								if (this->x - simon1->x > 130)
-									this->SetState(BOSS_STATE_ATTACK_LEFT);
-								else
-								{
-									this->vy = 0;
-									this->vx = GHOU_WALKING_SPEED;
-								}
-							}
 						}
 					}
-				}
+			}
 		}
-
 	}
-	
-	
+
 }
+	
+	
+
 
 void Boss::Render()
 {
 	int ani;
 	if(this->GetState()!=BOSS_STATE_INACTIVE)
 	{
+		if (this->GetState() == BOSS_STATE_AFK)
+		{
+			ani = BOSS_ANI_SLEEP;
+		}
+		else
 			if (this->GetState() != BOSS_STATE_SLEEP)
 			{
 				ani = BOSS_ANI_ATTACK;
 			}
 			else
+
 				ani = BOSS_ANI_SLEEP;
 			int alpha=255;
 			if (untouchable == true)
@@ -190,6 +231,10 @@ void Boss::SetState(int state)
 		vx = 0;
 		vy = GHOU_WALKING_SPEED;
 		break;
+	case BOSS_STATE_AFK:
+		vx = 0;
+		vy = 0;
+		break;
 	case BOSS_STATE_MOVE_UP:
 		vx = 0;
 		vy = -GHOU_WALKING_SPEED;
@@ -218,7 +263,9 @@ void Boss::GetBoundingBox(float & left, float & top, float & right, float & bott
 
 Boss::Boss()
 {
+	tick = 0;
 
+	hp = 2;
 }
 
 
