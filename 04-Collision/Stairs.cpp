@@ -5,7 +5,7 @@ void Stairs::Render()
 	{
 		{
 			//animations[0]->Render(x, y);
-			RenderBoundingBox(150);
+			//RenderBoundingBox(150);
 		}
 
 	}

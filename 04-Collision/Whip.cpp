@@ -159,5 +159,4 @@ void Whip::CreateWeapon(float x, float y, float nx)
 		this->SetState(WHIP_STATE_ACTIVE_RIGHT);
 	else
 		this->SetState(WHIP_STATE_ACTIVE_LEFT);
-
 }

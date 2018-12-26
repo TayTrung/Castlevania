@@ -191,11 +191,7 @@ void Boss::Render()
 	int ani;
 	if(this->GetState()!=BOSS_STATE_INACTIVE)
 	{
-		if (this->GetState() == BOSS_STATE_AFK)
-		{
-			ani = BOSS_ANI_SLEEP;
-		}
-		else
+		
 			if (this->GetState() != BOSS_STATE_SLEEP)
 			{
 				ani = BOSS_ANI_ATTACK;
@@ -207,7 +203,7 @@ void Boss::Render()
 			if (untouchable == true)
 			 alpha = 110;
 			animations[ani]->Render(x, y,alpha);
-			RenderBoundingBox(100);
+			//RenderBoundingBox(100);
 	}
 
 }

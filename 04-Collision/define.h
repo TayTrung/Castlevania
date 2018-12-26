@@ -20,9 +20,11 @@
 
 enum eTag
 {
+	STAIR,
 	STAIR_TOP,
 	STAIR_BOT,
 	TORCHES,
+	MainGround,
 	GROUND,
 	GROUND_ENEMY,
 	CHECK_BOX,
@@ -60,7 +62,6 @@ enum eTag
 #pragma endregion
 
 #pragma region Ground
-
 #define BRICKMAP11_BBOX_WIDTH 768
 #define BRICKMAP21_BBOX_WIDTH 1583
 #define BRICKMAP22_BBOX_WIDTH 304
@@ -471,6 +472,7 @@ enum eTag
 
 #define WHIP_STATE_ACTIVE_RIGHT 100
 #define WHIP_STATE_ACTIVE_LEFT	200
+
 #define WHIP_STATE_INACTIVE		300
 
 #define WHIP_ANI_LEFT  0

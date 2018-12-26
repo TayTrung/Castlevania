@@ -891,7 +891,9 @@ void Scene2::LoadResources()
 				if (simon1->clock->isOn)
 					board->typeOfWeaopon = 4;
 	board->SetPosition(0, 0);
+
 	camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
+
 	textures->Add(ID_TEX_MAP2, L"textures\\Map\\Map2.png", D3DCOLOR_XRGB(5, 5, 5));
 
 	map1 = new Map(ID_TEX_MAP2, "textures\\Map\\Map2.csv");
@@ -920,6 +922,7 @@ void Scene2::LoadResources()
 	textures->Add(ID_TEX_GROUND3, L"textures\\Ground\\ground3.png", D3DCOLOR_XRGB(176, 224, 248));
 	textures->Add(ID_TEX_GROUND4, L"textures\\Ground\\ground4.png", D3DCOLOR_XRGB(176, 224, 248));
 	textures->Add(ID_TEX_GROUND2, L"textures\\Ground\\ground2.png", D3DCOLOR_XRGB(176, 224, 248));
+	
 
 #pragma region Co-ordinations of Ground
 
@@ -940,17 +943,19 @@ void Scene2::LoadResources()
 	sprites->Add(20003, 0, 0, 16, 16, texGround4);
 
 #pragma endregion
-#pragma region Co-ordinations of Heal
-
-	LPDIRECT3DTEXTURE9 texHeal = textures->Get(ID_TEX_ITEM_HEAL);
-	sprites->Add(25554, 0, 0, 13, 15, texHeal);
-	sprites->Add(25555, 14, 0, 27, 15, texHeal);
-
-	ani = new CAnimation(100);//sleep
-	ani->Add(25554);
-	ani->Add(25555);
-	animations->Add(682, ani);
-#pragma endregion
+//
+//#pragma region Co-ordinations of Heal
+//
+//	LPDIRECT3DTEXTURE9 texHeal = textures->Get(ID_TEX_ITEM_HEAL);
+//	sprites->Add(25554, 0, 0, 13, 15, texHeal);
+//	sprites->Add(25555, 14, 0, 27, 15, texHeal);
+//
+//	ani = new CAnimation(100);//sleep
+//	ani->Add(25554);
+//	ani->Add(25555);
+//	animations->Add(682, ani);
+//#pragma endregion
+//
 #pragma region Co-ordinations of Candle
 
 	LPDIRECT3DTEXTURE9 texCandle = textures->Get(ID_TEX_CANDLE);
@@ -958,29 +963,29 @@ void Scene2::LoadResources()
 	sprites->Add(40002, 8, 0, 15, 15, texCandle);
 
 #pragma endregion
-
-#pragma region Co-ordinations of Door
-
-	LPDIRECT3DTEXTURE9 texDoor = textures->Get(ID_TEX_DOOR);
-	sprites->Add(40011, 1, 0, 8, 47, texDoor);
-	sprites->Add(40012, 48, 0, 87, 47, texDoor);
-
-#pragma endregion
-
-#pragma region Co-orrdiantions of Bat
-
-	LPDIRECT3DTEXTURE9 texBat = textures->Get(ID_TEX_BAT);
-
-	sprites->Add(22300, 48, 0, 63, 15, texBat);// left side
-	sprites->Add(22301, 32, 0, 47, 15, texBat);
-	sprites->Add(22302, 16, 0, 31, 15, texBat);
-
-	sprites->Add(22303, 0, 16, 15, 31, texBat);// right side
-	sprites->Add(22304, 16, 16, 31, 31, texBat);
-	sprites->Add(22305, 32, 16, 47, 31, texBat);
-
-#pragma endregion
-
+//
+//#pragma region Co-ordinations of Door
+//
+//	LPDIRECT3DTEXTURE9 texDoor = textures->Get(ID_TEX_DOOR);
+//	sprites->Add(40011, 1, 0, 8, 47, texDoor);
+//	sprites->Add(40012, 48, 0, 87, 47, texDoor);
+//
+//#pragma endregion
+//
+//#pragma region Co-orrdiantions of Bat
+//
+//	LPDIRECT3DTEXTURE9 texBat = textures->Get(ID_TEX_BAT);
+//
+//	sprites->Add(22300, 48, 0, 63, 15, texBat);// left side
+//	sprites->Add(22301, 32, 0, 47, 15, texBat);
+//	sprites->Add(22302, 16, 0, 31, 15, texBat);
+//
+//	sprites->Add(22303, 0, 16, 15, 31, texBat);// right side
+//	sprites->Add(22304, 16, 16, 31, 31, texBat);
+//	sprites->Add(22305, 32, 16, 47, 31, texBat);
+//
+//#pragma endregion
+//
 #pragma region Co-orrdiantions of Boss
 
 	LPDIRECT3DTEXTURE9 texBoss = textures->Get(ID_TEX_BOSS);
@@ -1007,868 +1012,871 @@ void Scene2::LoadResources()
 	//newGrid1->insertObjectIntoGrid(boss);
 	//listEnemy1.push_back(boss);
 #pragma endregion
-#pragma region Co-ordinations of Ghoul
-
-	LPDIRECT3DTEXTURE9 texGhoul = textures->Get(ID_TEX_GHOUL);
-	sprites->Add(22220, 0, 0, 15, 31, texGhoul); //right
-	sprites->Add(22221, 18, 0, 33, 31, texGhoul);
-
-	sprites->Add(22222, 0, 32, 15, 63, texGhoul);	//left
-	sprites->Add(22223, 18, 32, 33, 63, texGhoul);
-#pragma endregion
-
-#pragma region Co-ordinations of PAnth
-
-	LPDIRECT3DTEXTURE9 texPant = textures->Get(ID_TEX_PANTHER);
-	sprites->Add(60000, 64, 18, 95, 33, texPant);	//run right
-	sprites->Add(60001, 32, 18, 63, 33, texPant);
-
-	sprites->Add(60010, 32, 0, 63, 15, texPant);	//run left
-	sprites->Add(60011, 64, 0, 95, 15, texPant);
-
-	sprites->Add(60002, 96, 18, 127, 33, texPant);	//sit right
-
-	sprites->Add(60012, 0, 0, 31, 15, texPant);		//sit left
-
-
-	sprites->Add(60003, 0, 18, 31, 33, texPant);	//jump right
-
-	sprites->Add(60013, 96, 0, 127, 15, texPant);		//jump left
-
-
-
-#pragma endregion
-
-#pragma region Co-ordinations of Monster
-
-	LPDIRECT3DTEXTURE9 texMonster = textures->Get(ID_TEX_MONSTER);
-	sprites->Add(85555, 0, 0, 15, 31, texMonster);	//att left
-	sprites->Add(85556, 32, 32, 47, 63, texMonster); //att right
-
-	//active left
-	sprites->Add(85557, 16, 0, 31, 31, texMonster);
-	sprites->Add(85558, 32, 0, 47, 31, texMonster);
-	//active right
-	sprites->Add(85559, 16, 32, 31, 63, texMonster);
-	sprites->Add(85560, 0, 32, 15, 63, texMonster);
-
-	ani = new CAnimation(100);//active left
-	ani->Add(85557);
-	ani->Add(85558);
-	animations->Add(845, ani);
-
-	ani = new CAnimation(100);//active right
-	ani->Add(85559);
-	ani->Add(85560);
-	animations->Add(846, ani);
-
-	ani = new CAnimation(300);//atk right
-	ani->Add(85556);
-	ani->Add(85556);
-	animations->Add(847, ani);
-
-	ani = new CAnimation(300);//atk left
-	ani->Add(85555);
-	ani->Add(85555);
-	animations->Add(848, ani);
-
-
-	ani = new CAnimation(100);//Freeze left +underwater
-	ani->Add(85557);
-	animations->Add(849, ani);
-
-	ani = new CAnimation(100);//Freeze left
-	ani->Add(85559);
-	animations->Add(850, ani);
-
-
-#pragma endregion
-
-#pragma region Co of FireBall
-
-	LPDIRECT3DTEXTURE9 texFire = textures->Get(ID_TEX_FIREBALL);
-	sprites->Add(86666, 0, 0, 6, 5, texFire);	//left
-	sprites->Add(86667, 0, 6, 6, 11, texFire); //right
-
-	ani = new CAnimation(100);//active left
-	ani->Add(86666);
-	animations->Add(899, ani);
-
-	ani = new CAnimation(100);//active left
-	ani->Add(86666);
-	animations->Add(900, ani);
-
-	fire = new FireBall();
-	fire->AddAnimation(899);
-	fire->AddAnimation(900);
-
-#pragma endregion
-
-#pragma region Co-ordinations of SHeart
-
-	LPDIRECT3DTEXTURE9 texSHeart = textures->Get(ID_TEX_ITEM_SMALLHEART);
-	sprites->Add(23330, 0, 0, 8, 8, texSHeart);
-
-#pragma endregion
-
-#pragma region Co-ordinations of HolyWater
-
-	LPDIRECT3DTEXTURE9 texHoly = textures->Get(ID_TEX_ITEM_HOLY);
-	sprites->Add(23041, 0, 0, 15, 15, texHoly);
-
-#pragma endregion
-
-
-#pragma region Co-ordinations of Potion
-
-		LPDIRECT3DTEXTURE9 texPotion = textures->Get(ID_TEX_ITEM_POTION);
-		sprites->Add(25471, 290, 102, 302, 117, texPotion);
-
-
-		ani = new CAnimation(100);
-		ani->Add(25471);
-		animations->Add(987, ani);
-
-#pragma endregion
-#pragma region Co-ordinations of Numbah
-
-	LPDIRECT3DTEXTURE9 texNum = textures->Get(ID_TEX_ITEM_NUMBAH);
-	sprites->Add(48954, 0, 0, 13, 15, texNum);
-
-
-	ani = new CAnimation(100);
-	ani->Add(48954);
-	animations->Add(935, ani);
-
-#pragma endregion
-#pragma region Co-ordinations of Axe
-
-	LPDIRECT3DTEXTURE9 texAxe = textures->Get(ID_TEX_ITEM_AXE);
-	sprites->Add(23641, 0, 0, 14, 13, texAxe);
-
-#pragma endregion
-
-#pragma region Co-ordinations of Cross
-
-	LPDIRECT3DTEXTURE9 texCross = textures->Get(ID_TEX_ITEM_CROSS);
-	sprites->Add(23042, 0, 0, 15, 15, texCross);
-
-
-#pragma endregion
-
-#pragma region Co-ordinations of Chicken
-
-	LPDIRECT3DTEXTURE9 texChicken = textures->Get(ID_TEX_ITEM_CHICKEN);
-	sprites->Add(23331, 0, 0, 15, 12, texChicken);
-
-#pragma endregion
-
-
-
-#pragma region Adding item Axe1
-
-	ani = new CAnimation(100);
-	ani->Add(23641);
-	animations->Add(427, ani);
-
-
-#pragma endregion
-
-#pragma region Adding item Cross
-
-	ani = new CAnimation(100);
-	ani->Add(23042);
-	animations->Add(483, ani);
-
-
-#pragma endregion
-
-#pragma region Adding item HolyWater
-
-	ani = new CAnimation(100);
-	ani->Add(23041);
-	animations->Add(491, ani);
-
-
-#pragma endregion
-
-#pragma region Adding Small Heart
-
-	ani = new CAnimation(100);
-	ani->Add(23330);
-	animations->Add(482, ani);
-
-
-#pragma endregion
-
-#pragma region Adding Chicken
-
-	ani = new CAnimation(100);
-	ani->Add(23331);
-	animations->Add(490, ani);
-
-
-#pragma endregion
-
-#pragma region Adding Door
-
-	ani = new CAnimation(100);
-	ani->Add(40011);
-	animations->Add(495, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(40012);
-	animations->Add(496, ani);
-#pragma endregion
-
-#pragma region Adding Bat
-	ani = new CAnimation(200);
-	ani->Add(22300);
-	ani->Add(22301);
-	ani->Add(22302);
-	animations->Add(020, ani);
-
-	ani = new CAnimation(200);
-	ani->Add(22303);
-	ani->Add(22304);
-	ani->Add(22305);
-	animations->Add(021, ani);
-	
-	ani = new CAnimation(200);
-	ani->Add(22300);
-	animations->Add(022, ani);
-
-	ani = new CAnimation(200);
-	ani->Add(22303);
-	animations->Add(023, ani);
-#pragma endregion
-
-#pragma region Ađing Effect
-
-	effectFire1 = new EffectFire();
-
-	effectBag1 = new EffectBag();
-	effectBag1->AddAnimation(579);
-	effectBag1->AddAnimation(580);
-	effectBag1->AddAnimation(581);
-	effectBag1->AddAnimation(582);
-#pragma endregion
-		
-#pragma region Adding Ghou
-
-	ani = new CAnimation(100); // right
-	ani->Add(22222);
-	ani->Add(22223);
-	animations->Add(531, ani);
-
-	ani = new CAnimation(100);//left
-	ani->Add(22220);
-	ani->Add(22221);
-	animations->Add(532, ani);
-
-	ani = new CAnimation(100); //freeze right
-	ani->Add(22222);
-	animations->Add(533, ani);
-
-	ani = new CAnimation(100);//freeze left
-	ani->Add(22220);
-	animations->Add(534, ani);
-
-	
-#pragma endregion
-
-#pragma region Adding Panther
-
-	ani = new CAnimation(100); //run right
-	ani->Add(60000);
-	ani->Add(60001);
-	ani->Add(60003);
-	animations->Add(550, ani);
-
-	ani = new CAnimation(100); //run left
-	ani->Add(60010);
-	ani->Add(60011);
-	ani->Add(60013);
-	animations->Add(551, ani);
-
-	ani = new CAnimation(100); //sit right
-	ani->Add(60002);
-	animations->Add(552, ani);
-	
-	ani = new CAnimation(100); //sit left
-	ani->Add(60012);
-	animations->Add(553, ani);
-
-	ani = new CAnimation(100); //jump right
-	ani->Add(60003);
-	animations->Add(554, ani);
-	
-	ani = new CAnimation(100);//jump left
-	ani->Add(60013);
-	animations->Add(555, ani);
-
-#pragma endregion
-		 
-#pragma region Adding Small Candle
-		
+//
+//#pragma region Co-ordinations of Ghoul
+//
+//	LPDIRECT3DTEXTURE9 texGhoul = textures->Get(ID_TEX_GHOUL);
+//	sprites->Add(22220, 0, 0, 15, 31, texGhoul); //right
+//	sprites->Add(22221, 18, 0, 33, 31, texGhoul);
+//
+//	sprites->Add(22222, 0, 32, 15, 63, texGhoul);	//left
+//	sprites->Add(22223, 18, 32, 33, 63, texGhoul);
+//#pragma endregion
+//
+//#pragma region Co-ordinations of PAnth
+//
+//	LPDIRECT3DTEXTURE9 texPant = textures->Get(ID_TEX_PANTHER);
+//	sprites->Add(60000, 64, 18, 95, 33, texPant);	//run right
+//	sprites->Add(60001, 32, 18, 63, 33, texPant);
+//
+//	sprites->Add(60010, 32, 0, 63, 15, texPant);	//run left
+//	sprites->Add(60011, 64, 0, 95, 15, texPant);
+//
+//	sprites->Add(60002, 96, 18, 127, 33, texPant);	//sit right
+//
+//	sprites->Add(60012, 0, 0, 31, 15, texPant);		//sit left
+//
+//
+//	sprites->Add(60003, 0, 18, 31, 33, texPant);	//jump right
+//
+//	sprites->Add(60013, 96, 0, 127, 15, texPant);		//jump left
+//
+//
+//
+//#pragma endregion
+//
+//#pragma region Co-ordinations of Monster
+//
+//	LPDIRECT3DTEXTURE9 texMonster = textures->Get(ID_TEX_MONSTER);
+//	sprites->Add(85555, 0, 0, 15, 31, texMonster);	//att left
+//	sprites->Add(85556, 32, 32, 47, 63, texMonster); //att right
+//
+//	//active left
+//	sprites->Add(85557, 16, 0, 31, 31, texMonster);
+//	sprites->Add(85558, 32, 0, 47, 31, texMonster);
+//	//active right
+//	sprites->Add(85559, 16, 32, 31, 63, texMonster);
+//	sprites->Add(85560, 0, 32, 15, 63, texMonster);
+//
+//	ani = new CAnimation(100);//active left
+//	ani->Add(85557);
+//	ani->Add(85558);
+//	animations->Add(845, ani);
+//
+//	ani = new CAnimation(100);//active right
+//	ani->Add(85559);
+//	ani->Add(85560);
+//	animations->Add(846, ani);
+//
+//	ani = new CAnimation(300);//atk right
+//	ani->Add(85556);
+//	ani->Add(85556);
+//	animations->Add(847, ani);
+//
+//	ani = new CAnimation(300);//atk left
+//	ani->Add(85555);
+//	ani->Add(85555);
+//	animations->Add(848, ani);
+//
+//
+//	ani = new CAnimation(100);//Freeze left +underwater
+//	ani->Add(85557);
+//	animations->Add(849, ani);
+//
+//	ani = new CAnimation(100);//Freeze left
+//	ani->Add(85559);
+//	animations->Add(850, ani);
+//
+//
+//#pragma endregion
+//
+//#pragma region Co of FireBall
+//
+//	LPDIRECT3DTEXTURE9 texFire = textures->Get(ID_TEX_FIREBALL);
+//	sprites->Add(86666, 0, 0, 6, 5, texFire);	//left
+//	sprites->Add(86667, 0, 6, 6, 11, texFire); //right
+//
+//	ani = new CAnimation(100);//active left
+//	ani->Add(86666);
+//	animations->Add(899, ani);
+//
+//	ani = new CAnimation(100);//active left
+//	ani->Add(86666);
+//	animations->Add(900, ani);
+//
+//	fire = new FireBall();
+//	fire->AddAnimation(899);
+//	fire->AddAnimation(900);
+//
+//#pragma endregion
+//
+//#pragma region Co-ordinations of SHeart
+//
+//	LPDIRECT3DTEXTURE9 texSHeart = textures->Get(ID_TEX_ITEM_SMALLHEART);
+//	sprites->Add(23330, 0, 0, 8, 8, texSHeart);
+//
+//#pragma endregion
+//
+//#pragma region Co-ordinations of HolyWater
+//
+//	LPDIRECT3DTEXTURE9 texHoly = textures->Get(ID_TEX_ITEM_HOLY);
+//	sprites->Add(23041, 0, 0, 15, 15, texHoly);
+//
+//#pragma endregion
+//
+//
+//#pragma region Co-ordinations of Potion
+//
+//		LPDIRECT3DTEXTURE9 texPotion = textures->Get(ID_TEX_ITEM_POTION);
+//		sprites->Add(25471, 290, 102, 302, 117, texPotion);
+//
+//
+//		ani = new CAnimation(100);
+//		ani->Add(25471);
+//		animations->Add(987, ani);
+//
+//#pragma endregion
+//#pragma region Co-ordinations of Numbah
+//
+//	LPDIRECT3DTEXTURE9 texNum = textures->Get(ID_TEX_ITEM_NUMBAH);
+//	sprites->Add(48954, 0, 0, 13, 15, texNum);
+//
+//
+//	ani = new CAnimation(100);
+//	ani->Add(48954);
+//	animations->Add(935, ani);
+//
+//#pragma endregion
+//#pragma region Co-ordinations of Axe
+//
+//	LPDIRECT3DTEXTURE9 texAxe = textures->Get(ID_TEX_ITEM_AXE);
+//	sprites->Add(23641, 0, 0, 14, 13, texAxe);
+//
+//#pragma endregion
+//
+//#pragma region Co-ordinations of Cross
+//
+//	LPDIRECT3DTEXTURE9 texCross = textures->Get(ID_TEX_ITEM_CROSS);
+//	sprites->Add(23042, 0, 0, 15, 15, texCross);
+//
+//
+//#pragma endregion
+//
+//#pragma region Co-ordinations of Chicken
+//
+//	LPDIRECT3DTEXTURE9 texChicken = textures->Get(ID_TEX_ITEM_CHICKEN);
+//	sprites->Add(23331, 0, 0, 15, 12, texChicken);
+//
+//#pragma endregion
+//
+//
+//
+//#pragma region Adding item Axe1
+//
+//	ani = new CAnimation(100);
+//	ani->Add(23641);
+//	animations->Add(427, ani);
+//
+//
+//#pragma endregion
+//
+//#pragma region Adding item Cross
+//
+//	ani = new CAnimation(100);
+//	ani->Add(23042);
+//	animations->Add(483, ani);
+//
+//
+//#pragma endregion
+//
+//#pragma region Adding item HolyWater
+//
+//	ani = new CAnimation(100);
+//	ani->Add(23041);
+//	animations->Add(491, ani);
+//
+//
+//#pragma endregion
+//
+//#pragma region Adding Small Heart
+//
+//	ani = new CAnimation(100);
+//	ani->Add(23330);
+//	animations->Add(482, ani);
+//
+//
+//#pragma endregion
+//
+//#pragma region Adding Chicken
+//
+//	ani = new CAnimation(100);
+//	ani->Add(23331);
+//	animations->Add(490, ani);
+//
+//
+//#pragma endregion
+//
+//#pragma region Adding Door
+//
+//	ani = new CAnimation(100);
+//	ani->Add(40011);
+//	animations->Add(495, ani);
+//
+//	ani = new CAnimation(100);
+//	ani->Add(40012);
+//	animations->Add(496, ani);
+//#pragma endregion
+//
+//#pragma region Adding Bat
+//	ani = new CAnimation(200);
+//	ani->Add(22300);
+//	ani->Add(22301);
+//	ani->Add(22302);
+//	animations->Add(020, ani);
+//
+//	ani = new CAnimation(200);
+//	ani->Add(22303);
+//	ani->Add(22304);
+//	ani->Add(22305);
+//	animations->Add(021, ani);
+//	
+//	ani = new CAnimation(200);
+//	ani->Add(22300);
+//	animations->Add(022, ani);
+//
+//	ani = new CAnimation(200);
+//	ani->Add(22303);
+//	animations->Add(023, ani);
+//#pragma endregion
+//
+//#pragma region Ađing Effect
+//
+//	effectFire1 = new EffectFire();
+//
+//	effectBag1 = new EffectBag();
+//	effectBag1->AddAnimation(579);
+//	effectBag1->AddAnimation(580);
+//	effectBag1->AddAnimation(581);
+//	effectBag1->AddAnimation(582);
+//#pragma endregion
+//		
+//#pragma region Adding Ghou
+//
+//	ani = new CAnimation(100); // right
+//	ani->Add(22222);
+//	ani->Add(22223);
+//	animations->Add(531, ani);
+//
+//	ani = new CAnimation(100);//left
+//	ani->Add(22220);
+//	ani->Add(22221);
+//	animations->Add(532, ani);
+//
+//	ani = new CAnimation(100); //freeze right
+//	ani->Add(22222);
+//	animations->Add(533, ani);
+//
+//	ani = new CAnimation(100);//freeze left
+//	ani->Add(22220);
+//	animations->Add(534, ani);
+//
+//	
+//#pragma endregion
+//
+//#pragma region Adding Panther
+//
+//	ani = new CAnimation(100); //run right
+//	ani->Add(60000);
+//	ani->Add(60001);
+//	ani->Add(60003);
+//	animations->Add(550, ani);
+//
+//	ani = new CAnimation(100); //run left
+//	ani->Add(60010);
+//	ani->Add(60011);
+//	ani->Add(60013);
+//	animations->Add(551, ani);
+//
+//	ani = new CAnimation(100); //sit right
+//	ani->Add(60002);
+//	animations->Add(552, ani);
+//	
+//	ani = new CAnimation(100); //sit left
+//	ani->Add(60012);
+//	animations->Add(553, ani);
+//
+//	ani = new CAnimation(100); //jump right
+//	ani->Add(60003);
+//	animations->Add(554, ani);
+//	
+//	ani = new CAnimation(100);//jump left
+//	ani->Add(60013);
+//	animations->Add(555, ani);
+//
+//#pragma endregion
+//		 
+//#pragma region Adding Small Candle
+//		
 		ani = new CAnimation(100);
 		ani->Add(40001);
 		ani->Add(40002);
 		animations->Add(476, ani);
-
-		for (int i = 0; i < 5; i++)
-		{
-		Torch *candle = new Torch(1);
-		candle->AddAnimation(476);
-		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
-		candle->SetPosition(29+i*(157-29), offsetMap +128);
-		newGrid1->insertObjectIntoGrid(candle);
-		//listTorches1.push_back(candle);
-
-		candle = new Torch(1);
-		candle->AddAnimation(476);
-		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
-		candle->SetPosition(92 + i * (220 - 92), offsetMap + 97);
-		newGrid1->insertObjectIntoGrid(candle);
-		//listTorches1.push_back(candle);
-		}
-		
-		Torch *candle = new Torch(1);
-		candle->AddAnimation(476);
-		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
-		candle->SetPosition(673,offsetMap+39);
-		newGrid1->insertObjectIntoGrid(candle);
-		//listTorches1.push_back(candle);
-
-		candle = new Torch(1);
-		candle->AddAnimation(476);
-		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
-		candle->SetPosition(735,130+offsetMap);
-
-		newGrid1->insertObjectIntoGrid(candle); 
-		//listTorches1.push_back(candle);
-
-		candle = new Torch(1);
-		candle->AddAnimation(476);
-		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
-		candle->SetPosition(799,offsetMap+8);
-
-		newGrid1->insertObjectIntoGrid(candle);
-		//listTorches1.push_back(candle);
-
-		candle = new Torch(1);
-		candle->AddAnimation(476);
-		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
-		candle->SetPosition(992, offsetMap + 39);
-		newGrid1->insertObjectIntoGrid(candle);
-		//		listTorches1.push_back(candle);
-	
-		candle = new Torch(1);
-		candle->AddAnimation(476);
-		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
-		candle->SetPosition(929, offsetMap + 130);
-		newGrid1->insertObjectIntoGrid(candle);
-		//listTorches1.push_back(candle);
-
-		for (int i = 0; i < 4; i++)
-		{
-			candle = new Torch(1);
-			candle->AddAnimation(476);
-			candle->SetState(CANDLE_STATE_ACTIVE);
-			candle->setItemInside(randomIteminside());
-			candle->SetPosition(1055+i*64, offsetMap + 130);
-			newGrid1->insertObjectIntoGrid(candle);
-			//listTorches1.push_back(candle);
-
-		}
-
-
-		candle = new Torch(1);
-		candle->AddAnimation(476);
-		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
-		candle->SetPosition(1366, offsetMap + 113);
-		newGrid1->insertObjectIntoGrid(candle);
-		//listTorches1.push_back(candle);
-		
-		candle = new Torch(1);
-		candle->AddAnimation(476);
-		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(randomIteminside());
-		candle->SetPosition(1437, offsetMap + 33);
-		newGrid1->insertObjectIntoGrid(candle);
-		//listTorches1.push_back(candle);
-
-		candle = new Torch(1);
-		candle->AddAnimation(476);
-		candle->SetState(CANDLE_STATE_ACTIVE);
-		candle->setItemInside(crossInside);
-		candle->SetPosition(1502, offsetMap + 4);
-		newGrid1->insertObjectIntoGrid(candle);
-		
-	//	listTorches1.push_back(candle);
-#pragma endregion
-
-#pragma region Adding Ground
-
-	ani = new CAnimation(100);
-	ani->Add(20001);
-
-	animations->Add(999, ani);
-
-	ani = new CAnimation(100);//ground 3
-	ani->Add(20002);
-	animations->Add(998, ani);
-
-	ani = new CAnimation(100);//ground 4
-	ani->Add(20003);
-	animations->Add(997, ani);
-	
-
-	ani = new CAnimation(100);
-	ani->Add(20004);
-
-	animations->Add(996, ani);
-	
-
-	// ground neen
-	Ground *ground = new Ground(1, BRICKMAP21_BBOX_WIDTH + BRICKMAP22_BBOX_WIDTH + BRICKMAP23_BBOX_WIDTH + 32);
-	ground->SetPosition(0, offsetMap + 160);
-	//listSurface1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-	
-	//Stage 1
-	//3 ground len cau thang 
-
-	ground = new Ground(1, 3 * 16);
-	ground->SetPosition(688, offsetMap + 160 - 16 * 4);
-	//listSurface1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	ground = new Ground(1, 10 * 16);
-	ground->SetPosition(688 + 4 * 16, offsetMap + 160 - 16 * 6);
-	newGrid1->insertObjectIntoGrid(ground);
-	//listSurface1.push_back(ground);
-
-
-	ground = new Ground(1, 6 * 16);
-	ground->SetPosition(688 + 15 * 16, offsetMap + 160 - 16 * 4);
-	newGrid1->insertObjectIntoGrid(ground);
-	//listSurface1.push_back(ground);
-	
-	//Box proceed to open door
-	ground = new Ground(0, 0);
-	ground->SetState(INVIS_STATE_OPENDOOR);
-	ground->SetPosition(1520, offsetMap + 43);
-	newGrid1->insertObjectIntoGrid(ground);
-	//listItem1.push_back(ground);
-
-	//Door
-	door = new Door();
-	door->SetState(DOOR_STATE_ACTIVE_CLOSED);
-	door->AddAnimation(495);
-	door->AddAnimation(496);
-	door->SetPosition(1528, offsetMap + 16);
-	//listSurface1.push_back(door);
-	newGrid1->insertObjectIntoGrid(door);
-	//listCheckBox1.push_back(door);
-	//Stage 2
-	//2 mieng ground chicken
-	groundEnemy = new GroundEnemy();
-	groundEnemy->AddAnimation(998);
-	groundEnemy->SetPosition(1792, offsetMap + 128);
-	groundEnemy->SetState(ITEM_STATE_ACTIVE);
-	//listEnemy1.push_back(groundEnemy);
-	newGrid1->insertObjectIntoGrid(groundEnemy);
-
-	groundEnemy = new GroundEnemy();
-	groundEnemy->AddAnimation(997);
-	groundEnemy->setItemInside(chickenInside);
-	groundEnemy->SetPosition(1792, offsetMap + 128+16);
-	groundEnemy->SetState(ITEM_STATE_ACTIVE);
-	//listEnemy1.push_back(groundEnemy);
-	newGrid1->insertObjectIntoGrid(groundEnemy);
-
-
-	//2 ground man 2
-
-	ground = new Ground(1, 17 * 16);
-	ground->SetPosition(1392, offsetMap + 160 - 16 * 6);
-	//listSurface1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	ground = new Ground(1, 3 * 16);
-	ground->SetPosition(1392+17*16, offsetMap + 160 - 16 * 4);
-	newGrid1->insertObjectIntoGrid(ground);
-	//listSurface1.push_back(ground);
-	
-
-
-	//box proceed to level underground
-
-	ground = new Ground(0, 0);
-	ground->SetState(INVIS_STATE_NEXT_LVL_UNDERGROUND);
-	ground->SetPosition(1616, 184+55);
-	//listItem1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	//Stage 3
-	//box to get out of level underground
-	ground = new Ground(0, 0);
-	ground->SetState(INVIS_STATE_UPPERGROUND);
-	ground->SetPosition(3192, offsetMap -5);
-	//listItem1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	//box to get to stage 2
-	ground = new Ground(0, 0);
-	ground->SetState(INVIS_STATE_STAGE2);
-	ground->SetPosition(3192-320, offsetMap - 5);
-	//listItem1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-	
-	ground = new Ground(0, 335);
-	ground->SetState(INVIS_STATE_DIE_BOX);
-	ground->SetPosition(2990, offsetMap+170);
-	//listItem1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	//2910 47
-	//Mieng ground 2 in UNderGround
-	ground = new Ground(1, 16 * 2);
-	ground->SetPosition(2910, offsetMap + 47);
-	listSurface1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	//MIeng to duoi chan
-	ground = new Ground(1, 16*14);
-	ground->SetPosition(2910-16*6, offsetMap + 47+16*2);
-	//listSurface1.push_back(ground);
-	//listSurfaceUnderGround.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	// Mieng 2 ke ben
-	ground = new Ground(1, 16 * 2);
-	ground->SetPosition(2910 - 16 * 6+16*16, offsetMap + 47 + 16 * 2);
-	//listSurface1.push_back(ground);
-	//listSurfaceUnderGround.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	//Mieng 10
-	ground = new Ground(1, 16 * 9);
-	ground->SetPosition(2910 - 16 * 6 + 16 * 20, offsetMap + 47 + 16 * 2);
-	//listSurface1.push_back(ground);
-	//listSurfaceUnderGround.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	//Mieng 2
-	ground = new Ground(1, 16 * 2);
-	ground->SetPosition(2910 - 16 * 6 + 16 * 30, offsetMap + 47 + 16 * 4);
-	//listSurface1.push_back(ground);
-	//listSurfaceUnderGround.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	//Mieng 2 o duoi cung
-	ground = new Ground(1, 16 * 2);
-	ground->SetPosition(2910 - 16 * 8 + 16 * 30, offsetMap + 47 + 16 * 6);
-	//listSurface1.push_back(ground);
-	//listSurfaceUnderGround.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	//1 mieng ground No ITem
-	groundEnemy1 = new GroundEnemy();
-	groundEnemy1->AddAnimation(996);
-	groundEnemy1->SetPosition(2910 - 16 * 7 + 16 * 30, offsetMap + 47 + 16 * 2);
-	groundEnemy1->SetState(ITEM_STATE_ACTIVE);
-	newGrid1->insertObjectIntoGrid(groundEnemy1);
-	//listEnemy1.push_back(groundEnemy1);
-	//listSurface1.push_back(groundEnemy1);
-	//listSurfaceUnderGround.push_back(groundEnemy1);
-
-	//Stage 4
-
-	//box proceed to level underground
-
-	ground = new Ground(0, 0);
-	ground->SetState(INVIS_STATE_NEXT_LVL_UNDERGROUND);
-	ground->SetPosition(1937, 184 + 55);
-	//listItem1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	ground = new Ground(1, 3 * 16);
-	ground->SetPosition(1888, offsetMap + 160 - 16 * 4);
-	//listSurface1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	ground = new Ground(1, 6 * 16);
-	ground->SetPosition(1792, offsetMap + 160 - 16 * 5);
-	//listSurface1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	ground = new Ground(1, 13 * 16);
-	ground->SetPosition(1952, offsetMap + 160 - 16 * 6);
+//
+//		for (int i = 0; i < 5; i++)
+//		{
+//		Torch *candle = new Torch(1);
+//		candle->AddAnimation(476);
+//		candle->SetState(CANDLE_STATE_ACTIVE);
+//		candle->setItemInside(clockInside);
+//		candle->SetPosition(29+i*(157-29), offsetMap +128);
+//		newGrid1->insertObjectIntoGrid(candle);
+//		//listTorches1.push_back(candle);
+//
+//		candle = new Torch(1);
+//		candle->AddAnimation(476);
+//		candle->SetState(CANDLE_STATE_ACTIVE);
+//		candle->setItemInside(randomIteminside());
+//		candle->SetPosition(92 + i * (220 - 92), offsetMap + 97);
+//		newGrid1->insertObjectIntoGrid(candle);
+//		//listTorches1.push_back(candle);
+//		}
+//		
+//		Torch *candle = new Torch(1);
+//		candle->AddAnimation(476);
+//		candle->SetState(CANDLE_STATE_ACTIVE);
+//		candle->setItemInside(randomIteminside());
+//		candle->SetPosition(673,offsetMap+39);
+//		newGrid1->insertObjectIntoGrid(candle);
+//		//listTorches1.push_back(candle);
+//
+//		candle = new Torch(1);
+//		candle->AddAnimation(476);
+//		candle->SetState(CANDLE_STATE_ACTIVE);
+//		candle->setItemInside(randomIteminside());
+//		candle->SetPosition(735,130+offsetMap);
+//
+//		newGrid1->insertObjectIntoGrid(candle); 
+//		//listTorches1.push_back(candle);
+//
+//		candle = new Torch(1);
+//		candle->AddAnimation(476);
+//		candle->SetState(CANDLE_STATE_ACTIVE);
+//		candle->setItemInside(randomIteminside());
+//		candle->SetPosition(799,offsetMap+8);
+//
+//		newGrid1->insertObjectIntoGrid(candle);
+//		//listTorches1.push_back(candle);
+//
+//		candle = new Torch(1);
+//		candle->AddAnimation(476);
+//		candle->SetState(CANDLE_STATE_ACTIVE);
+//		candle->setItemInside(randomIteminside());
+//		candle->SetPosition(992, offsetMap + 39);
+//		newGrid1->insertObjectIntoGrid(candle);
+//		//		listTorches1.push_back(candle);
+//	
+//		candle = new Torch(1);
+//		candle->AddAnimation(476);
+//		candle->SetState(CANDLE_STATE_ACTIVE);
+//		candle->setItemInside(randomIteminside());
+//		candle->SetPosition(929, offsetMap + 130);
+//		newGrid1->insertObjectIntoGrid(candle);
+//		//listTorches1.push_back(candle);
+//
+//		for (int i = 0; i < 4; i++)
+//		{
+//			candle = new Torch(1);
+//			candle->AddAnimation(476);
+//			candle->SetState(CANDLE_STATE_ACTIVE);
+//			candle->setItemInside(randomIteminside());
+//			candle->SetPosition(1055+i*64, offsetMap + 130);
+//			newGrid1->insertObjectIntoGrid(candle);
+//			//listTorches1.push_back(candle);
+//
+//		}
+//
+//
+//		candle = new Torch(1);
+//		candle->AddAnimation(476);
+//		candle->SetState(CANDLE_STATE_ACTIVE);
+//		candle->setItemInside(randomIteminside());
+//		candle->SetPosition(1366, offsetMap + 113);
+//		newGrid1->insertObjectIntoGrid(candle);
+//		//listTorches1.push_back(candle);
+//		
+//		candle = new Torch(1);
+//		candle->AddAnimation(476);
+//		candle->SetState(CANDLE_STATE_ACTIVE);
+//		candle->setItemInside(randomIteminside());
+//		candle->SetPosition(1437, offsetMap + 33);
+//		newGrid1->insertObjectIntoGrid(candle);
+//		//listTorches1.push_back(candle);
+//
+//		candle = new Torch(1);
+//		candle->AddAnimation(476);
+//		candle->SetState(CANDLE_STATE_ACTIVE);
+//		candle->setItemInside(crossInside);
+//		candle->SetPosition(1502, offsetMap + 4);
+//		newGrid1->insertObjectIntoGrid(candle);
+//		
+//	//	listTorches1.push_back(candle);
+//#pragma endregion
+//
+//#pragma region Adding Ground
+//
+//	ani = new CAnimation(100);
+//	ani->Add(20001);
+//
+//	animations->Add(999, ani);
+//
+//	ani = new CAnimation(100);//ground 3
+//	ani->Add(20002);
+//	animations->Add(998, ani);
+//
+//	ani = new CAnimation(100);//ground 4
+//	ani->Add(20003);
+//	animations->Add(997, ani);
+//	
+//
+//	ani = new CAnimation(100);
+//	ani->Add(20004);
+//
+//	animations->Add(996, ani);
+//	
+//
+//	// ground neen
+//	Ground *ground = new Ground(1, BRICKMAP21_BBOX_WIDTH + BRICKMAP22_BBOX_WIDTH + BRICKMAP23_BBOX_WIDTH + 32);
+//	ground->SetPosition(0, offsetMap + 160);
+//	//listSurface1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//	
+//	//Stage 1
+//	//3 ground len cau thang 
+//
+//	ground = new Ground(1, 3 * 16);
+//	ground->SetPosition(688, offsetMap + 160 - 16 * 4);
+//	//listSurface1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	ground = new Ground(1, 10 * 16);
+//	ground->SetPosition(688 + 4 * 16, offsetMap + 160 - 16 * 6);
+//	newGrid1->insertObjectIntoGrid(ground);
+//	//listSurface1.push_back(ground);
+//
+//
+//	ground = new Ground(1, 6 * 16);
+//	ground->SetPosition(688 + 15 * 16, offsetMap + 160 - 16 * 4);
+//	newGrid1->insertObjectIntoGrid(ground);
+//	//listSurface1.push_back(ground);
+//	
+//	//Box proceed to open door
+//	ground = new Ground(0, 0);
+//	ground->SetState(INVIS_STATE_OPENDOOR);
+//	ground->SetPosition(1520, offsetMap + 43);
+//	newGrid1->insertObjectIntoGrid(ground);
+//	//listItem1.push_back(ground);
+//
+//	//Door
+//	door = new Door();
+//	door->SetState(DOOR_STATE_ACTIVE_CLOSED);
+//	door->AddAnimation(495);
+//	door->AddAnimation(496);
+//	door->SetPosition(1528, offsetMap + 16);
+//	//listSurface1.push_back(door);
+//	newGrid1->insertObjectIntoGrid(door);
+//	//listCheckBox1.push_back(door);
+//	//Stage 2
+//	//2 mieng ground chicken
+//	groundEnemy = new GroundEnemy();
+//	groundEnemy->AddAnimation(998);
+//	groundEnemy->SetPosition(1792, offsetMap + 128);
+//	groundEnemy->SetState(ITEM_STATE_ACTIVE);
+//	//listEnemy1.push_back(groundEnemy);
+//	newGrid1->insertObjectIntoGrid(groundEnemy);
+//
+//	groundEnemy = new GroundEnemy();
+//	groundEnemy->AddAnimation(997);
+//	groundEnemy->setItemInside(chickenInside);
+//	groundEnemy->SetPosition(1792, offsetMap + 128+16);
+//	groundEnemy->SetState(ITEM_STATE_ACTIVE);
+//	//listEnemy1.push_back(groundEnemy);
+//	newGrid1->insertObjectIntoGrid(groundEnemy);
+//
+//
+//	//2 ground man 2
+//
+//	ground = new Ground(1, 17 * 16);
+//	ground->SetPosition(1392, offsetMap + 160 - 16 * 6);
+//	//listSurface1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	ground = new Ground(1, 3 * 16);
+//	ground->SetPosition(1392+17*16, offsetMap + 160 - 16 * 4);
+//	newGrid1->insertObjectIntoGrid(ground);
+//	//listSurface1.push_back(ground);
+//	
+//
+//
+//	//box proceed to level underground
+//
+//	ground = new Ground(0, 0);
+//	ground->SetState(INVIS_STATE_NEXT_LVL_UNDERGROUND);
+//	ground->SetPosition(1616, 184+55);
+//	//listItem1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	//Stage 3
+//	//box to get out of level underground
+//	ground = new Ground(0, 0);
+//	ground->SetState(INVIS_STATE_UPPERGROUND);
+//	ground->SetPosition(3192, offsetMap -5);
+//	//listItem1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	//box to get to stage 2
+//	ground = new Ground(0, 0);
+//	ground->SetState(INVIS_STATE_STAGE2);
+//	ground->SetPosition(3192-320, offsetMap - 5);
+//	//listItem1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//	
+//	ground = new Ground(0, 335);
+//	ground->SetState(INVIS_STATE_DIE_BOX);
+//	ground->SetPosition(2990, offsetMap+170);
+//	//listItem1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	//2910 47
+//	//Mieng ground 2 in UNderGround
+//	ground = new Ground(1, 16 * 2);
+//	ground->SetPosition(2910, offsetMap + 47);
 //	listSurface1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	//MIeng to duoi chan
+//	ground = new Ground(1, 16*14);
+//	ground->SetPosition(2910-16*6, offsetMap + 47+16*2);
+//	//listSurface1.push_back(ground);
+//	//listSurfaceUnderGround.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	// Mieng 2 ke ben
+//	ground = new Ground(1, 16 * 2);
+//	ground->SetPosition(2910 - 16 * 6+16*16, offsetMap + 47 + 16 * 2);
+//	//listSurface1.push_back(ground);
+//	//listSurfaceUnderGround.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	//Mieng 10
+//	ground = new Ground(1, 16 * 9);
+//	ground->SetPosition(2910 - 16 * 6 + 16 * 20, offsetMap + 47 + 16 * 2);
+//	//listSurface1.push_back(ground);
+//	//listSurfaceUnderGround.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	//Mieng 2
+//	ground = new Ground(1, 16 * 2);
+//	ground->SetPosition(2910 - 16 * 6 + 16 * 30, offsetMap + 47 + 16 * 4);
+//	//listSurface1.push_back(ground);
+//	//listSurfaceUnderGround.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	//Mieng 2 o duoi cung
+//	ground = new Ground(1, 16 * 2);
+//	ground->SetPosition(2910 - 16 * 8 + 16 * 30, offsetMap + 47 + 16 * 6);
+//	//listSurface1.push_back(ground);
+//	//listSurfaceUnderGround.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	//1 mieng ground No ITem
+//	groundEnemy1 = new GroundEnemy();
+//	groundEnemy1->AddAnimation(996);
+//	groundEnemy1->SetPosition(2910 - 16 * 7 + 16 * 30, offsetMap + 47 + 16 * 2);
+//	groundEnemy1->SetState(ITEM_STATE_ACTIVE);
+//	newGrid1->insertObjectIntoGrid(groundEnemy1);
+//	//listEnemy1.push_back(groundEnemy1);
+//	//listSurface1.push_back(groundEnemy1);
+//	//listSurfaceUnderGround.push_back(groundEnemy1);
+//
+//	//Stage 4
+//
+//	//box proceed to level underground
+//
+//	ground = new Ground(0, 0);
+//	ground->SetState(INVIS_STATE_NEXT_LVL_UNDERGROUND);
+//	ground->SetPosition(1937, 184 + 55);
+//	//listItem1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	ground = new Ground(1, 3 * 16);
+//	ground->SetPosition(1888, offsetMap + 160 - 16 * 4);
+//	//listSurface1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	ground = new Ground(1, 6 * 16);
+//	ground->SetPosition(1792, offsetMap + 160 - 16 * 5);
+//	//listSurface1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	ground = new Ground(1, 13 * 16);
+//	ground->SetPosition(1952, offsetMap + 160 - 16 * 6);
+////	listSurface1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//
+//	//Stage 5
+//
+//	//Box proceed to open door
+//	ground = new Ground(0, 0);
+//	ground->SetState(INVIS_STATE_OPENDOOR2);
+//	ground->SetPosition(1520 + 514, offsetMap + 43);
+//	//listItem1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	//Door
+//	door1 = new Door();
+//	door1->SetState(DOOR_STATE_ACTIVE_CLOSED);
+//	door1->AddAnimation(495);
+//	door1->AddAnimation(496);
+//	door1->SetPosition(1528 + 514, offsetMap + 16);
+//	//listSurface1.push_back(door1);
+//	newGrid1->insertObjectIntoGrid(door1);
+//
+//	ground = new Ground(1, 11 * 16);
+//	ground->SetPosition(2176, offsetMap + 160 - 16 * 4);
+//	//listSurface1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	ground = new Ground(1, 3 * 16);
+//	ground->SetPosition(2768, offsetMap + 160 - 16 * 4);
+//	//listSurface1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	ground = new Ground(1, 1 * 16);
+//	ground->SetPosition(2720, offsetMap + 160 - 16 * 2);
+//	//listSurface1.push_back(ground);
+//	newGrid1->insertObjectIntoGrid(ground);
+//
+//	//1 mieng ground item 2nd
+//	groundEnemy1 = new GroundEnemy();
+//	groundEnemy1->AddAnimation(996);
+//	groundEnemy1->setItemInside(numbahInside);
+//	groundEnemy1->SetPosition(2735, offsetMap + 128);
+//	groundEnemy1->SetState(ITEM_STATE_ACTIVE);
+//
+//	newGrid1->insertObjectIntoGrid(groundEnemy1);
+//	//listEnemy1.push_back(groundEnemy1);
+//	//listSurface1.push_back(groundEnemy1);
+//
+//#pragma endregion
+//
+//#pragma region spawnPanther
+//	pant = new Panther(15);
+//
+//	pant->AddAnimation(550);
+//	pant->AddAnimation(551);
+//
+//	pant->AddAnimation(552);
+//	pant->AddAnimation(553);
+//
+//	pant->AddAnimation(554);
+//	pant->AddAnimation(555);
+//
+//	pant->AddAnimation(554);
+//	pant->AddAnimation(555);
+//
+//	pant->AddAnimation(554);
+//	pant->AddAnimation(555);
+//
+//	pant->AddAnimation(552);//freeze sit right let
+//	pant->AddAnimation(553);
+//	pant->setItemInside(randomIteminside());
+//	pant->SetState(PANTHER_STATE_SIT_LEFT);
+//	pant->SetPosition(685, 0+ offsetMap);
+//	//listEnemy1.push_back(pant);
+//	newGrid1->insertObjectIntoGrid(pant);
+//
+//	pant = new Panther(8 * 20);
+//	pant->AddAnimation(550);
+//	pant->AddAnimation(551);
+//
+//	pant->AddAnimation(552);
+//	pant->AddAnimation(553);
+//
+//	pant->AddAnimation(554);
+//	pant->AddAnimation(555);
+//
+//	pant->AddAnimation(554);
+//	pant->AddAnimation(555);
+//
+//	pant->AddAnimation(554);
+//	pant->AddAnimation(555);
+//
+//	pant->AddAnimation(552);//freeze sit right let
+//	pant->AddAnimation(553);
+//	pant->setItemInside(randomIteminside());
+//	pant->SetState(PANTHER_STATE_SIT_LEFT);
+//	pant->SetPosition(880, 0+ offsetMap);
+//	//listEnemy1.push_back(pant);
+//	newGrid1->insertObjectIntoGrid(pant);
+//
+//	pant = new Panther(1 * 16);
+//	pant->AddAnimation(550);//right left
+//	pant->AddAnimation(551);
+//
+//	pant->AddAnimation(552);//sit right left
+//	pant->AddAnimation(553);
+//
+//	pant->AddAnimation(554);//jump right left
+//	pant->AddAnimation(555);
+//
+//	pant->AddAnimation(554);//freeze right left
+//	pant->AddAnimation(555);
+//
+//	pant->AddAnimation(554);//freeze fly right let
+//	pant->AddAnimation(555);
+//
+//	pant->AddAnimation(552);//freeze sit right let
+//	pant->AddAnimation(553);
+//
+//	pant->setItemInside(randomIteminside());
+//	pant->SetState(PANTHER_STATE_SIT_LEFT);
+//	pant->SetPosition(945, 0+offsetMap );
+//	//listEnemy1.push_back(pant);
+//	newGrid1->insertObjectIntoGrid(pant);
+//
+//
+//#pragma endregion
+//
+//#pragma region Adding Stairs
+//		//1=right , 2 = left
+//		////1st stair
+//		stairs = new Stairs(1,true);
+//		stairs->SetPosition(611, offsetMap + 159);
+//		//listDownStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		stairs = new Stairs(2,false);
+//		stairs->SetPosition(675, offsetMap + 35);
+//		//listUpStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		//2nd stair
+//		stairs = new Stairs(1, true);
+//		stairs->SetPosition(707, offsetMap + 95);
+//		//listDownStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		stairs = new Stairs(2, false);
+//		stairs->SetPosition(752-14, offsetMap + 4);
+//		//listUpStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//		//1= right, 2 = left
+//		////3rd stair
+//		stairs = new Stairs(1, false);
+//		stairs->SetPosition(878+20, offsetMap + 4);
+//		//listUpStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		stairs = new Stairs(2, true);
+//		stairs->SetPosition(928, offsetMap + 95);
+//		//listDownStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		//4th stair
+//		stairs = new Stairs(1, true);
+//		stairs->SetPosition(1283, offsetMap + 159);
+//		//listDownStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		stairs = new Stairs(2, false);
+//		stairs->SetPosition(1392-14, offsetMap + 4);
+//		//listUpStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		//5th stair
+//		stairs = new Stairs(1, false);
+//		stairs->SetPosition(1698,  offsetMap + 35);
+//		//listUpStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//		//offsetMap + 160 - 16 * 4
+//		stairs = new Stairs(2, true);
+//		stairs->SetPosition(1762, offsetMap + 159);
+//		//listDownStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		//Stairs  to underwater
+//
+//		stairs = new Stairs(1, false);
+//		stairs->SetPosition(1698-8*16, offsetMap + 99);
+//		//listUpStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//		
+//		stairs = new Stairs(2, true);
+//		stairs->SetPosition(2910-16, offsetMap + 46);
+//		//listDownStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		//stairs out underwater
+//
+//	
+//		stairs = new Stairs(1, false);
+//		stairs->SetPosition(1888, offsetMap + 99);
+//	//	listUpStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		stairs = new Stairs(2, true);
+//		stairs->SetPosition(2914 - 16 * 6 + 16 * 27, offsetMap + 46 + 16 * 2);
+//		//listDownStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//
+//		//stairs stage 4
+//		stairs = new Stairs(1, false);
+//		stairs->SetPosition(1924, offsetMap + 35);
+//		//listUpStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		stairs = new Stairs(2, true);
+//		stairs->SetPosition(1986, offsetMap +159);
+//		//listDownStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//
+//		//stirs stage 5
+//		stairs = new Stairs(1, false);
+//		stairs->SetPosition(2148, offsetMap + 160 - 16 * 6-61);
+//		//listUpStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		stairs = new Stairs(2, true);
+//		stairs->SetPosition(2180, offsetMap + 159- 16 * 4);
+//		//listDownStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//		
+//
+//		stairs = new Stairs(1, false);
+//		stairs->SetPosition(2340, offsetMap + 160 - 16 * 4 - 61);
+//		//listUpStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		stairs = new Stairs(2, true);
+//		stairs->SetPosition(2404, offsetMap + 159);
+//		//listDownStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		stairs = new Stairs(2, false);
+//		stairs->SetPosition(2769-16, offsetMap + 160 - 16 * 4 - 61);
+//		//listUpStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//
+//		stairs = new Stairs(1, true);
+//		stairs->SetPosition(2720, offsetMap + 159-16*2);
+//		//listDownStairs1.push_back(stairs);
+//		newGrid1->insertObjectIntoGrid(stairs);
+//#pragma endregion
 
-
-	//Stage 5
-
-	//Box proceed to open door
-	ground = new Ground(0, 0);
-	ground->SetState(INVIS_STATE_OPENDOOR2);
-	ground->SetPosition(1520 + 514, offsetMap + 43);
-	//listItem1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	//Door
-	door1 = new Door();
-	door1->SetState(DOOR_STATE_ACTIVE_CLOSED);
-	door1->AddAnimation(495);
-	door1->AddAnimation(496);
-	door1->SetPosition(1528 + 514, offsetMap + 16);
-	//listSurface1.push_back(door1);
-	newGrid1->insertObjectIntoGrid(door1);
-
-	ground = new Ground(1, 11 * 16);
-	ground->SetPosition(2176, offsetMap + 160 - 16 * 4);
-	//listSurface1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	ground = new Ground(1, 3 * 16);
-	ground->SetPosition(2768, offsetMap + 160 - 16 * 4);
-	//listSurface1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	ground = new Ground(1, 1 * 16);
-	ground->SetPosition(2720, offsetMap + 160 - 16 * 2);
-	//listSurface1.push_back(ground);
-	newGrid1->insertObjectIntoGrid(ground);
-
-	//1 mieng ground item 2nd
-	groundEnemy1 = new GroundEnemy();
-	groundEnemy1->AddAnimation(996);
-	groundEnemy1->setItemInside(numbahInside);
-	groundEnemy1->SetPosition(2735, offsetMap + 128);
-	groundEnemy1->SetState(ITEM_STATE_ACTIVE);
-
-	newGrid1->insertObjectIntoGrid(groundEnemy1);
-	//listEnemy1.push_back(groundEnemy1);
-	//listSurface1.push_back(groundEnemy1);
-
-#pragma endregion
-
-#pragma region spawnPanther
-	pant = new Panther(15);
-
-	pant->AddAnimation(550);
-	pant->AddAnimation(551);
-
-	pant->AddAnimation(552);
-	pant->AddAnimation(553);
-
-	pant->AddAnimation(554);
-	pant->AddAnimation(555);
-
-	pant->AddAnimation(554);
-	pant->AddAnimation(555);
-
-	pant->AddAnimation(554);
-	pant->AddAnimation(555);
-
-	pant->AddAnimation(552);//freeze sit right let
-	pant->AddAnimation(553);
-	pant->setItemInside(randomIteminside());
-	pant->SetState(PANTHER_STATE_SIT_LEFT);
-	pant->SetPosition(685, 0+ offsetMap);
-	//listEnemy1.push_back(pant);
-	newGrid1->insertObjectIntoGrid(pant);
-
-	pant = new Panther(8 * 20);
-	pant->AddAnimation(550);
-	pant->AddAnimation(551);
-
-	pant->AddAnimation(552);
-	pant->AddAnimation(553);
-
-	pant->AddAnimation(554);
-	pant->AddAnimation(555);
-
-	pant->AddAnimation(554);
-	pant->AddAnimation(555);
-
-	pant->AddAnimation(554);
-	pant->AddAnimation(555);
-
-	pant->AddAnimation(552);//freeze sit right let
-	pant->AddAnimation(553);
-	pant->setItemInside(randomIteminside());
-	pant->SetState(PANTHER_STATE_SIT_LEFT);
-	pant->SetPosition(880, 0+ offsetMap);
-	//listEnemy1.push_back(pant);
-	newGrid1->insertObjectIntoGrid(pant);
-
-	pant = new Panther(1 * 16);
-	pant->AddAnimation(550);//right left
-	pant->AddAnimation(551);
-
-	pant->AddAnimation(552);//sit right left
-	pant->AddAnimation(553);
-
-	pant->AddAnimation(554);//jump right left
-	pant->AddAnimation(555);
-
-	pant->AddAnimation(554);//freeze right left
-	pant->AddAnimation(555);
-
-	pant->AddAnimation(554);//freeze fly right let
-	pant->AddAnimation(555);
-
-	pant->AddAnimation(552);//freeze sit right let
-	pant->AddAnimation(553);
-
-	pant->setItemInside(randomIteminside());
-	pant->SetState(PANTHER_STATE_SIT_LEFT);
-	pant->SetPosition(945, 0+offsetMap );
-	//listEnemy1.push_back(pant);
-	newGrid1->insertObjectIntoGrid(pant);
-
-
-#pragma endregion
-
-#pragma region Adding Stairs
-		//1=right , 2 = left
-		////1st stair
-		stairs = new Stairs(1,true);
-		stairs->SetPosition(611, offsetMap + 159);
-		//listDownStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		stairs = new Stairs(2,false);
-		stairs->SetPosition(675, offsetMap + 35);
-		//listUpStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		//2nd stair
-		stairs = new Stairs(1, true);
-		stairs->SetPosition(707, offsetMap + 95);
-		//listDownStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		stairs = new Stairs(2, false);
-		stairs->SetPosition(752-14, offsetMap + 4);
-		//listUpStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-		//1= right, 2 = left
-		////3rd stair
-		stairs = new Stairs(1, false);
-		stairs->SetPosition(878+20, offsetMap + 4);
-		//listUpStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		stairs = new Stairs(2, true);
-		stairs->SetPosition(928, offsetMap + 95);
-		//listDownStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		//4th stair
-		stairs = new Stairs(1, true);
-		stairs->SetPosition(1283, offsetMap + 159);
-		//listDownStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		stairs = new Stairs(2, false);
-		stairs->SetPosition(1392-14, offsetMap + 4);
-		//listUpStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		//5th stair
-		stairs = new Stairs(1, false);
-		stairs->SetPosition(1698,  offsetMap + 35);
-		//listUpStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-		//offsetMap + 160 - 16 * 4
-		stairs = new Stairs(2, true);
-		stairs->SetPosition(1762, offsetMap + 159);
-		//listDownStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		//Stairs  to underwater
-
-		stairs = new Stairs(1, false);
-		stairs->SetPosition(1698-8*16, offsetMap + 99);
-		//listUpStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-		
-		stairs = new Stairs(2, true);
-		stairs->SetPosition(2910-16, offsetMap + 46);
-		//listDownStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		//stairs out underwater
-
-	
-		stairs = new Stairs(1, false);
-		stairs->SetPosition(1888, offsetMap + 99);
-	//	listUpStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		stairs = new Stairs(2, true);
-		stairs->SetPosition(2914 - 16 * 6 + 16 * 27, offsetMap + 46 + 16 * 2);
-		//listDownStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-
-		//stairs stage 4
-		stairs = new Stairs(1, false);
-		stairs->SetPosition(1924, offsetMap + 35);
-		//listUpStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		stairs = new Stairs(2, true);
-		stairs->SetPosition(1986, offsetMap +159);
-		//listDownStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-
-		//stirs stage 5
-		stairs = new Stairs(1, false);
-		stairs->SetPosition(2148, offsetMap + 160 - 16 * 6-61);
-		//listUpStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		stairs = new Stairs(2, true);
-		stairs->SetPosition(2180, offsetMap + 159- 16 * 4);
-		//listDownStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-		
-
-		stairs = new Stairs(1, false);
-		stairs->SetPosition(2340, offsetMap + 160 - 16 * 4 - 61);
-		//listUpStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		stairs = new Stairs(2, true);
-		stairs->SetPosition(2404, offsetMap + 159);
-		//listDownStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		stairs = new Stairs(2, false);
-		stairs->SetPosition(2769-16, offsetMap + 160 - 16 * 4 - 61);
-		//listUpStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-
-		stairs = new Stairs(1, true);
-		stairs->SetPosition(2720, offsetMap + 159-16*2);
-		//listDownStairs1.push_back(stairs);
-		newGrid1->insertObjectIntoGrid(stairs);
-#pragma endregion
+newGrid1->readObjectFromTextFile(listColliableObjects1, "textures\\Objects2.txt");
 }
 void Scene2::XuLyPanthera()
 {
@@ -2048,6 +2056,7 @@ void Scene2::Update(DWORD dt)
 					simon1->playerLife -= 1;
 					simon1->CGameObject::SetState(SIMON_STATE_IDLE);
 					simon1->healthCount = 16;
+					simon1->isOnStairs = false;
 					if (stage == 1)
 					{
 						simon1->SetPosition(50, 0);
@@ -2094,6 +2103,7 @@ void Scene2::Update(DWORD dt)
 	listUpStairs1.clear();
 	listDownStairs1.clear();
 	listTorches1.clear(); 
+	listPanther.clear();
 	listGroundEnemy.clear();
 	listDoor.clear();
 	for (int i = 0; i < listColliableObjects1.size(); i++)
@@ -2155,7 +2165,7 @@ void Scene2::Update(DWORD dt)
 	board->healthCount = simon1->healthCount;
 	board->playerLife = simon1->playerLife;
 	board->stage = simon1->stage;
-	board->bossHealth = boss->hp;
+	//board->bossHealth = boss->hp;
 	board->time = time1->x;
 	if (isEatingCross == true)
 	{
@@ -2759,31 +2769,31 @@ void Scene2::Render()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 		board->Render();
 		map1->drawTileMap(camera1, ID_TEX_MAP2);
-		for (int i = 0; i < listDownStairs1.size(); i++)
-			listDownStairs1[i]->Render();
-		for (int i = 0; i < listUpStairs1.size(); i++)
-			listUpStairs1[i]->Render();
-		for (int i = 0; i < listSurface1.size(); i++)
-			listSurface1[i]->Render();
+	//	for (int i = 0; i < listDownStairs1.size(); i++)
+		//	listDownStairs1[i]->Render();
+		//for (int i = 0; i < listUpStairs1.size(); i++)
+		//	listUpStairs1[i]->Render();
+		//for (int i = 0; i < listSurface1.size(); i++)
+		//	listSurface1[i]->Render();
 		for (int i = 0; i < listTorches1.size(); i++)
 			listTorches1[i]->Render();
-		for (int i = 0; i < listEnemy1.size(); i++)
-			listEnemy1[i]->Render();
-		for (int i = 0; i < listDoor.size(); i++)
-			listDoor[i]->Render();
-		boss->Render();
+		//for (int i = 0; i < listEnemy1.size(); i++)
+		//	listEnemy1[i]->Render();
+		//for (int i = 0; i < listDoor.size(); i++)
+		//	listDoor[i]->Render();
 		simon1->Render();
-		for (int i = 0; i < listEffectBag1.size(); i++)//render ietms
-			listEffectBag1[i]->Render();
-		for (int i = 0; i < listItem1.size(); i++)
-			listItem1[i]->Render();
-		for (int i = 0; i < listPanther.size(); i++)
-			listPanther[i]->Render();
+	//	for (int i = 0; i < listEffectBag1.size(); i++)//render ietms
+		//	listEffectBag1[i]->Render();
+	//	for (int i = 0; i < listItem1.size(); i++)
+	//		listItem1[i]->Render();
+	//	for (int i = 0; i < listPanther.size(); i++)
+	//		listPanther[i]->Render();
 		
-		for (int i = 0; i < listGroundEnemy.size(); i++)
-			listGroundEnemy[i]->Render();
-		for (int i = 0; i < listEffectFire1.size(); i++)
-			listEffectFire1[i]->Render();
+	//	for (int i = 0; i < listGroundEnemy.size(); i++)
+	//		listGroundEnemy[i]->Render();
+	//	boss->Render();
+	//	for (int i = 0; i < listEffectFire1.size(); i++)
+	//		listEffectFire1[i]->Render();
 		simon1->dagger->Render();
 		simon1->axe->Render();
 		simon1->holy->Render();
@@ -2804,11 +2814,11 @@ void Scene2::Render()
 
 int Scene2::randomIteminside()
 {//ti le la  12 sHeart : 2 bHeart: 2 mStar : 1 hWater : 1 cross
-//	: 1 redBag : 1 whiteBag : 1 blueBag : 1 axe : 1 watch :1 dagger : 1chicken
+ //	: 1 redBag : 1 whiteBag : 1 blueBag : 1 axe : 1 watch :1 dagger : 1chicken
 	int randomNumber;
 	randomNumber = rand() % 25;
 	if (randomNumber == 0 || randomNumber == 1 || randomNumber == 2 || randomNumber == 3 ||
-		randomNumber == 18 || randomNumber ==17 || randomNumber == 19 || randomNumber == 20 ||
+		randomNumber == 18 || randomNumber == 17 || randomNumber == 19 || randomNumber == 20 ||
 		randomNumber == 21 || randomNumber == 22 || randomNumber == 23 || randomNumber == 24)
 	{
 		return smallheartInside;
@@ -4251,7 +4261,6 @@ void Scene2::spawnItemsAfterEffect()
 				listItem1.push_back(potion);
 				break;
 			case healInside:
-
 				heal = new Heal();
 				heal->AddAnimation(682);
 				heal->SetState(ITEM_STATE_ACTIVE);
@@ -4459,122 +4468,23 @@ void Scene2::CollisionBetSimonAndEnemy()
 					}
 				}
 		}
-	}
-	//withboss
-	if (boss->GetState() != BOSS_STATE_INACTIVE)
-	{
-		float al, at, ar, ab;
-		float bl, bt, br, bb;
-		boss->GetBoundingBox(al, at, ar, ab);
-		simon1->GetBoundingBox(bl, bt, br, bb);
 
-		LPCOLLISIONEVENT e = simon1->SweptAABBEx(boss);
-
-		if (e->t > 0 && e->t <= 1.0f)
+		//withboss
+		if (boss->GetState() != BOSS_STATE_INACTIVE)
 		{
-			if (e->nx == -1)
+			float al, at, ar, ab;
+			float bl, bt, br, bb;
+			boss->GetBoundingBox(al, at, ar, ab);
+			simon1->GetBoundingBox(bl, bt, br, bb);
+
+			LPCOLLISIONEVENT e = simon1->SweptAABBEx(boss);
+
+			if (e->t > 0 && e->t <= 1.0f)
 			{
-
-				OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
-				if (simon1->whip->isFinished == false)
-					simon1->whip->isFinished = true;
-				if (simon1->isOnStairs == true)
+				if (e->nx == -1)
 				{
-					simon1->StartUntouchable();
-				}
-				else
-				{
-					simon1->SetState(SIMON_STATE_HURT_LEFT);
 
-				}
-				//	if (simon1->nx = 1)
-				//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
-				//		else if(simon1->nx=-1)
-				//		simon1->SetState(SIMON_STATE_HURT_LEFT);
-				//simon->heartCount += 5;
-
-
-			}
-
-			else
-				if (e->nx == 1)
-				{
-					OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
-					//if (simon1->isUsingDagger == true)
-					//simon1->notUseDagger();
-					if (simon1->whip->isFinished == false)
-						simon1->whip->isFinished = true;
-					if (simon1->isOnStairs == true)
-					{
-						simon1->StartUntouchable();
-					}
-					else
-					{
-						simon1->SetState(SIMON_STATE_HURT_RIGHT);
-					}
-				}
-				else
-					if (e->nx == 0)
-					{
-						if (e->ny == -1)
-						{
-							float x, y;
-							simon1->GetPosition(x, y);
-							float x1, y1;
-							boss->GetPosition(x1, y1);
-							if (x < x1)
-							{
-								OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
-								//if (simon1->isUsingDagger == true)
-								//	simon1->notUseDagger();
-								if (simon1->whip->isFinished == false)
-									simon1->whip->isFinished = true;
-								if (simon1->isOnStairs == true)
-								{
-									simon1->StartUntouchable();
-								}
-								else
-								{
-									simon1->SetState(SIMON_STATE_HURT_LEFT);
-								}
-							}
-							else
-								if (x >= x1)
-								{
-									OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
-									//if (simon1->isUsingDagger == true)
-									//	simon1->notUseDagger();
-									if (simon1->whip->isFinished == false)
-										simon1->whip->isFinished = true;
-
-									if (simon1->isOnStairs == true)
-									{
-										simon1->StartUntouchable();
-									}
-									else
-									{
-										simon1->SetState(SIMON_STATE_HURT_RIGHT);
-									}
-
-								}
-						}
-					}
-
-
-		}
-		else
-			if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
-			{
-
-				float x, y;
-				simon1->GetPosition(x, y);
-				float x1, y1;
-				boss->GetPosition(x1, y1);
-				if (x < x1)
-				{
 					OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
-					//	if (simon1->isUsing1stWeapon == true)
-					//		simon1->notUseWeapon();
 					if (simon1->whip->isFinished == false)
 						simon1->whip->isFinished = true;
 					if (simon1->isOnStairs == true)
@@ -4584,14 +4494,23 @@ void Scene2::CollisionBetSimonAndEnemy()
 					else
 					{
 						simon1->SetState(SIMON_STATE_HURT_LEFT);
+
 					}
+					//	if (simon1->nx = 1)
+					//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
+					//		else if(simon1->nx=-1)
+					//		simon1->SetState(SIMON_STATE_HURT_LEFT);
+					//simon->heartCount += 5;
+
+
 				}
+
 				else
-					if (x >= x1)
+					if (e->nx == 1)
 					{
 						OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
-						//	if (simon1->isUsing1stWeapon == true)
-						//		simon1->notUseWeapon();
+						//if (simon1->isUsingDagger == true)
+						//simon1->notUseDagger();
 						if (simon1->whip->isFinished == false)
 							simon1->whip->isFinished = true;
 						if (simon1->isOnStairs == true)
@@ -4603,8 +4522,265 @@ void Scene2::CollisionBetSimonAndEnemy()
 							simon1->SetState(SIMON_STATE_HURT_RIGHT);
 						}
 					}
+					else
+						if (e->nx == 0)
+						{
+							if (e->ny == -1)
+							{
+								float x, y;
+								simon1->GetPosition(x, y);
+								float x1, y1;
+								boss->GetPosition(x1, y1);
+								if (x < x1)
+								{
+									OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+									//if (simon1->isUsingDagger == true)
+									//	simon1->notUseDagger();
+									if (simon1->whip->isFinished == false)
+										simon1->whip->isFinished = true;
+									if (simon1->isOnStairs == true)
+									{
+										simon1->StartUntouchable();
+									}
+									else
+									{
+										simon1->SetState(SIMON_STATE_HURT_LEFT);
+									}
+								}
+								else
+									if (x >= x1)
+									{
+										OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+										//if (simon1->isUsingDagger == true)
+										//	simon1->notUseDagger();
+										if (simon1->whip->isFinished == false)
+											simon1->whip->isFinished = true;
+
+										if (simon1->isOnStairs == true)
+										{
+											simon1->StartUntouchable();
+										}
+										else
+										{
+											simon1->SetState(SIMON_STATE_HURT_RIGHT);
+										}
+
+									}
+							}
+						}
+
+
 			}
+			else
+				if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
+				{
+
+					float x, y;
+					simon1->GetPosition(x, y);
+					float x1, y1;
+					boss->GetPosition(x1, y1);
+					if (x < x1)
+					{
+						OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+						//	if (simon1->isUsing1stWeapon == true)
+						//		simon1->notUseWeapon();
+						if (simon1->whip->isFinished == false)
+							simon1->whip->isFinished = true;
+						if (simon1->isOnStairs == true)
+						{
+							simon1->StartUntouchable();
+						}
+						else
+						{
+							simon1->SetState(SIMON_STATE_HURT_LEFT);
+						}
+					}
+					else
+						if (x >= x1)
+						{
+							OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+							//	if (simon1->isUsing1stWeapon == true)
+							//		simon1->notUseWeapon();
+							if (simon1->whip->isFinished == false)
+								simon1->whip->isFinished = true;
+							if (simon1->isOnStairs == true)
+							{
+								simon1->StartUntouchable();
+							}
+							else
+							{
+								simon1->SetState(SIMON_STATE_HURT_RIGHT);
+							}
+						}
+				}
+		}
+		for (UINT i = 0; i < listPanther.size(); i++)
+		{
+			float al, at, ar, ab;
+			float bl, bt, br, bb;
+			listPanther.at(i)->GetBoundingBox(al, at, ar, ab);
+			simon1->GetBoundingBox(bl, bt, br, bb);
+
+			LPCOLLISIONEVENT e = simon1->SweptAABBEx(listPanther.at(i));
+
+			if (e->t > 0 && e->t <= 1.0f)
+			{
+				if (dynamic_cast<Enemy *>(listPanther.at(i)))
+				{
+						if (e->nx == -1)
+						{
+
+							if (listPanther.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
+								listPanther.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+							{
+
+								OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+								//if (simon1->isUsing1stWeapon == true)
+								//	simon1->notUseWeapon();
+								if (simon1->whip->isFinished == false)
+									simon1->whip->isFinished = true;
+								if (simon1->isOnStairs == true)
+								{
+									simon1->StartUntouchable();
+								}
+								else
+								{
+									simon1->SetState(SIMON_STATE_HURT_LEFT);
+
+								}
+								//	if (simon1->nx = 1)
+								//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
+								//		else if(simon1->nx=-1)
+								//		simon1->SetState(SIMON_STATE_HURT_LEFT);
+								//simon->heartCount += 5;
+
+							}
+
+						}
+
+						else
+							if (e->nx == 1)
+							{
+								if (listPanther.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
+									listPanther.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+								{
+
+									OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+									//if (simon1->isUsingDagger == true)
+									//simon1->notUseDagger();
+									if (simon1->whip->isFinished == false)
+										simon1->whip->isFinished = true;
+									if (simon1->isOnStairs == true)
+									{
+										simon1->StartUntouchable();
+									}
+									else
+									{
+										simon1->SetState(SIMON_STATE_HURT_RIGHT);
+									}
+
+
+								}
+							}
+							else
+								if (e->nx == 0)
+								{
+									if (e->ny == -1)
+									{
+										float x, y;
+										simon1->GetPosition(x, y);
+										float x1, y1;
+										listPanther.at(i)->GetPosition(x1, y1);
+										if (x < x1)
+										{
+											OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+											//if (simon1->isUsingDagger == true)
+											//	simon1->notUseDagger();
+											if (simon1->whip->isFinished == false)
+												simon1->whip->isFinished = true;
+											if (simon1->isOnStairs == true)
+											{
+												simon1->StartUntouchable();
+											}
+											else
+											{
+												simon1->SetState(SIMON_STATE_HURT_LEFT);
+											}
+										}
+										else
+											if (x >= x1)
+											{
+												OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+												//if (simon1->isUsingDagger == true)
+												//	simon1->notUseDagger();
+												if (simon1->whip->isFinished == false)
+													simon1->whip->isFinished = true;
+
+												if (simon1->isOnStairs == true)
+												{
+													simon1->StartUntouchable();
+												}
+												else
+												{
+													simon1->SetState(SIMON_STATE_HURT_RIGHT);
+												}
+
+											}
+									}
+								}
+				}
+			}
+
+
+			else
+				if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
+				{
+					
+					{
+						float x, y;
+						simon1->GetPosition(x, y);
+						float x1, y1;
+						listPanther.at(i)->GetPosition(x1, y1);
+						if (x < x1)
+						{
+							OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+							if (simon1->isUsing1stWeapon == true)
+								simon1->notUseWeapon();
+							if (simon1->whip->isFinished == false)
+								simon1->whip->isFinished = true;
+							if (simon1->isOnStairs == true)
+							{
+								simon1->StartUntouchable();
+							}
+							else
+							{
+								simon1->SetState(SIMON_STATE_HURT_LEFT);
+							}
+						}
+						else
+							if (x >= x1)
+							{
+								OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+								if (simon1->isUsing1stWeapon == true)
+									simon1->notUseWeapon();
+								if (simon1->whip->isFinished == false)
+									simon1->whip->isFinished = true;
+								if (simon1->isOnStairs == true)
+								{
+									simon1->StartUntouchable();
+								}
+								else
+								{
+									simon1->SetState(SIMON_STATE_HURT_RIGHT);
+								}
+							}
+						//simon1->healthCount -= 2;
+					}
+				}
+		}
+
 	}
+	
 	
 
 

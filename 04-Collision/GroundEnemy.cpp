@@ -33,6 +33,7 @@ void GroundEnemy::Render()
 
 GroundEnemy::GroundEnemy()
 {
+	this->SetState(ITEM_STATE_ACTIVE);
 	tag = eTag::GROUND_ENEMY;
 }
 

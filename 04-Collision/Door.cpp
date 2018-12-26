@@ -32,6 +32,7 @@ void Door::Render()
 
 Door::Door()
 {
+	this->SetState(DOOR_STATE_ACTIVE_CLOSED);
 	tag = eTag::DOOR;
 }
 
