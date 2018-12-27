@@ -159,4 +159,15 @@ void Whip::CreateWeapon(float x, float y, float nx)
 		this->SetState(WHIP_STATE_ACTIVE_RIGHT);
 	else
 		this->SetState(WHIP_STATE_ACTIVE_LEFT);
+
+	if (this->GetState() == WHIP_STATE_ACTIVE_LEFT)
+	{
+		animations[WHIP_ANI_LEFT]->SetCurrentFrame(0);
+	}
+	else
+	{
+		animations[WHIP_ANI_RIGHT]->SetCurrentFrame(0);
+	}
+	
+
 }

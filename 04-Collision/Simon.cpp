@@ -548,6 +548,7 @@ void Simon::Render()
 	int alpha = 255;
 	if (isInvis) alpha = 100;
 	if (untouchable) alpha = 180;
+
 	animations[ani]->Render(x, y, alpha);
 	//RenderBoundingBox(100);
 }
@@ -580,7 +581,8 @@ void Simon::SetState(int state)
 			return;
 		
 
-	}else if (this->GetState()==SIMON_STATE_HURT_LEFT || this->GetState() == SIMON_STATE_HURT_RIGHT)
+	}
+	if (this->GetState()==SIMON_STATE_HURT_LEFT || this->GetState() == SIMON_STATE_HURT_RIGHT)
 		return;
 	if (this->GetState() == SIMON_STATE_DEAD)
 		return;
@@ -591,21 +593,21 @@ void Simon::SetState(int state)
 		switch (state)
 		{
 		case SIMON_STATE_WALKING_RIGHT:
-			vx = SIMON_WALKING_SPEED*0.75;
+			vx = SIMON_WALKING_SPEED * 0.75;
 			nx = 1;
-			break;	
-		//case SIMON_STATE_JUMP_RIGHT:
-		//		vx = SIMON_WALKING_SPEED;
-		//		vy = -SIMON_JUMP_SPEED_Y;
-		//		nx = 1;
-		//		break;
-		//case SIMON_STATE_JUMP_LEFT:
-		//	vx = SIMON_WALKING_SPEED;
-		//	vy = -SIMON_JUMP_SPEED_Y;
-		//	nx = 1;
-		//	break;
+			break;
+			//case SIMON_STATE_JUMP_RIGHT:
+			//		vx = SIMON_WALKING_SPEED;
+			//		vy = -SIMON_JUMP_SPEED_Y;
+			//		nx = 1;
+			//		break;
+			//case SIMON_STATE_JUMP_LEFT:
+			//	vx = SIMON_WALKING_SPEED;
+			//	vy = -SIMON_JUMP_SPEED_Y;
+			//	nx = 1;
+			//	break;
 		case SIMON_STATE_WALKING_LEFT:
-			vx = -SIMON_WALKING_SPEED*0.75;
+			vx = -SIMON_WALKING_SPEED * 0.75;
 			nx = -1;
 			break;
 		case SIMON_STATE_HURT_RIGHT:
@@ -678,8 +680,18 @@ void Simon::SetState(int state)
 			/*case SIMON_STATE_DIE:
 				vy = -SIMON_DIE_DEFLECT_SPEED;
 				break;*/
-	}
-	
+		}
+		
+		/*if (this->GetState() == SIMON_STATE_ATTACK || )
+		{
+			animations[WHIP_ANI_LEFT]->SetCurrentFrame(0);
+		}
+		else
+		{
+			animations[WHIP_ANI_RIGHT]->SetCurrentFrame(0);
+		}*/
+		for (UINT i = 0; i < animations.size(); i++)
+			animations[i]->SetCurrentFrame(0);
 }
 
 

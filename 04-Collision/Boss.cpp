@@ -59,9 +59,9 @@ void Boss::Update(DWORD dt, Simon *simon1)
 				}
 
 		}
-		float z;
+		float z,a;
 		z = Camera::GetInstance()->GetPosition().x;
-
+		a = Camera::GetInstance()->GetPosition().y;
 
 		if (tick == 2)
 		{
@@ -85,7 +85,7 @@ void Boss::Update(DWORD dt, Simon *simon1)
 		{
 			if (this->GetState() == BOSS_STATE_ATTACK_LEFT || this->GetState() == BOSS_STATE_ATTACK_RIGHT)
 			{
-				if (this->x < z)
+				if (this->x < z || this->y>a+SCREEN_HEIGHT)
 				{
 					if (this->y > 80 + offsetMap)
 					{
@@ -106,7 +106,7 @@ void Boss::Update(DWORD dt, Simon *simon1)
 					}
 				}
 				else
-					if (this->x > z + SCREEN_WIDTH - BOSS_BBOX_WIDTH)
+					if (this->x > z + SCREEN_WIDTH - BOSS_BBOX_WIDTH || this->x < z || this->y>a + SCREEN_HEIGHT)
 					{
 						if (this->y > 80 + offsetMap)
 						{

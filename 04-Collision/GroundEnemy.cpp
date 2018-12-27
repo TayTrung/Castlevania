@@ -24,15 +24,20 @@ void GroundEnemy::Render()
 {
 	if (this->GetState() == GROUND_STATE_ACTIVE)
 	{
-		animations[0]->Render(x, y);
+		if (type == 0)
+			animations[0]->Render(x, y);
+		else
+			if (type == 1)
+				animations[1]->Render(x, y);
 		//RenderBoundingBox(100);
 	}
 
 
 }
 
-GroundEnemy::GroundEnemy()
+GroundEnemy::GroundEnemy(int x)
 {
+	type = x;
 	this->SetState(ITEM_STATE_ACTIVE);
 	tag = eTag::GROUND_ENEMY;
 }

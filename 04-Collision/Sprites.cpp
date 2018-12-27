@@ -76,7 +76,6 @@ void CAnimation::Render(float x, float y, int alpha)
 			lastFrameTime = now;
 			if (currentFrame == frames.size()) currentFrame = 0;
 		}
-
 	}
 
 
@@ -114,6 +113,12 @@ void CAnimation::Render(float x, float y, int alpha)
 int CAnimation::GetCurrentFrame()
 {
 	return currentFrame;
+}
+
+void CAnimation::SetCurrentFrame(int x)
+{
+	currentFrame = x;
+	lastFrameTime = GetTickCount();
 }
 
 

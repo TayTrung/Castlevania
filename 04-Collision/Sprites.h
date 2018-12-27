@@ -73,6 +73,7 @@ public:
 	void Add(int spriteId, DWORD time = 0);
 	void Render(float x, float y, int alpha=255);
 	int GetCurrentFrame();
+	void SetCurrentFrame(int x);
 };
 
 typedef CAnimation *LPANIMATION;

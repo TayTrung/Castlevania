@@ -83,6 +83,7 @@ public:
 	void XuLyPanthera();
 	void spawnFireBall();
 	void spawnMonster();
+	void spawnPanther();
 	virtual void CollisionBetWeaponAndEnemy();
 	virtual void CollisionBetSimonAndItem();
 	virtual void spawnItemsAfterEffect();

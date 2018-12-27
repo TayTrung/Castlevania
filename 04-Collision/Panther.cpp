@@ -250,9 +250,9 @@ void Panther::SetState(int state)
 		nx = -1;
 		break;
 	case PANTHER_STATE_JUMPING_RIGHT:
-		vx = -PANTHER_WALKING_SPEED;
+		vx = PANTHER_WALKING_SPEED;
 		vy = -SIMON_JUMP_SPEED_Y ;
-		nx = -1;
+		nx = 1;
 		break;
 	case PANTHER_STATE_SIT_LEFT:
 		nx = -1;

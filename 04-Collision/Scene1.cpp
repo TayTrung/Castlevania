@@ -774,7 +774,7 @@ void Scene1::LoadResources()
 	simon = new Simon();
 	simon->score = 0;
 	simon->healthCount =16;
-	simon->heartCount = 15;
+	simon->heartCount = 999999;
 	simon->playerLife = 3;
 	simon->stage = 01;
 	simon->AddAnimation(400);		// idle right
@@ -830,25 +830,6 @@ void Scene1::LoadResources()
 
 #pragma region Adding Ground
 
-	
-
-	ground = new Ground(1, BRICKMAP11_BBOX_WIDTH);
-	ground->SetPosition(0 , offsetMap+144);
-	newGrid->insertObjectIntoGrid(ground);
-	//listSurface.push_back(ground);
-		
-	invisBox = new Ground(0,0);
-	invisBox->SetPosition(689, 140+offsetMap);
-	invisBox->SetState(INVIS_STATE_NEXT_LVL);
-	newGrid->insertObjectIntoGrid(invisBox);
-	//listItem.push_back(invisBox);
-
-	invisBox2 = new Ground(0,0);
-	invisBox2->SetPosition(MAP1_WIDTH - 24, offsetMap + 140);
-	invisBox2->SetState(INVIS_STATE_INVIS_ITEM);
-	newGrid->insertObjectIntoGrid(invisBox2);
-	//listItem.push_back(invisBox2);
-
 
 #pragma endregion
 
@@ -859,26 +840,26 @@ void Scene1::LoadResources()
 	ani->Add(40002);
 	animations->Add(901, ani);
 
-	for (int i = 0; i < 5; i++)
-	{
-		torch = new Torch(0);
-		torch->AddAnimation(901);
+	//for (int i = 0; i < 5; i++)
+	//{
+	//	torch = new Torch(0);
+	//	torch->AddAnimation(901);
 
-		
-			torch->SetPosition(110 + i * 130, offsetMap + 144 - TORCH_BBOX_HEIGHT);
-			if (i == 0 || i == 3)
-				torch->setItemInside(bigheartInside);
+	//	
+	//		torch->SetPosition(110 + i * 130, offsetMap + 144 - TORCH_BBOX_HEIGHT);
+	//		if (i == 0 || i == 3)
+	//			torch->setItemInside(bigheartInside);
 
-			if (i == 1 || i == 2)
-				torch->setItemInside(morningstarInside);
+	//		if (i == 1 || i == 2)
+	//			torch->setItemInside(morningstarInside);
 
-			if (i == 4)
-				torch->setItemInside(daggerInside);
+	//		if (i == 4)
+	//			torch->setItemInside(daggerInside);
 
 
-			newGrid->insertObjectIntoGrid(torch);
-			//listEnemy.push_back(torch);
-	}
+	//		newGrid->insertObjectIntoGrid(torch);
+	//		//listEnemy.push_back(torch);
+	//}
 
 
 	
@@ -1024,6 +1005,9 @@ void Scene1::LoadResources()
 	newBoard->SetPosition(0, 0);
 	newBoard->typeOfWeaopon = 0;
 #pragma endregion
+
+
+	newGrid->readObjectFromTextFile("textures\\Objects1.txt");
 }
 
 void Scene1::Update(DWORD dt)
@@ -1109,7 +1093,8 @@ void Scene1::Update(DWORD dt)
 	
 	if ((simon->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon->dagger->isOn == true && simon->isUsing1stWeapon == true)//updating dagger when being used
 		simon->dagger->Update(dt, &listSurface);
-
+	if (simon->dagger->GetState() == DAGGER_STATE_INACTIVE)
+		simon->dagger->isFinished = true;
 	camera->SetPosition(simon->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon
 	camera->Update();
 	CollisionBetSimonAndCheckBox();

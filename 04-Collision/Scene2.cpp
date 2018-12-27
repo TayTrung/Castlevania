@@ -301,7 +301,10 @@ void Scene2::OnKeyDown(int KeyCode)
 		simon1->clock->turnOnClock();
 		break;
 	case DIK_5:
-		simon1->shotTwoWeaponOneTime = true;
+		if (simon1->shotTwoWeaponOneTime == false)
+			simon1->shotTwoWeaponOneTime = true;
+		else
+			simon1->shotTwoWeaponOneTime = false;
 		break;
 	case DIK_T:
 		if (simon1->proceedThruDoor == false)
@@ -943,19 +946,19 @@ void Scene2::LoadResources()
 	sprites->Add(20003, 0, 0, 16, 16, texGround4);
 
 #pragma endregion
-//
-//#pragma region Co-ordinations of Heal
-//
-//	LPDIRECT3DTEXTURE9 texHeal = textures->Get(ID_TEX_ITEM_HEAL);
-//	sprites->Add(25554, 0, 0, 13, 15, texHeal);
-//	sprites->Add(25555, 14, 0, 27, 15, texHeal);
-//
-//	ani = new CAnimation(100);//sleep
-//	ani->Add(25554);
-//	ani->Add(25555);
-//	animations->Add(682, ani);
-//#pragma endregion
-//
+
+#pragma region Co-ordinations of Heal
+
+	LPDIRECT3DTEXTURE9 texHeal = textures->Get(ID_TEX_ITEM_HEAL);
+	sprites->Add(25554, 0, 0, 13, 15, texHeal);
+	sprites->Add(25555, 14, 0, 27, 15, texHeal);
+
+	ani = new CAnimation(100);//sleep
+	ani->Add(25554);
+	ani->Add(25555);
+	animations->Add(682, ani);
+#pragma endregion
+
 #pragma region Co-ordinations of Candle
 
 	LPDIRECT3DTEXTURE9 texCandle = textures->Get(ID_TEX_CANDLE);
@@ -963,29 +966,29 @@ void Scene2::LoadResources()
 	sprites->Add(40002, 8, 0, 15, 15, texCandle);
 
 #pragma endregion
-//
-//#pragma region Co-ordinations of Door
-//
-//	LPDIRECT3DTEXTURE9 texDoor = textures->Get(ID_TEX_DOOR);
-//	sprites->Add(40011, 1, 0, 8, 47, texDoor);
-//	sprites->Add(40012, 48, 0, 87, 47, texDoor);
-//
-//#pragma endregion
-//
-//#pragma region Co-orrdiantions of Bat
-//
-//	LPDIRECT3DTEXTURE9 texBat = textures->Get(ID_TEX_BAT);
-//
-//	sprites->Add(22300, 48, 0, 63, 15, texBat);// left side
-//	sprites->Add(22301, 32, 0, 47, 15, texBat);
-//	sprites->Add(22302, 16, 0, 31, 15, texBat);
-//
-//	sprites->Add(22303, 0, 16, 15, 31, texBat);// right side
-//	sprites->Add(22304, 16, 16, 31, 31, texBat);
-//	sprites->Add(22305, 32, 16, 47, 31, texBat);
-//
-//#pragma endregion
-//
+
+#pragma region Co-ordinations of Door
+
+	LPDIRECT3DTEXTURE9 texDoor = textures->Get(ID_TEX_DOOR);
+	sprites->Add(40011, 1, 0, 8, 47, texDoor);
+	sprites->Add(40012, 48, 0, 87, 47, texDoor);
+
+#pragma endregion
+
+#pragma region Co-orrdiantions of Bat
+
+	LPDIRECT3DTEXTURE9 texBat = textures->Get(ID_TEX_BAT);
+
+	sprites->Add(22300, 48, 0, 63, 15, texBat);// left side
+	sprites->Add(22301, 32, 0, 47, 15, texBat);
+	sprites->Add(22302, 16, 0, 31, 15, texBat);
+
+	sprites->Add(22303, 0, 16, 15, 31, texBat);// right side
+	sprites->Add(22304, 16, 16, 31, 31, texBat);
+	sprites->Add(22305, 32, 16, 47, 31, texBat);
+
+#pragma endregion
+
 #pragma region Co-orrdiantions of Boss
 
 	LPDIRECT3DTEXTURE9 texBoss = textures->Get(ID_TEX_BOSS);
@@ -1012,436 +1015,336 @@ void Scene2::LoadResources()
 	//newGrid1->insertObjectIntoGrid(boss);
 	//listEnemy1.push_back(boss);
 #pragma endregion
-//
-//#pragma region Co-ordinations of Ghoul
-//
-//	LPDIRECT3DTEXTURE9 texGhoul = textures->Get(ID_TEX_GHOUL);
-//	sprites->Add(22220, 0, 0, 15, 31, texGhoul); //right
-//	sprites->Add(22221, 18, 0, 33, 31, texGhoul);
-//
-//	sprites->Add(22222, 0, 32, 15, 63, texGhoul);	//left
-//	sprites->Add(22223, 18, 32, 33, 63, texGhoul);
-//#pragma endregion
-//
-//#pragma region Co-ordinations of PAnth
-//
-//	LPDIRECT3DTEXTURE9 texPant = textures->Get(ID_TEX_PANTHER);
-//	sprites->Add(60000, 64, 18, 95, 33, texPant);	//run right
-//	sprites->Add(60001, 32, 18, 63, 33, texPant);
-//
-//	sprites->Add(60010, 32, 0, 63, 15, texPant);	//run left
-//	sprites->Add(60011, 64, 0, 95, 15, texPant);
-//
-//	sprites->Add(60002, 96, 18, 127, 33, texPant);	//sit right
-//
-//	sprites->Add(60012, 0, 0, 31, 15, texPant);		//sit left
-//
-//
-//	sprites->Add(60003, 0, 18, 31, 33, texPant);	//jump right
-//
-//	sprites->Add(60013, 96, 0, 127, 15, texPant);		//jump left
-//
-//
-//
-//#pragma endregion
-//
-//#pragma region Co-ordinations of Monster
-//
-//	LPDIRECT3DTEXTURE9 texMonster = textures->Get(ID_TEX_MONSTER);
-//	sprites->Add(85555, 0, 0, 15, 31, texMonster);	//att left
-//	sprites->Add(85556, 32, 32, 47, 63, texMonster); //att right
-//
-//	//active left
-//	sprites->Add(85557, 16, 0, 31, 31, texMonster);
-//	sprites->Add(85558, 32, 0, 47, 31, texMonster);
-//	//active right
-//	sprites->Add(85559, 16, 32, 31, 63, texMonster);
-//	sprites->Add(85560, 0, 32, 15, 63, texMonster);
-//
-//	ani = new CAnimation(100);//active left
-//	ani->Add(85557);
-//	ani->Add(85558);
-//	animations->Add(845, ani);
-//
-//	ani = new CAnimation(100);//active right
-//	ani->Add(85559);
-//	ani->Add(85560);
-//	animations->Add(846, ani);
-//
-//	ani = new CAnimation(300);//atk right
-//	ani->Add(85556);
-//	ani->Add(85556);
-//	animations->Add(847, ani);
-//
-//	ani = new CAnimation(300);//atk left
-//	ani->Add(85555);
-//	ani->Add(85555);
-//	animations->Add(848, ani);
-//
-//
-//	ani = new CAnimation(100);//Freeze left +underwater
-//	ani->Add(85557);
-//	animations->Add(849, ani);
-//
-//	ani = new CAnimation(100);//Freeze left
-//	ani->Add(85559);
-//	animations->Add(850, ani);
-//
-//
-//#pragma endregion
-//
-//#pragma region Co of FireBall
-//
-//	LPDIRECT3DTEXTURE9 texFire = textures->Get(ID_TEX_FIREBALL);
-//	sprites->Add(86666, 0, 0, 6, 5, texFire);	//left
-//	sprites->Add(86667, 0, 6, 6, 11, texFire); //right
-//
-//	ani = new CAnimation(100);//active left
-//	ani->Add(86666);
-//	animations->Add(899, ani);
-//
-//	ani = new CAnimation(100);//active left
-//	ani->Add(86666);
-//	animations->Add(900, ani);
-//
-//	fire = new FireBall();
-//	fire->AddAnimation(899);
-//	fire->AddAnimation(900);
-//
-//#pragma endregion
-//
-//#pragma region Co-ordinations of SHeart
-//
-//	LPDIRECT3DTEXTURE9 texSHeart = textures->Get(ID_TEX_ITEM_SMALLHEART);
-//	sprites->Add(23330, 0, 0, 8, 8, texSHeart);
-//
-//#pragma endregion
-//
-//#pragma region Co-ordinations of HolyWater
-//
-//	LPDIRECT3DTEXTURE9 texHoly = textures->Get(ID_TEX_ITEM_HOLY);
-//	sprites->Add(23041, 0, 0, 15, 15, texHoly);
-//
-//#pragma endregion
-//
-//
-//#pragma region Co-ordinations of Potion
-//
-//		LPDIRECT3DTEXTURE9 texPotion = textures->Get(ID_TEX_ITEM_POTION);
-//		sprites->Add(25471, 290, 102, 302, 117, texPotion);
-//
-//
-//		ani = new CAnimation(100);
-//		ani->Add(25471);
-//		animations->Add(987, ani);
-//
-//#pragma endregion
-//#pragma region Co-ordinations of Numbah
-//
-//	LPDIRECT3DTEXTURE9 texNum = textures->Get(ID_TEX_ITEM_NUMBAH);
-//	sprites->Add(48954, 0, 0, 13, 15, texNum);
-//
-//
-//	ani = new CAnimation(100);
-//	ani->Add(48954);
-//	animations->Add(935, ani);
-//
-//#pragma endregion
-//#pragma region Co-ordinations of Axe
-//
-//	LPDIRECT3DTEXTURE9 texAxe = textures->Get(ID_TEX_ITEM_AXE);
-//	sprites->Add(23641, 0, 0, 14, 13, texAxe);
-//
-//#pragma endregion
-//
-//#pragma region Co-ordinations of Cross
-//
-//	LPDIRECT3DTEXTURE9 texCross = textures->Get(ID_TEX_ITEM_CROSS);
-//	sprites->Add(23042, 0, 0, 15, 15, texCross);
-//
-//
-//#pragma endregion
-//
-//#pragma region Co-ordinations of Chicken
-//
-//	LPDIRECT3DTEXTURE9 texChicken = textures->Get(ID_TEX_ITEM_CHICKEN);
-//	sprites->Add(23331, 0, 0, 15, 12, texChicken);
-//
-//#pragma endregion
-//
-//
-//
-//#pragma region Adding item Axe1
-//
-//	ani = new CAnimation(100);
-//	ani->Add(23641);
-//	animations->Add(427, ani);
-//
-//
-//#pragma endregion
-//
-//#pragma region Adding item Cross
-//
-//	ani = new CAnimation(100);
-//	ani->Add(23042);
-//	animations->Add(483, ani);
-//
-//
-//#pragma endregion
-//
-//#pragma region Adding item HolyWater
-//
-//	ani = new CAnimation(100);
-//	ani->Add(23041);
-//	animations->Add(491, ani);
-//
-//
-//#pragma endregion
-//
-//#pragma region Adding Small Heart
-//
-//	ani = new CAnimation(100);
-//	ani->Add(23330);
-//	animations->Add(482, ani);
-//
-//
-//#pragma endregion
-//
-//#pragma region Adding Chicken
-//
-//	ani = new CAnimation(100);
-//	ani->Add(23331);
-//	animations->Add(490, ani);
-//
-//
-//#pragma endregion
-//
-//#pragma region Adding Door
-//
-//	ani = new CAnimation(100);
-//	ani->Add(40011);
-//	animations->Add(495, ani);
-//
-//	ani = new CAnimation(100);
-//	ani->Add(40012);
-//	animations->Add(496, ani);
-//#pragma endregion
-//
-//#pragma region Adding Bat
-//	ani = new CAnimation(200);
-//	ani->Add(22300);
-//	ani->Add(22301);
-//	ani->Add(22302);
-//	animations->Add(020, ani);
-//
-//	ani = new CAnimation(200);
-//	ani->Add(22303);
-//	ani->Add(22304);
-//	ani->Add(22305);
-//	animations->Add(021, ani);
-//	
-//	ani = new CAnimation(200);
-//	ani->Add(22300);
-//	animations->Add(022, ani);
-//
-//	ani = new CAnimation(200);
-//	ani->Add(22303);
-//	animations->Add(023, ani);
-//#pragma endregion
-//
-//#pragma region Ađing Effect
-//
-//	effectFire1 = new EffectFire();
-//
-//	effectBag1 = new EffectBag();
-//	effectBag1->AddAnimation(579);
-//	effectBag1->AddAnimation(580);
-//	effectBag1->AddAnimation(581);
-//	effectBag1->AddAnimation(582);
-//#pragma endregion
-//		
-//#pragma region Adding Ghou
-//
-//	ani = new CAnimation(100); // right
-//	ani->Add(22222);
-//	ani->Add(22223);
-//	animations->Add(531, ani);
-//
-//	ani = new CAnimation(100);//left
-//	ani->Add(22220);
-//	ani->Add(22221);
-//	animations->Add(532, ani);
-//
-//	ani = new CAnimation(100); //freeze right
-//	ani->Add(22222);
-//	animations->Add(533, ani);
-//
-//	ani = new CAnimation(100);//freeze left
-//	ani->Add(22220);
-//	animations->Add(534, ani);
-//
-//	
-//#pragma endregion
-//
-//#pragma region Adding Panther
-//
-//	ani = new CAnimation(100); //run right
-//	ani->Add(60000);
-//	ani->Add(60001);
-//	ani->Add(60003);
-//	animations->Add(550, ani);
-//
-//	ani = new CAnimation(100); //run left
-//	ani->Add(60010);
-//	ani->Add(60011);
-//	ani->Add(60013);
-//	animations->Add(551, ani);
-//
-//	ani = new CAnimation(100); //sit right
-//	ani->Add(60002);
-//	animations->Add(552, ani);
-//	
-//	ani = new CAnimation(100); //sit left
-//	ani->Add(60012);
-//	animations->Add(553, ani);
-//
-//	ani = new CAnimation(100); //jump right
-//	ani->Add(60003);
-//	animations->Add(554, ani);
-//	
-//	ani = new CAnimation(100);//jump left
-//	ani->Add(60013);
-//	animations->Add(555, ani);
-//
-//#pragma endregion
-//		 
-//#pragma region Adding Small Candle
-//		
+
+#pragma region Co-ordinations of Ghoul
+
+	LPDIRECT3DTEXTURE9 texGhoul = textures->Get(ID_TEX_GHOUL);
+	sprites->Add(22220, 0, 0, 15, 31, texGhoul); //right
+	sprites->Add(22221, 18, 0, 33, 31, texGhoul);
+
+	sprites->Add(22222, 0, 32, 15, 63, texGhoul);	//left
+	sprites->Add(22223, 18, 32, 33, 63, texGhoul);
+#pragma endregion
+
+#pragma region Co-ordinations of PAnth
+
+	LPDIRECT3DTEXTURE9 texPant = textures->Get(ID_TEX_PANTHER);
+	sprites->Add(60000, 64, 18, 95, 33, texPant);	//run right
+	sprites->Add(60001, 32, 18, 63, 33, texPant);
+
+	sprites->Add(60010, 32, 0, 63, 15, texPant);	//run left
+	sprites->Add(60011, 64, 0, 95, 15, texPant);
+
+	sprites->Add(60002, 96, 18, 127, 33, texPant);	//sit right
+
+	sprites->Add(60012, 0, 0, 31, 15, texPant);		//sit left
+
+
+	sprites->Add(60003, 0, 18, 31, 33, texPant);	//jump right
+
+	sprites->Add(60013, 96, 0, 127, 15, texPant);		//jump left
+
+
+
+#pragma endregion
+
+#pragma region Co-ordinations of Monster
+
+	LPDIRECT3DTEXTURE9 texMonster = textures->Get(ID_TEX_MONSTER);
+	sprites->Add(85555, 0, 0, 15, 31, texMonster);	//att left
+	sprites->Add(85556, 32, 32, 47, 63, texMonster); //att right
+
+	//active left
+	sprites->Add(85557, 16, 0, 31, 31, texMonster);
+	sprites->Add(85558, 32, 0, 47, 31, texMonster);
+	//active right
+	sprites->Add(85559, 16, 32, 31, 63, texMonster);
+	sprites->Add(85560, 0, 32, 15, 63, texMonster);
+
+	ani = new CAnimation(100);//active left
+	ani->Add(85557);
+	ani->Add(85558);
+	animations->Add(845, ani);
+
+	ani = new CAnimation(100);//active right
+	ani->Add(85559);
+	ani->Add(85560);
+	animations->Add(846, ani);
+
+	ani = new CAnimation(300);//atk right
+	ani->Add(85556);
+	ani->Add(85556);
+	animations->Add(847, ani);
+
+	ani = new CAnimation(300);//atk left
+	ani->Add(85555);
+	ani->Add(85555);
+	animations->Add(848, ani);
+
+
+	ani = new CAnimation(100);//Freeze left +underwater
+	ani->Add(85557);
+	animations->Add(849, ani);
+
+	ani = new CAnimation(100);//Freeze left
+	ani->Add(85559);
+	animations->Add(850, ani);
+
+
+#pragma endregion
+
+#pragma region Co of FireBall
+
+	LPDIRECT3DTEXTURE9 texFire = textures->Get(ID_TEX_FIREBALL);
+	sprites->Add(86666, 0, 0, 6, 5, texFire);	//left
+	sprites->Add(86667, 0, 6, 6, 11, texFire); //right
+
+	ani = new CAnimation(100);//active left
+	ani->Add(86666);
+	animations->Add(899, ani);
+
+	ani = new CAnimation(100);//active left
+	ani->Add(86666);
+	animations->Add(900, ani);
+
+	fire = new FireBall();
+	fire->AddAnimation(899);
+	fire->AddAnimation(900);
+
+#pragma endregion
+
+#pragma region Co-ordinations of SHeart
+
+	LPDIRECT3DTEXTURE9 texSHeart = textures->Get(ID_TEX_ITEM_SMALLHEART);
+	sprites->Add(23330, 0, 0, 8, 8, texSHeart);
+
+#pragma endregion
+
+#pragma region Co-ordinations of HolyWater
+
+	LPDIRECT3DTEXTURE9 texHoly = textures->Get(ID_TEX_ITEM_HOLY);
+	sprites->Add(23041, 0, 0, 15, 15, texHoly);
+
+#pragma endregion
+
+
+#pragma region Co-ordinations of Potion
+
+		LPDIRECT3DTEXTURE9 texPotion = textures->Get(ID_TEX_ITEM_POTION);
+		sprites->Add(25471, 290, 102, 302, 117, texPotion);
+
+
+		ani = new CAnimation(100);
+		ani->Add(25471);
+		animations->Add(987, ani);
+
+#pragma endregion
+#pragma region Co-ordinations of Numbah
+
+	LPDIRECT3DTEXTURE9 texNum = textures->Get(ID_TEX_ITEM_NUMBAH);
+	sprites->Add(48954, 0, 0, 13, 15, texNum);
+
+
+	ani = new CAnimation(100);
+	ani->Add(48954);
+	animations->Add(935, ani);
+
+#pragma endregion
+#pragma region Co-ordinations of Axe
+
+	LPDIRECT3DTEXTURE9 texAxe = textures->Get(ID_TEX_ITEM_AXE);
+	sprites->Add(23641, 0, 0, 14, 13, texAxe);
+
+#pragma endregion
+
+#pragma region Co-ordinations of Cross
+
+	LPDIRECT3DTEXTURE9 texCross = textures->Get(ID_TEX_ITEM_CROSS);
+	sprites->Add(23042, 0, 0, 15, 15, texCross);
+
+
+#pragma endregion
+
+#pragma region Co-ordinations of Chicken
+
+	LPDIRECT3DTEXTURE9 texChicken = textures->Get(ID_TEX_ITEM_CHICKEN);
+	sprites->Add(23331, 0, 0, 15, 12, texChicken);
+
+#pragma endregion
+
+
+
+#pragma region Adding item Axe1
+
+	ani = new CAnimation(100);
+	ani->Add(23641);
+	animations->Add(427, ani);
+
+
+#pragma endregion
+
+#pragma region Adding item Cross
+
+	ani = new CAnimation(100);
+	ani->Add(23042);
+	animations->Add(483, ani);
+
+
+#pragma endregion
+
+#pragma region Adding item HolyWater
+
+	ani = new CAnimation(100);
+	ani->Add(23041);
+	animations->Add(491, ani);
+
+
+#pragma endregion
+
+#pragma region Adding Small Heart
+
+	ani = new CAnimation(100);
+	ani->Add(23330);
+	animations->Add(482, ani);
+
+
+#pragma endregion
+
+#pragma region Adding Chicken
+
+	ani = new CAnimation(100);
+	ani->Add(23331);
+	animations->Add(490, ani);
+
+
+#pragma endregion
+
+#pragma region Adding Door
+
+	ani = new CAnimation(100);
+	ani->Add(40011);
+	animations->Add(495, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(40012);
+	animations->Add(496, ani);
+#pragma endregion
+
+#pragma region Adding Bat
+	ani = new CAnimation(200);
+	ani->Add(22300);
+	ani->Add(22301);
+	ani->Add(22302);
+	animations->Add(020, ani);
+
+	ani = new CAnimation(200);
+	ani->Add(22303);
+	ani->Add(22304);
+	ani->Add(22305);
+	animations->Add(021, ani);
+	
+	ani = new CAnimation(200);
+	ani->Add(22300);
+	animations->Add(022, ani);
+
+	ani = new CAnimation(200);
+	ani->Add(22303);
+	animations->Add(023, ani);
+#pragma endregion
+
+#pragma region Ađing Effect
+
+	effectBag1 = new EffectBag();
+	effectBag1->AddAnimation(579);
+	effectBag1->AddAnimation(580);
+	effectBag1->AddAnimation(581);
+	effectBag1->AddAnimation(582);
+
+#pragma endregion
+		
+#pragma region Adding Ghou
+
+	ani = new CAnimation(100); // right
+	ani->Add(22222);
+	ani->Add(22223);
+	animations->Add(531, ani);
+
+	ani = new CAnimation(100);//left
+	ani->Add(22220);
+	ani->Add(22221);
+	animations->Add(532, ani);
+
+	ani = new CAnimation(100); //freeze right
+	ani->Add(22222);
+	animations->Add(533, ani);
+
+	ani = new CAnimation(100);//freeze left
+	ani->Add(22220);
+	animations->Add(534, ani);
+
+	
+#pragma endregion
+
+#pragma region Adding Panther
+
+	ani = new CAnimation(100); //run right
+	ani->Add(60000);
+	ani->Add(60001);
+	ani->Add(60003);
+	animations->Add(550, ani);
+
+	ani = new CAnimation(100); //run left
+	ani->Add(60010);
+	ani->Add(60011);
+	ani->Add(60013);
+	animations->Add(551, ani);
+
+	ani = new CAnimation(100); //sit right
+	ani->Add(60002);
+	animations->Add(552, ani);
+	
+	ani = new CAnimation(100); //sit left
+	ani->Add(60012);
+	animations->Add(553, ani);
+
+	ani = new CAnimation(100); //jump right
+	ani->Add(60003);
+	animations->Add(554, ani);
+	
+	ani = new CAnimation(100);//jump left
+	ani->Add(60013);
+	animations->Add(555, ani);
+
+#pragma endregion
+		 
+#pragma region Adding Small Candle
+		
 		ani = new CAnimation(100);
 		ani->Add(40001);
 		ani->Add(40002);
 		animations->Add(476, ani);
-//
-//		for (int i = 0; i < 5; i++)
-//		{
-//		Torch *candle = new Torch(1);
-//		candle->AddAnimation(476);
-//		candle->SetState(CANDLE_STATE_ACTIVE);
-//		candle->setItemInside(clockInside);
-//		candle->SetPosition(29+i*(157-29), offsetMap +128);
-//		newGrid1->insertObjectIntoGrid(candle);
-//		//listTorches1.push_back(candle);
-//
-//		candle = new Torch(1);
-//		candle->AddAnimation(476);
-//		candle->SetState(CANDLE_STATE_ACTIVE);
-//		candle->setItemInside(randomIteminside());
-//		candle->SetPosition(92 + i * (220 - 92), offsetMap + 97);
-//		newGrid1->insertObjectIntoGrid(candle);
-//		//listTorches1.push_back(candle);
-//		}
-//		
-//		Torch *candle = new Torch(1);
-//		candle->AddAnimation(476);
-//		candle->SetState(CANDLE_STATE_ACTIVE);
-//		candle->setItemInside(randomIteminside());
-//		candle->SetPosition(673,offsetMap+39);
-//		newGrid1->insertObjectIntoGrid(candle);
-//		//listTorches1.push_back(candle);
-//
-//		candle = new Torch(1);
-//		candle->AddAnimation(476);
-//		candle->SetState(CANDLE_STATE_ACTIVE);
-//		candle->setItemInside(randomIteminside());
-//		candle->SetPosition(735,130+offsetMap);
-//
-//		newGrid1->insertObjectIntoGrid(candle); 
-//		//listTorches1.push_back(candle);
-//
-//		candle = new Torch(1);
-//		candle->AddAnimation(476);
-//		candle->SetState(CANDLE_STATE_ACTIVE);
-//		candle->setItemInside(randomIteminside());
-//		candle->SetPosition(799,offsetMap+8);
-//
-//		newGrid1->insertObjectIntoGrid(candle);
-//		//listTorches1.push_back(candle);
-//
-//		candle = new Torch(1);
-//		candle->AddAnimation(476);
-//		candle->SetState(CANDLE_STATE_ACTIVE);
-//		candle->setItemInside(randomIteminside());
-//		candle->SetPosition(992, offsetMap + 39);
-//		newGrid1->insertObjectIntoGrid(candle);
-//		//		listTorches1.push_back(candle);
-//	
-//		candle = new Torch(1);
-//		candle->AddAnimation(476);
-//		candle->SetState(CANDLE_STATE_ACTIVE);
-//		candle->setItemInside(randomIteminside());
-//		candle->SetPosition(929, offsetMap + 130);
-//		newGrid1->insertObjectIntoGrid(candle);
-//		//listTorches1.push_back(candle);
-//
-//		for (int i = 0; i < 4; i++)
-//		{
-//			candle = new Torch(1);
-//			candle->AddAnimation(476);
-//			candle->SetState(CANDLE_STATE_ACTIVE);
-//			candle->setItemInside(randomIteminside());
-//			candle->SetPosition(1055+i*64, offsetMap + 130);
-//			newGrid1->insertObjectIntoGrid(candle);
-//			//listTorches1.push_back(candle);
-//
-//		}
-//
-//
-//		candle = new Torch(1);
-//		candle->AddAnimation(476);
-//		candle->SetState(CANDLE_STATE_ACTIVE);
-//		candle->setItemInside(randomIteminside());
-//		candle->SetPosition(1366, offsetMap + 113);
-//		newGrid1->insertObjectIntoGrid(candle);
-//		//listTorches1.push_back(candle);
-//		
-//		candle = new Torch(1);
-//		candle->AddAnimation(476);
-//		candle->SetState(CANDLE_STATE_ACTIVE);
-//		candle->setItemInside(randomIteminside());
-//		candle->SetPosition(1437, offsetMap + 33);
-//		newGrid1->insertObjectIntoGrid(candle);
-//		//listTorches1.push_back(candle);
-//
-//		candle = new Torch(1);
-//		candle->AddAnimation(476);
-//		candle->SetState(CANDLE_STATE_ACTIVE);
-//		candle->setItemInside(crossInside);
-//		candle->SetPosition(1502, offsetMap + 4);
-//		newGrid1->insertObjectIntoGrid(candle);
-//		
-//	//	listTorches1.push_back(candle);
-//#pragma endregion
-//
-//#pragma region Adding Ground
-//
-//	ani = new CAnimation(100);
-//	ani->Add(20001);
-//
-//	animations->Add(999, ani);
-//
-//	ani = new CAnimation(100);//ground 3
-//	ani->Add(20002);
-//	animations->Add(998, ani);
-//
-//	ani = new CAnimation(100);//ground 4
-//	ani->Add(20003);
-//	animations->Add(997, ani);
-//	
-//
-//	ani = new CAnimation(100);
-//	ani->Add(20004);
-//
-//	animations->Add(996, ani);
+#pragma endregion
+
+#pragma region Adding Ground
+
+	ani = new CAnimation(100);
+	ani->Add(20001);
+
+	animations->Add(999, ani);
+
+	ani = new CAnimation(100);//ground 3
+	ani->Add(20002);
+	animations->Add(998, ani);
+
+	ani = new CAnimation(100);//ground 4
+	ani->Add(20003);
+	animations->Add(997, ani);
+	
+
+	ani = new CAnimation(100);
+	ani->Add(20004);
+
+	animations->Add(996, ani);
 //	
 //
 //	// ground neen
@@ -1529,7 +1432,7 @@ void Scene2::LoadResources()
 //	//box to get out of level underground
 //	ground = new Ground(0, 0);
 //	ground->SetState(INVIS_STATE_UPPERGROUND);
-//	ground->SetPosition(3192, offsetMap -5);
+	//ground->SetPosition(3192, offsetMap -5);
 //	//listItem1.push_back(ground);
 //	newGrid1->insertObjectIntoGrid(ground);
 //
@@ -1670,83 +1573,7 @@ void Scene2::LoadResources()
 //
 //#pragma endregion
 //
-//#pragma region spawnPanther
-//	pant = new Panther(15);
-//
-//	pant->AddAnimation(550);
-//	pant->AddAnimation(551);
-//
-//	pant->AddAnimation(552);
-//	pant->AddAnimation(553);
-//
-//	pant->AddAnimation(554);
-//	pant->AddAnimation(555);
-//
-//	pant->AddAnimation(554);
-//	pant->AddAnimation(555);
-//
-//	pant->AddAnimation(554);
-//	pant->AddAnimation(555);
-//
-//	pant->AddAnimation(552);//freeze sit right let
-//	pant->AddAnimation(553);
-//	pant->setItemInside(randomIteminside());
-//	pant->SetState(PANTHER_STATE_SIT_LEFT);
-//	pant->SetPosition(685, 0+ offsetMap);
-//	//listEnemy1.push_back(pant);
-//	newGrid1->insertObjectIntoGrid(pant);
-//
-//	pant = new Panther(8 * 20);
-//	pant->AddAnimation(550);
-//	pant->AddAnimation(551);
-//
-//	pant->AddAnimation(552);
-//	pant->AddAnimation(553);
-//
-//	pant->AddAnimation(554);
-//	pant->AddAnimation(555);
-//
-//	pant->AddAnimation(554);
-//	pant->AddAnimation(555);
-//
-//	pant->AddAnimation(554);
-//	pant->AddAnimation(555);
-//
-//	pant->AddAnimation(552);//freeze sit right let
-//	pant->AddAnimation(553);
-//	pant->setItemInside(randomIteminside());
-//	pant->SetState(PANTHER_STATE_SIT_LEFT);
-//	pant->SetPosition(880, 0+ offsetMap);
-//	//listEnemy1.push_back(pant);
-//	newGrid1->insertObjectIntoGrid(pant);
-//
-//	pant = new Panther(1 * 16);
-//	pant->AddAnimation(550);//right left
-//	pant->AddAnimation(551);
-//
-//	pant->AddAnimation(552);//sit right left
-//	pant->AddAnimation(553);
-//
-//	pant->AddAnimation(554);//jump right left
-//	pant->AddAnimation(555);
-//
-//	pant->AddAnimation(554);//freeze right left
-//	pant->AddAnimation(555);
-//
-//	pant->AddAnimation(554);//freeze fly right let
-//	pant->AddAnimation(555);
-//
-//	pant->AddAnimation(552);//freeze sit right let
-//	pant->AddAnimation(553);
-//
-//	pant->setItemInside(randomIteminside());
-//	pant->SetState(PANTHER_STATE_SIT_LEFT);
-//	pant->SetPosition(945, 0+offsetMap );
-//	//listEnemy1.push_back(pant);
-//	newGrid1->insertObjectIntoGrid(pant);
-//
-//
-//#pragma endregion
+
 //
 //#pragma region Adding Stairs
 //		//1=right , 2 = left
@@ -1876,57 +1703,57 @@ void Scene2::LoadResources()
 //		newGrid1->insertObjectIntoGrid(stairs);
 //#pragma endregion
 
-newGrid1->readObjectFromTextFile(listColliableObjects1, "textures\\Objects2.txt");
+newGrid1->readObjectFromTextFile( "textures\\Objects2.txt");
 }
 void Scene2::XuLyPanthera()
 {
 	for (int i = 0; i < listPanther.size(); i++)
 	{
-		if (dynamic_cast<Panther *>(listPanther.at(i)))
+
 		{
 			
+			if (abs(listPanther.at(i)->x - simon1->x) > 16 * 4 && abs(listPanther.at(i)->x - simon1->x) < 16 * 4 + 5)
 			{
-				if ((listPanther.at(i)->x - simon1->x) <= 16 * 4)
+				if (listPanther.at(i)->changeDirection == false)
+				{
+
+					if (listPanther.at(i)->GetState() == PANTHER_STATE_SIT_LEFT)
+						listPanther.at(i)->SetState(PANTHER_STATE_ACTIVE_LEFT);
+					if (listPanther.at(i)->GetState() == PANTHER_STATE_SIT_RIGHT)
+						listPanther.at(i)->SetState(PANTHER_STATE_ACTIVE_RIGHT);
+
+				}
+			}
+			
+			if (listPanther.at(i)->jumped == true)
+			{
+				if (listPanther.at(i)->GetState() == PANTHER_STATE_ACTIVE_RIGHT ||
+					listPanther.at(i)->GetState() == PANTHER_STATE_ACTIVE_LEFT)
 				{
 					if (listPanther.at(i)->changeDirection == false)
+
 					{
-
-						if (listPanther.at(i)->GetState() == PANTHER_STATE_SIT_LEFT)
-							listPanther.at(i)->SetState(PANTHER_STATE_ACTIVE_LEFT);
-						if (listPanther.at(i)->GetState() == PANTHER_STATE_SIT_RIGHT)
-							listPanther.at(i)->SetState(PANTHER_STATE_ACTIVE_RIGHT);
-
-					}
-				}
-				if (listPanther.at(i)->jumped == true)
-				{
-					if (listPanther.at(i)->GetState() == PANTHER_STATE_ACTIVE_RIGHT ||
-						listPanther.at(i)->GetState() == PANTHER_STATE_ACTIVE_LEFT)
-					{
-						if (listPanther.at(i)->changeDirection == false)
-
+						listPanther.at(i)->changeDirection = true;
+						if ((listPanther.at(i)->x - simon1->x) > 0)
 						{
-							listPanther.at(i)->changeDirection = true;
-							if ((listPanther.at(i)->x - simon1->x) > 0)
-							{
-								listPanther.at(i)->SetState(PANTHER_STATE_ACTIVE_LEFT);
-							}
-							else
-								if ((listPanther.at(i)->x - simon1->x) < 0)
-								{
-									listPanther.at(i)->SetState(PANTHER_STATE_ACTIVE_RIGHT);
-								}
+							listPanther.at(i)->SetState(PANTHER_STATE_ACTIVE_LEFT);
 						}
-
+						else
+							if ((listPanther.at(i)->x - simon1->x) < 0)
+							{
+								listPanther.at(i)->SetState(PANTHER_STATE_ACTIVE_RIGHT);
+							}
 					}
+
 				}
-				 }
-			
-
+			}
 		}
-	}
 
+
+	}
 }
+
+
 
 void Scene2::spawnMonster()
 {
@@ -1971,6 +1798,97 @@ void Scene2::spawnMonster()
 
 	listEffectFire1.push_back(effectFire1);
 	listEnemy1.push_back(monster1);
+}
+
+void Scene2::spawnPanther()
+{
+#pragma region spawnPanther
+	pant = new Panther(15);
+
+	pant->AddAnimation(550);
+	pant->AddAnimation(551);
+
+	pant->AddAnimation(552);
+	pant->AddAnimation(553);
+
+	pant->AddAnimation(554);
+	pant->AddAnimation(555);
+
+	pant->AddAnimation(554);
+	pant->AddAnimation(555);
+
+	pant->AddAnimation(554);
+	pant->AddAnimation(555);
+
+	pant->AddAnimation(552);//freeze sit right let
+	pant->AddAnimation(553);
+	pant->setItemInside(randomIteminside());
+	
+	pant->SetPosition(685, 0 + offsetMap);
+	if (simon1->x < pant->x)
+		pant->SetState(PANTHER_STATE_SIT_LEFT);
+	else
+		pant->SetState(PANTHER_STATE_SIT_RIGHT);
+	listPanther.push_back(pant);
+	
+	pant = new Panther(8 * 20);
+	pant->AddAnimation(550);
+	pant->AddAnimation(551);
+
+	pant->AddAnimation(552);
+	pant->AddAnimation(553);
+
+	pant->AddAnimation(554);
+	pant->AddAnimation(555);
+
+	pant->AddAnimation(554);
+	pant->AddAnimation(555);
+
+	pant->AddAnimation(554);
+	pant->AddAnimation(555);
+
+	pant->AddAnimation(552);//freeze sit right let
+	pant->AddAnimation(553);
+	pant->setItemInside(randomIteminside());
+	pant->SetPosition(880, 0 + offsetMap);
+
+	if (simon1->x < pant->x)
+		pant->SetState(PANTHER_STATE_SIT_LEFT);
+	else
+		pant->SetState(PANTHER_STATE_SIT_RIGHT);
+	listPanther.push_back(pant);
+	
+	pant = new Panther(1 * 16);
+	pant->AddAnimation(550);//right left
+	pant->AddAnimation(551);
+
+	pant->AddAnimation(552);//sit right left
+	pant->AddAnimation(553);
+
+	pant->AddAnimation(554);//jump right left
+	pant->AddAnimation(555);
+
+	pant->AddAnimation(554);//freeze right left
+	pant->AddAnimation(555);
+
+	pant->AddAnimation(554);//freeze fly right let
+	pant->AddAnimation(555);
+
+	pant->AddAnimation(552);//freeze sit right let
+	pant->AddAnimation(553);
+
+	pant->setItemInside(randomIteminside());
+	pant->SetPosition(945, 0 + offsetMap);
+
+	if (simon1->x < pant->x)
+		pant->SetState(PANTHER_STATE_SIT_LEFT);
+	else
+		pant->SetState(PANTHER_STATE_SIT_RIGHT);
+	listPanther.push_back(pant);
+	
+
+
+#pragma endregion
 }
 
 void Scene2::spawnFireBall()
@@ -2103,7 +2021,7 @@ void Scene2::Update(DWORD dt)
 	listUpStairs1.clear();
 	listDownStairs1.clear();
 	listTorches1.clear(); 
-	listPanther.clear();
+	//listPanther.clear();
 	listGroundEnemy.clear();
 	listDoor.clear();
 	for (int i = 0; i < listColliableObjects1.size(); i++)
@@ -2128,9 +2046,10 @@ void Scene2::Update(DWORD dt)
 					}
 					else
 						if (listColliableObjects1.at(i)->tag == eTag::GROUND)
-				{
-					listSurface1.push_back(listColliableObjects1.at(i));
-				}
+					{
+							if(listColliableObjects1.at(i)->GetState()==GROUND_STATE_ACTIVE)
+							listSurface1.push_back(listColliableObjects1.at(i));
+					}
 				else
 					if (listColliableObjects1.at(i)->tag == eTag::GROUND_ENEMY)
 					{
@@ -2203,19 +2122,19 @@ void Scene2::Update(DWORD dt)
 			if (camera1->GetPosition().x > 1387)// neu camera dat vi tri x thi mo cua ra roi cho simon di qua
 			{
 
-				door->SetState(DOOR_STATE_ACTIVE_OPENED);
+				listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_OPENED);
 				simon1->SetState(SIMON_STATE_WALKING_RIGHT);
 				if (simon1->x > 1584)//neu simon di den 1 doan x thi set ve vi tri idle
 				{
 					simon1->SetState(SIMON_STATE_IDLE);
 					
-					door->SetState(DOOR_STATE_ACTIVE_CLOSED);//dong cua
+					listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_CLOSED);//dong cua
 					simon1->stage = 02;
 					if (camera1->GetPosition().x < 1536)
 						camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//keo camera qua hoan toan
 					if (camera1->GetPosition().x >= 1536)
 					{
-						door->SetState(DOOR_STATE_INACTIVE);
+						listDoor.at(0)->SetState(DOOR_STATE_INACTIVE);
 						simon1->proceedThruDoor = false;
 						stage = 2;//simon dang o man 2
 					}
@@ -2230,9 +2149,9 @@ void Scene2::Update(DWORD dt)
 		{
 			if (simon1->x < 1536)
 				simon1->x = 1536;
-			if (groundEnemy->GetState() == GROUND_STATE_INACTIVE)
+			if (listGroundEnemy.at(1)->GetState() == GROUND_STATE_INACTIVE)
 			{
-
+				
 				if (simon1->x > 1808 - 16)
 					simon1->x = 1808 - 16;
 			}
@@ -2328,19 +2247,19 @@ void Scene2::Update(DWORD dt)
 						if (camera1->GetPosition().x > 1920)// neu camera dat vi tri x thi mo cua ra roi cho simon di qua
 						{
 
-							door1->SetState(DOOR_STATE_ACTIVE_OPENED);
+							listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_OPENED);
 							simon1->SetState(SIMON_STATE_WALKING_RIGHT);
 							if (simon1->x > 2081)//neu simon di den 1 doan x thi set ve vi tri idle							{
 							{
 								simon1->SetState(SIMON_STATE_IDLE);
 
-								door1->SetState(DOOR_STATE_ACTIVE_CLOSED);//dong cua
+								listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_CLOSED);//dong cua
 								if (camera1->GetPosition().x < 2050)
 									camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//keo camera qua hoan toan
 								if (camera1->GetPosition().x >= 2050)
 								{
 
-									door1->SetState(DOOR_STATE_INACTIVE);
+									listDoor.at(0)->SetState(DOOR_STATE_INACTIVE);
 									simon1->proceedThruDoor = false;
 									stage = 5;
 								}
@@ -2414,7 +2333,7 @@ void Scene2::Update(DWORD dt)
 			{
 				if (tickGhou == 420 /*|| tickGhou == 460*/)
 				{
-					spawnGhou(x1 + SCREEN_WIDTH - 60 + 30, 125 + offsetMap, GHOU_STATE_ACTIVE_LEFT);
+				//	spawnGhou(x1 + SCREEN_WIDTH - 60 + 30, 125 + offsetMap, GHOU_STATE_ACTIVE_LEFT);
 				}
 				else
 				//	if (tickGhou == 500)
@@ -2454,7 +2373,16 @@ void Scene2::Update(DWORD dt)
 
 		}
 
-		if (simon1->x > 512 && simon1->x < 1120)//chi xu ly khi simon trong vung panter spawn
+		if (simon1->x < 400 || simon1->x > 1129)//
+		{	
+			if (listPanther.size() == 0)
+				spawnPanther();
+		
+		}
+		for (UINT i = 0; i < listPanther.size(); i++)
+			if (abs(simon1->x - listPanther.at(i)->x) > 550)
+				listPanther.at(i)->StartUntouchable();
+		if (simon1->x > 537 && simon1->x < 1120)//chi xu ly khi simon trong vung panter spawn
 			XuLyPanthera();
 	}
 	else
@@ -2500,7 +2428,7 @@ void Scene2::Update(DWORD dt)
 		{
 
 #pragma region spawnMonster
-			/*int j = 0;
+			int j = 0;
 			for (UINT i = 0; i < listEnemy1.size(); i++)
 			{
 				if (dynamic_cast<Monster *>(listEnemy1.at(i)))
@@ -2510,7 +2438,7 @@ void Scene2::Update(DWORD dt)
 			}
 			if (j < 2)
 				spawnMonster();
-*/
+
 			tickMonster += 1;
 			{//spawn every 6 seconds
 				int xz = 0;
@@ -2532,7 +2460,7 @@ void Scene2::Update(DWORD dt)
 				{
 					if (tickMonster == 420)
 					{
-				spawnMonster();
+					spawnMonster();
 					}
 					else
 						if (tickMonster == 440)
@@ -2633,21 +2561,21 @@ void Scene2::Update(DWORD dt)
 
 	//if (simon1->isUsing1stWeapon == true || simon1->isUsing2ndWeapon==true)
 	{
+
+		if ((simon1->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon1->isUsing1stWeapon == true)
+			simon1->dagger->Update(dt, &listSurface1);
+		if ((simon1->dagger1->GetState() != DAGGER_STATE_INACTIVE) && simon1->isUsing2ndWeapon == true)
+			simon1->dagger1->Update(dt, &listSurface1);
 		if (simon1->dagger->isOn == true)
 		{
-			if ((simon1->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon1->isUsing1stWeapon == true)
-				simon1->dagger->Update(dt, &listSurface1);
-
-
 			if ((simon1->dagger->x) < x1 || (simon1->dagger->x) > (x1 + SCREEN_WIDTH))// bay ngoai man hinh thi cho dagger inactive
 			{
 				simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
 				simon1->notUseWeapon();
 			}
-			if(simon1->shotTwoWeaponOneTime==true)
+			if (simon1->shotTwoWeaponOneTime == true)
 			{
-				if ((simon1->dagger1->GetState() != DAGGER_STATE_INACTIVE)  && simon1->isUsing2ndWeapon == true)
-					simon1->dagger1->Update(dt, &listSurface1);
+				
 
 				if ((simon1->dagger1->x) < x1 || (simon1->dagger1->x) > (x1 + SCREEN_WIDTH))// bay ngoai man hinh thi cho dagger inactive
 				{
@@ -2657,51 +2585,72 @@ void Scene2::Update(DWORD dt)
 			}
 
 		}
-		
+
+
+		if ((simon1->axe->GetState() != AXE_STATE_INACTIVE) && simon1->isUsing1stWeapon == true)
+			simon1->axe->Update(dt, &listSurface1);
+		if ((simon1->axe1->GetState() != AXE_STATE_INACTIVE) && simon1->isUsing2ndWeapon == true)
+			simon1->axe1->Update(dt, &listSurface1);
 		if (simon1->axe->isOn == true)
+		{
+			if (simon1->axe->GetState() == AXE_STATE_INACTIVE)
 			{
-				if ((simon1->axe->GetState() != AXE_STATE_INACTIVE) && simon1->isUsing1stWeapon == true)
-					simon1->axe->Update(dt, &listSurface1);
-			
-				if (simon1->axe->GetState() == AXE_STATE_INACTIVE)
+				simon1->notUseWeapon();
+			}
+			if (simon1->shotTwoWeaponOneTime == true)
+			{
+
+
+				if (simon1->axe1->GetState() == AXE_STATE_INACTIVE)
+				{
+					simon1->notUseWeapon2();
+				}
+			}
+		}
+
+		
+
+			if ((simon1->holy->GetState() != HOLYWATER_STATE_INACTIVE) && simon1->isUsing1stWeapon == true)
+				simon1->holy->Update(dt, &listSurface1);
+			if ((simon1->holy1->GetState() != HOLYWATER_STATE_INACTIVE) && simon1->isUsing2ndWeapon == true)
+				simon1->holy1->Update(dt, &listSurface1);
+			if (simon1->holy->isOn == true)
+			{
+
+
+				if (simon1->holy->GetState() == HOLYWATER_STATE_INACTIVE)
 				{
 					simon1->notUseWeapon();
 				}
+
 				if (simon1->shotTwoWeaponOneTime == true)
 				{
-					if ((simon1->axe1->GetState() != AXE_STATE_INACTIVE) && simon1->isUsing2ndWeapon == true)
-						simon1->axe1->Update(dt, &listSurface1);
-
-					if (simon1->axe1->GetState() == AXE_STATE_INACTIVE)
+					if (simon1->holy1->GetState() == HOLYWATER_STATE_INACTIVE)
 					{
 						simon1->notUseWeapon2();
 					}
 				}
 			}
 		
-		if (simon1->holy->isOn == true)
-				{
-					if ((simon1->holy->GetState() != HOLYWATER_STATE_INACTIVE)&& simon1->isUsing1stWeapon == true)
-						simon1->holy->Update(dt, &listSurface1);
-
-					if (simon1->holy->GetState() == HOLYWATER_STATE_INACTIVE)
-					{
-						simon1->notUseWeapon();
-					}
-					if (simon1->shotTwoWeaponOneTime == true)
-					{
-						if ((simon1->holy1->GetState() != HOLYWATER_STATE_INACTIVE) && simon1->isUsing2ndWeapon == true)
-							simon1->holy1->Update(dt, &listSurface1);
-
-						if (simon1->holy1->GetState() == HOLYWATER_STATE_INACTIVE)
-						{
-							simon1->notUseWeapon2();
-						}
-					}
-
-				}
+				
 	}
+	//if (simon1->dagger->GetState() == DAGGER_STATE_INACTIVE)
+	//	simon1->dagger->isFinished = true;
 
+	//if (simon1->dagger1->GetState() == DAGGER_STATE_INACTIVE)
+	//	simon1->dagger1->isFinished = true;
+
+	if (simon1->axe->GetState() == AXE_STATE_INACTIVE)
+		simon1->axe->isFinished = true;
+
+	//if (simon1->axe1->GetState() == AXE_STATE_INACTIVE)
+	//	simon1->axe1->isFinished = true;
+
+	if (simon1->holy->GetState() == HOLYWATER_STATE_INACTIVE)
+		simon1->holy->isFinished = true;
+
+	if (simon1->holy1->GetState() == HOLYWATER_STATE_INACTIVE)
+		simon1->holy1->isFinished = true;
 	for (int i = 0; i < listItem1.size(); i++)
 	{
 		listItem1.at(i)->Update(dt, &listSurface1);
@@ -2769,31 +2718,31 @@ void Scene2::Render()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 		board->Render();
 		map1->drawTileMap(camera1, ID_TEX_MAP2);
-	//	for (int i = 0; i < listDownStairs1.size(); i++)
-		//	listDownStairs1[i]->Render();
-		//for (int i = 0; i < listUpStairs1.size(); i++)
-		//	listUpStairs1[i]->Render();
-		//for (int i = 0; i < listSurface1.size(); i++)
-		//	listSurface1[i]->Render();
+		for (int i = 0; i < listDownStairs1.size(); i++)
+			listDownStairs1[i]->Render();
+		for (int i = 0; i < listUpStairs1.size(); i++)
+			listUpStairs1[i]->Render();
+		for (int i = 0; i < listSurface1.size(); i++)
+			listSurface1[i]->Render();
 		for (int i = 0; i < listTorches1.size(); i++)
 			listTorches1[i]->Render();
-		//for (int i = 0; i < listEnemy1.size(); i++)
-		//	listEnemy1[i]->Render();
-		//for (int i = 0; i < listDoor.size(); i++)
-		//	listDoor[i]->Render();
+		for (int i = 0; i < listEnemy1.size(); i++)
+			listEnemy1[i]->Render();
+		for (int i = 0; i < listDoor.size(); i++)
+			listDoor[i]->Render();
 		simon1->Render();
-	//	for (int i = 0; i < listEffectBag1.size(); i++)//render ietms
-		//	listEffectBag1[i]->Render();
-	//	for (int i = 0; i < listItem1.size(); i++)
-	//		listItem1[i]->Render();
-	//	for (int i = 0; i < listPanther.size(); i++)
-	//		listPanther[i]->Render();
+		for (int i = 0; i < listEffectBag1.size(); i++)//render ietms
+			listEffectBag1[i]->Render();
+		for (int i = 0; i < listItem1.size(); i++)
+			listItem1[i]->Render();
+		for (int i = 0; i < listPanther.size(); i++)
+			listPanther[i]->Render();
 		
-	//	for (int i = 0; i < listGroundEnemy.size(); i++)
-	//		listGroundEnemy[i]->Render();
-	//	boss->Render();
-	//	for (int i = 0; i < listEffectFire1.size(); i++)
-	//		listEffectFire1[i]->Render();
+		for (int i = 0; i < listGroundEnemy.size(); i++)
+			listGroundEnemy[i]->Render();
+		boss->Render();
+		for (int i = 0; i < listEffectFire1.size(); i++)
+			listEffectFire1[i]->Render();
 		simon1->dagger->Render();
 		simon1->axe->Render();
 		simon1->holy->Render();
@@ -2909,53 +2858,45 @@ void Scene2::erasingObjThatInacitve()
 				i = i - 1;
 			}
 		}
+
 		else
-			if (dynamic_cast<Panther *>(listEnemy1.at(i)))
+			if (dynamic_cast<Bat *>(listEnemy1.at(i)))
 			{
-				if (listEnemy1.at(i)->GetState() == PANTHER_STATE_INACTIVE)
+				if (listEnemy1.at(i)->GetState() == BAT_STATE_INACTIVE)
 				{
 					listEnemy1.erase(listEnemy1.begin() + i);
 					i = i - 1;
 				}
 			}
 			else
-				if (dynamic_cast<Bat *>(listEnemy1.at(i)))
+				if (dynamic_cast<Monster *>(listEnemy1.at(i)))
 				{
-					if (listEnemy1.at(i)->GetState() == BAT_STATE_INACTIVE)
+					if (listEnemy1.at(i)->GetState() == MONSTER_STATE_INACTIVE)
 					{
 						listEnemy1.erase(listEnemy1.begin() + i);
 						i = i - 1;
 					}
 				}
 				else
-					if (dynamic_cast<Monster *>(listEnemy1.at(i)))
+					if (dynamic_cast<FireBall *>(listEnemy1.at(i)))
 					{
-						if (listEnemy1.at(i)->GetState() == MONSTER_STATE_INACTIVE)
+						if (listEnemy1.at(i)->GetState() == FIREBALL_STATE_INACTIVE)
 						{
 							listEnemy1.erase(listEnemy1.begin() + i);
 							i = i - 1;
 						}
 					}
 					else
-						if (dynamic_cast<FireBall *>(listEnemy1.at(i)))
+						if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
 						{
-							if (listEnemy1.at(i)->GetState() == FIREBALL_STATE_INACTIVE)
+							if (listEnemy1.at(i)->GetState() == GROUND_STATE_INACTIVE)
 							{
 								listEnemy1.erase(listEnemy1.begin() + i);
 								i = i - 1;
 							}
 						}
-						else
-							if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
-							{
-								if (listEnemy1.at(i)->GetState() == GROUND_STATE_INACTIVE)
-								{
-									listEnemy1.erase(listEnemy1.begin() + i);
-									i = i - 1;
-								}
-							}
 
-	
+
 	}
 	for (UINT i = 0; i < listItem1.size(); i++)
 	{
@@ -2964,6 +2905,15 @@ void Scene2::erasingObjThatInacitve()
 			listItem1.erase(listItem1.begin() + i);
 			i = i - 1;
 		}
+	}
+	for (UINT i = 0; i < listPanther.size(); i++)
+	{
+		if (listPanther.at(i)->GetState() == PANTHER_STATE_INACTIVE)
+		{
+			listPanther.erase(listPanther.begin() + i);
+			i = i - 1;
+		}
+
 	}
 }
 
@@ -3034,6 +2984,25 @@ void Scene2::freezeEnemyFunction()
 				//listEnemy1.at(i)->SetState(ENEMY_STATE_FREEZE);
 				//listEnemy1.at(i)->freezed = true;
 				listEnemy1.at(i)->StartUntouchable();
+			}
+
+		}
+	}
+	for (UINT i = 0; i < listPanther.size(); i++)
+	{
+		float x1 = Camera::GetInstance()->GetPosition().x;
+		float y1 = Camera::GetInstance()->GetPosition().y;
+		if (listPanther.at(i)->x > x1 &&
+			listPanther.at(i)->x<x1 + SCREEN_WIDTH &&
+			listPanther.at(i)->y>y1 &&
+			listPanther.at(i)->y < y1 + SCREEN_HEIGHT)
+		{
+			if (!(dynamic_cast<GroundEnemy *>(listEnemy1.at(i))))
+			{
+
+				//listEnemy1.at(i)->SetState(ENEMY_STATE_FREEZE);
+				//listEnemy1.at(i)->freezed = true;
+				listPanther.at(i)->StartUntouchable();
 			}
 
 		}
@@ -3144,6 +3113,13 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					{
 						if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
 						{
+							for (UINT xz = 0; xz < listSurface1.size(); xz++)
+							{
+								if (listSurface1.at(xz)->x == listGroundEnemy.at(i)->x)
+								{
+									listSurface1.at(xz)->SetState(GROUND_STATE_INACTIVE);
+								}
+							}
 							float x, y;
 							listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
 							listGroundEnemy.at(i)->GetPosition(x, y);
@@ -3163,6 +3139,31 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					
 					}
 				}
+			}
+		}
+		for (UINT i = 0; i < listPanther.size(); i++)
+		{
+			if (simon1->whip->CheckCollision(listPanther.at(i)) == true)
+			{
+				if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
+				{
+					float x, y;
+					listPanther.at(i)->SetState(GHOU_STATE_INACTIVE);
+					listPanther.at(i)->GetPosition(x, y);
+
+					effectFire1 = new EffectFire();
+					effectFire1->AddAnimation(578);
+					effectFire1->AddAnimation(577);
+					effectFire1->AddAnimation(576);
+					effectFire1->SetState(EFFECT_STATE_ACTIVE);
+					effectFire1->itemInside = listPanther.at(i)->itemInside;
+					effectFire1->SetPosition(x, y);
+					effectFire1->type = 0;
+					listEffectFire1.push_back(effectFire1);
+					listPanther.erase(listPanther.begin() + i);
+					i = i - 1;
+				}
+
 			}
 		}
 
@@ -3286,6 +3287,35 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					}
 				}
 			}
+			for (UINT i = 0; i < listPanther.size(); i++)
+			{
+				if (simon1->dagger->CheckCollision(listPanther.at(i)) == true)
+				{
+					if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
+					{
+
+						simon1->notUseWeapon();
+						simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
+						float x, y;
+						listPanther.at(i)->SetState(GHOU_STATE_INACTIVE);
+						listPanther.at(i)->GetPosition(x, y);
+
+						effectFire1 = new EffectFire();
+						effectFire1->AddAnimation(578);
+						effectFire1->AddAnimation(577);
+						effectFire1->AddAnimation(576);
+						effectFire1->SetPosition(x, y);
+						effectFire1->SetState(EFFECT_STATE_ACTIVE);
+						effectFire1->itemInside = listPanther.at(i)->itemInside;
+						listEffectFire1.push_back(effectFire1);
+
+						listPanther.erase(listPanther.begin() + i);
+						i = i - 1;
+					}
+				}
+
+			}
+
 		}
 		else
 			if (simon1->dagger1->state != DAGGER_STATE_INACTIVE && simon1->isUsing2ndWeapon == true)
@@ -3326,9 +3356,12 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								float x, y;
 								listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
 								listTorches1.at(i)->GetPosition(x, y);
-
-								effectFire1->SetPosition(x, y);
+								effectFire1 = new EffectFire();
+								effectFire1->AddAnimation(578);
+								effectFire1->AddAnimation(577);
+								effectFire1->AddAnimation(576);
 								effectFire1->SetState(EFFECT_STATE_ACTIVE);
+								effectFire1->SetPosition(x, y);
 								effectFire1->itemInside = listTorches1.at(i)->itemInside;
 								listEffectFire1.push_back(effectFire1);
 
@@ -3398,6 +3431,35 @@ void Scene2::CollisionBetWeaponAndEnemy()
 						}
 					}
 				}
+				for (UINT i = 0; i < listPanther.size(); i++)
+				{
+					if (simon1->dagger1->CheckCollision(listPanther.at(i)) == true)
+					{
+						{
+							simon1->notUseWeapon2();
+							simon1->dagger1->SetState(DAGGER_STATE_INACTIVE);
+							if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
+							{
+								float x, y;
+								listPanther.at(i)->SetState(GHOU_STATE_INACTIVE);
+								listPanther.at(i)->GetPosition(x, y);
+								effectFire1 = new EffectFire();
+								effectFire1->AddAnimation(578);
+								effectFire1->AddAnimation(577);
+								effectFire1->AddAnimation(576);
+								effectFire1->SetPosition(x, y);
+								effectFire1->SetState(EFFECT_STATE_ACTIVE);
+								effectFire1->itemInside = listPanther.at(i)->itemInside;
+								listEffectFire1.push_back(effectFire1);
+
+								listPanther.erase(listPanther.begin() + i);
+								i = i - 1;
+							}
+						}
+
+					}
+				}
+
 			}
 			else
 				if (simon1->axe->state != AXE_STATE_INACTIVE && simon1->axe->isOn == true && simon1->isUsing1stWeapon == true)
@@ -3415,7 +3477,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 									float x, y;
 									listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 									listEnemy1.at(i)->GetPosition(x, y);
-
+									effectFire1 = new EffectFire();
+									effectFire1->AddAnimation(578);
+									effectFire1->AddAnimation(577);
+									effectFire1->AddAnimation(576);
 									effectFire1->SetPosition(x, y);
 									effectFire1->SetState(EFFECT_STATE_ACTIVE);
 									effectFire1->itemInside = listEnemy1.at(i)->itemInside;
@@ -3440,8 +3505,11 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 								float x, y;
 								listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
-								listTorches1.at(i)->GetPosition(x, y);
-
+								listTorches1.at(i)->GetPosition(x, y); 
+								effectFire1 = new EffectFire();
+								effectFire1->AddAnimation(578);
+								effectFire1->AddAnimation(577);
+								effectFire1->AddAnimation(576);
 								effectFire1->SetPosition(x, y);
 								effectFire1->SetState(EFFECT_STATE_ACTIVE);
 								effectFire1->itemInside = listTorches1.at(i)->itemInside;
@@ -3518,6 +3586,37 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							}
 						}
 					}
+					for (UINT i = 0; i < listPanther.size(); i++)
+					{
+						if (simon1->axe->CheckCollision(listPanther.at(i)) == true)
+						{
+							{
+
+								if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
+								{
+									simon1->axe->SetState(AXE_STATE_INACTIVE);
+									simon1->notUseWeapon();
+									float x, y;
+									listPanther.at(i)->SetState(GHOU_STATE_INACTIVE);
+									listPanther.at(i)->GetPosition(x, y);
+
+									effectFire1 = new EffectFire();
+									effectFire1->AddAnimation(578);
+									effectFire1->AddAnimation(577);
+									effectFire1->AddAnimation(576);
+									effectFire1->SetPosition(x, y);
+									effectFire1->SetState(EFFECT_STATE_ACTIVE);
+									effectFire1->itemInside = listPanther.at(i)->itemInside;
+									listEffectFire1.push_back(effectFire1);
+
+									listPanther.erase(listPanther.begin() + i);
+									i = i - 1;
+								}
+							}
+
+						}
+					}
+
 				}
 				else
 				if (simon1->axe1->state != AXE_STATE_INACTIVE  && simon1->isUsing2ndWeapon == true)
@@ -3536,6 +3635,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 									listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 									listEnemy1.at(i)->GetPosition(x, y);
 
+									effectFire1 = new EffectFire();
+									effectFire1->AddAnimation(578);
+									effectFire1->AddAnimation(577);
+									effectFire1->AddAnimation(576);
 									effectFire1->SetPosition(x, y);
 									effectFire1->SetState(EFFECT_STATE_ACTIVE);
 									effectFire1->itemInside = listEnemy1.at(i)->itemInside;
@@ -3562,6 +3665,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
 								listTorches1.at(i)->GetPosition(x, y);
 
+								effectFire1 = new EffectFire();
+								effectFire1->AddAnimation(578);
+								effectFire1->AddAnimation(577);
+								effectFire1->AddAnimation(576);
 								effectFire1->SetPosition(x, y);
 								effectFire1->SetState(EFFECT_STATE_ACTIVE);
 								effectFire1->itemInside = listTorches1.at(i)->itemInside;
@@ -3638,6 +3745,37 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							}
 						}
 					}
+					for (UINT i = 0; i < listPanther.size(); i++)
+					{
+						if (simon1->axe1->CheckCollision(listPanther.at(i)) == true)
+						{
+							{
+
+								if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
+								{
+									simon1->axe1->SetState(AXE_STATE_INACTIVE);
+									simon1->notUseWeapon2();
+									float x, y;
+									listPanther.at(i)->SetState(GHOU_STATE_INACTIVE);
+									listPanther.at(i)->GetPosition(x, y);
+
+									effectFire1 = new EffectFire();
+									effectFire1->AddAnimation(578);
+									effectFire1->AddAnimation(577);
+									effectFire1->AddAnimation(576);
+									effectFire1->SetPosition(x, y);
+									effectFire1->SetState(EFFECT_STATE_ACTIVE);
+									effectFire1->itemInside = listPanther.at(i)->itemInside;
+									listEffectFire1.push_back(effectFire1);
+
+									listPanther.erase(listEnemy1.begin() + i);
+									i = i - 1;
+								}
+							}
+
+						}
+					}
+
 				}
 				else
 					if (simon1->holy->state != HOLYWATER_STATE_INACTIVE && simon1->holy->isOn == true && simon1->isUsing1stWeapon == true)
@@ -3655,6 +3793,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 										listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 										listEnemy1.at(i)->GetPosition(x, y);
 
+										effectFire1 = new EffectFire();
+										effectFire1->AddAnimation(578);
+										effectFire1->AddAnimation(577);
+										effectFire1->AddAnimation(576);
 										effectFire1->SetPosition(x, y);
 										effectFire1->SetState(EFFECT_STATE_ACTIVE);
 										effectFire1->itemInside = listEnemy1.at(i)->itemInside;
@@ -3678,7 +3820,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 										float x, y;
 										listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
 										listTorches1.at(i)->GetPosition(x, y);
-
+										effectFire1 = new EffectFire();
+										effectFire1->AddAnimation(578);
+										effectFire1->AddAnimation(577);
+										effectFire1->AddAnimation(576);
 										effectFire1->SetPosition(x, y);
 										effectFire1->SetState(EFFECT_STATE_ACTIVE);
 										effectFire1->itemInside = listTorches1.at(i)->itemInside;
@@ -3753,6 +3898,36 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								}
 							}
 						}
+						for (UINT i = 0; i < listPanther.size(); i++)
+						{
+							if (simon1->holy->CheckCollision(listPanther.at(i)) == true)
+							{
+								{
+									if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
+									{
+										//simon1->notUseWeapon();
+
+										float x, y;
+										listPanther.at(i)->SetState(GHOU_STATE_INACTIVE);
+										listPanther.at(i)->GetPosition(x, y);
+
+										effectFire1 = new EffectFire();
+										effectFire1->AddAnimation(578);
+										effectFire1->AddAnimation(577);
+										effectFire1->AddAnimation(576);
+										effectFire1->SetPosition(x, y);
+										effectFire1->SetState(EFFECT_STATE_ACTIVE);
+										effectFire1->itemInside = listPanther.at(i)->itemInside;
+										listEffectFire1.push_back(effectFire1);
+
+										listPanther.erase(listPanther.begin() + i);
+										i = i - 1;
+									}
+								}
+
+							}
+						}
+
 					}
 					else
 						if (simon1->holy1->state != HOLYWATER_STATE_INACTIVE &&  simon1->isUsing2ndWeapon == true)
@@ -3770,6 +3945,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 											listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 											listEnemy1.at(i)->GetPosition(x, y);
 
+											effectFire1 = new EffectFire();
+											effectFire1->AddAnimation(578);
+											effectFire1->AddAnimation(577);
+											effectFire1->AddAnimation(576);
 											effectFire1->SetPosition(x, y);
 											effectFire1->SetState(EFFECT_STATE_ACTIVE);
 											effectFire1->itemInside = listEnemy1.at(i)->itemInside;
@@ -3795,6 +3974,10 @@ void Scene2::CollisionBetWeaponAndEnemy()
 											listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
 											listTorches1.at(i)->GetPosition(x, y);
 
+											effectFire1 = new EffectFire();
+											effectFire1->AddAnimation(578);
+											effectFire1->AddAnimation(577);
+											effectFire1->AddAnimation(576);
 											effectFire1->SetPosition(x, y);
 											effectFire1->SetState(EFFECT_STATE_ACTIVE);
 											effectFire1->itemInside = listTorches1.at(i)->itemInside;
@@ -3869,6 +4052,36 @@ void Scene2::CollisionBetWeaponAndEnemy()
 									}
 								}
 							}
+							for (UINT i = 0; i < listPanther.size(); i++)
+							{
+								if (simon1->holy->CheckCollision(listPanther.at(i)) == true)
+								{
+									{
+										//	simon1->notUseWeapon2();
+										if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
+										{
+
+											float x, y;
+											listPanther.at(i)->SetState(GHOU_STATE_INACTIVE);
+											listPanther.at(i)->GetPosition(x, y);
+
+											effectFire1 = new EffectFire();
+											effectFire1->AddAnimation(578);
+											effectFire1->AddAnimation(577);
+											effectFire1->AddAnimation(576);
+											effectFire1->SetPosition(x, y);
+											effectFire1->SetState(EFFECT_STATE_ACTIVE);
+											effectFire1->itemInside = listPanther.at(i)->itemInside;
+											listEffectFire1.push_back(effectFire1);
+
+											listPanther.erase(listPanther.begin() + i);
+											i = i - 1;
+										}
+									}
+
+								}
+							}
+
 						}
 }
 
@@ -4078,7 +4291,11 @@ void Scene2::CollisionBetSimonAndItem()
 														{
 															OutputDebugString(L"Chicken \n");
 															listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
-															simon1->healthCount += 2;
+															if (simon1->healthCount <= 14)
+																simon1->healthCount += 2;
+															else
+																if (simon1->healthCount = 15)
+																	simon1->healthCount += 1;
 															
 																
 																listItem1.erase(listItem1.begin() + i);
@@ -4297,7 +4514,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 				{
 					if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
 					{
-						//
+						
 					}
 					else
 						if (e->nx == -1)
@@ -4308,8 +4525,8 @@ void Scene2::CollisionBetSimonAndEnemy()
 							{
 
 								OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
-								//if (simon1->isUsing1stWeapon == true)
-								//	simon1->notUseWeapon();
+								if (simon1->isUsing1stWeapon == true)
+									simon1->notUseWeapon();
 								if (simon1->whip->isFinished == false)
 									simon1->whip->isFinished = true;
 								if (simon1->isOnStairs == true)
@@ -4321,11 +4538,11 @@ void Scene2::CollisionBetSimonAndEnemy()
 									simon1->SetState(SIMON_STATE_HURT_LEFT);
 
 								}
-								//	if (simon1->nx = 1)
-								//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
-								//		else if(simon1->nx=-1)
-								//		simon1->SetState(SIMON_STATE_HURT_LEFT);
-								//simon->heartCount += 5;
+									if (simon1->nx = 1)
+										simon1->SetState(SIMON_STATE_HURT_RIGHT);
+										else if(simon1->nx=-1)
+										simon1->SetState(SIMON_STATE_HURT_LEFT);
+								//simon1->heartCount += 5;
 
 							}
 
@@ -4414,7 +4631,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 				{
 					if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
 					{
-						//
+						
 					}
 					else
 					{
@@ -4455,7 +4672,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 									simon1->SetState(SIMON_STATE_HURT_RIGHT);
 								}
 							}
-						//simon1->healthCount -= 2;
+						simon1->healthCount -= 2;
 					}
 
 					if (dynamic_cast<Bat *>(listEnemy1.at(i)))
@@ -4620,18 +4837,19 @@ void Scene2::CollisionBetSimonAndEnemy()
 			float bl, bt, br, bb;
 			listPanther.at(i)->GetBoundingBox(al, at, ar, ab);
 			simon1->GetBoundingBox(bl, bt, br, bb);
-
-			LPCOLLISIONEVENT e = simon1->SweptAABBEx(listPanther.at(i));
-
-			if (e->t > 0 && e->t <= 1.0f)
+			if (listPanther.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
+				listPanther.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
 			{
-				if (dynamic_cast<Enemy *>(listPanther.at(i)))
+				LPCOLLISIONEVENT e = simon1->SweptAABBEx(listPanther.at(i));
+
+				if (e->t > 0 && e->t <= 1.0f)
 				{
+					if (dynamic_cast<Enemy *>(listPanther.at(i)))
+					{
 						if (e->nx == -1)
 						{
 
-							if (listPanther.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
-								listPanther.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+
 							{
 
 								OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
@@ -4661,8 +4879,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 						else
 							if (e->nx == 1)
 							{
-								if (listPanther.at(i)->GetState() == GHOU_STATE_ACTIVE_LEFT ||
-									listPanther.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
+
 								{
 
 									OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
@@ -4728,39 +4945,20 @@ void Scene2::CollisionBetSimonAndEnemy()
 											}
 									}
 								}
+					}
 				}
-			}
-
-
-			else
-				if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
-				{
-					
+				else
+					if (game1->AABB(al, at, ar, ab, bl, bt, br, bb) == true)
 					{
-						float x, y;
-						simon1->GetPosition(x, y);
-						float x1, y1;
-						listPanther.at(i)->GetPosition(x1, y1);
-						if (x < x1)
+
 						{
-							OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
-							if (simon1->isUsing1stWeapon == true)
-								simon1->notUseWeapon();
-							if (simon1->whip->isFinished == false)
-								simon1->whip->isFinished = true;
-							if (simon1->isOnStairs == true)
+							float x, y;
+							simon1->GetPosition(x, y);
+							float x1, y1;
+							listPanther.at(i)->GetPosition(x1, y1);
+							if (x < x1)
 							{
-								simon1->StartUntouchable();
-							}
-							else
-							{
-								simon1->SetState(SIMON_STATE_HURT_LEFT);
-							}
-						}
-						else
-							if (x >= x1)
-							{
-								OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+								OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
 								if (simon1->isUsing1stWeapon == true)
 									simon1->notUseWeapon();
 								if (simon1->whip->isFinished == false)
@@ -4771,12 +4969,31 @@ void Scene2::CollisionBetSimonAndEnemy()
 								}
 								else
 								{
-									simon1->SetState(SIMON_STATE_HURT_RIGHT);
+									simon1->SetState(SIMON_STATE_HURT_LEFT);
 								}
 							}
-						//simon1->healthCount -= 2;
+							else
+								if (x >= x1)
+								{
+									OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+									if (simon1->isUsing1stWeapon == true)
+										simon1->notUseWeapon();
+									if (simon1->whip->isFinished == false)
+										simon1->whip->isFinished = true;
+									if (simon1->isOnStairs == true)
+									{
+										simon1->StartUntouchable();
+									}
+									else
+									{
+										simon1->SetState(SIMON_STATE_HURT_RIGHT);
+									}
+								}
+							//simon1->healthCount -= 2;
+						}
 					}
-				}
+
+			}
 		}
 
 	}
@@ -4801,7 +5018,6 @@ int Scene2::CollisionBetSimonAndUpStairs(vector<LPSTAIRS> xStair)
 				if (simon1->isOnStairs == true)
 				{
 					simon1->SetPosition(simon1->x, simon1->y - 2);
-				//	simon1->dy = 9999999999999999999;
 					simon1->SetState(SIMON_STATE_IDLE);
 					simon1->isOnStairs = false;
 				}

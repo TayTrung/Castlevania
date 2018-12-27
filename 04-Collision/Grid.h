@@ -17,7 +17,7 @@ public:
 	vector <LPGAMEOBJECT> grid[3][25];
 	void insertObjectIntoGrid(CGameObject *object);
 	void getListOfObjects(vector <LPGAMEOBJECT> &listOfObj,Camera *cam);
-	void readObjectFromTextFile(vector <LPGAMEOBJECT> &listOfObject, char * pathOfFile);
+	void readObjectFromTextFile(char * pathOfFile);
 	CGameObject * getTypeObject(int tag, int nx, int x, int y, int itemInside, int type, int groundBBOX);
 	int randomIteminside();
 	Grid();

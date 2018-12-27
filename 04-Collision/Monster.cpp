@@ -135,6 +135,7 @@ void Monster::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	}
 	
+	
 	if (x<xc || x>xc + SCREEN_WIDTH)
 		this->SetState(MONSTER_STATE_INACTIVE);
 	if(y>offsetMap+150)

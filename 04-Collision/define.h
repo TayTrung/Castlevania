@@ -76,7 +76,7 @@ enum eTag
 #define INVIS_STATE_OPENDOOR 1000
 #define INVIS_STATE_OPENDOOR2 1050
 #define INVIS_STATE_NEXT_LVL_UNDERGROUND 100
-#define INVIS_STATE_DIE_BOX 110
+#define INVIS_STATE_DIE_BOX 335
 #define INVIS_STATE_UPPERGROUND 1200
 #define INVIS_STATE_STAGE2 1300
 #define INVIS_STATE_INVIS_ITEM 2000
@@ -288,7 +288,7 @@ enum eTag
 #define numbahInside 999
 #define potionInside 199
 #define healInside  200
-
+	
 #define ID_TEX_HEALTH 656
 #define ID_TEX_SIMON 0
 #define ID_TEX_BOARD 2

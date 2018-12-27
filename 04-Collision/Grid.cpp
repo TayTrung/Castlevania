@@ -98,7 +98,7 @@ void Grid::getListOfObjects(vector<LPGAMEOBJECT>& listOfObj, Camera * cam)
 	
 }
 
-void Grid::readObjectFromTextFile(vector<LPGAMEOBJECT>& listOfObject, char * pathOfFile)
+void Grid::readObjectFromTextFile( char * pathOfFile)
 {
 	FILE* file;
 	file = fopen(pathOfFile, "r");
@@ -122,7 +122,8 @@ CGameObject* Grid::getTypeObject(int tag, int nx, int x, int y, int itemInside, 
 		if (nx == 1)
 			nx = 1;//1=right,2=left
 		else
-			nx = 2;
+			if (nx == 2)
+				nx = 2;
 		if (type == 0)//type=0->false => IsUpStair
 			type = 0;
 		else
@@ -132,18 +133,18 @@ CGameObject* Grid::getTypeObject(int tag, int nx, int x, int y, int itemInside, 
 		return stairs;
 		break;
 	}
-	
 	case eTag::TORCHES:
 	{
-		Torch *candle = new Torch(1);
+		//Torch *candle = new Torch(1);
 		//		candle->AddAnimation(476);
 		//		candle->setItemInside(clockInside);
 		//		candle->SetPosition(29+i*(157-29), offsetMap +128);
 		Torch * torch = new Torch(type);
 		if (type == 1)
-			torch->AddAnimation(476);
+			torch->AddAnimation(476);//scene 2
 		else
-			torch->AddAnimation(901);
+			if (type == 0)
+				torch->AddAnimation(901);//scene 1
 		if (itemInside == -1)
 			torch->setItemInside(randomIteminside());
 		else
@@ -155,16 +156,21 @@ CGameObject* Grid::getTypeObject(int tag, int nx, int x, int y, int itemInside, 
 	case eTag::MainGround:
 	{
 		Ground *ground = new Ground(type, groundBBOX);
-		ground->SetPosition(x, offsetMap+y);
+		ground->SetPosition(x, offsetMap + y);
 		return ground;
 		break;
-		
+//
+
 	}
+
 	case eTag::GROUND_ENEMY:
 	{
-		GroundEnemy *groundenemy = new GroundEnemy();
+		GroundEnemy *groundenemy = new GroundEnemy(type);
 		groundenemy->AddAnimation(998);
+		groundenemy->AddAnimation(999);
 		groundenemy->SetPosition(x, offsetMap + y);
+		if (itemInside !=0)
+			groundenemy->setItemInside(itemInside);
 		return groundenemy;
 		break;
 	}
@@ -177,6 +183,7 @@ CGameObject* Grid::getTypeObject(int tag, int nx, int x, int y, int itemInside, 
 		door->SetPosition(x, offsetMap + y);
 		return door;
 		break;
+
 	}
 	
 	default:
