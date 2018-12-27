@@ -20,6 +20,11 @@ void Scene::Update(DWORD dt)
 
 }
 
+void Scene::readTextureFromFileTxt(char * pathOfFile)
+{
+	
+}
+
 Scene::Scene()
 {
 }

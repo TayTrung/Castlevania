@@ -13,7 +13,7 @@ public:
 	int itemInside=0;
 	void StartUntouchable() { freezed = true; freezeTime_Start = GetTickCount(); }
 	void setItemInside(int Item);
-	void getItemInside(int Item);
+	int getItemInside();
 	Enemy();
 	~Enemy();
 };

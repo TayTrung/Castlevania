@@ -1,0 +1,46 @@
+21
+textures\\Map\\Map1.png
+255 0 255 4
+textures\\Effect\\Kill.png
+255 0 255 99
+textures\\Effect\\brickbreak.png
+255 0 255 991
+textures\\Effect\\water.png
+255 0 255 992
+textures\\board.png
+255 0 255 2
+textures\\heal.png
+255 0 255 656
+textures\\simon.png
+255 0 255 0
+textures\\Enemy\\0.png
+255 0 255 30
+textures\\simondeath.png
+255 0 255 79979
+textures\\simon2.png
+0 128 128 79989
+textures\\Weapon\\morningstar.png
+255 0 255 10
+textures\\Weapon\\3.png
+255 0 255 12
+textures\\Weapon\\2.png
+255 0 255 11
+textures\\bbox.png
+255 255 255 -100
+textures\\Item\\1.png
+255 0 255 50
+textures\\Item\\3.png
+255 0 255 70
+textures\\Item\\4.png
+255 0 255 60
+textures\\Item\\2.png
+255 0 255 80
+textures\\Item\\potion.png
+0 0 0 160
+textures\\Item\\clock.png
+255 0 255 130
+textures\\Item\\holywater.png
+255 0 255 110
+
+pathToTexture &red, &green, &blue, &IDofTex
+	

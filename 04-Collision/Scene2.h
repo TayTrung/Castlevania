@@ -62,8 +62,8 @@ private:
 	bool floor1 = true;
 	bool changedColor = true;
 	bool bossOn = false;
-
-
+	DWORD TimeWaitToCount = 0;
+	DWORD TimeWaitToChangeColor=0;
 	DWORD TimeWait;
 	DWORD TimeWaitToRefresh;
 	int stage;
@@ -84,6 +84,7 @@ public:
 	void spawnFireBall();
 	void spawnMonster();
 	void spawnPanther();
+	void TinhDiem();
 	virtual void CollisionBetWeaponAndEnemy();
 	virtual void CollisionBetSimonAndItem();
 	virtual void spawnItemsAfterEffect();
@@ -91,6 +92,9 @@ public:
 	virtual int CollisionBetSimonAndUpStairs(vector<LPSTAIRS> listUpStairs1);
 	virtual int CollisionBetSimonAndDownStairs(vector<LPSTAIRS> listDownStairs1);
 	virtual void CollisionBetSimonAndCheckBox();
+	virtual void readTextureFromFileTxt(char * pathOfFile);
+	virtual void readCoordiantionsForSpritesFromFileTxt(char * pathOfFile);
+	virtual void createAnimationsFromFileTxt(char * pathOfFile);
 	Scene2(Simon *simon);
 	~Scene2();
 };

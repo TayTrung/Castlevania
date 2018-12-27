@@ -50,6 +50,9 @@ public:
 	virtual void LoadResources()=0;
 	virtual void Update(DWORD dt)=0;
 	virtual void Render()=0;
+	virtual void readTextureFromFileTxt(char * pathOfFile) = 0;
+	virtual void readCoordiantionsForSpritesFromFileTxt(char * pathOfFile) = 0;
+	virtual void createAnimationsFromFileTxt(char * pathOfFile) = 0;
 
 	virtual void CollisionBetWeaponAndEnemy()=0;
 	virtual void CollisionBetSimonAndItem()=0;

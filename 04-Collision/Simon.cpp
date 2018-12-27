@@ -113,8 +113,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
 		y += min_ty * dy + ny * 0.4f;
 
-		if (nx != 0) 
- 			vx = 0;
+		//if (nx != 0) 
+ 			//vx = 0;
 		if (ny != 0)
 		{
 			vy = 0;
@@ -643,11 +643,11 @@ void Simon::SetState(int state)
 			nx = -1;
 			break;
 		case SIMON_STATE_JUMP_RIGHT:
-			vx = PANTHER_WALKING_SPEED * 0.5;
+			vx = SIMON_WALKING_SPEED * 0.75;
 			vy = -SIMON_JUMP_SPEED_Y;
 			break;
 		case SIMON_STATE_JUMP_LEFT:
-			vx = -PANTHER_WALKING_SPEED * 0.5;
+			vx = -SIMON_WALKING_SPEED * 0.75;
 			vy = -SIMON_JUMP_SPEED_Y;
 			break;
 		case SIMON_STATE_JUMP:

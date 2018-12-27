@@ -7,9 +7,9 @@ void Enemy::setItemInside(int Item)
 	itemInside = Item;
 }
 
-void Enemy::getItemInside(int Item)
+int Enemy::getItemInside()
 {
-	Item = itemInside;
+return itemInside;
 }
 
 Enemy::Enemy()
