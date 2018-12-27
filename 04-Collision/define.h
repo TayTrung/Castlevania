@@ -349,6 +349,8 @@ enum eTag
 #define ITEM_STATE_INACTIVE		200
 
 #define ITEM_MAX_TIME_DROP 3000
+
+#define ITEM_TIME_WAIT_TO_EAT 500
 #pragma endregion
 #pragma region Heal
 
@@ -509,7 +511,7 @@ enum eTag
 
 #define HOLYWATER_ANI_LEFT				0
 #define HOLYWATER_ANI_RIGHT				1
-#define HOLYWATER_ANI_BURN			2
+#define HOLYWATER_ANI_BURN				2
 #define HOLYWATER_ANI_INACTIVE			3
 
 #define HOLYWATER_FLYING_SPEED			0.2f 
@@ -553,7 +555,7 @@ enum eTag
 #pragma endregion
 
 #pragma region Simon
-
+#define SIMON_REFRESH_TIME					3000
 #define SIMON_WALKING_SPEED					0.1f 
 #define SIMON_JUMP_SPEED_Y					0.3f
 #define SIMON_JUMP_DEFLECT_SPEED			0.2f
@@ -582,10 +584,15 @@ enum eTag
 #define SIMON_STATE_DEAD					1500
 #define SIMON_STATE_EAT_RIGHT				1600
 #define SIMON_STATE_EAT_LEFT				1700
+#define SIMON_STATE_JUMP_RIGHT				1800
+#define SIMON_STATE_JUMP_LEFT				1900
+
 
 #define SIMON_UNTOUCHABLE_TIME				2000
-#define SIMON_EATING_ITEM_TIME				1000
-#define SIMON_INVIS_TIME				3000
+
+
+#define SIMON_EATING_ITEM_TIME				700
+#define SIMON_INVIS_TIME					3000
 
 #define SIMON_ANI_IDLE_RIGHT				0
 #define SIMON_ANI_IDLE_LEFT					1

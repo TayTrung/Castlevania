@@ -490,57 +490,54 @@ void Simon::Render()
 		}
 		else
 		{
-		/*	if (this->GetState() == SIMON_STATE_JUMP_RIGHT)
+			if (vx > 0)
 			{
-				ani = SIMON_ANI_JUMPING_RIGHT;
+				if (this->GetState() == SIMON_STATE_ATTACK)
+					ani = SIMON_ANI_ATTACKING_RIGHT;
+				else
+
+				if (this->GetState() == SIMON_STATE_HURT_RIGHT)
+					ani = SIMON_ANI_HURT_RIGHT;
+				else
+					if (this->GetState() == SIMON_STATE_JUMP_RIGHT)
+						ani = SIMON_ANI_JUMPING_RIGHT;
+					else
+						if (this->GetState() == SIMON_STATE_DOWN_RIGHT)
+							ani = SIMON_ANI_DOWN_RIGHT;
+						else
+							if (this->GetState() == SIMON_STATE_UP_RIGHT)
+								ani = SIMON_ANI_UP_RIGHT;
+							else
+								ani = SIMON_ANI_WALKING_RIGHT;
+
 			}
 			else
-				if (this->GetState() == SIMON_STATE_JUMP_LEFT)
+			{
+				if (vx < 0)
 				{
-					ani = SIMON_ANI_JUMPING_LEFT;
-				}
-				else*/
-					if (this->GetState() == SIMON_STATE_HURT_RIGHT)
-					{
-						ani = SIMON_ANI_HURT_RIGHT;
-
-					}
+					if (this->GetState() == SIMON_STATE_ATTACK)
+						ani = SIMON_ANI_ATTACKING_LEFT;
 					else
-					{
 						if (this->GetState() == SIMON_STATE_HURT_LEFT)
 						{
-							ani = SIMON_ANI_HURT_LEFT;
+						ani = SIMON_ANI_HURT_LEFT;
 
 
 						}
+					else
+						if (this->GetState() == SIMON_STATE_JUMP_LEFT)
+							ani = SIMON_ANI_JUMPING_LEFT;
 						else
-						{
-							if (vx > 0)
-							{
-								if (this->GetState() == SIMON_STATE_DOWN_RIGHT)
-									ani = SIMON_ANI_DOWN_RIGHT;
-								else
-									if (this->GetState() == SIMON_STATE_UP_RIGHT)
-										ani = SIMON_ANI_UP_RIGHT;
-									else
-										ani = SIMON_ANI_WALKING_RIGHT;
-
-							}
+						if (this->GetState() == SIMON_STATE_DOWN_LEFT)
+							ani = SIMON_ANI_DOWN_LEFT;
+						else
+							if (this->GetState() == SIMON_STATE_UP_LEFT)
+								ani = SIMON_ANI_UP_LEFT;
 							else
-							{
-								if (vx < 0)
-								{
-									if (this->GetState() == SIMON_STATE_DOWN_LEFT)
-										ani = SIMON_ANI_DOWN_LEFT;
-									else
-										if (this->GetState() == SIMON_STATE_UP_LEFT)
-											ani = SIMON_ANI_UP_LEFT;
-										else
-											ani = SIMON_ANI_WALKING_LEFT;
-								}
-							}
-						}
-					}
+								ani = SIMON_ANI_WALKING_LEFT;
+				}
+			}
+
 		}
 	}
 
@@ -645,7 +642,16 @@ void Simon::SetState(int state)
 			vy = -SIMON_WALKING_SPEED / 2.5;
 			nx = -1;
 			break;
+		case SIMON_STATE_JUMP_RIGHT:
+			vx = PANTHER_WALKING_SPEED * 0.5;
+			vy = -SIMON_JUMP_SPEED_Y;
+			break;
+		case SIMON_STATE_JUMP_LEFT:
+			vx = -PANTHER_WALKING_SPEED * 0.5;
+			vy = -SIMON_JUMP_SPEED_Y;
+			break;
 		case SIMON_STATE_JUMP:
+			vx = 0;
 			vy = -SIMON_JUMP_SPEED_Y;
 			break;
 		case SIMON_STATE_EAT_LEFT:
@@ -682,16 +688,31 @@ void Simon::SetState(int state)
 				break;*/
 		}
 		
-		/*if (this->GetState() == SIMON_STATE_ATTACK || )
+		if (this->GetState() == SIMON_STATE_ATTACK )
 		{
-			animations[WHIP_ANI_LEFT]->SetCurrentFrame(0);
+			if (this->nx == 1)
+				animations[SIMON_ANI_ATTACKING_RIGHT]->SetCurrentFrame(0);
+			else
+				if (this->nx == -1)
+					animations[SIMON_ANI_ATTACKING_LEFT]->SetCurrentFrame(0);
 		}
-		else
+		if (this->GetState() == SIMON_STATE_ATTACK_SITTING)
 		{
-			animations[WHIP_ANI_RIGHT]->SetCurrentFrame(0);
-		}*/
-		for (UINT i = 0; i < animations.size(); i++)
-			animations[i]->SetCurrentFrame(0);
+			if (this->nx == 1)
+				animations[SIMON_ANI_ATTACKING_RIGHT_SITTING]->SetCurrentFrame(0);
+			else
+				if (this->nx == -1)
+					animations[SIMON_ANI_ATTACKING_LEFT_SITTING]->SetCurrentFrame(0);
+		}
+		if (this->GetState() == SIMON_STATE_ATTACK_ON_STAIRS)
+		{
+				animations[SIMON_ANI_ATTACK_OS_DOWN_LEFT]->SetCurrentFrame(0);
+				animations[SIMON_ANI_ATTACK_OS_DOWN_RIGHT]->SetCurrentFrame(0);
+				animations[SIMON_ANI_ATTACK_OS_UP_LEFT]->SetCurrentFrame(0);
+				animations[SIMON_ANI_ATTACK_OS_UP_RIGHT]->SetCurrentFrame(0);
+		}
+		
+	
 }
 
 

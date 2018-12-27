@@ -251,11 +251,11 @@ void Monster::SetState(int state)
 	switch (state)
 	{
 	case MONSTER_STATE_ACTIVE_RIGHT:
-		vx = MONSTER_WALKING_SPEED;
+		vx = MONSTER_WALKING_SPEED/2;
 		nx = 1;
 		break;
 	case MONSTER_STATE_ACTIVE_LEFT:
-		vx = -MONSTER_WALKING_SPEED;
+		vx = -MONSTER_WALKING_SPEED/2;
 		nx = -1;
 		break;
 	case MONSTER_STATE_FIRE_LEFT:

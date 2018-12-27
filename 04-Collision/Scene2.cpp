@@ -17,11 +17,16 @@ void Scene2::KeyState(BYTE * states)
 				{
 					if (simon1->isOnStairs == false)
 					{
+						if (simon1->GetState() != SIMON_STATE_JUMP_RIGHT)
+							if (simon1->isJumping == false)
+							{
 
-						if (game1->IsKeyDown(DIK_S))
-							simon1->SetState(SIMON_STATE_ATTACK);
-						else
-							simon1->SetState(SIMON_STATE_WALKING_RIGHT);
+								if (game1->IsKeyDown(DIK_S))
+									simon1->SetState(SIMON_STATE_ATTACK);
+								else
+
+									simon1->SetState(SIMON_STATE_WALKING_RIGHT);
+							}
 
 					}
 					else
@@ -79,11 +84,16 @@ void Scene2::KeyState(BYTE * states)
 					{
 						if (simon1->isOnStairs == false)
 						{
+							if (simon1->GetState() != SIMON_STATE_JUMP_LEFT)
+								if (simon1->isJumping == false)
+								{
+									if (game1->IsKeyDown(DIK_S))
+										simon1->SetState(SIMON_STATE_ATTACK);
+									else
+										simon1->SetState(SIMON_STATE_WALKING_LEFT);
 
-							if (game1->IsKeyDown(DIK_S))
-								simon1->SetState(SIMON_STATE_ATTACK);
-							else
-								simon1->SetState(SIMON_STATE_WALKING_LEFT);
+								}
+							
 						}
 						else
 							if (simon1->isOnStairs == true)
@@ -259,6 +269,7 @@ void Scene2::KeyState(BYTE * states)
 							}
 							else
 							{
+								if(simon1->isJumping==false)
 								simon1->SetState(SIMON_STATE_IDLE);
 
 							}
@@ -281,24 +292,29 @@ void Scene2::OnKeyDown(int KeyCode)
 		simon1->axe->turnOffAxe();
 		simon1->holy->turnOffHolyWater();
 		simon1->clock->turnOffClock();
+
+		board->typeOfWeaopon = 1;
 		break;
 	case DIK_2://On Axe
 		simon1->dagger->turnOffDagger();
 		simon1->axe->turnOnAxe();
 		simon1->holy->turnOffHolyWater();
 		simon1->clock->turnOffClock();
+		board->typeOfWeaopon = 2;
 		break;
 	case DIK_3://On HOly
 		simon1->dagger->turnOffDagger();
 		simon1->axe->turnOffAxe();
 		simon1->holy->turnOnHolyWater();
 		simon1->clock->turnOffClock();
+		board->typeOfWeaopon = 3;
 		break;
 	case DIK_4://On Clock
 		simon1->dagger->turnOffDagger();
 		simon1->axe->turnOffAxe();
 		simon1->holy->turnOffHolyWater();
 		simon1->clock->turnOnClock();
+		board->typeOfWeaopon = 4;
 		break;
 	case DIK_5:
 		if (simon1->shotTwoWeaponOneTime == false)
@@ -350,7 +366,13 @@ void Scene2::OnKeyDown(int KeyCode)
 
 				if (simon1->isJumping == false)
 				{
-					simon1->SetState(SIMON_STATE_JUMP);
+					if (simon1->GetState() == SIMON_STATE_WALKING_LEFT)
+						simon1->SetState(SIMON_STATE_JUMP_LEFT);
+					else
+						if (simon1->GetState() == SIMON_STATE_WALKING_RIGHT)
+							simon1->SetState(SIMON_STATE_JUMP_RIGHT);
+						else
+							simon1->SetState(SIMON_STATE_JUMP);
 					simon1->isJumping = true;
 				}
 			}
@@ -1964,17 +1986,24 @@ void Scene2::Update(DWORD dt)
 
 	if (time1->x == 0)
 		simon1->healthCount = 0;
-	if (simon1->healthCount == 0)
+	if (simon1->healthCount <= 0)
 	{
 			TimeWaitToRefresh += dt;
-			if (TimeWaitToRefresh >= 3000)
+			if (TimeWaitToRefresh >= SIMON_REFRESH_TIME)
 			{
 				if (simon1->playerLife > 0)
 				{
 					simon1->playerLife -= 1;
 					simon1->CGameObject::SetState(SIMON_STATE_IDLE);
 					simon1->healthCount = 16;
+					simon1->whip->type = 1;
+					simon1->heartCount = 10;
 					simon1->isOnStairs = false;
+					simon1->dagger->turnOffDagger();
+					simon1->axe->turnOffAxe();
+					simon1->clock->turnOffClock();
+					simon1->holy->turnOffHolyWater();
+					board->typeOfWeaopon = 0;
 					if (stage == 1)
 					{
 						simon1->SetPosition(50, 0);
@@ -2158,6 +2187,7 @@ void Scene2::Update(DWORD dt)
 			else
 				if (simon1->x > 1792 - 16)
 					simon1->x = 1792 - 16;
+
 			if (x == false)
 			{
 				simon1->SetPosition(1920-320, 220);
@@ -2380,8 +2410,8 @@ void Scene2::Update(DWORD dt)
 		
 		}
 		for (UINT i = 0; i < listPanther.size(); i++)
-			if (abs(simon1->x - listPanther.at(i)->x) > 550)
-				listPanther.at(i)->StartUntouchable();
+			//if (abs(simon1->x - listPanther.at(i)->x) > 550)
+				//listPanther.at(i)->StartUntouchable();
 		if (simon1->x > 537 && simon1->x < 1120)//chi xu ly khi simon trong vung panter spawn
 			XuLyPanthera();
 	}
@@ -2669,7 +2699,8 @@ void Scene2::Update(DWORD dt)
 	for (int i = 0; i < listEnemy1.size(); i++)
 		listEnemy1[i]->Update(dt, &listSurface1);
 	for (int i = 0; i < listPanther.size(); i++)
-		listPanther[i]->Update(dt,&listSurface1);
+		if (abs(simon1->x - listPanther[i]->x) < 220)
+			listPanther[i]->Update(dt, &listSurface1);
 
 	for (int i = 0; i < listGroundEnemy.size(); i++)
 		listGroundEnemy[i]->Update(dt, &listSurface1);
@@ -4099,7 +4130,7 @@ void Scene2::CollisionBetSimonAndItem()
 					OutputDebugString(L"Simon and BigHeart \n");
 					listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 					simon1->heartCount += 5;
-					if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
+					//if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
 					{
 						listItem1.erase(listItem1.begin() + i);
 						i = i - 1;
@@ -4113,8 +4144,12 @@ void Scene2::CollisionBetSimonAndItem()
 					{
 						OutputDebugString(L"Simon and WHIP \n");
 						listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
+						if (simon1->nx == 1)
+							simon1->SetState(SIMON_STATE_EAT_RIGHT);
+						else
+							simon1->SetState(SIMON_STATE_EAT_LEFT);
 						simon1->whip->levelUpWhip();
-						if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
+						//if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
 						{
 							listItem1.erase(listItem1.begin() + i);
 							i = i - 1;
@@ -4134,7 +4169,7 @@ void Scene2::CollisionBetSimonAndItem()
 							simon1->holy->turnOffHolyWater();
 							board->typeOfWeaopon = 1;
 							OutputDebugString(L"Dagger on \n");
-							if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
+							//if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
 							{
 								listItem1.erase(listItem1.begin() + i);
 								i = i - 1;
@@ -4150,7 +4185,7 @@ void Scene2::CollisionBetSimonAndItem()
 								listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 
 								simon1->heartCount += 1;
-								if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
+								//if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
 								{
 									listItem1.erase(listItem1.begin() + i);
 									i = i - 1;

@@ -12,25 +12,28 @@ void Scene1::KeyState(BYTE * states)
 		{
 			if (game->IsKeyDown(DIK_RIGHT))
 			{ 
-			//	if (simon->isJumping == false)
-				{
+			
+				if (simon->GetState() != SIMON_STATE_JUMP_RIGHT)
+					if (simon->isJumping == false)
+					{
 
-					if (game->IsKeyDown(DIK_S))
-						simon->SetState(SIMON_STATE_ATTACK);
-					else
-
-						if (game->IsKeyDown(DIK_D))
-							simon->SetState(SIMON_STATE_THROW);
+						if (game->IsKeyDown(DIK_S))
+							simon->SetState(SIMON_STATE_ATTACK);
 						else
-							simon->SetState(SIMON_STATE_WALKING_RIGHT);
-				}
+
+							if (game->IsKeyDown(DIK_D))
+								simon->SetState(SIMON_STATE_THROW);
+							else
+								simon->SetState(SIMON_STATE_WALKING_RIGHT);
+					}
 				//else
 				//	simon->SetState(SIMON_STATE_JUMP_RIGHT);
 			}
 			else
 				if (game->IsKeyDown(DIK_LEFT))
 				{
-					//if (simon->isJumping == false)
+					if(simon->GetState()!=SIMON_STATE_JUMP_LEFT)
+						if (simon->isJumping == false)
 					{
 						if (game->IsKeyDown(DIK_S))
 							simon->SetState(SIMON_STATE_ATTACK);
@@ -63,6 +66,7 @@ void Scene1::KeyState(BYTE * states)
 				}*/
 					else
 					{
+						if(simon->isJumping==false)
 						simon->SetState(SIMON_STATE_IDLE);
 
 					}
@@ -85,12 +89,25 @@ void Scene1::OnKeyDown(int KeyCode)
 		break;
 
 	case DIK_SPACE:
-		if (simon->isJumping == false)
+		if (simon->proceedThruDoor == false)
 		{
-			simon->SetState(SIMON_STATE_JUMP);
-			simon->isJumping = true;
-		}
+			if (simon->isOnStairs == false)
+			{
 
+				if (simon->isJumping == false)
+				{
+					if (simon->GetState() == SIMON_STATE_WALKING_LEFT)
+						simon->SetState(SIMON_STATE_JUMP_LEFT);
+					else
+						if (simon->GetState() == SIMON_STATE_WALKING_RIGHT)
+							simon->SetState(SIMON_STATE_JUMP_RIGHT);
+						else
+							simon->SetState(SIMON_STATE_JUMP);
+					simon->isJumping = true;
+				}
+			}
+		}
+		break;
 		break;
 	case DIK_A: // reset
 		simon->SetState(SIMON_STATE_IDLE);

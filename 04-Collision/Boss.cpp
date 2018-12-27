@@ -72,9 +72,8 @@ void Boss::Update(DWORD dt, Simon *simon1)
 			}	
 			this->SetState(BOSS_STATE_AFK);
 			waitTime += dt;
-			if (waitTime > 2000)
+			if (waitTime > 3000)
 			{
-
 				this->SetState(xz);
 				fired = false;
 				waitTime = 0;
@@ -214,18 +213,18 @@ void Boss::SetState(int state)
 	switch (state)
 	{
 	case BOSS_STATE_MOVE_RIGHT:
-		vx = GHOU_WALKING_SPEED;
+		vx = GHOU_WALKING_SPEED/2;
 		vy = 0;
 		nx = 1;
 		break;
 	case BOSS_STATE_MOVE_LEFT:
-		vx = -GHOU_WALKING_SPEED;
+		vx = -GHOU_WALKING_SPEED/2;
 		vy = 0;
 		nx = -1;
 		break;
 	case BOSS_STATE_MOVE_DOWN:
 		vx = 0;
-		vy = GHOU_WALKING_SPEED;
+		vy = GHOU_WALKING_SPEED/2;
 		break;
 	case BOSS_STATE_AFK:
 		vx = 0;
@@ -233,17 +232,17 @@ void Boss::SetState(int state)
 		break;
 	case BOSS_STATE_MOVE_UP:
 		vx = 0;
-		vy = -GHOU_WALKING_SPEED;
+		vy = -GHOU_WALKING_SPEED/2;
 	
 		break;
 	case BOSS_STATE_ATTACK_RIGHT:
-		vx = 3*GHOU_WALKING_SPEED;
-		vy = 2*GHOU_WALKING_SPEED;
+		vx = 3*GHOU_WALKING_SPEED/2;
+		vy = 2*GHOU_WALKING_SPEED/2;
 		break;
 
 	case BOSS_STATE_ATTACK_LEFT:
-		vx = -3*GHOU_WALKING_SPEED;
-		vy = 2*GHOU_WALKING_SPEED;
+		vx = -3*GHOU_WALKING_SPEED/2;
+		vy = 2*GHOU_WALKING_SPEED/2;
 		break;
 
 	}

@@ -46,18 +46,22 @@ void Cross1::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		if (ny != 0)
 		{
 
-			if (this->GetState() == ITEM_STATE_ACTIVE)
-			{
-
-				this->SetState(ITEM_STATE_DROPPED);
-				StartCountTIme();
-			}
+			
 			vy = 0;
 		}
 
 
 	}
-
+	if (this->GetState() == ITEM_STATE_ACTIVE)
+	{
+		TimeWaitToEat += dt;
+		if (TimeWaitToEat >= ITEM_TIME_WAIT_TO_EAT)
+		{
+			this->SetState(ITEM_STATE_DROPPED);
+			StartCountTIme();
+			TimeWaitToEat = 0;
+		}
+	}
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
