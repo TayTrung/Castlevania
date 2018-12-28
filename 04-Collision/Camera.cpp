@@ -28,7 +28,7 @@ Camera * Camera::GetInstance()
 
 void Camera::SetPosition(float x, float y)
 {
-	SetPosition(D3DXVECTOR2(x, y));
+	SetPosition(D3DXVECTOR2((int)x, (int)y));
 }
 
 void Camera::SetPosition(D3DXVECTOR2 pos)
@@ -43,8 +43,10 @@ D3DXVECTOR2 Camera::Transform(float zx, float zy)
 void Camera::Update()
 {
 	Scene *a=SceneManager::GetInstance()->getCurrentScene();
+
 	if (mPositionOfCamera.x < 0)
 		mPositionOfCamera.x = 0;
+
 	if (dynamic_cast<Scene1 *>(a))
 	{
 		if (mPositionOfCamera.x > MAP1_WIDTH - SCREEN_WIDTH+16)

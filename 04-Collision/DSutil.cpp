@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------------
 #define STRICT
 #include "DSutil.h"
+
 #if MEMORY_LEAK_DEBUG == 1
 #include <vld.h>
 #endif

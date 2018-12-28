@@ -25,7 +25,7 @@ void CSprite::Draw(float x, float y, int alpha)
 	CGame * game = CGame::GetInstance();
 
 	
-	D3DXVECTOR2 pos = Camera::GetInstance()->Transform(x, y);
+	D3DXVECTOR2 pos = Camera::GetInstance()->Transform((int)x, (int)y);
 	game->Draw(pos.x, pos.y, texture, left, top, right, bottom, alpha);
 }
 

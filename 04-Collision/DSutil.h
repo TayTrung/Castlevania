@@ -14,9 +14,9 @@
 #include <mmreg.h>
 #include <dsound.h>
 #include <xstring>
-//#include "define.h"
+#include "define.h"
 using namespace std;
- 
+
 #define SAFE_DELETE(p)       { if(p) { delete (p);     (p)=NULL; } }
 #define SAFE_DELETE_ARRAY(p) { if(p) { delete[] (p);   (p)=NULL; } }
 #define SAFE_RELEASE_S(p)      { if(p) { (p)->Release(); (p)=NULL; } }

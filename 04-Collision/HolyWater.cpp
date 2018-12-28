@@ -38,7 +38,7 @@ void HolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	vy += ITEM_GRAVITY * dt;
+	vy += ITEM_GRAVITY/2 * dt;
 
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -130,13 +130,13 @@ void HolyWater::SetState(int state)
 	switch (state)
 	{
 	case HOLYWATER_STATE_ACTIVE_RIGHT:
-		vx = AXE_FLYING_SPEED;
-		vy = -AXE_FLYING_SPEED;
+		vx = AXE_FLYING_SPEED/1.5;
+		vy = -AXE_FLYING_SPEED/2;
 		nx = 1;
 		break;
 	case HOLYWATER_STATE_ACTIVE_LEFT:
-		vx = -AXE_FLYING_SPEED;
-		vy = -AXE_FLYING_SPEED;
+		vx = -AXE_FLYING_SPEED/1.5;
+		vy = -AXE_FLYING_SPEED/2;
 		nx = -1;
 		break;
 	case HOLYWATER_STATE_BURN:

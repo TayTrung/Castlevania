@@ -199,8 +199,8 @@ void Boss::Render()
 
 				ani = BOSS_ANI_SLEEP;
 			int alpha=255;
-			if (untouchable == true)
-			 alpha = 110;
+			//if (untouchable == true)
+			// alpha = 110;
 			animations[ani]->Render(x, y,alpha);
 			//RenderBoundingBox(100);
 	}

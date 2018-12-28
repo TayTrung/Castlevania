@@ -34,6 +34,7 @@ enum eTag
 };
 
 
+
 #pragma region Map
 
 #define offsetMap 64
@@ -350,7 +351,7 @@ enum eTag
 
 #define ITEM_MAX_TIME_DROP 3000
 
-#define ITEM_TIME_WAIT_TO_EAT 500
+#define ITEM_TIME_WAIT_TO_EAT 200
 #pragma endregion
 #pragma region Heal
 

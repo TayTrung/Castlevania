@@ -42,8 +42,8 @@ void Map::drawTileMap(Camera *camera, float ID)
 	int numCol = camera->GetPosition().x / TileWidth;
 	int numRow = camera->GetPosition().y / TileHeight;
 
-	int disX = (int)camera->GetPosition().x % TileWidth;
-	int disY = (int)camera->GetPosition().y % TileHeight;
+	float disX = (int)camera->GetPosition().x % TileWidth;
+	float disY = (int)camera->GetPosition().y % TileHeight;
 
 	for(int i=0;i<SCREEN_HEIGHT/ TileHeight;i++)
 	{

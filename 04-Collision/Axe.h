@@ -4,6 +4,7 @@
 class Axe : public Weapon
 {
 public:
+	Camera *camera;
 	bool isOn; //true when eat a dagger 
 	bool isFinished;
 public:

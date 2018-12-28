@@ -19,14 +19,23 @@ void Scene1::KeyState(BYTE * states)
 
 						if (game->IsKeyDown(DIK_S))
 						{
-							simon->SetState(SIMON_STATE_ATTACK);
-							simon->vx = 0;
-							simon->vy = 0;
+							//if (simon->finishedAttacking == true)
+							{
+
+								simon->SetState(SIMON_STATE_ATTACK);
+								simon->vx = 0;
+								simon->vy = 0;
+							}
 						}
 						else
 
 							if (game->IsKeyDown(DIK_D))
-								simon->SetState(SIMON_STATE_THROW);
+							{
+								//if (simon->finishedAttacking == true)
+
+									simon->SetState(SIMON_STATE_THROW);
+
+							}
 							else
 								simon->SetState(SIMON_STATE_WALKING_RIGHT);
 					}
@@ -41,12 +50,22 @@ void Scene1::KeyState(BYTE * states)
 						{
 							if (game->IsKeyDown(DIK_S))
 							{
-								simon->SetState(SIMON_STATE_ATTACK);
-								simon->vx = 0;
-								simon->vy = 0;
-							}else
+								//if (simon->finishedAttacking == true)
+								{
+									simon->SetState(SIMON_STATE_ATTACK);
+									simon->vx = 0;
+									simon->vy = 0;
+								}
+							}
+							else
 								if (game->IsKeyDown(DIK_D))
-									simon->SetState(SIMON_STATE_THROW);
+								{
+									//if (simon->finishedAttacking == true)
+									{
+										simon->SetState(SIMON_STATE_THROW);
+									}
+								}
+
 								else
 
 									simon->SetState(SIMON_STATE_WALKING_LEFT);
@@ -128,19 +147,25 @@ void Scene1::OnKeyDown(int KeyCode)
 		SceneManager::GetInstance()->replaceScene(new Scene2(simon));
 		break;
 	case DIK_S:
+		//if (simon->GetState() ==)
 		if (simon->eatingItem == false)
 		{
-			if (simon->GetState() == SIMON_STATE_SIT)
+		//	if (simon->finishedAttacking == true)
 			{
-				simon->SetState(SIMON_STATE_ATTACK_SITTING);
-				simon->whip->CreateWeapon(simon->x, simon->y + 7, simon->nx);
+				if (simon->GetState() == SIMON_STATE_SIT)
+				{
+					simon->SetState(SIMON_STATE_ATTACK_SITTING);
+					simon->whip->CreateWeapon(simon->x, simon->y + 7, simon->nx);
+//simon->finishedAttacking = false;
+				}
 
-			}
-			else
-			{
-				simon->SetState(SIMON_STATE_ATTACK);
-				simon->whip->CreateWeapon(simon->x, simon->y, simon->nx);
+				else
+				{
+					simon->SetState(SIMON_STATE_ATTACK);
+					simon->whip->CreateWeapon(simon->x, simon->y, simon->nx);
+					//simon->finishedAttacking = false;
 
+				}
 			}
 		}
 
@@ -152,56 +177,60 @@ void Scene1::OnKeyDown(int KeyCode)
 		if (simon->eatingItem == false)
 
 		{
-
-			if (simon->dagger->isOn == true)
+		//	if (simon->finishedAttacking == true)
 			{
-				simon->numOfWeapon = 1;
-				if (simon->heartCount > 0)
+				if (simon->dagger->isOn == true)
 				{
-					simon->heartCount -= 1;
-					if (simon->dagger->GetState() == DAGGER_STATE_INACTIVE)
+					simon->numOfWeapon = 1;
+					if (simon->heartCount > 0)
 					{
-
-						float x, y;
-						simon->GetPosition(x, y);
-						if (simon->GetState() == SIMON_STATE_SIT)
+						if (simon->dagger->GetState() == DAGGER_STATE_INACTIVE)
 						{
-							simon->dagger->CreateWeapon(x, y + 7, simon->nx);
+					//		simon->finishedAttacking = false;
+							simon->heartCount -= 1;
 
-							if (simon->isUsing1stWeapon == false)
+							float x, y;
+							simon->GetPosition(x, y);
+							if (simon->GetState() == SIMON_STATE_SIT)
 							{
-								if (simon->nx > 0)
-									simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-								else
-									simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
-								simon->SetState(SIMON_STATE_THROW_SITTING);
-								simon->useWeapon();
+								simon->dagger->CreateWeapon(x, y + 7, simon->nx);
+
+								if (simon->isUsing1stWeapon == false)
+								{
+									if (simon->nx > 0)
+										simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+									else
+										simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+									simon->SetState(SIMON_STATE_THROW_SITTING);
+									simon->useWeapon();
+
+								}
+
+							}
+							else
+							{
+
+
+								simon->dagger->CreateWeapon(x, y, simon->nx);
+
+								if (simon->isUsing1stWeapon == false)
+								{
+									if (simon->nx > 0)
+										simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+									else
+										simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+									simon->SetState(SIMON_STATE_THROW);
+									simon->useWeapon();
+
+								}
 
 							}
 
 						}
-						else
-						{
-
-
-							simon->dagger->CreateWeapon(x, y, simon->nx);
-
-							if (simon->isUsing1stWeapon == false)
-							{
-								if (simon->nx > 0)
-									simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-								else
-									simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
-								simon->SetState(SIMON_STATE_THROW);
-								simon->useWeapon();
-
-							}
-
-						}
-
 					}
 				}
 			}
+
 
 		}
 		break;
@@ -220,26 +249,28 @@ void Scene1::OnKeyUp(int KeyCode)
 
 void Scene1::LoadResources()
 {
+	//Load Sounds
+	sound->playSound(eTagSound::Stage1, true);
 	readTextureFromFileTxt("textures\\Textures1.txt");
 	map = new Map(ID_TEX_MAP1, "textures\\Map\\Map1.csv");
 	//Ground 0
-	texBoard		= textures->Get(ID_TEX_BOARD);
-	texEffect		= textures->Get(ID_TEX_EFFECT);
-	texEffectBrick	= textures->Get(ID_TEX_EFFECT1);
-	texEffectWater	= textures->Get(ID_TEX_EFFECT2);
-	texEffectBag	= textures->Get(ID_TEX_ITEM_POTION);
-	texSimon2		= textures->Get(ID_TEX_SIMON2);
-	texMario		= textures->Get(ID_TEX_SIMON);
-	texMarioDeath	= textures->Get(ID_TEX_SIMON_DEATH);
-	texTorch		= textures->Get(ID_TEX_TORCH);
-	texWhip			= textures->Get(ID_TEX_WHIP);
-	texItemSword	= textures->Get(ID_TEX_ITEM_SWORD);
-	texAxe			= textures->Get(ID_TEX_AXE);
-	texHolyWater	= textures->Get(ID_TEX_HOLYWATER);
+	texBoard = textures->Get(ID_TEX_BOARD);
+	texEffect = textures->Get(ID_TEX_EFFECT);
+	texEffectBrick = textures->Get(ID_TEX_EFFECT1);
+	texEffectWater = textures->Get(ID_TEX_EFFECT2);
+	texEffectBag = textures->Get(ID_TEX_ITEM_POTION);
+	texSimon2 = textures->Get(ID_TEX_SIMON2);
+	texMario = textures->Get(ID_TEX_SIMON);
+	texMarioDeath = textures->Get(ID_TEX_SIMON_DEATH);
+	texTorch = textures->Get(ID_TEX_TORCH);
+	texWhip = textures->Get(ID_TEX_WHIP);
+	texItemSword = textures->Get(ID_TEX_ITEM_SWORD);
+	texAxe = textures->Get(ID_TEX_AXE);
+	texHolyWater = textures->Get(ID_TEX_HOLYWATER);
 	texItemBigHeart = textures->Get(ID_TEX_ITEM_BIGHEART);
-	texItemWhip		= textures->Get(ID_TEX_ITEM_WHIP);
-	texGoldBag		= textures->Get(ID_TEX_ITEM_GOLD);
-	texClock		= textures->Get(ID_TEX_ITEM_CLOCK);
+	texItemWhip = textures->Get(ID_TEX_ITEM_WHIP);
+	texGoldBag = textures->Get(ID_TEX_ITEM_GOLD);
+	texClock = textures->Get(ID_TEX_ITEM_CLOCK);
 
 	readCoordiantionsForSpritesFromFileTxt("textures\\Coordinations1.txt");
 	createAnimationsFromFileTxt("textures\\CreateAnimations1.txt");
@@ -523,6 +554,7 @@ int Scene1::CollisionBetSimonAndDownStairs(vector <Stairs *>x)
 
 Scene1::Scene1()
 {
+	sound = SoundManager::GetInstance();
 	newGrid = new Grid();
 	time = new Time();
 	camera = Camera::GetInstance();
@@ -618,8 +650,8 @@ void Scene1::readCoordiantionsForSpritesFromFileTxt(char * pathOfFile)
 {
 	int ID, left, top, right, bot, IDofTex;
 	int numOfLines;
-	
-	
+
+
 	ifstream inp;
 	inp.open(pathOfFile, ios::in);
 	inp >> numOfLines;
@@ -630,7 +662,7 @@ void Scene1::readCoordiantionsForSpritesFromFileTxt(char * pathOfFile)
 		LPDIRECT3DTEXTURE9 temp;
 		switch (IDofTex)
 		{
-			
+
 		case ID_TEX_BOARD:
 			temp = texBoard;
 			break;
@@ -697,9 +729,9 @@ void Scene1::readCoordiantionsForSpritesFromFileTxt(char * pathOfFile)
 
 void Scene1::createAnimationsFromFileTxt(char * pathOfFile)
 {
-	int NumbOfSprites, time,ID;
+	int NumbOfSprites, time, ID;
 	int numOfAnimations;
-	
+
 	ifstream inp;
 	inp.open(pathOfFile, ios::in);
 	inp >> numOfAnimations;
@@ -707,7 +739,7 @@ void Scene1::createAnimationsFromFileTxt(char * pathOfFile)
 	{
 
 		inp >> NumbOfSprites >> time >> ID;
-		int *x=new int[NumbOfSprites];
+		int *x = new int[NumbOfSprites];
 		for (int i = 0; i < NumbOfSprites; i++)
 		{
 			inp >> x[i];
@@ -719,7 +751,7 @@ void Scene1::createAnimationsFromFileTxt(char * pathOfFile)
 			ani->Add(x[i]);
 		}
 		animations->Add(ID, ani);
-		
+
 	}
 
 	inp.close();

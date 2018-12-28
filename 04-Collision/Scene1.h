@@ -30,6 +30,7 @@ public:
 	CTextures * textures;
 	CSprites * sprites;
 	CAnimations		*animations;
+	SoundManager *sound;
 	LPDIRECT3DTEXTURE9 texBoard;
 	LPDIRECT3DTEXTURE9 texEffect;
 	LPDIRECT3DTEXTURE9 texEffectBrick;

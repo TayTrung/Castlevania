@@ -70,6 +70,7 @@ public:
 		proceedThruDoor = false;
 
 	}
+	//bool finishedAttacking=true;
 	bool isJumping;
 	void useWeapon();
 	void notUseWeapon();

@@ -21,9 +21,9 @@ void Scene2::KeyState(BYTE * states)
 							if (simon1->isJumping == false)
 							{
 
-								if (game1->IsKeyDown(DIK_S))
+							/*	if (game1->IsKeyDown(DIK_S))
 									simon1->SetState(SIMON_STATE_ATTACK);
-								else
+								else*/
 
 									simon1->SetState(SIMON_STATE_WALKING_RIGHT);
 							}
@@ -87,9 +87,9 @@ void Scene2::KeyState(BYTE * states)
 							if (simon1->GetState() != SIMON_STATE_JUMP_LEFT)
 								if (simon1->isJumping == false)
 								{
-									if (game1->IsKeyDown(DIK_S))
+									/*if (game1->IsKeyDown(DIK_S))
 										simon1->SetState(SIMON_STATE_ATTACK);
-									else
+									else*/
 										simon1->SetState(SIMON_STATE_WALKING_LEFT);
 
 								}
@@ -354,11 +354,12 @@ void Scene2::OnKeyDown(int KeyCode)
 			simon1->SetSpeed(0, 0);
 			break;
 		}
-		case DIK_J:
-		{
-			simon1->SetState(SIMON_STATE_DEAD);
-			simon1->healthCount = 0;
-		}
+	case DIK_J:
+	{
+		simon1->SetState(SIMON_STATE_DEAD);
+		simon1->healthCount = 0;
+	}
+	break;
 			
 	case DIK_SPACE:
 		if (simon1->proceedThruDoor == false)
@@ -393,28 +394,48 @@ void Scene2::OnKeyDown(int KeyCode)
 		//	simon1->SetState(SIMON_STATE_SIT);
 		//	break;
 	case DIK_S:
+		if (simon1->GetState() == SIMON_STATE_ATTACK_ON_STAIRS ||
+			simon1->GetState() == SIMON_STATE_ATTACK_SITTING ||
+			simon1->GetState() == SIMON_STATE_ATTACK ||
+			simon1->GetState() == SIMON_STATE_THROW_SITTING ||
+			simon1->GetState() == SIMON_STATE_THROW_ON_STAIRS ||
+			simon1->GetState() == SIMON_STATE_THROW)
+			return;
+
 		if (simon1->proceedThruDoor == false)
 		{
-			if (simon1->isOnStairs == true)
+			//if (simon1->finishedAttacking == true)
 			{
-				simon1->SetState(SIMON_STATE_ATTACK_ON_STAIRS);
-				simon1->whip->CreateWeapon(simon1->x, simon1->y, simon1->nx);
-			}
-			else
-			{
-				if (simon1->GetState() == SIMON_STATE_SIT)
+				if (simon1->isOnStairs == true)
 				{
-					simon1->SetState(SIMON_STATE_ATTACK_SITTING);
-					simon1->whip->CreateWeapon(simon1->x, simon1->y + 7, simon1->nx);
-
+					simon1->SetState(SIMON_STATE_ATTACK_ON_STAIRS);
+					//simon1->finishedAttacking = false;
+					simon1->whip->CreateWeapon(simon1->x, simon1->y, simon1->nx);
 				}
 				else
 				{
-					simon1->SetState(SIMON_STATE_ATTACK);
-					simon1->whip->CreateWeapon(simon1->x, simon1->y, simon1->nx);
+					if (simon1->GetState() == SIMON_STATE_SIT)
+					{
+						simon1->SetState(SIMON_STATE_ATTACK_SITTING);
+						//simon1->finishedAttacking = false;
+						simon1->whip->CreateWeapon(simon1->x, simon1->y + 7, simon1->nx);
+						simon1->vx = 0;
+					}
+					else
+					{
+						simon1->SetState(SIMON_STATE_ATTACK);
+						//simon1->finishedAttacking = false;
+						simon1->whip->CreateWeapon(simon1->x, simon1->y, simon1->nx);
+						if (simon1->isJumping==false)
+						{
+							simon1->vx = 0;
+						}
+						
 
+					}
 				}
 			}
+			
 		}
 		break;
 	case DIK_D:
@@ -1836,6 +1857,23 @@ void Scene2::Update(DWORD dt)
 				simon1->x = 1536;
 			for (UINT i = 0; i < listGroundEnemy.size(); i++)
 			{
+				if (listGroundEnemy.at(i)->GetState() == GROUND_STATE_INACTIVE)
+				{
+					if (simon1->x > 1808 - 16)
+						simon1->x = 1808 - 16;
+
+
+					
+
+
+
+
+
+				}
+				else
+					if (simon1->x > 1792 - 16)
+						simon1->x = 1792 - 16;
+/*
 				if (listGroundEnemy.at(i)->getItemInside() == chickenInside)
 				{
 					if (listGroundEnemy.at(1)->GetState() == GROUND_STATE_INACTIVE)
@@ -1848,7 +1886,7 @@ void Scene2::Update(DWORD dt)
 				}
 				else
 					if (simon1->x > 1792 - 16)
-						simon1->x = 1792 - 16;
+						simon1->x = 1792 - 16;*/
 			}
 			
 
@@ -1857,18 +1895,18 @@ void Scene2::Update(DWORD dt)
 				simon1->SetPosition(1920-320, 220);
 				x = true;
 			}
-			camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
+			camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2.0f, 0); // cho camera chay theo simon1
 			camera1->Update();
 			
-			if (camera1->GetPosition().x < 1536)
-				camera1->SetPosition(1536, camera1->GetPosition().y);
+			if (camera1->GetPosition().x < 1536.0f)
+				camera1->SetPosition(1536.0f, camera1->GetPosition().y);
 			
 		}
 		else
 			if (stage == 3)
 			{
-				if (simon1->x < 2815)
-					simon1->x = 2815;
+				if (simon1->x < 2815.0f)
+					simon1->x = 2815.0f;
 			/*	if (groundEnemy1->GetState() != GROUND_STATE_INACTIVE)
 				{
 					if (simon1->x < 3294 && simon1->y > offsetMap + 80)
@@ -1890,10 +1928,12 @@ void Scene2::Update(DWORD dt)
 					simon1->SetPosition(2975 - 149 + 16 * 2 + 320, 35);
 					y = false;
 				}
-				camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
+				camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2.0f, 0.0f); // cho camera chay theo simon1
+
 				camera1->Update();
-				if (camera1->GetPosition().x < 2814)
-					camera1->SetPosition(2814, camera1->GetPosition().y);
+
+				if (camera1->GetPosition().x < 2814.0f)
+					camera1->SetPosition(2814.0f, camera1->GetPosition().y);
 
 
 
@@ -2328,17 +2368,17 @@ void Scene2::Update(DWORD dt)
 		
 				
 	}
-	//if (simon1->dagger->GetState() == DAGGER_STATE_INACTIVE)
-	//	simon1->dagger->isFinished = true;
+	if (simon1->dagger->GetState() == DAGGER_STATE_INACTIVE)
+		simon1->dagger->isFinished = true;
 
-	//if (simon1->dagger1->GetState() == DAGGER_STATE_INACTIVE)
-	//	simon1->dagger1->isFinished = true;
+	if (simon1->dagger1->GetState() == DAGGER_STATE_INACTIVE)
+		simon1->dagger1->isFinished = true;
 
 	if (simon1->axe->GetState() == AXE_STATE_INACTIVE)
 		simon1->axe->isFinished = true;
 
-	//if (simon1->axe1->GetState() == AXE_STATE_INACTIVE)
-	//	simon1->axe1->isFinished = true;
+	if (simon1->axe1->GetState() == AXE_STATE_INACTIVE)
+		simon1->axe1->isFinished = true;
 
 	if (simon1->holy->GetState() == HOLYWATER_STATE_INACTIVE)
 		simon1->holy->isFinished = true;
@@ -2451,6 +2491,9 @@ void Scene2::Render()
 		
 		for (int i = 0; i < listGroundEnemy.size(); i++)
 			listGroundEnemy[i]->Render();
+
+
+
 		boss->Render();
 		for (int i = 0; i < listEffectFire1.size(); i++)
 			listEffectFire1[i]->Render();
@@ -2732,7 +2775,7 @@ void Scene2::freezeEnemyFunction()
 			listPanther.at(i)->y>y1 &&
 			listPanther.at(i)->y < y1 + SCREEN_HEIGHT)
 		{
-			if (!(dynamic_cast<GroundEnemy *>(listEnemy1.at(i))))
+		//	if (!(dynamic_cast<GroundEnemy *>(listEnemy1.at(i))))
 			{
 
 				//listEnemy1.at(i)->SetState(ENEMY_STATE_FREEZE);
@@ -3207,8 +3250,8 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 								if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
 								{
-									simon1->axe->SetState(AXE_STATE_INACTIVE);
-									simon1->notUseWeapon();
+									//simon1->axe->SetState(AXE_STATE_INACTIVE);
+									//simon1->notUseWeapon();
 									float x, y;
 									listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 									listEnemy1.at(i)->GetPosition(x, y);
@@ -3235,7 +3278,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 							if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
 							{
-								simon1->axe->SetState(AXE_STATE_INACTIVE);
+						//		simon1->axe->SetState(AXE_STATE_INACTIVE);
 								simon1->notUseWeapon();
 
 								float x, y;
@@ -3260,7 +3303,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					{
 						if (boss->untouchable == false)
 						{
-							simon1->axe->SetState(AXE_STATE_INACTIVE);
+					//		simon1->axe->SetState(AXE_STATE_INACTIVE);
 							simon1->notUseWeapon();
 							float x, y;
 							boss->GetPosition(x, y);
@@ -3298,7 +3341,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								{
 									if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
 									{
-										simon1->axe->SetState(AXE_STATE_INACTIVE);
+										//simon1->axe->SetState(AXE_STATE_INACTIVE);
 										simon1->notUseWeapon();
 										float x, y;
 										listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
@@ -3329,7 +3372,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 								if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
 								{
-									simon1->axe->SetState(AXE_STATE_INACTIVE);
+								//	simon1->axe->SetState(AXE_STATE_INACTIVE);
 									simon1->notUseWeapon();
 									float x, y;
 									listPanther.at(i)->SetState(GHOU_STATE_INACTIVE);
@@ -3364,7 +3407,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 								if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
 								{
-									simon1->axe1->SetState(AXE_STATE_INACTIVE);
+									//simon1->axe1->SetState(AXE_STATE_INACTIVE);
 									simon1->notUseWeapon2();
 									float x, y;
 									listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
@@ -3393,7 +3436,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 							if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
 							{
-								simon1->axe1->SetState(AXE_STATE_INACTIVE);
+								//simon1->axe1->SetState(AXE_STATE_INACTIVE);
 								simon1->notUseWeapon2();
 
 								float x, y;
@@ -3419,7 +3462,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					{
 						if (boss->untouchable == false)
 						{
-							simon1->axe1->SetState(AXE_STATE_INACTIVE);
+							//simon1->axe1->SetState(AXE_STATE_INACTIVE);
 							simon1->notUseWeapon2();
 							float x, y;
 							boss->GetPosition(x, y);
@@ -3457,7 +3500,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								{
 									if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
 									{
-										simon1->axe1->SetState(AXE_STATE_INACTIVE);
+										//simon1->axe1->SetState(AXE_STATE_INACTIVE);
 										simon1->notUseWeapon2();
 										float x, y;
 										listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
@@ -3488,7 +3531,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 								if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
 								{
-									simon1->axe1->SetState(AXE_STATE_INACTIVE);
+									//simon1->axe1->SetState(AXE_STATE_INACTIVE);
 									simon1->notUseWeapon2();
 									float x, y;
 									listPanther.at(i)->SetState(GHOU_STATE_INACTIVE);

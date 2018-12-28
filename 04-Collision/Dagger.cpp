@@ -79,11 +79,11 @@ void Dagger::SetState(int state)
 	switch (state)
 	{
 	case DAGGER_STATE_ACTIVE_RIGHT:
-		vx = DAGGER_FLYING_SPEED;
+		vx = 2*DAGGER_FLYING_SPEED;
 		nx = 1;
 		break;
 	case DAGGER_STATE_ACTIVE_LEFT:
-		vx = -DAGGER_FLYING_SPEED;
+		vx = -2*DAGGER_FLYING_SPEED;
 		nx = -1;
 		break;
 	case DAGGER_STATE_INACTIVE:

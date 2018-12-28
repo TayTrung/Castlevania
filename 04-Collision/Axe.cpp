@@ -46,7 +46,7 @@ void Axe::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 	coEvents.clear();
 
-	CalcPotentialCollisions(colliable_objects, coEvents);
+	//CalcPotentialCollisions(colliable_objects, coEvents);
 
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
@@ -68,11 +68,16 @@ void Axe::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		if (ny != 0)
 		{
 			vy = 0;
-			this->SetState(AXE_STATE_INACTIVE);
+			//this->SetState(AXE_STATE_INACTIVE);
 		}
 			
 
 	}
+	float xcam, ycam;
+	xcam=camera->GetPosition().x;
+	ycam=camera->GetPosition().y;
+	if(this->x<xcam || this->x>xcam+SCREEN_WIDTH || this->y>ycam+SCREEN_HEIGHT)
+		this->SetState(AXE_STATE_INACTIVE);
 
 	//clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
@@ -109,12 +114,12 @@ void Axe::SetState(int state)
 	{
 	case AXE_STATE_ACTIVE_RIGHT:
 		vx = AXE_FLYING_SPEED;
-		vy = -2*AXE_FLYING_SPEED ;
+		vy = -1.5*AXE_FLYING_SPEED ;
 		nx = 1;
 		break;
 	case AXE_STATE_ACTIVE_LEFT:
 		vx = -AXE_FLYING_SPEED;
-		vy = -2*AXE_FLYING_SPEED ;
+		vy = -1.5*AXE_FLYING_SPEED ;
 		nx = -1;
 		break;
 	case AXE_STATE_INACTIVE:
@@ -144,6 +149,7 @@ void Axe::CreateWeapon(float x, float y, float nx)
 
 Axe::Axe()
 {
+	camera = Camera::GetInstance();
 	isOn = false;
 	vx = 0;
 	isFinished = true;

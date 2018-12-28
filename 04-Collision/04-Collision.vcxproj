@@ -85,7 +85,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>d3dx9.lib;d3d9.lib;dxguid.lib;dxerr.lib;dinput8.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;dsound.lib;dxguid.lib;winmm.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -136,6 +136,8 @@
     <ClInclude Include="Dagger.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="DSutil.h" />
+    <ClInclude Include="dxutil.h" />
     <ClInclude Include="EffectBag.h" />
     <ClInclude Include="EffectFire.h" />
     <ClInclude Include="FireBall.h" />
@@ -161,6 +163,7 @@
     <ClInclude Include="Scene2.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SmallHeart.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Stairs.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Torch.h" />
@@ -188,6 +191,8 @@
     <ClCompile Include="Dagger.cpp" />
     <ClCompile Include="define.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="DSutil.cpp" />
+    <ClCompile Include="dxutil.cpp" />
     <ClCompile Include="EffectBag.cpp" />
     <ClCompile Include="EffectFire.cpp" />
     <ClCompile Include="FireBall.cpp" />
@@ -213,6 +218,7 @@
     <ClCompile Include="Scene2.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SmallHeart.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Stairs.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Torch.cpp" />

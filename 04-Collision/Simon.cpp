@@ -45,7 +45,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	//	//this->SetState(SIMON_STATE_IDLE);
 	//	CGameObject::SetState(SIMON_STATE_IDLE);
 	//}
-
 	//if ((this->GetState() == SIMON_STATE_ATTACK_SITTING && this->whip->isFinished == true) ||////danh xong xet ve vi tri cu
 	//	(this->GetState() == SIMON_STATE_THROW_SITTING && this->dagger->isFinished == true && this->dagger->isOn == true) ||////danh xong xet ve vi tri cu
 	//	(this->GetState() == SIMON_STATE_THROW_SITTING && this->axe->isFinished == true && this->axe->isOn == true) ||////danh xong xet ve vi tri cu
@@ -143,8 +142,23 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 
 	}
-	//if (this->isUsing1stWeapon == true)
+	/*if (this->GetState() == SIMON_STATE_ATTACK ||
+		this->GetState() == SIMON_STATE_ATTACK_ON_STAIRS ||
+		this->GetState() == SIMON_STATE_ATTACK_SITTING ||
+		this->GetState()== SIMON_STATE_THROW ||
+		this->GetState() == SIMON_STATE_THROW_ON_STAIRS ||
+		this->GetState() == SIMON_STATE_THROW_SITTING)
 	{
+		if (animations[ani]->GetCurrentFrame() == 3)
+			this->finishedAttacking = true;
+	}*/
+	//if (this->GetState() == SIMON_STATE_HURT_LEFT ||
+	//	this->GetState() == SIMON_STATE_HURT_RIGHT)
+	//{
+	//	this->finishedAttacking = true;
+	//}
+	//if (this->isUsing1stWeapon == true)
+	//{
 		if (this->GetState() == SIMON_STATE_THROW || this->GetState() == SIMON_STATE_THROW_SITTING ||
 			this->GetState() == SIMON_STATE_THROW_ON_STAIRS )
 		{
@@ -163,7 +177,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							else
 								if (this->holy->isOn == true)
 									this->holy->isFinished = true;
-
+					//this->finishedAttacking = true;
 				}
 
 			}
@@ -205,7 +219,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 		}
 
-	}
+	
 	
 	if (this->GetState() == SIMON_STATE_THROW || this->GetState() == SIMON_STATE_THROW_SITTING ||
 		this->GetState() == SIMON_STATE_THROW_ON_STAIRS)
@@ -552,39 +566,39 @@ void Simon::Render()
 
 void Simon::SetState(int state)
 {
-	
-	if (this->whip->isFinished == false||
-		(this->dagger->isFinished==false && this->numOfWeapon==1) ||
-		(this->clock->isFinished==false && this->numOfWeapon == 1) ||
-		(this->holy->isFinished==false && this->numOfWeapon == 1) ||
-		(this->axe->isFinished==false && this->numOfWeapon == 1) ||
+
+	if (this->whip->isFinished == false ||
+		(this->dagger->isFinished == false && this->numOfWeapon == 1) ||
+		(this->clock->isFinished == false && this->numOfWeapon == 1) ||
+		(this->holy->isFinished == false && this->numOfWeapon == 1) ||
+		(this->axe->isFinished == false && this->numOfWeapon == 1) ||
 		(this->dagger1->isFinished == false && this->numOfWeapon == 2) ||
 		(this->clock1->isFinished == false && this->numOfWeapon == 2) ||
 		(this->holy1->isFinished == false && this->numOfWeapon == 2) ||
 		(this->axe1->isFinished == false && this->numOfWeapon == 2))
-	{
+		//{
+		//if(this->finishedAttacking==false)
+		{
 
-		if (this->GetState() == SIMON_STATE_ATTACK)
+			if (this->GetState() == SIMON_STATE_ATTACK)
+				return;
+			if (this->GetState() == SIMON_STATE_ATTACK_SITTING)
+				return;
+			if (this->GetState() == SIMON_STATE_ATTACK_ON_STAIRS)
+				return;
+			if (this->GetState() == SIMON_STATE_THROW_ON_STAIRS)
+				return;
+			if (this->GetState() == SIMON_STATE_THROW)
+				return;
+			if (this->GetState() == SIMON_STATE_THROW_SITTING)
+				return;
+		}
+		if (this->GetState() == SIMON_STATE_HURT_LEFT || this->GetState() == SIMON_STATE_HURT_RIGHT)
 			return;
-		if (this->GetState() == SIMON_STATE_ATTACK_SITTING)
+		if (this->GetState() == SIMON_STATE_DEAD)
 			return;
-		if (this->GetState() == SIMON_STATE_ATTACK_ON_STAIRS)
+		if (this->GetState() == SIMON_STATE_EAT_LEFT || this->GetState() == SIMON_STATE_EAT_RIGHT)
 			return;
-		if (this->GetState() == SIMON_STATE_THROW_ON_STAIRS)
-			return;
-		if (this->GetState() == SIMON_STATE_THROW)
-			return;
-		if (this->GetState() == SIMON_STATE_THROW_SITTING)
-			return;
-		
-
-	}
-	if (this->GetState()==SIMON_STATE_HURT_LEFT || this->GetState() == SIMON_STATE_HURT_RIGHT)
-		return;
-	if (this->GetState() == SIMON_STATE_DEAD)
-		return;
-	if (this->GetState() == SIMON_STATE_EAT_LEFT || this->GetState() == SIMON_STATE_EAT_RIGHT)
-		return;
 
 		CGameObject::SetState(state);
 		switch (state)
@@ -687,8 +701,8 @@ void Simon::SetState(int state)
 				vy = -SIMON_DIE_DEFLECT_SPEED;
 				break;*/
 		}
-		
-		if (this->GetState() == SIMON_STATE_ATTACK )
+
+		if (this->GetState() == SIMON_STATE_ATTACK)
 		{
 			if (this->nx == 1)
 				animations[SIMON_ANI_ATTACKING_RIGHT]->SetCurrentFrame(0);
@@ -706,14 +720,14 @@ void Simon::SetState(int state)
 		}
 		if (this->GetState() == SIMON_STATE_ATTACK_ON_STAIRS)
 		{
-				animations[SIMON_ANI_ATTACK_OS_DOWN_LEFT]->SetCurrentFrame(0);
-				animations[SIMON_ANI_ATTACK_OS_DOWN_RIGHT]->SetCurrentFrame(0);
-				animations[SIMON_ANI_ATTACK_OS_UP_LEFT]->SetCurrentFrame(0);
-				animations[SIMON_ANI_ATTACK_OS_UP_RIGHT]->SetCurrentFrame(0);
+			animations[SIMON_ANI_ATTACK_OS_DOWN_LEFT]->SetCurrentFrame(0);
+			animations[SIMON_ANI_ATTACK_OS_DOWN_RIGHT]->SetCurrentFrame(0);
+			animations[SIMON_ANI_ATTACK_OS_UP_LEFT]->SetCurrentFrame(0);
+			animations[SIMON_ANI_ATTACK_OS_UP_RIGHT]->SetCurrentFrame(0);
 		}
-		
-	
-}
+
+
+	}
 
 
 //void Simon::PickedSword()
