@@ -73,7 +73,7 @@ void Boss::Update(DWORD dt, Simon *simon1)
 			}	
 			this->SetState(BOSS_STATE_AFK);
 			waitTime += dt;
-			if (waitTime > 3000)
+			if (waitTime > BOSS_WAIT_TIME_TO_SHOOT)
 			{
 				this->SetState(xz);
 				fired = false;
@@ -97,7 +97,7 @@ void Boss::Update(DWORD dt, Simon *simon1)
 						vx = 0;
 						vy = 0;
 						waitTime += dt;
-						if (waitTime > 1000)
+						if (waitTime > BOSS_WAIT_TIME_TO_ATTACK)
 						{
 							this->SetState(BOSS_STATE_ATTACK_RIGHT);
 							waitTime = 0;
@@ -140,7 +140,7 @@ void Boss::Update(DWORD dt, Simon *simon1)
 										vx = 0;
 										vy = 0;
 										waitTime += dt;
-										if (waitTime > 1000)
+										if (waitTime > BOSS_WAIT_TIME_TO_ATTACK)
 										{
 											this->SetState(BOSS_STATE_ATTACK_RIGHT);
 											waitTime = 0;
@@ -161,7 +161,7 @@ void Boss::Update(DWORD dt, Simon *simon1)
 										vx = 0;
 										vy = 0;
 										waitTime += dt;
-										if (waitTime > 1000)
+										if (waitTime > BOSS_WAIT_TIME_TO_ATTACK)
 										{
 											this->SetState(BOSS_STATE_ATTACK_LEFT);
 											waitTime = 0;
@@ -261,7 +261,7 @@ Boss::Boss()
 {
 	tick = 0;
 
-	hp = 2;
+	hp = 16;
 }
 
 
