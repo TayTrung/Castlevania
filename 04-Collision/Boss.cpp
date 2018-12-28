@@ -260,7 +260,7 @@ Boss::Boss()
 {
 	tick = 0;
 
-	hp = 16;
+	hp = 1;
 }
 
 

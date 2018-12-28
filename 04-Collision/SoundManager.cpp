@@ -30,6 +30,8 @@ void SoundManager::LoadSounds()
 	AddSound(eTagSound::Bos, L"textures\\Sound\\music\\bos.wav");
 	AddSound(eTagSound::Ax, L"textures\\Sound\\sound\\Axe.wav");
 	AddSound(eTagSound::stopWatch, L"textures\\Sound\\sound\\stoptimer.wav");
+	AddSound(eTagSound::countTime, L"textures\\Sound\\sound\\getscoretimer.wav");
+	
 }
 
 void SoundManager::AddSound(eTagSound x, LPTSTR pathToSound)

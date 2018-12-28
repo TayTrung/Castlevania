@@ -46,7 +46,7 @@ public:
 	{
 		this->score = 0;
 		this->healthCount = 16;
-		this->heartCount = 999999;
+		this->heartCount = 50;
 		this->playerLife = 3;
 		this->stage = 01;
 		shotTwoWeaponOneTime = false;

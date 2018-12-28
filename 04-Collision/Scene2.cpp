@@ -287,8 +287,6 @@ void Scene2::OnKeyDown(int KeyCode)
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	switch (KeyCode)
 	{
-	case DIK_X:
-		simon1->healthCount = 16;
 	case DIK_1: //On dagger
 		simon1->dagger->turnOnDagger();
 		simon1->axe->turnOffAxe();
@@ -393,13 +391,15 @@ void Scene2::OnKeyDown(int KeyCode)
 		//case DIK_DOWNARROW:
 		//	simon1->SetState(SIMON_STATE_SIT);
 		//	break;
-	case DIK_S:
+	case DIK_X:
 		if (simon1->GetState() == SIMON_STATE_ATTACK_ON_STAIRS ||
 			simon1->GetState() == SIMON_STATE_ATTACK_SITTING ||
 			simon1->GetState() == SIMON_STATE_ATTACK ||
 			simon1->GetState() == SIMON_STATE_THROW_SITTING ||
 			simon1->GetState() == SIMON_STATE_THROW_ON_STAIRS ||
-			simon1->GetState() == SIMON_STATE_THROW)
+			simon1->GetState() == SIMON_STATE_THROW||
+			simon1->GetState() == SIMON_STATE_HURT_LEFT||
+			simon1->GetState() == SIMON_STATE_HURT_RIGHT)
 			return;
 
 		if (simon1->proceedThruDoor == false)
@@ -438,7 +438,7 @@ void Scene2::OnKeyDown(int KeyCode)
 			
 		}
 		break;
-	case DIK_D:
+	case DIK_Z:
 		if (simon1->proceedThruDoor == false)
 	
 		{
@@ -884,10 +884,6 @@ void Scene2::OnKeyDown(int KeyCode)
 							}
 						}
 		}
-		break;
-	case DIK_Z:
-
-		spawnGhou(300 /*SCREEN_WIDTH*/, 50,GHOU_STATE_ACTIVE_RIGHT);
 		break;
 	}
 
@@ -1577,16 +1573,18 @@ void Scene2::TinhDiem()
 {
 	
 	{
-		if (time1->x >= 0)
+		if (time1->x > 0)
 		{
 			time1->x -= 1;
 			simon1->score += 100;
+			sound->playSound(eTagSound::countTime, false);
 		}
 		else
-			if (simon1->heartCount >= 0)
+			if (simon1->heartCount > 0)
 			{
 				simon1->heartCount -= 1;
 				simon1->score += 1000;
+				sound->playSound(eTagSound::countTime, false);
 			}
 	}
 }
@@ -1671,67 +1669,8 @@ void Scene2::Update(DWORD dt)
 			sound->stopSound(eTagSound::stopWatch);
 		}
 	}
-	if (boss->GetState() != BOSS_STATE_INACTIVE)
-		if (time1->x == 0)
-			simon1->healthCount = 0;
-	if (simon1->healthCount <= 0)
-	{
-			TimeWaitToRefresh += dt;
-			if (TimeWaitToRefresh >= SIMON_REFRESH_TIME)
-			{
-				if (simon1->playerLife > 0)
-				{
-					simon1->playerLife -= 1;
-					simon1->CGameObject::SetState(SIMON_STATE_IDLE);
-					simon1->healthCount = 16;
-					simon1->whip->type = 1;
-					simon1->heartCount = 10;
-					simon1->isOnStairs = false;
-					simon1->dagger->turnOffDagger();
-					simon1->axe->turnOffAxe();
-					simon1->clock->turnOffClock();
-					simon1->holy->turnOffHolyWater();
-					sound->playSound(eTagSound::Stage1, true);
-					board->typeOfWeaopon = 0;
-					if (stage == 1)
-					{
-						simon1->SetPosition(50, 0);
-						time1->x = 300;
-					}
-					else
-						if (stage == 2)
-						{
-							simon1->SetPosition(1550, 0);
-							time1->x = 300;
 
-						}
-						else
-							if ((stage == 3) || (stage == 4))
-							{
-								stage = 2;
-								simon1->SetPosition(1550, 0);
-								time1->x = 300;
-							}
-							else
-								if (stage == 5)
-								{
-									simon1->SetPosition(2062, 0);
-									time1->x = 300;
-									bossOn = false;
-									boss = new Boss();
-									boss->AddAnimation(333);
-									boss->AddAnimation(334);
-									boss->SetPosition(2660, 5 + offsetMap);
-									boss->setItemInside(bluebagInside);
-									boss->SetState(BOSS_STATE_SLEEP);
-								}
-				}
-				TimeWaitToRefresh = 0;
-			}	
-	}
-	if (simon1->healthCount > 0)
-		time1->Update(dt);
-	newGrid1->getListOfObjects(listColliableObjects1, camera1);
+	newGrid1->getListOfObjects(listColliableObjects1, camera1);//Get lisst of obj from grid
 
 	DebugOut(L"[INFO] Number of Objects: %d\n", listColliableObjects1.size());
 	listCheckBox1.clear();
@@ -1739,10 +1678,9 @@ void Scene2::Update(DWORD dt)
 	listUpStairs1.clear();
 	listDownStairs1.clear();
 	listTorches1.clear(); 
-	//listPanther.clear();
 	listGroundEnemy.clear();
 	listDoor.clear();
-	for (int i = 0; i < listColliableObjects1.size(); i++)
+	for (int i = 0; i < listColliableObjects1.size(); i++)//sort tung vat cho vao tung danh sacsh
 	{
 			if (listColliableObjects1.at(i)->tag == eTag::TORCHES)
 			{
@@ -1794,11 +1732,12 @@ void Scene2::Update(DWORD dt)
 								}
 	}
 
-	if (simon1->shotTwoWeaponOneTime == true)
+	if (simon1->shotTwoWeaponOneTime == true)//simon has numbah? => show on board
 	{
 		board->simonHasNumbah = true;
 	}
-	board->heartCount = simon1->heartCount;
+
+	board->heartCount = simon1->heartCount;//update board
 	board->healthCount = simon1->healthCount;
 	board->playerLife = simon1->playerLife;
 	board->stage = simon1->stage;
@@ -1807,7 +1746,7 @@ void Scene2::Update(DWORD dt)
 	board->time = time1->x;
 
 
-	if (isEatingCross == true)
+	if (isEatingCross == true)//wait time for cross effect
 	{
 		TimeWait += dt;
 		if (TimeWait >= 1000)
@@ -1819,9 +1758,6 @@ void Scene2::Update(DWORD dt)
 
 	if (stage == 1)
 	{
-		
-
-
 		if (simon1->x > STAGE1_RIGHT_BORDER && simon1->y > offsetMap + 80)
 			simon1->x = STAGE1_RIGHT_BORDER;
 		
@@ -1850,7 +1786,7 @@ void Scene2::Update(DWORD dt)
 					simon1->SetState(SIMON_STATE_IDLE);
 					
 					listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_CLOSED);//dong cua
-					simon1->stage = 02;
+					simon1->stage = 02;//chuyen mini man
 					if (camera1->GetPosition().x < STAGE1_CAMERA_WAIT_PLACE2)
 						camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//keo camera qua hoan toan
 					if (camera1->GetPosition().x >= STAGE1_CAMERA_WAIT_PLACE2)
@@ -1969,14 +1905,12 @@ void Scene2::Update(DWORD dt)
 						{
 
 							listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_OPENED);
-							//sound->playSound(eTagSound::OpenDoor, false);
 							simon1->SetState(SIMON_STATE_WALKING_RIGHT);
 							if (simon1->x > 2081)//neu simon di den 1 doan x thi set ve vi tri idle							{
 							{
 								simon1->SetState(SIMON_STATE_IDLE);
 
 								listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_CLOSED);//dong cua
-								//sound->playSound(eTagSound::OpenDoor, false);
 								if (camera1->GetPosition().x < 2050)
 									camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//keo camera qua hoan toan
 								if (camera1->GetPosition().x >= 2050)
@@ -2408,9 +2342,72 @@ void Scene2::Update(DWORD dt)
 
 	CollisionBetWeaponAndEnemy();
 
-	simon1->Update(dt, &listSurface1);
 	TimeWaitToChangeColor += dt;
-	
+	if (boss->GetState() != BOSS_STATE_INACTIVE)//time =0 =>dead
+		if (time1->x == 0)
+			simon1->healthCount = 0;
+	if (simon1->healthCount <= 0)//if simon is dead=>check player life=>respawn?
+	{
+		TimeWaitToRefresh += dt;
+		if (TimeWaitToRefresh >= SIMON_REFRESH_TIME)
+		{
+			if (simon1->playerLife > 0)
+			{
+				simon1->playerLife -= 1;
+				simon1->CGameObject::SetState(SIMON_STATE_IDLE);
+				simon1->healthCount = 16;
+				simon1->whip->type = 1;
+				simon1->heartCount = 10;
+				simon1->isOnStairs = false;
+				simon1->dagger->turnOffDagger();
+				simon1->axe->turnOffAxe();
+				simon1->clock->turnOffClock();
+				simon1->holy->turnOffHolyWater();
+				sound->playSound(eTagSound::Stage1, true);
+				board->typeOfWeaopon = 0;
+				if (stage == 1)
+				{
+					simon1->SetPosition(50, 0);
+					time1->x = 300;
+				}
+				else
+					if (stage == 2)
+					{
+						simon1->SetPosition(1550, 0);
+						time1->x = 300;
+						y = false;
+						x = true;
+
+					}
+					else
+						if ((stage == 3) || (stage == 4))
+						{
+							stage = 2;
+							simon1->SetPosition(1550, 0);
+							time1->x = 300;
+							y = false;
+							x = true;
+						}
+						else
+							if (stage == 5)
+							{
+								simon1->SetPosition(2062, 0);
+								time1->x = 300;
+								bossOn = false;
+								boss = new Boss();
+								boss->AddAnimation(333);
+								boss->AddAnimation(334);
+								boss->SetPosition(2660, 5 + offsetMap);
+								boss->setItemInside(bluebagInside);
+								boss->SetState(BOSS_STATE_SLEEP);
+							}
+			}
+			TimeWaitToRefresh = 0;
+		}
+	}
+	if (boss->GetState() != BOSS_STATE_INACTIVE)//update time
+		if (simon1->healthCount > 0)
+			time1->Update(dt);
 	if (boss->GetState() == BOSS_STATE_INACTIVE)
 	{
 		sound->stopSound(eTagSound::Bos);
@@ -2421,6 +2418,8 @@ void Scene2::Update(DWORD dt)
 			TinhDiem();
 		}
 	}
+
+	simon1->Update(dt, &listSurface1);
 }
 
 void Scene2::Render()

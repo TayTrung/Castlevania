@@ -16,7 +16,9 @@ enum eTagSound
 	HolWater,
 	Bos,
 	Ax,
-	stopWatch
+	stopWatch,
+	countTime,
+	countHeart
 	
 };
 
