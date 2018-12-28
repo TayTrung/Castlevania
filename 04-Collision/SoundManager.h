@@ -5,7 +5,18 @@
 
 enum eTagSound
 {
-	Stage1
+	Stage1,
+	Hit,
+	HitCannon,
+	CollItem,
+	COllWeapon,
+	UsingWhip,
+	OpenDoor,
+	Cross,
+	HolWater,
+	Bos,
+	Ax,
+	stopWatch
 	
 };
 

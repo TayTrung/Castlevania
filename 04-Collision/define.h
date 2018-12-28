@@ -29,7 +29,10 @@ enum eTag
 	GROUND_ENEMY,
 	CHECK_BOX,
 	DOOR,
-	PANT
+	PANT,
+	GHOU,
+	BAT,
+	MONSTER
 
 };
 
@@ -111,7 +114,7 @@ enum eTag
 
 #pragma region Enemy
 
-#define ENEMY_FREEZE_TIME	4500
+#define ENEMY_FREEZE_TIME	4000
 
 #define ENEMY_STATE_FREEZE 495
 
@@ -517,7 +520,7 @@ enum eTag
 
 #define HOLYWATER_FLYING_SPEED			0.2f 
 
-#define HOLYWATER_BURN_TIME				1600
+#define HOLYWATER_BURN_TIME				1100
 
 #pragma endregion
 

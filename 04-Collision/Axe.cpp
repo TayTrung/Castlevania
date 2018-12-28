@@ -78,7 +78,12 @@ void Axe::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	ycam=camera->GetPosition().y;
 	if(this->x<xcam || this->x>xcam+SCREEN_WIDTH || this->y>ycam+SCREEN_HEIGHT)
 		this->SetState(AXE_STATE_INACTIVE);
-
+	if (this->GetState() != AXE_STATE_INACTIVE)
+	{
+		sound->GetInstance()->playSound(eTagSound::Ax, true);
+	}
+	else
+		sound->GetInstance()->stopSound(eTagSound::Ax);
 	//clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 

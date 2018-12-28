@@ -37,6 +37,7 @@ void Bat::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 Bat::Bat(int x2)
 {
 	x1 = x2;
+	tag = eTag::BAT;
 	
 }
 

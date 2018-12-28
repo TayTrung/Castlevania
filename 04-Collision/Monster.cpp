@@ -35,6 +35,7 @@ void Monster::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 		if (freezed == true)
 		{
+
 			freezeTime_Start = 0;
 			freezed = false;
 		}
@@ -283,6 +284,7 @@ Monster::Monster(float x11)
 	isWaitting = false;
 	TimeWait = 0;
 	spawnFireBall = false;
+	tag = eTag::MONSTER;
 }
 
 

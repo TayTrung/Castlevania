@@ -1,14 +1,16 @@
 #pragma once
 #include "Weapon.h"
-
+#include "SoundManager.h"
 class HolyWater : public Weapon
 {
 public:
 	bool isOn; //true when eat a dagger 
 	bool isFinished;
-
+	SoundManager *sound;
 	bool burning;
 	DWORD burnTime_Start;
+
+	int ani;
 public:
 	void turnOnHolyWater();
 

@@ -88,7 +88,12 @@ void HolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 
 	}
-
+	if (this->GetState()== HOLYWATER_STATE_BURN)
+	{
+		sound->GetInstance()->playSound(eTagSound::HolWater, false);
+		//RenderBoundingBox(50);
+	}
+	
 	//clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
@@ -97,7 +102,6 @@ void HolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 void HolyWater::Render()
 {
-	int ani;
 	if (this->GetState() == HOLYWATER_STATE_ACTIVE_LEFT)
 	{
 		ani = HOLYWATER_ANI_LEFT;

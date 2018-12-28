@@ -2,7 +2,6 @@
 
 #include "Enemy.h"
 
-
 class Bat : public Enemy
 {
 private:

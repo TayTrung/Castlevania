@@ -1,8 +1,10 @@
 #pragma once
 #include "Enemy.h"
+
 class Monster : public Enemy
 {
 	float x1;
+
 
 
 	DWORD TimeWait;

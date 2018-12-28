@@ -36,6 +36,7 @@ void Panther::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (freezed == true)
 		{
+
 			freezeTime_Start = 0;
 			freezed = false;
 		}

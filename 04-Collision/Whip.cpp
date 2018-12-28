@@ -101,10 +101,12 @@ void Whip::Render()
 		if (animations[ani]->GetCurrentFrame() == 3)
 		{
 			isFinished = true;
+
 		}
 		if (animations[ani]->GetCurrentFrame() == 2)
 		{
 			isAllowedToCollide = true;
+			sound->GetInstance()->playSound(eTagSound::UsingWhip, false);
 			//RenderBoundingBox(50);
 		}
 		else

@@ -1,12 +1,14 @@
 #pragma once
 #include "Weapon.h"
 #include "Torch.h"
+#include "SoundManager.h"
 
 class Whip: public Weapon
 {
 public:
 	int type;
 
+	SoundManager *sound;
 	int ani;
 public:
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);
@@ -19,7 +21,6 @@ public:
 	virtual void CreateWeapon(float x, float y, float nx);
 	Whip()
 	{
-
 		type = VAMPIRE_KILLER;
 		this->AddAnimation(710);
 		this->AddAnimation(711); 

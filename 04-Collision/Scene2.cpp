@@ -859,7 +859,8 @@ void Scene2::OnKeyDown(int KeyCode)
 								simon1->heartCount -= 5;
 								float x, y;
 								simon1->GetPosition(x, y);
-
+								soundClockOn = true;
+								sound->GetInstance()->playSound(eTagSound::stopWatch, true);
 								simon1->clock->CreateWeapon(x, y, simon1->nx);
 								if (simon1->isOnStairs == true)
 								{
@@ -916,7 +917,8 @@ void Scene2::OnKeyUp(int KeyCode)
 
 void Scene2::LoadResources()
 {
-	
+
+	sound->playSound(eTagSound::Stage1,true);
 	readTextureFromFileTxt("textures\\Textures2.txt");
 	camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
 	/*textures->Add(ID_TEX_MAP2,				"textures\\Map\\Map2.png",			D3DCOLOR_XRGB(5,	5,		5));
@@ -1657,10 +1659,20 @@ void Scene2::spawnFireBall()
 }
 
 
+bool xa = false;
 void Scene2::Update(DWORD dt)
 {
-
-	if (time1->x == 0)
+	if (soundClockOn)//tinh thoi gian phat am thanh khi weapon clock dc dung
+	{
+		TimeWaitToTurnOffSoundClock += dt;
+		if (TimeWaitToTurnOffSoundClock >= 4000)
+		{
+			TimeWaitToTurnOffSoundClock = 0;
+			soundClockOn = false;
+			sound->stopSound(eTagSound::stopWatch);
+		}
+	}
+		if (time1->x == 0)
 		simon1->healthCount = 0;
 	if (simon1->healthCount <= 0)
 	{
@@ -1679,6 +1691,7 @@ void Scene2::Update(DWORD dt)
 					simon1->axe->turnOffAxe();
 					simon1->clock->turnOffClock();
 					simon1->holy->turnOffHolyWater();
+					sound->playSound(eTagSound::Stage1, true);
 					board->typeOfWeaopon = 0;
 					if (stage == 1)
 					{
@@ -1695,8 +1708,8 @@ void Scene2::Update(DWORD dt)
 						else
 							if ((stage == 3) || (stage == 4))
 							{
-								stage = 3;
-								simon1->SetPosition(2917, 0);
+								stage = 2;
+								simon1->SetPosition(1550, 0);
 								time1->x = 300;
 							}
 							else
@@ -1829,12 +1842,22 @@ void Scene2::Update(DWORD dt)
 			{
 
 				listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_OPENED);
+				if (xa == false)
+				{
+					sound->playSound(eTagSound::OpenDoor, false);
+					xa = true;
+				}
 				simon1->SetState(SIMON_STATE_WALKING_RIGHT);
 				if (simon1->x > 1584)//neu simon di den 1 doan x thi set ve vi tri idle
 				{
 					simon1->SetState(SIMON_STATE_IDLE);
 					
 					listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_CLOSED);//dong cua
+					if (xa == true)
+					{
+						sound->playSound(eTagSound::OpenDoor, false);
+						xa = false;
+					}
 					simon1->stage = 02;
 					if (camera1->GetPosition().x < 1536)
 						camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//keo camera qua hoan toan
@@ -1982,12 +2005,14 @@ void Scene2::Update(DWORD dt)
 						{
 
 							listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_OPENED);
+							//sound->playSound(eTagSound::OpenDoor, false);
 							simon1->SetState(SIMON_STATE_WALKING_RIGHT);
 							if (simon1->x > 2081)//neu simon di den 1 doan x thi set ve vi tri idle							{
 							{
 								simon1->SetState(SIMON_STATE_IDLE);
 
 								listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_CLOSED);//dong cua
+								//sound->playSound(eTagSound::OpenDoor, false);
 								if (camera1->GetPosition().x < 2050)
 									camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//keo camera qua hoan toan
 								if (camera1->GetPosition().x >= 2050)
@@ -2017,6 +2042,8 @@ void Scene2::Update(DWORD dt)
 
 							camera1->SetPosition(2828 - SCREEN_WIDTH, camera1->GetPosition().y);
 							bossOn = true;
+							sound->stopSound(eTagSound::Stage1);
+							sound->playSound(eTagSound::Bos, true);
 						}
 						if (bossOn)
 						{
@@ -2425,6 +2452,7 @@ void Scene2::Update(DWORD dt)
 	
 	if (boss->GetState() == BOSS_STATE_INACTIVE)
 	{
+		sound->stopSound(eTagSound::Bos);
 		TimeWaitToCount += dt;
 		if (TimeWaitToCount >= 200)
 		{
@@ -2587,7 +2615,10 @@ int Scene2::randomIteminside()
 
 
 Scene2::Scene2(Simon *simon)
+
 {
+
+	sound = SoundManager::GetInstance();
 	simon1 = simon;
 	stage = 1;
 	newGrid1 = new Grid();
@@ -2797,6 +2828,24 @@ void Scene2::CollisionBetWeaponAndEnemy()
 			{
 					if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
 					{
+						switch (listEnemy1.at(i)->tag)
+						{
+						case eTag::GHOU:
+							simon1->score += 100;
+							break;
+						case eTag::BAT:
+							simon1->score += 200;
+							break;
+						case eTag::PANT:
+							simon1->score += 200;
+							break;
+						case eTag::MONSTER:
+							simon1->score += 200;
+							break;
+						default:
+							break;
+						}
+						sound->playSound(eTagSound::Hit, false);
 						float x, y;
 						listEnemy1.at(i)->SetState(GHOU_STATE_INACTIVE);
 						listEnemy1.at(i)->GetPosition(x, y);
@@ -2827,6 +2876,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 				{
 					if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
 					{
+						sound->playSound(eTagSound::Hit, false);
 						float x, y;
 						listTorches1.at(i)->SetState(TORCH_STATE_INACTIVE);
 						listTorches1.at(i)->GetPosition(x, y);
@@ -2852,6 +2902,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 		{
 			if (boss->untouchable == false)
 			{
+				sound->playSound(eTagSound::Hit, false);
 				float x, y;
 				boss->GetPosition(x, y);
 				boss->StartUntouchable();
@@ -2891,9 +2942,11 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					{
 						if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
 						{
+
+							sound->playSound(eTagSound::Hit, false);
 							for (UINT xz = 0; xz < listSurface1.size(); xz++)
 							{
-								if (listSurface1.at(xz)->x == listGroundEnemy.at(i)->x)
+								if (listSurface1.at(xz)->x == listGroundEnemy.at(i)->x && listSurface1.at(xz)->y == listGroundEnemy.at(i)->y)
 								{
 									listSurface1.at(xz)->SetState(GROUND_STATE_INACTIVE);
 								}
@@ -2925,6 +2978,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 			{
 				if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
 				{
+					sound->playSound(eTagSound::Hit, false);
 					float x, y;
 					listPanther.at(i)->SetState(GHOU_STATE_INACTIVE);
 					listPanther.at(i)->GetPosition(x, y);
@@ -2956,6 +3010,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
 					{
 
+						sound->playSound(eTagSound::Hit, false);
 						simon1->notUseWeapon();
 						simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
 						float x, y;
@@ -2983,6 +3038,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 				{
 					if (listTorches1.at(i)->state == TORCH_STATE_ACTIVE)
 					{
+						sound->playSound(eTagSound::Hit, false);
 						simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
 						simon1->notUseWeapon();
 						float x, y;
@@ -3008,6 +3064,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 			{
 				if (boss->untouchable == false)
 				{
+					sound->playSound(eTagSound::Hit, false);
 					float x, y;
 					boss->GetPosition(x, y);
 					boss->StartUntouchable();
@@ -3044,6 +3101,14 @@ void Scene2::CollisionBetWeaponAndEnemy()
 						{
 							if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
 							{
+								sound->playSound(eTagSound::Hit, false);
+								for (UINT xz = 0; xz < listSurface1.size(); xz++)
+								{
+									if (listSurface1.at(xz)->x == listGroundEnemy.at(i)->x && listSurface1.at(xz)->y == listGroundEnemy.at(i)->y)
+									{
+										listSurface1.at(xz)->SetState(GROUND_STATE_INACTIVE);
+									}
+								}
 								float x, y;
 								listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
 								listGroundEnemy.at(i)->GetPosition(x, y);
@@ -3072,6 +3137,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
 					{
 
+						sound->playSound(eTagSound::Hit, false);
 						simon1->notUseWeapon();
 						simon1->dagger->SetState(DAGGER_STATE_INACTIVE);
 						float x, y;
@@ -3103,6 +3169,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					if (simon1->dagger1->CheckCollision(listEnemy1.at(i)) == true)
 					{
 					{
+							sound->playSound(eTagSound::Hit, false);
 							simon1->notUseWeapon2();
 							simon1->dagger1->SetState(DAGGER_STATE_INACTIVE);
 							if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
@@ -3129,6 +3196,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					{
 						if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
 							{
+								sound->playSound(eTagSound::Hit, false);
 								simon1->dagger1->SetState(DAGGER_STATE_INACTIVE);
 								simon1->notUseWeapon2();
 								float x, y;
@@ -3152,6 +3220,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 				{
 					if (boss->untouchable == false)
 					{
+						sound->playSound(eTagSound::Hit, false);
 						float x, y;
 						boss->GetPosition(x, y);
 						boss->StartUntouchable();
@@ -3188,7 +3257,16 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							{
 								if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
 								{
+									sound->playSound(eTagSound::Hit, false);
+									for (UINT xz = 0; xz < listSurface1.size(); xz++)
+									{
+										if (listSurface1.at(xz)->x == listGroundEnemy.at(i)->x && listSurface1.at(xz)->y == listGroundEnemy.at(i)->y)
+										{
+											listSurface1.at(xz)->SetState(GROUND_STATE_INACTIVE);
+										}
+									}
 									float x, y;
+
 									listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
 									listGroundEnemy.at(i)->GetPosition(x, y);
 									effectFire1 = new EffectFire();
@@ -3218,6 +3296,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							simon1->dagger1->SetState(DAGGER_STATE_INACTIVE);
 							if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
 							{
+								sound->playSound(eTagSound::Hit, false);
 								float x, y;
 								listPanther.at(i)->SetState(GHOU_STATE_INACTIVE);
 								listPanther.at(i)->GetPosition(x, y);
@@ -3250,6 +3329,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 								if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
 								{
+									sound->playSound(eTagSound::Hit, false);
 									//simon1->axe->SetState(AXE_STATE_INACTIVE);
 									//simon1->notUseWeapon();
 									float x, y;
@@ -3278,6 +3358,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 							if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
 							{
+								sound->playSound(eTagSound::Hit, false);
 						//		simon1->axe->SetState(AXE_STATE_INACTIVE);
 								simon1->notUseWeapon();
 
@@ -3303,6 +3384,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					{
 						if (boss->untouchable == false)
 						{
+							sound->playSound(eTagSound::Hit, false);
 					//		simon1->axe->SetState(AXE_STATE_INACTIVE);
 							simon1->notUseWeapon();
 							float x, y;
@@ -3341,6 +3423,14 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								{
 									if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
 									{
+										sound->playSound(eTagSound::Hit, false);
+										for (UINT xz = 0; xz < listSurface1.size(); xz++)
+										{
+											if (listSurface1.at(xz)->x == listGroundEnemy.at(i)->x && listSurface1.at(xz)->y == listGroundEnemy.at(i)->y)
+											{
+												listSurface1.at(xz)->SetState(GROUND_STATE_INACTIVE);
+											}
+										}
 										//simon1->axe->SetState(AXE_STATE_INACTIVE);
 										simon1->notUseWeapon();
 										float x, y;
@@ -3372,6 +3462,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 								if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
 								{
+									sound->playSound(eTagSound::Hit, false);
 								//	simon1->axe->SetState(AXE_STATE_INACTIVE);
 									simon1->notUseWeapon();
 									float x, y;
@@ -3407,6 +3498,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 								if (listEnemy1.at(i)->state != GHOU_STATE_INACTIVE)
 								{
+									sound->playSound(eTagSound::Hit, false);
 									//simon1->axe1->SetState(AXE_STATE_INACTIVE);
 									simon1->notUseWeapon2();
 									float x, y;
@@ -3436,6 +3528,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 							if (listTorches1.at(i)->state != TORCH_STATE_INACTIVE)
 							{
+								sound->playSound(eTagSound::Hit, false);
 								//simon1->axe1->SetState(AXE_STATE_INACTIVE);
 								simon1->notUseWeapon2();
 
@@ -3462,6 +3555,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					{
 						if (boss->untouchable == false)
 						{
+							sound->playSound(eTagSound::Hit, false);
 							//simon1->axe1->SetState(AXE_STATE_INACTIVE);
 							simon1->notUseWeapon2();
 							float x, y;
@@ -3500,6 +3594,14 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								{
 									if (listGroundEnemy.at(i)->GetState() != TORCH_STATE_INACTIVE)
 									{
+										sound->playSound(eTagSound::Hit, false);
+										for (UINT xz = 0; xz < listSurface1.size(); xz++)
+										{
+											if (listSurface1.at(xz)->x == listGroundEnemy.at(i)->x && listSurface1.at(xz)->y == listGroundEnemy.at(i)->y)
+											{
+												listSurface1.at(xz)->SetState(GROUND_STATE_INACTIVE);
+											}
+										}
 										//simon1->axe1->SetState(AXE_STATE_INACTIVE);
 										simon1->notUseWeapon2();
 										float x, y;
@@ -3531,6 +3633,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 
 								if (listPanther.at(i)->state != GHOU_STATE_INACTIVE)
 								{
+									sound->playSound(eTagSound::Hit, false);
 									//simon1->axe1->SetState(AXE_STATE_INACTIVE);
 									simon1->notUseWeapon2();
 									float x, y;
@@ -3656,6 +3759,13 @@ void Scene2::CollisionBetWeaponAndEnemy()
 										{
 										//	simon1->notUseWeapon();
 											float x, y;
+											for (UINT xz = 0; xz < listSurface1.size(); xz++)
+											{
+												if (listSurface1.at(xz)->x == listGroundEnemy.at(i)->x && listSurface1.at(xz)->y == listGroundEnemy.at(i)->y)
+												{
+													listSurface1.at(xz)->SetState(GROUND_STATE_INACTIVE);
+												}
+											}
 											listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
 											listGroundEnemy.at(i)->GetPosition(x, y);
 											effectFire1 = new EffectFire();
@@ -3810,6 +3920,13 @@ void Scene2::CollisionBetWeaponAndEnemy()
 											{
 										//		simon1->notUseWeapon2();
 												float x, y;
+												for (UINT xz = 0; xz < listSurface1.size(); xz++)
+												{
+													if (listSurface1.at(xz)->x == listGroundEnemy.at(i)->x && listSurface1.at(xz)->y == listGroundEnemy.at(i)->y)
+													{
+														listSurface1.at(xz)->SetState(GROUND_STATE_INACTIVE);
+													}
+												}
 												listGroundEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
 												listGroundEnemy.at(i)->GetPosition(x, y);
 												effectFire1 = new EffectFire();
@@ -3873,7 +3990,7 @@ void Scene2::CollisionBetSimonAndItem()
 			{
 				if (listItem1.at(i)->GetState() == ITEM_STATE_DROPPED)
 				{
-
+					sound->playSound(eTagSound::CollItem, false);
 					OutputDebugString(L"Simon and BigHeart \n");
 					listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 					simon1->heartCount += 5;
@@ -3889,6 +4006,7 @@ void Scene2::CollisionBetSimonAndItem()
 				{
 					if (listItem1.at(i)->GetState() == ITEM_STATE_DROPPED)
 					{
+						sound->playSound(eTagSound::COllWeapon, false);
 						OutputDebugString(L"Simon and WHIP \n");
 						listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 						if (simon1->nx == 1)
@@ -3908,6 +4026,7 @@ void Scene2::CollisionBetSimonAndItem()
 					{
 						if (listItem1.at(i)->GetState() == ITEM_STATE_DROPPED)
 						{
+							sound->playSound(eTagSound::COllWeapon, false);
 							OutputDebugString(L"Simon and DAGGER \n");
 							listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 							simon1->dagger->turnOnDagger();
@@ -3928,6 +4047,7 @@ void Scene2::CollisionBetSimonAndItem()
 						{
 							if (listItem1.at(i)->GetState() == ITEM_STATE_DROPPED)
 							{
+								sound->playSound(eTagSound::CollItem, false);
 								OutputDebugString(L"Simon and SmallHeart \n");
 								listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 
@@ -3944,6 +4064,7 @@ void Scene2::CollisionBetSimonAndItem()
 								{
 									if (listItem1.at(i)->state == ITEM_STATE_DROPPED)
 									{
+										sound->playSound(eTagSound::CollItem, false);
 										OutputDebugString(L"GoldBag \n");
 										listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 										GoldBag *newGoldBag = dynamic_cast<GoldBag *>(listItem1.at(i));
@@ -3982,6 +4103,7 @@ void Scene2::CollisionBetSimonAndItem()
 									{
 										if (listItem1.at(i)->GetState() == ITEM_STATE_DROPPED)
 										{
+											sound->playSound(eTagSound::Cross, false);
 											OutputDebugString(L"Cross \n");
 											listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 											float xc, yc;
@@ -4012,6 +4134,7 @@ void Scene2::CollisionBetSimonAndItem()
 										{
 											if (listItem1.at(i)->GetState() == ITEM_STATE_DROPPED)
 											{
+												sound->playSound(eTagSound::COllWeapon, false);
 												OutputDebugString(L"Simon and Axe \n");
 												listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 												simon1->dagger->turnOffDagger();
@@ -4031,6 +4154,7 @@ void Scene2::CollisionBetSimonAndItem()
 											{
 												if (listItem1.at(i)->state == ITEM_STATE_DROPPED)
 												{
+													sound->playSound(eTagSound::COllWeapon, false);
 													OutputDebugString(L"Simon and HolyWater \n");
 													listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 													simon1->dagger->turnOffDagger();
@@ -4051,6 +4175,7 @@ void Scene2::CollisionBetSimonAndItem()
 												{
 													if (listItem1.at(i)->state == ITEM_STATE_DROPPED)
 													{
+														sound->playSound(eTagSound::COllWeapon, false);
 														OutputDebugString(L"Simon and Clock \n");
 														listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 														simon1->dagger->turnOffDagger();
@@ -4071,6 +4196,7 @@ void Scene2::CollisionBetSimonAndItem()
 													{
 														if (listItem1.at(i)->state == ITEM_STATE_DROPPED)
 														{
+															sound->playSound(eTagSound::CollItem, false);
 															OutputDebugString(L"Chicken \n");
 															listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 															if (simon1->healthCount <= 14)
@@ -4091,6 +4217,7 @@ void Scene2::CollisionBetSimonAndItem()
 														{
 															if (listItem1.at(i)->state == ITEM_STATE_DROPPED)
 															{
+																sound->playSound(eTagSound::CollItem, false);
 																OutputDebugString(L"Numbah \n");
 																listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 																simon1->shotTwoWeaponOneTime = true;
@@ -4106,6 +4233,7 @@ void Scene2::CollisionBetSimonAndItem()
 															{
 																if (listItem1.at(i)->state == ITEM_STATE_DROPPED)
 																{
+																	sound->playSound(eTagSound::CollItem, false);
 																	OutputDebugString(L"Numbah \n");
 																	listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 																	simon1->StartInvisTime();
@@ -4122,6 +4250,7 @@ void Scene2::CollisionBetSimonAndItem()
 																{
 																	if (listItem1.at(i)->state == ITEM_STATE_DROPPED)
 																	{
+																		sound->playSound(eTagSound::CollItem, false);
 																		OutputDebugString(L"Numbah \n");
 																		listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 																		simon1->healthCount = simon1->healthCount + (16 - simon1->healthCount);

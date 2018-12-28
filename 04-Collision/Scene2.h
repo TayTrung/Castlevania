@@ -37,6 +37,7 @@ private:
 	Ghou *ghou;
 	Panther *pant;
 	Boss *boss;
+	SoundManager *sound;
 	Stairs *stairs;
 	Chicken *chick;
 	Door *door, *door1;
@@ -90,6 +91,8 @@ private:
 	DWORD TimeWaitToChangeColor=0;
 	DWORD TimeWait;
 	DWORD TimeWaitToRefresh;
+	DWORD TimeWaitToTurnOffSoundClock;
+	bool soundClockOn = false;
 	int stage;
 public:
 	virtual void KeyState(BYTE *states);

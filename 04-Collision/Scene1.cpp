@@ -282,6 +282,10 @@ void Scene1::LoadResources()
 
 #pragma endregion
 
+	effectBag->AddAnimation(579);
+	effectBag->AddAnimation(580);
+	effectBag->AddAnimation(581);
+	effectBag->AddAnimation(582);
 #pragma region Adding Simon
 
 	simon = new Simon();
@@ -489,7 +493,11 @@ void Scene1::Update(DWORD dt)
 	if (proceedToLvl2 == true)
 	{
 		if (simon->x > 703)
+		{
+
+			sound->GetInstance()->stopSound(eTagSound::Stage1);
 			SceneManager::GetInstance()->replaceScene(new Scene2(simon));
+		}
 	}
 
 }
@@ -568,6 +576,7 @@ Scene1::Scene1()
 	goldbag = new GoldBag(3);
 	newBoard = new Board();
 	bigheart = new BigHeart();
+	effectBag = new EffectBag();
 	LoadResources();
 }
 
@@ -782,6 +791,8 @@ void Scene1::CollisionBetWeaponAndEnemy()
 			{
 				if (listEnemy.at(i)->state == TORCH_STATE_ACTIVE)
 				{
+
+					sound->playSound(eTagSound::Hit, false);
 					float x, y;
 					OutputDebugString(L"Collision Whip and Candle \n");
 					listEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
@@ -812,6 +823,7 @@ void Scene1::CollisionBetWeaponAndEnemy()
 				{
 					if (listEnemy.at(i)->state == TORCH_STATE_ACTIVE)
 					{
+						sound->playSound(eTagSound::Hit, false);
 						float x, y;
 						OutputDebugString(L"Collision Dagger and Candle \n");
 						listEnemy.at(i)->SetState(TORCH_STATE_INACTIVE);
@@ -848,6 +860,7 @@ void Scene1::CollisionBetSimonAndItem()
 				if (listItem.at(i)->state == ITEM_STATE_DROPPED)
 				{
 
+					sound->playSound(eTagSound::CollItem, false);
 					OutputDebugString(L"Simon and BigHeart \n");
 					listItem.at(i)->SetState(ITEM_STATE_INACTIVE);
 					simon->heartCount += 5;
@@ -867,6 +880,7 @@ void Scene1::CollisionBetSimonAndItem()
 							simon->SetState(SIMON_STATE_EAT_RIGHT);
 						else
 							simon->SetState(SIMON_STATE_EAT_LEFT);
+						sound->playSound(eTagSound::COllWeapon, false);
 						simon->whip->levelUpWhip();
 						listItem.erase(listItem.begin() + i);
 						i = i - 1;
@@ -878,6 +892,7 @@ void Scene1::CollisionBetSimonAndItem()
 					{
 						if (listItem.at(i)->state == ITEM_STATE_DROPPED)
 						{
+							sound->playSound(eTagSound::COllWeapon, false);
 							OutputDebugString(L"Simon and DAGGER \n");
 							listItem.at(i)->SetState(ITEM_STATE_INACTIVE);
 							simon->dagger->turnOnDagger();
@@ -926,6 +941,7 @@ void Scene1::CollisionBetSimonAndItem()
 							{
 								if (listItem.at(i)->state == ITEM_STATE_DROPPED)
 								{
+									sound->playSound(eTagSound::CollItem, false);
 									OutputDebugString(L"GoldBag \n");
 									listItem.at(i)->SetState(ITEM_STATE_INACTIVE);
 									GoldBag *newGoldBag = dynamic_cast<GoldBag *>(listItem.at(i));

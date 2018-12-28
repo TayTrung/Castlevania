@@ -1,12 +1,13 @@
 #pragma once
 #include "Weapon.h"
-
+#include "SoundManager.h"
 class Axe : public Weapon
 {
 public:
 	Camera *camera;
 	bool isOn; //true when eat a dagger 
 	bool isFinished;
+	SoundManager *sound;
 public:
 	void turnOnAxe();
 

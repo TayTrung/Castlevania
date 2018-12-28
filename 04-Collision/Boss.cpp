@@ -4,9 +4,10 @@
 
 void Boss::Update(DWORD dt, Simon *simon1)
 {
-	if (hp == 0)
+	if (hp <= 0)
 	{
 		this->SetState(BOSS_STATE_INACTIVE);
+
 	}
 	else
 	{
