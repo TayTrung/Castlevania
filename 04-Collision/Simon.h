@@ -44,6 +44,11 @@ public:
 public:
 	Simon() : CGameObject()
 	{
+		this->score = 0;
+		this->healthCount = 16;
+		this->heartCount = 999999;
+		this->playerLife = 3;
+		this->stage = 01;
 		shotTwoWeaponOneTime = false;
 		isUsing1stWeapon = false;
 		isUsing2ndWeapon = false;

@@ -5,6 +5,10 @@
 class Scene2 : public Scene
 {
 private:
+	CTextures * textures;
+	CSprites * sprites;
+	CAnimations * animations;
+	LPANIMATION ani;;
 	CGame *game1 = CGame::GetInstance();
 	Ground *ground1;
 	Simon *simon1;
@@ -51,6 +55,26 @@ private:
 	Potion *potion;
 	Heal *heal;
 	Time *time1;
+	LPDIRECT3DTEXTURE9 texGround;
+	LPDIRECT3DTEXTURE9 texGround2;
+	LPDIRECT3DTEXTURE9 texGround3;
+	LPDIRECT3DTEXTURE9 texGround4;
+	LPDIRECT3DTEXTURE9 texHeal;
+	LPDIRECT3DTEXTURE9 texCandle;
+	LPDIRECT3DTEXTURE9 texDoor;
+	LPDIRECT3DTEXTURE9 texBat;
+	LPDIRECT3DTEXTURE9 texBoss;
+	LPDIRECT3DTEXTURE9 texGhoul;
+	LPDIRECT3DTEXTURE9 texPant;
+	LPDIRECT3DTEXTURE9 texMonster;
+	LPDIRECT3DTEXTURE9 texFire;
+	LPDIRECT3DTEXTURE9 texSHeart;
+	LPDIRECT3DTEXTURE9 texHoly;
+	LPDIRECT3DTEXTURE9 texPotion;
+	LPDIRECT3DTEXTURE9 texNum;
+	LPDIRECT3DTEXTURE9 texAxe;
+	LPDIRECT3DTEXTURE9 texCross;
+	LPDIRECT3DTEXTURE9 texChicken;
 	bool isWaittingToRefresh;
 	int tickGhou = 300;
 	int tickBat = 290;

@@ -18,7 +18,11 @@ void Scene1::KeyState(BYTE * states)
 					{
 
 						if (game->IsKeyDown(DIK_S))
+						{
 							simon->SetState(SIMON_STATE_ATTACK);
+							simon->vx = 0;
+							simon->vy = 0;
+						}
 						else
 
 							if (game->IsKeyDown(DIK_D))
@@ -36,8 +40,11 @@ void Scene1::KeyState(BYTE * states)
 						if (simon->isJumping == false)
 						{
 							if (game->IsKeyDown(DIK_S))
+							{
 								simon->SetState(SIMON_STATE_ATTACK);
-							else
+								simon->vx = 0;
+								simon->vy = 0;
+							}else
 								if (game->IsKeyDown(DIK_D))
 									simon->SetState(SIMON_STATE_THROW);
 								else
@@ -215,62 +222,37 @@ void Scene1::LoadResources()
 {
 	readTextureFromFileTxt("textures\\Textures1.txt");
 	map = new Map(ID_TEX_MAP1, "textures\\Map\\Map1.csv");
-
-
-
 	//Ground 0
-	texBoard = textures->Get(ID_TEX_BOARD);
-	texEffect = textures->Get(ID_TEX_EFFECT);
-	texEffectBrick = textures->Get(ID_TEX_EFFECT1);
-	texEffectWater = textures->Get(ID_TEX_EFFECT2);
-	texEffectBag = textures->Get(ID_TEX_ITEM_POTION);
-	texSimon2 = textures->Get(ID_TEX_SIMON2);
-	texMario = textures->Get(ID_TEX_SIMON);
-	texMarioDeath = textures->Get(ID_TEX_SIMON_DEATH);
-	texTorch = textures->Get(ID_TEX_TORCH);
-	texWhip = textures->Get(ID_TEX_WHIP);
-	texItemSword = textures->Get(ID_TEX_ITEM_SWORD);
-	texAxe = textures->Get(ID_TEX_AXE);
-	texHolyWater = textures->Get(ID_TEX_HOLYWATER);
+	texBoard		= textures->Get(ID_TEX_BOARD);
+	texEffect		= textures->Get(ID_TEX_EFFECT);
+	texEffectBrick	= textures->Get(ID_TEX_EFFECT1);
+	texEffectWater	= textures->Get(ID_TEX_EFFECT2);
+	texEffectBag	= textures->Get(ID_TEX_ITEM_POTION);
+	texSimon2		= textures->Get(ID_TEX_SIMON2);
+	texMario		= textures->Get(ID_TEX_SIMON);
+	texMarioDeath	= textures->Get(ID_TEX_SIMON_DEATH);
+	texTorch		= textures->Get(ID_TEX_TORCH);
+	texWhip			= textures->Get(ID_TEX_WHIP);
+	texItemSword	= textures->Get(ID_TEX_ITEM_SWORD);
+	texAxe			= textures->Get(ID_TEX_AXE);
+	texHolyWater	= textures->Get(ID_TEX_HOLYWATER);
 	texItemBigHeart = textures->Get(ID_TEX_ITEM_BIGHEART);
-	texItemWhip = textures->Get(ID_TEX_ITEM_WHIP);
-	texGoldBag = textures->Get(ID_TEX_ITEM_GOLD);
-	texClock = textures->Get(ID_TEX_ITEM_CLOCK);
+	texItemWhip		= textures->Get(ID_TEX_ITEM_WHIP);
+	texGoldBag		= textures->Get(ID_TEX_ITEM_GOLD);
+	texClock		= textures->Get(ID_TEX_ITEM_CLOCK);
 
 	readCoordiantionsForSpritesFromFileTxt("textures\\Coordinations1.txt");
 	createAnimationsFromFileTxt("textures\\CreateAnimations1.txt");
-#pragma endregion
 
-#pragma region Co-ordinations of Simon
-	
-
-
-
-#pragma endregion
-
-#pragma region Co-ordinations of Ground
-
-	/*LPDIRECT3DTEXTURE9 texGround = textures->Get(ID_TEX_GROUND);
-	sprites->Add(20001, 0, 0, 16, 16, texGround);*/
-
-#pragma endregion
-
-#pragma region Co-ordinations of Torch
+#pragma region Adding Effects
 
 	effect->AddAnimation(578);
 
 #pragma endregion
 
-#pragma region Adding item Clcok
-
-#pragma endregion	
+#pragma region Adding Simon
 
 	simon = new Simon();
-	simon->score = 0;
-	simon->healthCount = 16;
-	simon->heartCount = 999999;
-	simon->playerLife = 3;
-	simon->stage = 01;
 	simon->AddAnimation(400);		// idle right
 	simon->AddAnimation(401);		// idle left
 
@@ -322,53 +304,34 @@ void Scene1::LoadResources()
 	//objects.push_back(mario);
 #pragma endregion 	
 
-#pragma region Adding Ground
+#pragma region Adding BigHeart
 
-
-#pragma endregion
-
-#pragma region Adding Torch
-
-	//for (int i = 0; i < 2; i++)
-	{
-		bigheart = new BigHeart();
-		bigheart->AddAnimation(765);
-	}
+	bigheart->AddAnimation(765);
 
 #pragma endregion
 
 #pragma region Adding Item Dagger
-
-	
-	//dag = new Dagger();
-	//dag->AddAnimation(767);
-
-	//dag->AddAnimation(766);
-
-
 
 	simon->dagger->AddAnimation(767); //left
 	simon->dagger->AddAnimation(766); //right
 
 	simon->dagger1->AddAnimation(767);
 	simon->dagger1->AddAnimation(766);
+
 	dagger->AddAnimation(767);
 
 #pragma endregion
 
-
 #pragma region Adding Axe
-
-	
 
 	simon->axe->AddAnimation(254);
 	simon->axe->AddAnimation(253);
 	simon->axe1->AddAnimation(254);
 	simon->axe1->AddAnimation(253);
+
 #pragma endregion
 
 #pragma region Adding HolyWater
-
 
 	simon->holy->AddAnimation(232);
 	simon->holy->AddAnimation(233);
@@ -381,28 +344,22 @@ void Scene1::LoadResources()
 
 #pragma region Adding Item Morning Star
 
-
-	//for (int i = 0; i < 2; i++)
-	//{
 	morningstar = new MorningStar();
 	morningstar->AddAnimation(777);
-	//}
 
 #pragma endregion
 
 #pragma region Adding Item Bag of Gold
-
-	
 
 	goldbag->AddAnimation(778);
 	goldbag->AddAnimation(779);
 	goldbag->AddAnimation(780);
 	goldbag->AddAnimation(781);
 
-	newBoard->SetPosition(0, 0);
-	newBoard->typeOfWeaopon = 0;
 #pragma endregion
 
+	newBoard->SetPosition(0, 0);
+	newBoard->typeOfWeaopon = 0;
 
 	newGrid->readObjectFromTextFile("textures\\Objects1.txt");
 }
@@ -577,6 +534,7 @@ Scene1::Scene1()
 	dagger = new Dagger1();
 	goldbag = new GoldBag(3);
 	newBoard = new Board();
+	bigheart = new BigHeart();
 	LoadResources();
 }
 
@@ -672,56 +630,56 @@ void Scene1::readCoordiantionsForSpritesFromFileTxt(char * pathOfFile)
 		LPDIRECT3DTEXTURE9 temp;
 		switch (IDofTex)
 		{
-
-		case 2:
+			
+		case ID_TEX_BOARD:
 			temp = texBoard;
 			break;
-		case 99:
+		case ID_TEX_EFFECT:
 			temp = texEffect;
 			break;
-		case 991:
+		case ID_TEX_EFFECT1:
 			temp = texEffectBrick;
 			break;
-		case 992:
+		case ID_TEX_EFFECT2:
 			temp = texEffectWater;
 			break;
-		case 160:
+		case ID_TEX_ITEM_POTION:
 			temp = texEffectBag;
 			break;
-		case 79989:
+		case ID_TEX_SIMON2:
 			temp = texSimon2;
 			break;
-		case 0:
+		case ID_TEX_SIMON:
 			temp = texMario;
 			break;
-		case 79979:
+		case ID_TEX_SIMON_DEATH:
 			temp = texMarioDeath;
 			break;
-		case 30:
+		case ID_TEX_TORCH:
 			temp = texTorch;
 			break;
-		case 10:
+		case ID_TEX_WHIP:
 			temp = texWhip;
 			break;
-		case 60:
+		case ID_TEX_ITEM_SWORD:
 			temp = texItemSword;
 			break;
-		case 12:
+		case ID_TEX_AXE:
 			temp = texAxe;
 			break;
-		case 11:
+		case ID_TEX_HOLYWATER:
 			temp = texHolyWater;
 			break;
-		case 50:
+		case ID_TEX_ITEM_BIGHEART:
 			temp = texItemBigHeart;
 			break;
-		case 70:
+		case ID_TEX_ITEM_WHIP:
 			temp = texItemWhip;
 			break;
-		case 80:
+		case ID_TEX_ITEM_GOLD:
 			temp = texGoldBag;
 			break;
-		case 130:
+		case ID_TEX_ITEM_CLOCK:
 			temp = texClock;
 			break;
 		default:

@@ -895,480 +895,116 @@ void Scene2::OnKeyUp(int KeyCode)
 
 void Scene2::LoadResources()
 {
-	newGrid1 = new Grid();
-	time1 = new Time();
-	simon1->proceedThruDoor = false;
-	camera1 = Camera::GetInstance();
-	CTextures * textures = CTextures::GetInstance();
-	CSprites * sprites = CSprites::GetInstance();
-	CAnimations * animations = CAnimations::GetInstance();
-	LPANIMATION ani;
-	simon1->SetPosition(50, 0);
-	board = new Board();
-
-	if (simon1->dagger->isOn)
-		board->typeOfWeaopon = 1;
-	else
-		if (simon1->axe->isOn)
-			board->typeOfWeaopon = 2;
-		else
-			if (simon1->holy->isOn)
-				board->typeOfWeaopon = 3;
-			else
-				if (simon1->clock->isOn)
-					board->typeOfWeaopon = 4;
-	board->SetPosition(0, 0);
-
+	
+	readTextureFromFileTxt("textures\\Textures2.txt");
 	camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
-
-	textures->Add(ID_TEX_MAP2, "textures\\Map\\Map2.png", D3DCOLOR_XRGB(5, 5, 5));
-
+	/*textures->Add(ID_TEX_MAP2,				"textures\\Map\\Map2.png",			D3DCOLOR_XRGB(5,	5,		5));
+	textures->Add(ID_TEX_GROUND,			"textures\\Ground\\ground2.png",	D3DCOLOR_XRGB(176,	224,	248));
+	textures->Add(ID_TEX_DOOR,				"textures\\Ground\\Gate1.png",		D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_ITEM_SMALLHEART,	"textures\\Item\\smallheart.png",	D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_ITEM_CROSS,		"textures\\Item\\cross.png",		D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_ITEM_CHICKEN,		"textures\\Item\\10.png",			D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_ITEM_AXE,			"textures\\Item\\7.png",			D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_ITEM_NUMBAH,		"textures\\Item\\11.png",			D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_ITEM_POTION,		"textures\\Item\\potion.png",		D3DCOLOR_XRGB(0,	0,		0));
+	textures->Add(ID_TEX_ITEM_HEAL,			"textures\\Item\\13.png",			D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_GHOUL,				"textures\\Enemy\\Ghoul.png",		D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_BAT,				"textures\\Enemy\\Bat.png",			D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_PANTHER,			"textures\\Enemy\\Pant.png",		D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_CANDLE,			"textures\\Enemy\\1.png",			D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_MONSTER,			"textures\\Enemy\\3.png",			D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_FIREBALL,			"textures\\Enemy\\fireball.png",	D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_BOSS,				"textures\\Enemy\\boss.png",		D3DCOLOR_XRGB(255,	0,		255));
+	textures->Add(ID_TEX_GROUND3,			"textures\\Ground\\ground3.png",	D3DCOLOR_XRGB(176,	224,	248));
+	textures->Add(ID_TEX_GROUND4,			"textures\\Ground\\ground4.png",	D3DCOLOR_XRGB(176,	224,	248));
+	textures->Add(ID_TEX_GROUND2,			"textures\\Ground\\ground2.png",	D3DCOLOR_XRGB(176,	224,	248));*/
+	
 	map1 = new Map(ID_TEX_MAP2, "textures\\Map\\Map2.csv");
 
-	textures->Add(ID_TEX_GROUND, "textures\\Ground\\ground2.png", D3DCOLOR_XRGB(176, 224, 248));
-	textures->Add(ID_TEX_DOOR, "textures\\Ground\\Gate1.png", D3DCOLOR_XRGB(255, 0, 255));
+	texGround	= textures->Get(ID_TEX_GROUND);
+	texGround2	= textures->Get(ID_TEX_GROUND2);
+	texGround3	= textures->Get(ID_TEX_GROUND3);
+	texGround4	= textures->Get(ID_TEX_GROUND4);
+	texHeal		= textures->Get(ID_TEX_ITEM_HEAL);
+	texCandle	= textures->Get(ID_TEX_CANDLE);
+	texDoor		= textures->Get(ID_TEX_DOOR);
+	texBat		= textures->Get(ID_TEX_BAT);
+	texBoss		= textures->Get(ID_TEX_BOSS);
+	texGhoul	= textures->Get(ID_TEX_GHOUL);
+	texPant		= textures->Get(ID_TEX_PANTHER);
+	texMonster	= textures->Get(ID_TEX_MONSTER);
+	texFire		= textures->Get(ID_TEX_FIREBALL);
+	texSHeart	= textures->Get(ID_TEX_ITEM_SMALLHEART);
+	texHoly		= textures->Get(ID_TEX_ITEM_HOLY);
+	texPotion	= textures->Get(ID_TEX_ITEM_POTION);
+	texNum		= textures->Get(ID_TEX_ITEM_NUMBAH);
+	texAxe		= textures->Get(ID_TEX_ITEM_AXE);
+	texCross	= textures->Get(ID_TEX_ITEM_CROSS);
+	texChicken	= textures->Get(ID_TEX_ITEM_CHICKEN);
 
+	//sprites->Add(20001, 0, 0, 16, 16,	texGround);
+	//sprites->Add(20004, 0, 0, 16, 16,	texGround);
+	//sprites->Add(20002, 0, 0, 16, 16,	texGround3);
+	//sprites->Add(20003, 0, 0, 16, 16,	texGround4);
+	//sprites->Add(25554, 0, 0, 13, 15,	texHeal);
+	//sprites->Add(25555, 14, 0, 27, 15,	texHeal); 
+	//sprites->Add(40001, 0, 0, 7, 15,	texCandle);
+	//sprites->Add(40002, 8, 0, 15, 15,	texCandle);
+	//sprites->Add(40011, 1, 0, 8, 47,	texDoor);
+	//sprites->Add(40012, 48, 0, 87, 47,	texDoor);
+	//sprites->Add(22300, 48, 0, 63, 15,	texBat);// left side
+	//sprites->Add(22301, 32, 0, 47, 15,	texBat);
+	//sprites->Add(22302, 16, 0, 31, 15,	texBat);
+	//sprites->Add(22303, 0, 16, 15, 31,	texBat);// right side
+	//sprites->Add(22304, 16, 16, 31, 31, texBat);
+	//sprites->Add(22305, 32, 16, 47, 31, texBat);
+	//sprites->Add(26540, 0, 0, 47, 22,	texBoss);
+	//sprites->Add(26541, 48, 0, 95, 22,	texBoss);
+	//sprites->Add(26542, 96, 0, 143, 22, texBoss);
+	//sprites->Add(22220, 0, 0, 15, 31,	texGhoul); //right
+	//sprites->Add(22221, 18, 0, 33, 31,	texGhoul);
+	//sprites->Add(22222, 0, 32, 15, 63,	texGhoul);	//left
+	//sprites->Add(22223, 18, 32, 33, 63, texGhoul);
+	//sprites->Add(60000, 64, 18, 95, 33, texPant);	//run right
+	//sprites->Add(60001, 32, 18, 63, 33, texPant);
+	//sprites->Add(60010, 32, 0, 63, 15,	texPant);	//run left
+	//sprites->Add(60011, 64, 0, 95, 15,	texPant);
+	//sprites->Add(60002, 96, 18, 127, 33,texPant);	//sit right
+	//sprites->Add(60012, 0, 0, 31, 15,	texPant);		//sit left
+	//sprites->Add(60003, 0, 18, 31, 33,	texPant);	//jump right
+	//sprites->Add(60013, 96, 0, 127, 15, texPant);		//jump left
+	//sprites->Add(85555, 0, 0, 15, 31,	texMonster);	//att left
+	//sprites->Add(85556, 32, 32, 47, 63, texMonster); //att right
+	//sprites->Add(85557, 16, 0, 31, 31,	texMonster);
+	//sprites->Add(85558, 32, 0, 47, 31,	texMonster);
+	//sprites->Add(85559, 16, 32, 31, 63, texMonster);
+	//sprites->Add(85560, 0, 32, 15, 63,	texMonster);
+	//sprites->Add(86666, 0, 0, 6, 5,		texFire);	//left
+	//sprites->Add(86667, 0, 6, 6, 11, texFire); //right
+	//sprites->Add(23330, 0, 0, 8, 8, texSHeart);
+	//sprites->Add(23041, 0, 0, 15, 15,	texHoly);
+	//sprites->Add(25471, 290, 102, 302,  texPotion);
+	//sprites->Add(48954, 0, 0, 13, 15,	texNum);
+	//sprites->Add(23641, 0, 0, 14, 13,	texAxe);
+	//sprites->Add(23042, 0, 0, 15, 15,	texCross);
+	//sprites->Add(23331, 0, 0, 15, 12,	texChicken);
+	readCoordiantionsForSpritesFromFileTxt("textures\\Coordinations2.txt");
 
-
-	textures->Add(ID_TEX_ITEM_SMALLHEART, "textures\\Item\\smallheart.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_ITEM_CROSS, "textures\\Item\\cross.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_ITEM_CHICKEN, "textures\\Item\\10.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_ITEM_AXE, "textures\\Item\\7.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_ITEM_NUMBAH, "textures\\Item\\11.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_ITEM_POTION, "textures\\Item\\potion.png", D3DCOLOR_XRGB(0, 0, 0));
-	textures->Add(ID_TEX_ITEM_HEAL, "textures\\Item\\13.png", D3DCOLOR_XRGB(255, 0, 255));
-
-	textures->Add(ID_TEX_GHOUL, "textures\\Enemy\\Ghoul.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_BAT, "textures\\Enemy\\Bat.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_PANTHER, "textures\\Enemy\\Pant.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_CANDLE, "textures\\Enemy\\1.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_MONSTER, "textures\\Enemy\\3.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_FIREBALL, "textures\\Enemy\\fireball.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_BOSS, "textures\\Enemy\\boss.png", D3DCOLOR_XRGB(255, 0, 255));
-
-	textures->Add(ID_TEX_GROUND3, "textures\\Ground\\ground3.png", D3DCOLOR_XRGB(176, 224, 248));
-	textures->Add(ID_TEX_GROUND4, "textures\\Ground\\ground4.png", D3DCOLOR_XRGB(176, 224, 248));
-	textures->Add(ID_TEX_GROUND2, "textures\\Ground\\ground2.png", D3DCOLOR_XRGB(176, 224, 248));
-	
-
-#pragma region Co-ordinations of Ground
-
-	
-	//Ground 0
-	LPDIRECT3DTEXTURE9 texGround = textures->Get(ID_TEX_GROUND);
-	sprites->Add(20001, 0, 0, 16, 16, texGround);
-	//Ground 2
-	LPDIRECT3DTEXTURE9 texGround2 = textures->Get(ID_TEX_GROUND2);
-	sprites->Add(20004, 0, 0, 16, 16, texGround);
-
-	//Ground 3
-	LPDIRECT3DTEXTURE9 texGround3 = textures->Get(ID_TEX_GROUND3);
-	sprites->Add(20002, 0, 0, 16, 16, texGround3);
-
-	//Ground 4
-	LPDIRECT3DTEXTURE9 texGround4 = textures->Get(ID_TEX_GROUND4);
-	sprites->Add(20003, 0, 0, 16, 16, texGround4);
-
-#pragma endregion
-
-#pragma region Co-ordinations of Heal
-
-	LPDIRECT3DTEXTURE9 texHeal = textures->Get(ID_TEX_ITEM_HEAL);
-	sprites->Add(25554, 0, 0, 13, 15, texHeal);
-	sprites->Add(25555, 14, 0, 27, 15, texHeal);
-
-	ani = new CAnimation(100);//sleep
-	ani->Add(25554);
-	ani->Add(25555);
-	animations->Add(682, ani);
-#pragma endregion
-
-#pragma region Co-ordinations of Candle
-
-	LPDIRECT3DTEXTURE9 texCandle = textures->Get(ID_TEX_CANDLE);
-	sprites->Add(40001, 0, 0, 7, 15, texCandle);
-	sprites->Add(40002, 8, 0, 15, 15, texCandle);
-
-#pragma endregion
-
-#pragma region Co-ordinations of Door
-
-	LPDIRECT3DTEXTURE9 texDoor = textures->Get(ID_TEX_DOOR);
-	sprites->Add(40011, 1, 0, 8, 47, texDoor);
-	sprites->Add(40012, 48, 0, 87, 47, texDoor);
-
-#pragma endregion
-
-#pragma region Co-orrdiantions of Bat
-
-	LPDIRECT3DTEXTURE9 texBat = textures->Get(ID_TEX_BAT);
-
-	sprites->Add(22300, 48, 0, 63, 15, texBat);// left side
-	sprites->Add(22301, 32, 0, 47, 15, texBat);
-	sprites->Add(22302, 16, 0, 31, 15, texBat);
-
-	sprites->Add(22303, 0, 16, 15, 31, texBat);// right side
-	sprites->Add(22304, 16, 16, 31, 31, texBat);
-	sprites->Add(22305, 32, 16, 47, 31, texBat);
-
-#pragma endregion
-
-#pragma region Co-orrdiantions of Boss
-
-	LPDIRECT3DTEXTURE9 texBoss = textures->Get(ID_TEX_BOSS);
-
-	sprites->Add(26540, 0, 0, 47,22, texBoss);
-	sprites->Add(26541, 48, 0, 95, 22, texBoss);
-	sprites->Add(26542, 96, 0, 143, 22, texBoss);
-
-	ani = new CAnimation(100);//sleep
-	ani->Add(26540);
-	animations->Add(333, ani);
-
-	ani = new CAnimation(200);//alive
-	ani->Add(26541);
-	ani->Add(26542);
-	animations->Add(334, ani);
-	boss = new Boss();
-	boss->AddAnimation(333);
-	boss->AddAnimation(334);
-	
-	boss->SetPosition(2660, 5+offsetMap);
-	boss->setItemInside(healInside);
-	boss->SetState(BOSS_STATE_SLEEP);
-	//newGrid1->insertObjectIntoGrid(boss);
-	//listEnemy1.push_back(boss);
-#pragma endregion
-
-#pragma region Co-ordinations of Ghoul
-
-	LPDIRECT3DTEXTURE9 texGhoul = textures->Get(ID_TEX_GHOUL);
-	sprites->Add(22220, 0, 0, 15, 31, texGhoul); //right
-	sprites->Add(22221, 18, 0, 33, 31, texGhoul);
-
-	sprites->Add(22222, 0, 32, 15, 63, texGhoul);	//left
-	sprites->Add(22223, 18, 32, 33, 63, texGhoul);
-#pragma endregion
-
-#pragma region Co-ordinations of PAnth
-
-	LPDIRECT3DTEXTURE9 texPant = textures->Get(ID_TEX_PANTHER);
-	sprites->Add(60000, 64, 18, 95, 33, texPant);	//run right
-	sprites->Add(60001, 32, 18, 63, 33, texPant);
-
-	sprites->Add(60010, 32, 0, 63, 15, texPant);	//run left
-	sprites->Add(60011, 64, 0, 95, 15, texPant);
-
-	sprites->Add(60002, 96, 18, 127, 33, texPant);	//sit right
-
-	sprites->Add(60012, 0, 0, 31, 15, texPant);		//sit left
-
-
-	sprites->Add(60003, 0, 18, 31, 33, texPant);	//jump right
-
-	sprites->Add(60013, 96, 0, 127, 15, texPant);		//jump left
-
-
-
-#pragma endregion
-
-#pragma region Co-ordinations of Monster
-
-	LPDIRECT3DTEXTURE9 texMonster = textures->Get(ID_TEX_MONSTER);
-	sprites->Add(85555, 0, 0, 15, 31, texMonster);	//att left
-	sprites->Add(85556, 32, 32, 47, 63, texMonster); //att right
-
-	//active left
-	sprites->Add(85557, 16, 0, 31, 31, texMonster);
-	sprites->Add(85558, 32, 0, 47, 31, texMonster);
-	//active right
-	sprites->Add(85559, 16, 32, 31, 63, texMonster);
-	sprites->Add(85560, 0, 32, 15, 63, texMonster);
-
-	ani = new CAnimation(100);//active left
-	ani->Add(85557);
-	ani->Add(85558);
-	animations->Add(845, ani);
-
-	ani = new CAnimation(100);//active right
-	ani->Add(85559);
-	ani->Add(85560);
-	animations->Add(846, ani);
-
-	ani = new CAnimation(300);//atk right
-	ani->Add(85556);
-	ani->Add(85556);
-	animations->Add(847, ani);
-
-	ani = new CAnimation(300);//atk left
-	ani->Add(85555);
-	ani->Add(85555);
-	animations->Add(848, ani);
-
-
-	ani = new CAnimation(100);//Freeze left +underwater
-	ani->Add(85557);
-	animations->Add(849, ani);
-
-	ani = new CAnimation(100);//Freeze left
-	ani->Add(85559);
-	animations->Add(850, ani);
-
-
-#pragma endregion
-
-#pragma region Co of FireBall
-
-	LPDIRECT3DTEXTURE9 texFire = textures->Get(ID_TEX_FIREBALL);
-	sprites->Add(86666, 0, 0, 6, 5, texFire);	//left
-	sprites->Add(86667, 0, 6, 6, 11, texFire); //right
-
-	ani = new CAnimation(100);//active left
-	ani->Add(86666);
-	animations->Add(899, ani);
-
-	ani = new CAnimation(100);//active left
-	ani->Add(86666);
-	animations->Add(900, ani);
-
-	fire = new FireBall();
+	createAnimationsFromFileTxt("textures\\CreateAnimations2.txt");
 	fire->AddAnimation(899);
 	fire->AddAnimation(900);
-
-#pragma endregion
-
-#pragma region Co-ordinations of SHeart
-
-	LPDIRECT3DTEXTURE9 texSHeart = textures->Get(ID_TEX_ITEM_SMALLHEART);
-	sprites->Add(23330, 0, 0, 8, 8, texSHeart);
-
-#pragma endregion
-
-#pragma region Co-ordinations of HolyWater
-
-	LPDIRECT3DTEXTURE9 texHoly = textures->Get(ID_TEX_ITEM_HOLY);
-	sprites->Add(23041, 0, 0, 15, 15, texHoly);
-
-#pragma endregion
-
-
-#pragma region Co-ordinations of Potion
-
-		LPDIRECT3DTEXTURE9 texPotion = textures->Get(ID_TEX_ITEM_POTION);
-		sprites->Add(25471, 290, 102, 302, 117, texPotion);
-
-
-		ani = new CAnimation(100);
-		ani->Add(25471);
-		animations->Add(987, ani);
-
-#pragma endregion
-#pragma region Co-ordinations of Numbah
-
-	LPDIRECT3DTEXTURE9 texNum = textures->Get(ID_TEX_ITEM_NUMBAH);
-	sprites->Add(48954, 0, 0, 13, 15, texNum);
-
-
-	ani = new CAnimation(100);
-	ani->Add(48954);
-	animations->Add(935, ani);
-
-#pragma endregion
-#pragma region Co-ordinations of Axe
-
-	LPDIRECT3DTEXTURE9 texAxe = textures->Get(ID_TEX_ITEM_AXE);
-	sprites->Add(23641, 0, 0, 14, 13, texAxe);
-
-#pragma endregion
-
-#pragma region Co-ordinations of Cross
-
-	LPDIRECT3DTEXTURE9 texCross = textures->Get(ID_TEX_ITEM_CROSS);
-	sprites->Add(23042, 0, 0, 15, 15, texCross);
-
-
-#pragma endregion
-
-#pragma region Co-ordinations of Chicken
-
-	LPDIRECT3DTEXTURE9 texChicken = textures->Get(ID_TEX_ITEM_CHICKEN);
-	sprites->Add(23331, 0, 0, 15, 12, texChicken);
-
-#pragma endregion
-
-
-
-#pragma region Adding item Axe1
-
-	ani = new CAnimation(100);
-	ani->Add(23641);
-	animations->Add(427, ani);
-
-
-#pragma endregion
-
-#pragma region Adding item Cross
-
-	ani = new CAnimation(100);
-	ani->Add(23042);
-	animations->Add(483, ani);
-
-
-#pragma endregion
-
-#pragma region Adding item HolyWater
-
-	ani = new CAnimation(100);
-	ani->Add(23041);
-	animations->Add(491, ani);
-
-
-#pragma endregion
-
-#pragma region Adding Small Heart
-
-	ani = new CAnimation(100);
-	ani->Add(23330);
-	animations->Add(482, ani);
-
-
-#pragma endregion
-
-#pragma region Adding Chicken
-
-	ani = new CAnimation(100);
-	ani->Add(23331);
-	animations->Add(490, ani);
-
-
-#pragma endregion
-
-#pragma region Adding Door
-
-	ani = new CAnimation(100);
-	ani->Add(40011);
-	animations->Add(495, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(40012);
-	animations->Add(496, ani);
-#pragma endregion
-
-#pragma region Adding Bat
-	ani = new CAnimation(200);
-	ani->Add(22300);
-	ani->Add(22301);
-	ani->Add(22302);
-	animations->Add(020, ani);
-
-	ani = new CAnimation(200);
-	ani->Add(22303);
-	ani->Add(22304);
-	ani->Add(22305);
-	animations->Add(021, ani);
 	
-	ani = new CAnimation(200);
-	ani->Add(22300);
-	animations->Add(022, ani);
+	boss->AddAnimation(333);
+	boss->AddAnimation(334);
 
-	ani = new CAnimation(200);
-	ani->Add(22303);
-	animations->Add(023, ani);
-#pragma endregion
+	boss->SetPosition(2660, 5 + offsetMap);
+	boss->setItemInside(healInside);
+	boss->SetState(BOSS_STATE_SLEEP);
 
-#pragma region Ađing Effect
-
-	effectBag1 = new EffectBag();
 	effectBag1->AddAnimation(579);
 	effectBag1->AddAnimation(580);
 	effectBag1->AddAnimation(581);
 	effectBag1->AddAnimation(582);
-
-#pragma endregion
-		
-#pragma region Adding Ghou
-
-	ani = new CAnimation(100); // right
-	ani->Add(22222);
-	ani->Add(22223);
-	animations->Add(531, ani);
-
-	ani = new CAnimation(100);//left
-	ani->Add(22220);
-	ani->Add(22221);
-	animations->Add(532, ani);
-
-	ani = new CAnimation(100); //freeze right
-	ani->Add(22222);
-	animations->Add(533, ani);
-
-	ani = new CAnimation(100);//freeze left
-	ani->Add(22220);
-	animations->Add(534, ani);
-
-	
-#pragma endregion
-
-#pragma region Adding Panther
-
-	ani = new CAnimation(100); //run right
-	ani->Add(60000);
-	ani->Add(60001);
-	ani->Add(60003);
-	animations->Add(550, ani);
-
-	ani = new CAnimation(100); //run left
-	ani->Add(60010);
-	ani->Add(60011);
-	ani->Add(60013);
-	animations->Add(551, ani);
-
-	ani = new CAnimation(100); //sit right
-	ani->Add(60002);
-	animations->Add(552, ani);
-	
-	ani = new CAnimation(100); //sit left
-	ani->Add(60012);
-	animations->Add(553, ani);
-
-	ani = new CAnimation(100); //jump right
-	ani->Add(60003);
-	animations->Add(554, ani);
-	
-	ani = new CAnimation(100);//jump left
-	ani->Add(60013);
-	animations->Add(555, ani);
-
-#pragma endregion
-		 
-#pragma region Adding Small Candle
-		
-		ani = new CAnimation(100);
-		ani->Add(40001);
-		ani->Add(40002);
-		animations->Add(476, ani);
-#pragma endregion
-
-#pragma region Adding Ground
-
-	ani = new CAnimation(100);
-	ani->Add(20001);
-
-	animations->Add(999, ani);
-
-	ani = new CAnimation(100);//ground 3
-	ani->Add(20002);
-	animations->Add(998, ani);
-
-	ani = new CAnimation(100);//ground 4
-	ani->Add(20003);
-	animations->Add(997, ani);
-	
-
-	ani = new CAnimation(100);
-	ani->Add(20004);
-
-	animations->Add(996, ani);
 //	
 //
 //	// ground neen
@@ -1597,7 +1233,6 @@ void Scene2::LoadResources()
 //
 //#pragma endregion
 //
-
 //
 //#pragma region Adding Stairs
 //		//1=right , 2 = left
@@ -2621,9 +2256,9 @@ void Scene2::Update(DWORD dt)
 	//if (simon1->isUsing1stWeapon == true || simon1->isUsing2ndWeapon==true)
 	{
 
-		if ((simon1->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon1->isUsing1stWeapon == true)
+		if ((simon1->dagger->GetState() != DAGGER_STATE_INACTIVE))
 			simon1->dagger->Update(dt, &listSurface1);
-		if ((simon1->dagger1->GetState() != DAGGER_STATE_INACTIVE) && simon1->isUsing2ndWeapon == true)
+		if ((simon1->dagger1->GetState() != DAGGER_STATE_INACTIVE))
 			simon1->dagger1->Update(dt, &listSurface1);
 		if (simon1->dagger->isOn == true)
 		{
@@ -2646,9 +2281,9 @@ void Scene2::Update(DWORD dt)
 		}
 
 
-		if ((simon1->axe->GetState() != AXE_STATE_INACTIVE) && simon1->isUsing1stWeapon == true)
+		if ((simon1->axe->GetState() != AXE_STATE_INACTIVE))
 			simon1->axe->Update(dt, &listSurface1);
-		if ((simon1->axe1->GetState() != AXE_STATE_INACTIVE) && simon1->isUsing2ndWeapon == true)
+		if ((simon1->axe1->GetState() != AXE_STATE_INACTIVE))
 			simon1->axe1->Update(dt, &listSurface1);
 		if (simon1->axe->isOn == true)
 		{
@@ -2669,9 +2304,9 @@ void Scene2::Update(DWORD dt)
 
 		
 
-			if ((simon1->holy->GetState() != HOLYWATER_STATE_INACTIVE) && simon1->isUsing1stWeapon == true)
+			if ((simon1->holy->GetState() != HOLYWATER_STATE_INACTIVE))
 				simon1->holy->Update(dt, &listSurface1);
-			if ((simon1->holy1->GetState() != HOLYWATER_STATE_INACTIVE) && simon1->isUsing2ndWeapon == true)
+			if ((simon1->holy1->GetState() != HOLYWATER_STATE_INACTIVE))
 				simon1->holy1->Update(dt, &listSurface1);
 			if (simon1->holy->isOn == true)
 			{
@@ -2912,6 +2547,30 @@ Scene2::Scene2(Simon *simon)
 {
 	simon1 = simon;
 	stage = 1;
+	newGrid1 = new Grid();
+	time1 = new Time();
+	boss = new Boss();
+	simon1->proceedThruDoor = false;
+	fire = new FireBall();
+	effectBag1 = new EffectBag();
+	camera1 = Camera::GetInstance();
+	textures = CTextures::GetInstance();
+	sprites	= CSprites::GetInstance();
+	animations	= CAnimations::GetInstance();
+	simon1->SetPosition(50, 0);
+	board = new Board();
+	if (simon1->dagger->isOn)
+		board->typeOfWeaopon = 1;
+	else
+		if (simon1->axe->isOn)
+			board->typeOfWeaopon = 2;
+		else
+			if (simon1->holy->isOn)
+				board->typeOfWeaopon = 3;
+			else
+				if (simon1->clock->isOn)
+					board->typeOfWeaopon = 4;
+	board->SetPosition(0, 0);
 	LoadResources();
 	isEatingCross = false;
 }
@@ -3020,10 +2679,10 @@ void Scene2::spawnGhou(float x,float y,int state)
 void Scene2::spawnBat(Simon * simon,Camera *camera1)
 {
 	bat1 = new Bat(simon->y+8);
-	bat1->AddAnimation(021);
-	bat1->AddAnimation(020);
-	bat1->AddAnimation(023);
-	bat1->AddAnimation(022);
+	bat1->AddAnimation(521);
+	bat1->AddAnimation(520);
+	bat1->AddAnimation(523);
+	bat1->AddAnimation(522);
 	bat1->setItemInside(randomIteminside());
 	
 	if (simon->nx == 1)
@@ -5240,14 +4899,149 @@ void Scene2::CollisionBetSimonAndCheckBox()
 
 void Scene2::readTextureFromFileTxt(char * pathOfFile)
 {
+	int numOfTex, red, green, blue, IDofTex;
+	char pathToTexture[1000];
+
+	ifstream inp;
+	inp.open(pathOfFile, ios::in);
+	inp >> numOfTex;
+	for (int i = 0; i < numOfTex; i++)
+	{
+		//getline(inp, pathToTexString);
+		inp.ignore();
+		inp.getline(pathToTexture, 1000);
+		inp >> red >> green >> blue >> IDofTex;
+		textures->Add(IDofTex, pathToTexture, D3DCOLOR_XRGB(red, green, blue));
+	}
+
+	inp.close();
 }
 
 void Scene2::readCoordiantionsForSpritesFromFileTxt(char * pathOfFile)
 {
+	int ID, left, top, right, bot, IDofTex;
+	int numOfLines;
+
+
+	ifstream inp;
+	inp.open(pathOfFile, ios::in);
+	inp >> numOfLines;
+	for (int i = 0; i < numOfLines; i++)
+	{
+
+		inp >> ID >> left >> top >> right >> bot >> IDofTex;
+		LPDIRECT3DTEXTURE9 temp;
+		switch (IDofTex)
+		{
+			
+		case ID_TEX_GROUND:
+			temp = texGround;
+			break;
+		case ID_TEX_GROUND2:
+			temp = texGround2;
+			break;
+		case ID_TEX_GROUND3:
+			temp = texGround3;
+			break;
+		case ID_TEX_GROUND4:
+			temp = texGround4;
+			break;
+		case ID_TEX_ITEM_HEAL:
+			temp = texHeal;
+			break;
+			
+		case ID_TEX_CANDLE:
+			temp = texCandle;
+			break;	
+		case ID_TEX_DOOR:
+			temp = texDoor;
+			break;
+		case ID_TEX_BAT:
+			temp = texBat;
+			break;
+		case ID_TEX_BOSS:
+			temp = texBoss;
+			break;
+		case ID_TEX_GHOUL:
+			temp = texGhoul;
+			break;
+		case ID_TEX_PANTHER:
+			temp = texPant;
+			break;
+		case ID_TEX_MONSTER:
+			temp = texMonster;
+			break;
+		case ID_TEX_FIREBALL:
+			temp = texFire;
+			break;
+		case ID_TEX_ITEM_SMALLHEART:
+			temp = texSHeart;
+			break;
+		case ID_TEX_ITEM_HOLY:
+			temp = texHoly;
+			break;
+		case ID_TEX_ITEM_POTION:
+			temp = texPotion;
+			break;
+		case ID_TEX_ITEM_NUMBAH:
+			temp = texNum;
+			break;
+		case ID_TEX_ITEM_AXE:
+			temp = texAxe;
+			break;
+		case ID_TEX_ITEM_CROSS:
+			temp = texCross;
+			break;
+		case ID_TEX_ITEM_CHICKEN:
+			temp = texChicken;
+			break;
+		default:
+			temp = NULL;
+			break;
+		}
+
+
+		sprites->Add(ID, left, top, right, bot, temp);
+
+	}
+
+	inp.close();
 }
 
 void Scene2::createAnimationsFromFileTxt(char * pathOfFile)
 {
+	int NumbOfSprites, time, ID;
+	int numOfAnimations;
+
+	ifstream inp;
+	inp.open(pathOfFile, ios::in);
+	inp >> numOfAnimations;
+	for (int i = 0; i < numOfAnimations; i++)
+	{
+
+		inp >> NumbOfSprites >> time >> ID;
+
+
+		//if (ID == 476)
+		//{
+		//	int xsadasd = 0;
+		//}
+		int *x = new int[NumbOfSprites];
+		for (int i = 0; i < NumbOfSprites; i++)
+		{
+			inp >> x[i];
+		}
+
+		ani = new CAnimation(time);
+		for (int i = 0; i < NumbOfSprites; i++)
+		{
+			ani->Add(x[i]);
+		}
+		animations->Add(ID, ani);
+
+	}
+
+	inp.close();
 }
 
 

@@ -132,6 +132,10 @@ CAnimations * CAnimations::GetInstance()
 
 void CAnimations::Add(int id, LPANIMATION ani)
 {
+	//if (id == 476)
+	//{
+	//	int xsadasd = 0;
+	//}
 	animations[id] = ani;
 }
 

@@ -1,0 +1,41 @@
+20
+textures\\Map\\Map2.png
+5 5 5 5
+textures\\Ground\\ground2.png
+176 224 248 20
+textures\\Ground\\Gate1.png
+255 0 255 23
+textures\\Item\\smallheart.png
+255 0 255 90
+textures\\Item\\cross.png
+255 0 255 100
+textures\\Item\\10.png
+255 0 255 120
+textures\\Item\\7.png
+255 0 255 140
+textures\\Item\\11.png
+255 0 255 150
+textures\\Item\\potion.png
+0 0 0 160
+textures\\Item\\13.png
+255 0 255 170
+textures\\Enemy\\Ghoul.png
+255 0 255 31
+textures\\Enemy\\Bat.png
+255 0 255 34
+textures\\Enemy\\Pant.png
+255 0 255 33
+textures\\Enemy\\1.png
+255 0 255 32
+textures\\Enemy\\3.png
+255 0 255 35
+textures\\Enemy\\fireball.png
+255 0 255 41
+textures\\Enemy\\boss.png
+255 0 255 42
+textures\\Ground\\ground3.png
+176 224 248 21
+textures\\Ground\\ground4.png
+176 224 248 22
+textures\\Ground\\ground2.png
+176 224 248 24
