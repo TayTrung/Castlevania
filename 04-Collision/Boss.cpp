@@ -85,7 +85,7 @@ void Boss::Update(DWORD dt, Simon *simon1)
 		{
 			if (this->GetState() == BOSS_STATE_ATTACK_LEFT || this->GetState() == BOSS_STATE_ATTACK_RIGHT)
 			{
-				if (this->x < z || this->y>a+SCREEN_HEIGHT)
+				if (this->x < z || this->y>a+SCREEN_HEIGHT-BOSS_BBOX_HEIGHT)
 				{
 					if (this->y > 80 + offsetMap)
 					{
@@ -106,7 +106,7 @@ void Boss::Update(DWORD dt, Simon *simon1)
 					}
 				}
 				else
-					if (this->x > z + SCREEN_WIDTH - BOSS_BBOX_WIDTH || this->x < z || this->y>a + SCREEN_HEIGHT)
+					if (this->x > z + SCREEN_WIDTH - BOSS_BBOX_WIDTH || this->x < z || this->y>a + SCREEN_HEIGHT- BOSS_BBOX_HEIGHT)
 					{
 						if (this->y > 80 + offsetMap)
 						{
@@ -169,7 +169,6 @@ void Boss::Update(DWORD dt, Simon *simon1)
 										}
 									}
 									else
-									{
 										this->vy = 0;
 										this->vx = GHOU_WALKING_SPEED;
 									}
@@ -181,7 +180,7 @@ void Boss::Update(DWORD dt, Simon *simon1)
 		}
 	}
 
-}
+
 	
 	
 

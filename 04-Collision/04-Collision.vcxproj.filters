@@ -44,6 +44,18 @@
     <Filter Include="Framework\Weapon">
       <UniqueIdentifier>{1329f0ab-9e16-4264-8842-32945ab586af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Time">
+      <UniqueIdentifier>{0803e114-3a44-4a25-908a-7fff00487fbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Board">
+      <UniqueIdentifier>{f688a3c4-4426-44a3-a368-6a6d294e4322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Grid">
+      <UniqueIdentifier>{612d64f6-d4fc-4ae3-bbd5-32d05c2b0005}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Sound">
+      <UniqueIdentifier>{d2d8f8cf-5240-4d4d-b160-79b2c0367d45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Whip.h">
@@ -181,29 +193,29 @@
     <ClInclude Include="EffectBag.h">
       <Filter>Framework\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Board.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>Framework\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
     <ClInclude Include="Time.h">
-      <Filter>Framework</Filter>
+      <Filter>Framework\Time</Filter>
     </ClInclude>
-    <ClInclude Include="Heal.h">
-      <Filter>Framework</Filter>
+    <ClInclude Include="Board.h">
+      <Filter>Framework\Board</Filter>
     </ClInclude>
-    <ClInclude Include="SoundManager.h">
-      <Filter>Framework</Filter>
+    <ClInclude Include="Grid.h">
+      <Filter>Framework\Grid</Filter>
     </ClInclude>
     <ClInclude Include="DSutil.h">
-      <Filter>Framework</Filter>
+      <Filter>Framework\Sound</Filter>
     </ClInclude>
     <ClInclude Include="dxutil.h">
-      <Filter>Framework</Filter>
+      <Filter>Framework\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Heal.h">
+      <Filter>Framework\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Framework\Sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -345,25 +357,29 @@
     <ClCompile Include="EffectBag.cpp">
       <Filter>Framework\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
     <ClCompile Include="Boss.cpp">
       <Filter>Framework\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
     <ClCompile Include="Time.cpp">
-      <Filter>Framework</Filter>
+      <Filter>Framework\Time</Filter>
     </ClCompile>
-    <ClCompile Include="Heal.cpp" />
-    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="Board.cpp">
+      <Filter>Framework\Board</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Framework\Grid</Filter>
+    </ClCompile>
     <ClCompile Include="DSutil.cpp">
-      <Filter>Framework</Filter>
+      <Filter>Framework\Sound</Filter>
     </ClCompile>
     <ClCompile Include="dxutil.cpp">
-      <Filter>Framework</Filter>
+      <Filter>Framework\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Heal.cpp">
+      <Filter>Framework\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Framework\Sound</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

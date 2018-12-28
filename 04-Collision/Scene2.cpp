@@ -1577,13 +1577,13 @@ void Scene2::TinhDiem()
 {
 	
 	{
-		if (time1->x != 0)
+		if (time1->x >= 0)
 		{
 			time1->x -= 1;
 			simon1->score += 100;
 		}
 		else
-			if (simon1->heartCount != 0)
+			if (simon1->heartCount >= 0)
 			{
 				simon1->heartCount -= 1;
 				simon1->score += 1000;
@@ -1659,7 +1659,6 @@ void Scene2::spawnFireBall()
 }
 
 
-bool xa = false;
 void Scene2::Update(DWORD dt)
 {
 	if (soundClockOn)//tinh thoi gian phat am thanh khi weapon clock dc dung
@@ -1806,12 +1805,13 @@ void Scene2::Update(DWORD dt)
 	board->score = simon1->score;
 	board->bossHealth = boss->hp;
 	board->time = time1->x;
+
+
 	if (isEatingCross == true)
 	{
 		TimeWait += dt;
 		if (TimeWait >= 1000)
 		{
-
 			isEatingCross = false;
 			TimeWait = 0;
 		}
@@ -1822,47 +1822,38 @@ void Scene2::Update(DWORD dt)
 		
 
 
-		if (simon1->x > 1528 && simon1->y > offsetMap + 80)
-			simon1->x = 1528;
+		if (simon1->x > STAGE1_RIGHT_BORDER && simon1->y > offsetMap + 80)
+			simon1->x = STAGE1_RIGHT_BORDER;
 		
 		if (simon1->proceedThruDoor == false)
 		{
 			camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
 			camera1->Update();
-			if (camera1->GetPosition().x > 1191+16*2.5)
-				camera1->SetPosition(1190+16*2.5, camera1->GetPosition().y);//simon chua qua cua nen set camera di chuyen toi cua th
+			if (camera1->GetPosition().x > STAGE1_CAMERA_BORDER)
+				camera1->SetPosition(STAGE1_CAMERA_BORDER, camera1->GetPosition().y);//simon chua qua cua nen set camera di chuyen toi cua th
 		}
 		else//dung box de bat dau qua cua
 		{
-			if (camera1->GetPosition().x <= 1387)
+			if (camera1->GetPosition().x <= STAGE1_CAMERA_WAIT_PLACE)
 			{
 				camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//di  chuyen camera truoc
 				
 			}
-			if (camera1->GetPosition().x > 1387)// neu camera dat vi tri x thi mo cua ra roi cho simon di qua
+			if (camera1->GetPosition().x > STAGE1_CAMERA_WAIT_PLACE)// neu camera dat vi tri x thi mo cua ra roi cho simon di qua
 			{
 
 				listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_OPENED);
-				if (xa == false)
-				{
-					sound->playSound(eTagSound::OpenDoor, false);
-					xa = true;
-				}
+				
 				simon1->SetState(SIMON_STATE_WALKING_RIGHT);
-				if (simon1->x > 1584)//neu simon di den 1 doan x thi set ve vi tri idle
+				if (simon1->x > STAGE2_SIMON_START_PLACE)//neu simon di den 1 doan x thi set ve vi tri idle
 				{
 					simon1->SetState(SIMON_STATE_IDLE);
 					
 					listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_CLOSED);//dong cua
-					if (xa == true)
-					{
-						sound->playSound(eTagSound::OpenDoor, false);
-						xa = false;
-					}
 					simon1->stage = 02;
-					if (camera1->GetPosition().x < 1536)
+					if (camera1->GetPosition().x < STAGE1_CAMERA_WAIT_PLACE2)
 						camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//keo camera qua hoan toan
-					if (camera1->GetPosition().x >= 1536)
+					if (camera1->GetPosition().x >= STAGE1_CAMERA_WAIT_PLACE2)
 					{
 						listDoor.at(0)->SetState(DOOR_STATE_INACTIVE);
 						simon1->proceedThruDoor = false;
@@ -1877,81 +1868,59 @@ void Scene2::Update(DWORD dt)
 	else
 		if (stage == 2)
 		{
-			if (simon1->x < 1536)
-				simon1->x = 1536;
+			if (simon1->x < STAGE2_SIMON_LEFT_BORDER)
+				simon1->x = STAGE2_SIMON_LEFT_BORDER;
 			for (UINT i = 0; i < listGroundEnemy.size(); i++)
 			{
 				if (listGroundEnemy.at(i)->GetState() == GROUND_STATE_INACTIVE)
 				{
-					if (simon1->x > 1808 - 16)
-						simon1->x = 1808 - 16;
-
-
-					
-
-
-
-
-
+					if (simon1->x > STAGE2_SIMON_RIGHT_BORDER_AFTER_BRICK)
+						simon1->x = STAGE2_SIMON_RIGHT_BORDER_AFTER_BRICK;
 				}
 				else
-					if (simon1->x > 1792 - 16)
-						simon1->x = 1792 - 16;
-/*
-				if (listGroundEnemy.at(i)->getItemInside() == chickenInside)
-				{
-					if (listGroundEnemy.at(1)->GetState() == GROUND_STATE_INACTIVE)
-					{
-
-						if (simon1->x > 1808 - 16)
-							simon1->x = 1808 - 16;
-					}
-
-				}
-				else
-					if (simon1->x > 1792 - 16)
-						simon1->x = 1792 - 16;*/
+					if (simon1->x > STAGE2_SIMON_RIGHT_BORDER_BEFORE_BRICK)
+						simon1->x = STAGE2_SIMON_RIGHT_BORDER_BEFORE_BRICK;
 			}
 			
 
-			if (x == false)
+			if (x == false)//di qua cau thang qua man khac
 			{
-				simon1->SetPosition(1920-320, 220);
+				simon1->SetPosition(1600, 220);
 				x = true;
 			}
 			camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2.0f, 0); // cho camera chay theo simon1
 			camera1->Update();
 			
-			if (camera1->GetPosition().x < 1536.0f)
-				camera1->SetPosition(1536.0f, camera1->GetPosition().y);
+			if (camera1->GetPosition().x < STAGE2_SIMON_LEFT_BORDER)
+				camera1->SetPosition(STAGE2_SIMON_LEFT_BORDER, camera1->GetPosition().y);
 			
 		}
 		else
 			if (stage == 3)
 			{
-				if (simon1->x < 2815.0f)
-					simon1->x = 2815.0f;
+				if (simon1->x < STAGE3_SIMON_LEFT_BORDER)
+					simon1->x = STAGE3_SIMON_LEFT_BORDER;
 			
 
 				
-				if (x == true)
+				if (x == true)//di qua cau thang qua man khac
 				{
 					//Camera::GetInstance()->SetPosition(2814, 0);
-					simon1->SetPosition(2975 - 149 + 16 * 2, 35);
+					simon1->SetPosition(2858, 35);
 					x = false;
 				}
-				if (y == true)
+				if (y == true)//di qua cau thang qua man khac
 				{
 					//Camera::GetInstance()->SetPosition(2814, 0);
-					simon1->SetPosition(2975 - 149 + 16 * 2 + 320, 35);
+					simon1->SetPosition(3178, 35);
 					y = false;
 				}
 				camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2.0f, 0.0f); // cho camera chay theo simon1
 
 				camera1->Update();
 
-				if (camera1->GetPosition().x < 2814.0f)
-					camera1->SetPosition(2814.0f, camera1->GetPosition().y);
+				if (camera1->GetPosition().x < STAGE3_SIMON_LEFT_BORDER)
+					camera1->SetPosition(STAGE3_SIMON_LEFT_BORDER, camera1->GetPosition().y);
 
 
 
@@ -1960,13 +1929,13 @@ void Scene2::Update(DWORD dt)
 			else
 				if (stage == 4)
 				{
-					if (simon1->x > 2025 && simon1->y > offsetMap + 78)
+					if (simon1->x > STAGE4_SIMON_RIGHT_BORDER && simon1->y > offsetMap + 78)
 					{
-						simon1->x = 2025;
+						simon1->x = STAGE4_SIMON_RIGHT_BORDER;
 					}
-					if (simon1->x < 1856 && simon1->y >offsetMap + 96)
+					if (simon1->x < STAGE4_SIMON_LEFT_BORDER && simon1->y >offsetMap + 96)
 					{
-						simon1->x = 1856;
+						simon1->x = STAGE4_SIMON_LEFT_BORDER;
 					}
 					if (simon1->proceedThruDoor == false)
 					{
@@ -1979,15 +1948,15 @@ void Scene2::Update(DWORD dt)
 						}
 						camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
 						camera1->Update();
-						if (camera1->GetPosition().x > 2055 + 8 - SCREEN_WIDTH)
-							camera1->SetPosition(2055 + 8 - SCREEN_WIDTH, camera1->GetPosition().y);
-						if (simon1->x < 1792 - 16)
-							{
+						if (camera1->GetPosition().x > 2063 - SCREEN_WIDTH)
+							camera1->SetPosition(2063 - SCREEN_WIDTH, camera1->GetPosition().y);
+						if (simon1->x < 1796)
+						{
 							y = false;
 							x = true;
 							stage = 2;
 						}
-						}
+					}
 							
 					else//dung box de bat dau qua cua
 					{
@@ -2048,8 +2017,8 @@ void Scene2::Update(DWORD dt)
 
 							}
 						}
-						if (simon1->x > 2809 - 16)
-							simon1->x = 2809 - 16;
+						if (simon1->x > 2793)
+							simon1->x = 2793;
 						if (simon1->x < camera1->GetPosition().x)
 						{
 							simon1->x = camera1->GetPosition().x;

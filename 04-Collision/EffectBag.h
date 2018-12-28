@@ -7,7 +7,7 @@ typedef EffectBag * LPEFFECTBAG;
 class EffectBag : public CGameObject
 {
 public:
-	int type;// 0 = red, 1= blue , 3= white,4 3 color
+	int type;// 0 = red, 1= blue , 3= white,4= 3 color
 	int itemInside;
 	bool effectTime;
 	DWORD effectTime_start;
