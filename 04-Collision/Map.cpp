@@ -44,14 +44,15 @@ void Map::drawTileMap(Camera *camera, float ID)
 
 	float disX = (int)camera->GetPosition().x % TileWidth;
 	float disY = (int)camera->GetPosition().y % TileHeight;
-
+	CGame *game=CGame::GetInstance();
+	CTextures *tex = CTextures::GetInstance();
 	for(int i=0;i<SCREEN_HEIGHT/ TileHeight;i++)
 	{
 		for (int j = 0; j <= (SCREEN_WIDTH/ TileWidth)+1; j++)
 		{
 			RECT rect = getTile(listTileMap[i+ numRow][j+ numCol]);
-			CGame::GetInstance()->Draw(j*TileWidth  -disX, i*TileHeight - disY + offsetMap,
-				CTextures::GetInstance()->Get(ID), rect.left, rect.top, rect.right, rect.bottom, 255);
+			game->Draw(j*TileWidth  -disX, i*TileHeight - disY + offsetMap,
+				tex->Get(ID), rect.left, rect.top, rect.right, rect.bottom, 255);
 		}
 	}
 }

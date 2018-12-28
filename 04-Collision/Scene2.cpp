@@ -2003,7 +2003,7 @@ void Scene2::Update(DWORD dt)
 						spawnedEnoughGhou=true;
 					}
 					else
-						if (tickGhou > 420)
+						if (tickGhou > 500)
 							tickGhou = 0;
 			}
 

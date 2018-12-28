@@ -3,7 +3,7 @@
 void Ground::Render()
 {		
 	//if (type == 0)
-		RenderBoundingBox(200);
+	//	RenderBoundingBox(200);
 }
 
 
