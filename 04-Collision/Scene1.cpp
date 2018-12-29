@@ -81,6 +81,11 @@ void Scene1::KeyState(BYTE * states)
 						else*/
 						simon->SetState(SIMON_STATE_SIT);
 					}
+				/*	else
+						if (game->IsKeyDown(DIK_UP))
+						{
+							if(game->IsKeyDown(DIK_A))
+						}*/
 			/*else
 				if (game->IsKeyDown(DIK_SPACE))
 				{
@@ -114,7 +119,7 @@ void Scene1::OnKeyDown(int KeyCode)
 		simon->clock->turnOffClock();
 		break;
 
-	case DIK_SPACE:
+	case DIK_S:
 		if (simon->proceedThruDoor == false)
 		{
 			if (simon->isOnStairs == false)
@@ -135,20 +140,93 @@ void Scene1::OnKeyDown(int KeyCode)
 		}
 		break;
 		break;
-	case DIK_A: // reset
-		simon->SetState(SIMON_STATE_IDLE);
-		simon->SetPosition(700.0f, 0.0f);
-		simon->SetSpeed(0, 0);
-		break;
+	//case DIK_A: // reset
+	//	simon->SetState(SIMON_STATE_IDLE);
+	//	simon->SetPosition(700.0f, 0.0f);
+	//	simon->SetSpeed(0, 0);
+	//	break;
 		//case DIK_DOWNARROW:
 		//	simon->SetState(SIMON_STATE_SIT);
 		//	break;
 	case DIK_Q: // reset
 		SceneManager::GetInstance()->replaceScene(new Scene2(simon));
 		break;
-	case DIK_S:
+	case DIK_A:
 		//if (simon->GetState() ==)
-		if (simon->eatingItem == false)
+		if (simon->GetState() == SIMON_STATE_ATTACK_ON_STAIRS ||
+			simon->GetState() == SIMON_STATE_ATTACK_SITTING ||
+			simon->GetState() == SIMON_STATE_ATTACK ||
+			simon->GetState() == SIMON_STATE_THROW_SITTING ||
+			simon->GetState() == SIMON_STATE_THROW_ON_STAIRS ||
+			simon->GetState() == SIMON_STATE_THROW ||
+			simon->GetState() == SIMON_STATE_HURT_LEFT ||
+			simon->GetState() == SIMON_STATE_HURT_RIGHT)
+			return;
+		if (game->IsKeyDown(DIK_UP))
+		{
+			if (simon->eatingItem == false)
+
+			{
+				//	if (simon->finishedAttacking == true)
+				{
+					if (simon->dagger->isOn == true)
+					{
+						simon->numOfWeapon = 1;
+						if (simon->heartCount > 0)
+						{
+							if (simon->dagger->GetState() == DAGGER_STATE_INACTIVE)
+							{
+								//		simon->finishedAttacking = false;
+								simon->heartCount -= 1;
+
+								float x, y;
+								simon->GetPosition(x, y);
+								if (simon->GetState() == SIMON_STATE_SIT)
+								{
+									simon->dagger->CreateWeapon(x, y + 7, simon->nx);
+
+									if (simon->isUsing1stWeapon == false)
+									{
+										if (simon->nx > 0)
+											simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+										else
+											simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+										simon->SetState(SIMON_STATE_THROW_SITTING);
+										simon->useWeapon();
+
+									}
+
+								}
+								else
+								{
+
+
+									simon->dagger->CreateWeapon(x, y, simon->nx);
+
+									if (simon->isUsing1stWeapon == false)
+									{
+										if (simon->nx > 0)
+											simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+										else
+											simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+										simon->SetState(SIMON_STATE_THROW);
+										simon->useWeapon();
+
+									}
+
+								}
+
+							}
+						}
+					}
+
+				}
+
+
+			}
+		}
+		else
+			if (simon->eatingItem == false)
 		{
 		//	if (simon->finishedAttacking == true)
 			{
@@ -174,66 +252,7 @@ void Scene1::OnKeyDown(int KeyCode)
 		break;
 	case DIK_D:
 		//	if (simon->GetState() != SIMON_STATE_WALKING_LEFT && simon->GetState() != SIMON_STATE_WALKING_RIGHT)
-		if (simon->eatingItem == false)
-
-		{
-		//	if (simon->finishedAttacking == true)
-			{
-				if (simon->dagger->isOn == true)
-				{
-					simon->numOfWeapon = 1;
-					if (simon->heartCount > 0)
-					{
-						if (simon->dagger->GetState() == DAGGER_STATE_INACTIVE)
-						{
-					//		simon->finishedAttacking = false;
-							simon->heartCount -= 1;
-
-							float x, y;
-							simon->GetPosition(x, y);
-							if (simon->GetState() == SIMON_STATE_SIT)
-							{
-								simon->dagger->CreateWeapon(x, y + 7, simon->nx);
-
-								if (simon->isUsing1stWeapon == false)
-								{
-									if (simon->nx > 0)
-										simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-									else
-										simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
-									simon->SetState(SIMON_STATE_THROW_SITTING);
-									simon->useWeapon();
-
-								}
-
-							}
-							else
-							{
-
-
-								simon->dagger->CreateWeapon(x, y, simon->nx);
-
-								if (simon->isUsing1stWeapon == false)
-								{
-									if (simon->nx > 0)
-										simon->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-									else
-										simon->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
-									simon->SetState(SIMON_STATE_THROW);
-									simon->useWeapon();
-
-								}
-
-							}
-
-						}
-					}
-				}
-
-			}
-
-
-		}
+		
 		break;
 	}
 }
@@ -492,13 +511,11 @@ void Scene1::Update(DWORD dt)
 	erasingObjThatInacitve();
 	if (proceedToLvl2 == true)
 	{
-		if (simon->x > 703)
-		{
-
-			sound->GetInstance()->stopSound(eTagSound::Stage1);
-			SceneManager::GetInstance()->replaceScene(new Scene2(simon));
-		}
+		sound->GetInstance()->stopSound(eTagSound::Stage1);
+		SceneManager::GetInstance()->replaceScene(new Scene2(simon));
 	}
+			
+	
 
 }
 

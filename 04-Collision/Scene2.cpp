@@ -359,7 +359,7 @@ void Scene2::OnKeyDown(int KeyCode)
 	}
 	break;
 			
-	case DIK_SPACE:
+	case DIK_S:
 		if (simon1->proceedThruDoor == false)
 		{
 			if (simon1->isOnStairs == false)
@@ -379,19 +379,19 @@ void Scene2::OnKeyDown(int KeyCode)
 			}
 		}
 		break;
-	case DIK_A: // reset
-		if (simon1->proceedThruDoor == false)
-		{
-			simon1->SetState(SIMON_STATE_IDLE);
-			simon1->isOnStairs = false;
-			simon1->SetPosition(1460, 0.0f);
-			simon1->SetSpeed(0, 0);
-			break;
-		}
+	//case DIK_A: // reset
+	//	if (simon1->proceedThruDoor == false)
+	//	{
+	//		simon1->SetState(SIMON_STATE_IDLE);
+	//		simon1->isOnStairs = false;
+	//		simon1->SetPosition(1460, 0.0f);
+	//		simon1->SetSpeed(0, 0);
+	//		break;
+	//	}
 		//case DIK_DOWNARROW:
 		//	simon1->SetState(SIMON_STATE_SIT);
 		//	break;
-	case DIK_X:
+	case DIK_A:
 		if (simon1->GetState() == SIMON_STATE_ATTACK_ON_STAIRS ||
 			simon1->GetState() == SIMON_STATE_ATTACK_SITTING ||
 			simon1->GetState() == SIMON_STATE_ATTACK ||
@@ -401,6 +401,455 @@ void Scene2::OnKeyDown(int KeyCode)
 			simon1->GetState() == SIMON_STATE_HURT_LEFT||
 			simon1->GetState() == SIMON_STATE_HURT_RIGHT)
 			return;
+		if (game1->IsKeyDown(DIK_UP))
+		{
+			if (simon1->proceedThruDoor == false)
+
+			{
+				if (simon1->dagger->isOn == true && //dagger
+					simon1->axe->isOn == false &&
+					simon1->holy->isOn == false &&
+					simon1->clock->isOn == false)
+				{
+					if (simon1->heartCount > 0)
+					{
+
+						if (simon1->dagger->GetState() == DAGGER_STATE_INACTIVE)
+						{
+
+							simon1->heartCount -= 1;
+							simon1->numOfWeapon = 1;
+							float x, y;
+							simon1->GetPosition(x, y);
+							if (simon1->isOnStairs == true)
+							{
+								simon1->dagger->CreateWeapon(x, y, simon1->nx);
+								if (simon1->isUsing1stWeapon == false)
+								{
+									if (simon1->nx > 0)
+										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+									else
+										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+									simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
+									simon1->useWeapon();
+
+								}
+							}
+							else
+								if (simon1->GetState() == SIMON_STATE_SIT)
+								{
+									simon1->dagger->CreateWeapon(x, y + 7, simon1->nx);
+
+									if (simon1->isUsing1stWeapon == false)
+									{
+										if (simon1->nx > 0)
+											simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+										else
+											simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+										simon1->SetState(SIMON_STATE_THROW_SITTING);
+										simon1->useWeapon();
+
+									}
+
+								}
+								else
+								{
+
+
+									simon1->dagger->CreateWeapon(x, y, simon1->nx);
+
+									if (simon1->isUsing1stWeapon == false)
+									{
+										if (simon1->nx > 0)
+											simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+										else
+											simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
+										simon1->SetState(SIMON_STATE_THROW);
+										simon1->useWeapon();
+
+									}
+
+								}
+
+						}
+						else
+							if (simon1->shotTwoWeaponOneTime == true)
+							{
+								if (simon1->dagger->isFinished == true)
+								{
+									simon1->numOfWeapon = 2;
+									if (simon1->dagger1->GetState() == DAGGER_STATE_INACTIVE)
+									{
+
+										simon1->heartCount -= 1;
+										float x, y;
+										simon1->GetPosition(x, y);
+										if (simon1->isOnStairs == true)
+										{
+											simon1->dagger1->CreateWeapon(x, y, simon1->nx);
+											if (simon1->isUsing2ndWeapon == false)
+											{
+												if (simon1->nx > 0)
+													simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+												else
+													simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_LEFT);
+												simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
+												simon1->useWeapon2();
+
+											}
+										}
+										else
+											if (simon1->GetState() == SIMON_STATE_SIT)
+											{
+												simon1->dagger1->CreateWeapon(x, y + 7, simon1->nx);
+
+												if (simon1->isUsing2ndWeapon == false)
+												{
+													if (simon1->nx > 0)
+														simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+													else
+														simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_LEFT);
+													simon1->SetState(SIMON_STATE_THROW_SITTING);
+													simon1->useWeapon2();
+
+												}
+
+											}
+											else
+											{
+
+
+												simon1->dagger1->CreateWeapon(x, y, simon1->nx);
+
+												if (simon1->isUsing2ndWeapon == false)
+												{
+													if (simon1->nx > 0)
+														simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_RIGHT);
+													else
+														simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_LEFT);
+													simon1->SetState(SIMON_STATE_THROW);
+													simon1->useWeapon2();
+
+												}
+
+											}
+
+									}
+
+								}
+
+							}
+
+					}
+
+				}
+				else
+					if (simon1->dagger->isOn == false && // axe
+						simon1->axe->isOn == true &&
+						simon1->holy->isOn == false &&
+						simon1->clock->isOn == false)
+					{
+						if (simon1->heartCount > 0)
+						{
+
+							if (simon1->axe->GetState() == AXE_STATE_INACTIVE)
+							{
+
+								simon1->heartCount -= 1;
+								simon1->numOfWeapon = 1;
+								float x, y;
+								simon1->GetPosition(x, y);
+								if (simon1->isOnStairs == true)
+								{
+									simon1->axe->CreateWeapon(x, y, simon1->nx);
+									if (simon1->isUsing1stWeapon == false)
+									{
+										if (simon1->nx > 0)
+											simon1->axe->SetState(AXE_STATE_ACTIVE_RIGHT);
+										else
+											simon1->axe->SetState(AXE_STATE_ACTIVE_LEFT);
+										simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
+										simon1->useWeapon();
+
+									}
+								}
+								else
+									if (simon1->GetState() == SIMON_STATE_SIT)
+									{
+										simon1->axe->CreateWeapon(x, y + 7, simon1->nx);
+
+										if (simon1->isUsing1stWeapon == false)
+										{
+											if (simon1->nx > 0)
+												simon1->axe->SetState(AXE_STATE_ACTIVE_RIGHT);
+											else
+												simon1->axe->SetState(AXE_STATE_ACTIVE_LEFT);
+											simon1->SetState(SIMON_STATE_THROW_SITTING);
+											simon1->useWeapon();
+
+										}
+
+									}
+									else
+									{
+
+
+										simon1->axe->CreateWeapon(x, y, simon1->nx);
+
+										if (simon1->isUsing1stWeapon == false)
+										{
+											if (simon1->nx > 0)
+												simon1->axe->SetState(AXE_STATE_ACTIVE_RIGHT);
+											else
+												simon1->axe->SetState(AXE_STATE_ACTIVE_LEFT);
+											simon1->SetState(SIMON_STATE_THROW);
+											simon1->useWeapon();
+
+										}
+
+									}
+
+							}
+							else
+								if (simon1->shotTwoWeaponOneTime == true)
+								{
+									if (simon1->axe->isFinished == true)
+									{
+										simon1->numOfWeapon = 2;
+										if (simon1->axe1->GetState() == AXE_STATE_INACTIVE)
+										{
+											simon1->heartCount -= 1;
+											float x, y;
+											simon1->GetPosition(x, y);
+											if (simon1->isOnStairs == true)
+											{
+												simon1->axe1->CreateWeapon(x, y, simon1->nx);
+												if (simon1->isUsing2ndWeapon == false)
+												{
+													if (simon1->nx > 0)
+														simon1->axe1->SetState(AXE_STATE_ACTIVE_RIGHT);
+													else
+														simon1->axe1->SetState(AXE_STATE_ACTIVE_LEFT);
+													simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
+													simon1->useWeapon2();
+
+												}
+											}
+											else
+												if (simon1->GetState() == SIMON_STATE_SIT)
+												{
+													simon1->axe1->CreateWeapon(x, y + 7, simon1->nx);
+
+													if (simon1->isUsing2ndWeapon == false)
+													{
+														if (simon1->nx > 0)
+															simon1->axe1->SetState(AXE_STATE_ACTIVE_RIGHT);
+														else
+															simon1->axe1->SetState(AXE_STATE_ACTIVE_LEFT);
+														simon1->SetState(SIMON_STATE_THROW_SITTING);
+														simon1->useWeapon2();
+
+													}
+
+												}
+												else
+												{
+
+
+													simon1->axe1->CreateWeapon(x, y, simon1->nx);
+
+													if (simon1->isUsing2ndWeapon == false)
+													{
+														if (simon1->nx > 0)
+															simon1->axe1->SetState(AXE_STATE_ACTIVE_RIGHT);
+														else
+															simon1->axe1->SetState(AXE_STATE_ACTIVE_LEFT);
+														simon1->SetState(SIMON_STATE_THROW);
+														simon1->useWeapon2();
+
+													}
+
+												}
+
+										}
+
+									}
+
+								}
+						}
+					}
+					else
+						if (simon1->dagger->isOn == false && //holy
+							simon1->axe->isOn == false &&
+							simon1->holy->isOn == true &&
+							simon1->clock->isOn == false)
+						{
+							if (simon1->heartCount > 0)
+							{
+
+								if (simon1->holy->GetState() == HOLYWATER_STATE_INACTIVE)
+								{
+
+									simon1->heartCount -= 1;
+									simon1->numOfWeapon = 1;
+									float x, y;
+									simon1->GetPosition(x, y);
+									if (simon1->isOnStairs == true)
+									{
+										simon1->holy->CreateWeapon(x, y, simon1->nx);
+										if (simon1->isUsing1stWeapon == false)
+										{
+											if (simon1->nx > 0)
+												simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
+											else
+												simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
+											simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
+											simon1->useWeapon();
+
+										}
+									}
+									else
+										if (simon1->GetState() == SIMON_STATE_SIT)
+										{
+											simon1->holy->CreateWeapon(x, y + 7, simon1->nx);
+
+											if (simon1->isUsing1stWeapon == false)
+											{
+												if (simon1->nx > 0)
+													simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
+												else
+													simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
+												simon1->SetState(SIMON_STATE_THROW_SITTING);
+												simon1->useWeapon();
+
+											}
+
+										}
+										else
+										{
+											simon1->holy->CreateWeapon(x, y, simon1->nx);
+
+											if (simon1->isUsing1stWeapon == false)
+											{
+												if (simon1->nx > 0)
+													simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
+												else
+													simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
+												simon1->SetState(SIMON_STATE_THROW);
+												simon1->useWeapon();
+
+											}
+
+										}
+
+								}
+								else
+									if (simon1->shotTwoWeaponOneTime == true)
+									{
+										if (simon1->holy1->isFinished == true)
+										{
+											simon1->numOfWeapon = 2;
+											if (simon1->holy1->GetState() == HOLYWATER_STATE_INACTIVE)
+											{
+												simon1->heartCount -= 1;
+												float x, y;
+												simon1->GetPosition(x, y);
+												if (simon1->isOnStairs == true)
+												{
+													simon1->holy1->CreateWeapon(x, y, simon1->nx);
+													if (simon1->isUsing2ndWeapon == false)
+													{
+														if (simon1->nx > 0)
+															simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
+														else
+															simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
+														simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
+														simon1->useWeapon2();
+
+													}
+												}
+												else
+													if (simon1->GetState() == SIMON_STATE_SIT)
+													{
+														simon1->holy1->CreateWeapon(x, y + 7, simon1->nx);
+
+														if (simon1->isUsing2ndWeapon == false)
+														{
+															if (simon1->nx > 0)
+																simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
+															else
+																simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
+															simon1->SetState(SIMON_STATE_THROW_SITTING);
+															simon1->useWeapon2();
+
+														}
+
+													}
+													else
+													{
+
+
+														simon1->holy1->CreateWeapon(x, y, simon1->nx);
+
+														if (simon1->isUsing2ndWeapon == false)
+														{
+															if (simon1->nx > 0)
+																simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
+															else
+																simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
+															simon1->SetState(SIMON_STATE_THROW);
+															simon1->useWeapon2();
+
+														}
+
+													}
+
+											}
+
+										}
+
+									}
+							}
+						}
+						else
+							if (simon1->dagger->isOn == false && //clock
+								simon1->axe->isOn == false &&
+								simon1->holy->isOn == false &&
+								simon1->clock->isOn == true)
+							{
+								if (simon1->heartCount > 4)
+								{
+
+									simon1->heartCount -= 5;
+									float x, y;
+									simon1->GetPosition(x, y);
+									soundClockOn = true;
+									sound->GetInstance()->playSound(eTagSound::stopWatch, true);
+									simon1->clock->CreateWeapon(x, y, simon1->nx);
+									if (simon1->isOnStairs == true)
+									{
+										simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
+										freezeEnemyFunction();
+									}
+									else
+										if (simon1->GetState() == SIMON_STATE_SIT)
+										{
+											simon1->SetState(SIMON_STATE_THROW_SITTING);
+											freezeEnemyFunction();
+										}
+										else
+										{
+											simon1->SetState(SIMON_STATE_THROW);
+											freezeEnemyFunction();
+										}
+
+
+
+								}
+							}
+			}
+		}
+		else
 
 		if (simon1->proceedThruDoor == false)
 		{
@@ -438,452 +887,8 @@ void Scene2::OnKeyDown(int KeyCode)
 			
 		}
 		break;
-	case DIK_Z:
-		if (simon1->proceedThruDoor == false)
-	
-		{
-			if (simon1->dagger->isOn == true && //dagger
-				simon1->axe->isOn==false &&
-				simon1->holy->isOn == false &&
-				simon1->clock->isOn == false)
-			{
-				if (simon1->heartCount > 0)
-				{
-				
-					if (simon1->dagger->GetState() == DAGGER_STATE_INACTIVE)
-					{
-
-						simon1->heartCount -= 1;
-						simon1->numOfWeapon = 1;
-						float x, y;
-						simon1->GetPosition(x, y);
-						if (simon1->isOnStairs == true)
-						{
-							simon1->dagger->CreateWeapon(x, y, simon1->nx);
-							if (simon1->isUsing1stWeapon == false)
-							{
-								if (simon1->nx > 0)
-									simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-								else
-									simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
-								simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
-								simon1->useWeapon();
-
-							}
-						}
-						else
-							if (simon1->GetState() == SIMON_STATE_SIT)
-							{
-								simon1->dagger->CreateWeapon(x, y + 7, simon1->nx);
-
-								if (simon1->isUsing1stWeapon == false)
-								{
-									if (simon1->nx > 0)
-										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-									else
-										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
-									simon1->SetState(SIMON_STATE_THROW_SITTING);
-									simon1->useWeapon();
-
-								}
-
-							}
-							else
-							{
-
-
-								simon1->dagger->CreateWeapon(x, y, simon1->nx);
-
-								if (simon1->isUsing1stWeapon == false)
-								{
-									if (simon1->nx > 0)
-										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-									else
-										simon1->dagger->SetState(DAGGER_STATE_ACTIVE_LEFT);
-									simon1->SetState(SIMON_STATE_THROW);
-									simon1->useWeapon();
-
-								}
-
-							}
-
-					}
-					else
-						if(simon1->shotTwoWeaponOneTime==true)
-						{
-							if (simon1->dagger->isFinished == true)
-							{
-								simon1->numOfWeapon = 2;
-								if (simon1->dagger1->GetState() == DAGGER_STATE_INACTIVE)
-								{
-
-									simon1->heartCount -= 1;
-									float x, y;
-									simon1->GetPosition(x, y);
-									if (simon1->isOnStairs == true)
-									{
-										simon1->dagger1->CreateWeapon(x, y, simon1->nx);
-										if (simon1->isUsing2ndWeapon == false)
-										{
-											if (simon1->nx > 0)
-												simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-											else
-												simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_LEFT);
-											simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
-											simon1->useWeapon2();
-
-										}
-									}
-									else
-										if (simon1->GetState() == SIMON_STATE_SIT)
-										{
-											simon1->dagger1->CreateWeapon(x, y + 7, simon1->nx);
-
-											if (simon1->isUsing2ndWeapon == false)
-											{
-												if (simon1->nx > 0)
-													simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-												else
-													simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_LEFT);
-												simon1->SetState(SIMON_STATE_THROW_SITTING);
-												simon1->useWeapon2();
-
-											}
-
-										}
-										else
-										{
-
-
-											simon1->dagger1->CreateWeapon(x, y, simon1->nx);
-
-											if (simon1->isUsing2ndWeapon == false)
-											{
-												if (simon1->nx > 0)
-													simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_RIGHT);
-												else
-													simon1->dagger1->SetState(DAGGER_STATE_ACTIVE_LEFT);
-												simon1->SetState(SIMON_STATE_THROW);
-												simon1->useWeapon2();
-
-											}
-
-										}
-
-								}
-
-							}
-						
-						}
-					
-				}
-				
-			}
-			else
-				if (simon1->dagger->isOn == false && // axe
-					simon1->axe->isOn == true &&
-					simon1->holy->isOn == false &&
-					simon1->clock->isOn == false)
-				{
-					if (simon1->heartCount > 0)
-					{
-
-						if (simon1->axe->GetState() == AXE_STATE_INACTIVE)
-						{
-
-							simon1->heartCount -= 1;
-							simon1->numOfWeapon = 1;
-							float x, y;
-							simon1->GetPosition(x, y);
-							if (simon1->isOnStairs == true)
-							{
-								simon1->axe->CreateWeapon(x, y, simon1->nx);
-								if (simon1->isUsing1stWeapon == false)
-								{
-									if (simon1->nx > 0)
-										simon1->axe->SetState(AXE_STATE_ACTIVE_RIGHT);
-									else
-										simon1->axe->SetState(AXE_STATE_ACTIVE_LEFT);
-									simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
-									simon1->useWeapon();
-
-								}
-							}
-							else
-								if (simon1->GetState() == SIMON_STATE_SIT)
-								{
-									simon1->axe->CreateWeapon(x, y + 7, simon1->nx);
-
-									if (simon1->isUsing1stWeapon == false)
-									{
-										if (simon1->nx > 0)
-											simon1->axe->SetState(AXE_STATE_ACTIVE_RIGHT);
-										else
-											simon1->axe->SetState(AXE_STATE_ACTIVE_LEFT);
-										simon1->SetState(SIMON_STATE_THROW_SITTING);
-										simon1->useWeapon();
-
-									}
-
-								}
-								else
-								{
-
-
-									simon1->axe->CreateWeapon(x, y, simon1->nx);
-
-									if (simon1->isUsing1stWeapon == false)
-									{
-										if (simon1->nx > 0)
-											simon1->axe->SetState(AXE_STATE_ACTIVE_RIGHT);
-										else
-											simon1->axe->SetState(AXE_STATE_ACTIVE_LEFT);
-										simon1->SetState(SIMON_STATE_THROW);
-										simon1->useWeapon();
-
-									}
-
-								}
-
-						}
-						else
-							if (simon1->shotTwoWeaponOneTime == true)
-							{
-								if (simon1->axe->isFinished == true)
-								{
-									simon1->numOfWeapon = 2;
-									if (simon1->axe1->GetState() == AXE_STATE_INACTIVE)
-									{
-										simon1->heartCount -= 1;
-										float x, y;
-										simon1->GetPosition(x, y);
-										if (simon1->isOnStairs == true)
-										{
-											simon1->axe1->CreateWeapon(x, y, simon1->nx);
-											if (simon1->isUsing2ndWeapon == false)
-											{
-												if (simon1->nx > 0)
-													simon1->axe1->SetState(AXE_STATE_ACTIVE_RIGHT);
-												else
-													simon1->axe1->SetState(AXE_STATE_ACTIVE_LEFT);
-												simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
-												simon1->useWeapon2();
-
-											}
-										}
-										else
-											if (simon1->GetState() == SIMON_STATE_SIT)
-											{
-												simon1->axe1->CreateWeapon(x, y + 7, simon1->nx);
-
-												if (simon1->isUsing2ndWeapon == false)
-												{
-													if (simon1->nx > 0)
-														simon1->axe1->SetState(AXE_STATE_ACTIVE_RIGHT);
-													else
-														simon1->axe1->SetState(AXE_STATE_ACTIVE_LEFT);
-													simon1->SetState(SIMON_STATE_THROW_SITTING);
-													simon1->useWeapon2();
-
-												}
-
-											}
-											else
-											{
-
-
-												simon1->axe1->CreateWeapon(x, y, simon1->nx);
-
-												if (simon1->isUsing2ndWeapon == false)
-												{
-													if (simon1->nx > 0)
-														simon1->axe1->SetState(AXE_STATE_ACTIVE_RIGHT);
-													else
-														simon1->axe1->SetState(AXE_STATE_ACTIVE_LEFT);
-													simon1->SetState(SIMON_STATE_THROW);
-													simon1->useWeapon2();
-
-												}
-
-											}
-
-									}
-
-								}
-
-							}
-					}
-				}
-				else
-					if (simon1->dagger->isOn == false && //holy
-						simon1->axe->isOn == false &&
-						simon1->holy->isOn == true &&
-						simon1->clock->isOn == false)
-					{
-						if (simon1->heartCount > 0)
-						{
-
-						if (simon1->holy->GetState() == HOLYWATER_STATE_INACTIVE)
-						{
-
-							simon1->heartCount -= 1;
-							simon1->numOfWeapon = 1;
-							float x, y;
-							simon1->GetPosition(x, y);
-							if (simon1->isOnStairs == true)
-							{
-								simon1->holy->CreateWeapon(x, y, simon1->nx);
-								if (simon1->isUsing1stWeapon == false)
-								{
-									if (simon1->nx > 0)
-										simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
-									else
-										simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
-									simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
-									simon1->useWeapon();
-
-								}
-							}
-							else
-								if (simon1->GetState() == SIMON_STATE_SIT)
-								{
-									simon1->holy->CreateWeapon(x, y + 7, simon1->nx);
-
-									if (simon1->isUsing1stWeapon == false)
-									{
-										if (simon1->nx > 0)
-											simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
-										else
-											simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
-										simon1->SetState(SIMON_STATE_THROW_SITTING);
-										simon1->useWeapon();
-
-									}
-
-								}
-								else
-								{
-									simon1->holy->CreateWeapon(x, y, simon1->nx);
-
-									if (simon1->isUsing1stWeapon == false)
-									{
-										if (simon1->nx > 0)
-											simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
-										else
-											simon1->holy->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
-										simon1->SetState(SIMON_STATE_THROW);
-										simon1->useWeapon();
-
-									}
-
-								}
-
-						}
-						else
-							if (simon1->shotTwoWeaponOneTime == true)
-							{
-								if (simon1->holy1->isFinished == true)
-								{
-									simon1->numOfWeapon = 2;
-									if (simon1->holy1->GetState() == HOLYWATER_STATE_INACTIVE)
-									{
-										simon1->heartCount -= 1;
-										float x, y;
-										simon1->GetPosition(x, y);
-										if (simon1->isOnStairs == true)
-										{
-											simon1->holy1->CreateWeapon(x, y, simon1->nx);
-											if (simon1->isUsing2ndWeapon == false)
-											{
-												if (simon1->nx > 0)
-													simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
-												else						
-													simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
-												simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
-												simon1->useWeapon2();
-
-											}
-										}
-										else
-											if (simon1->GetState() == SIMON_STATE_SIT)
-											{
-												simon1->holy1->CreateWeapon(x, y + 7, simon1->nx);
-
-												if (simon1->isUsing2ndWeapon == false)
-												{
-													if (simon1->nx > 0)
-														simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
-													else					
-														simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
-													simon1->SetState(SIMON_STATE_THROW_SITTING);
-													simon1->useWeapon2();
-
-												}
-
-											}
-											else
-											{
-
-
-												simon1->holy1->CreateWeapon(x, y, simon1->nx);
-
-												if (simon1->isUsing2ndWeapon == false)
-												{
-													if (simon1->nx > 0)
-														simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_RIGHT);
-													else
-														simon1->holy1->SetState(HOLYWATER_STATE_ACTIVE_LEFT);
-													simon1->SetState(SIMON_STATE_THROW);
-													simon1->useWeapon2();
-
-												}
-
-											}
-
-									}
-
-								}
-
-							}
-						}
-					}
-					else
-						if (simon1->dagger->isOn == false && //clock
-							simon1->axe->isOn == false &&
-							simon1->holy->isOn == false &&
-							simon1->clock->isOn == true)
-						{
-							if (simon1->heartCount > 4)
-							{
-
-								simon1->heartCount -= 5;
-								float x, y;
-								simon1->GetPosition(x, y);
-								soundClockOn = true;
-								sound->GetInstance()->playSound(eTagSound::stopWatch, true);
-								simon1->clock->CreateWeapon(x, y, simon1->nx);
-								if (simon1->isOnStairs == true)
-								{
-									simon1->SetState(SIMON_STATE_THROW_ON_STAIRS);
-									freezeEnemyFunction();
-								}
-								else
-									if (simon1->GetState() == SIMON_STATE_SIT)
-									{
-										simon1->SetState(SIMON_STATE_THROW_SITTING);
-										freezeEnemyFunction();
-									}
-									else
-									{
-										simon1->SetState(SIMON_STATE_THROW);
-										freezeEnemyFunction();
-									}
-
-
-
-							}
-						}
-		}
+	case DIK_D:
+		
 		break;
 	}
 
