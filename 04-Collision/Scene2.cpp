@@ -2453,7 +2453,7 @@ void Scene2::Render()
 			}
 			
 		}
-
+		
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 		board->Render();
 		map1->drawTileMap(camera1, ID_TEX_MAP2);
@@ -2877,7 +2877,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 				effectFire1->AddAnimation(577);
 				effectFire1->AddAnimation(576);
 				effectFire1->SetState(EFFECT_STATE_ACTIVE);
-				if (boss->hp == 0)
+				if (boss->hp <= 0)
 					effectFire1->itemInside = boss->itemInside;
 				effectFire1->SetPosition(x, y);
 				effectFire1->type = 0;
@@ -3036,7 +3036,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 					effectFire1->AddAnimation(577);
 					effectFire1->AddAnimation(576);
 					effectFire1->SetState(EFFECT_STATE_ACTIVE);
-					if (boss->hp == 0)
+					if (boss->hp <= 0)
 						effectFire1->itemInside = boss->itemInside;
 					effectFire1->SetPosition(x, y);
 					effectFire1->type = 0;
@@ -3192,7 +3192,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 						effectFire1->AddAnimation(577);
 						effectFire1->AddAnimation(576);
 						effectFire1->SetState(EFFECT_STATE_ACTIVE);
-						if (boss->hp == 0)
+						if (boss->hp <= 0)
 							effectFire1->itemInside = boss->itemInside;
 						effectFire1->SetPosition(x, y);
 						effectFire1->type = 0;
@@ -3352,13 +3352,13 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							boss->StartUntouchable();
 							boss->hp -= 2;
 
-
+							
 							effectFire1 = new EffectFire();
 							effectFire1->AddAnimation(578);
 							effectFire1->AddAnimation(577);
 							effectFire1->AddAnimation(576);
 							effectFire1->SetState(EFFECT_STATE_ACTIVE);
-							if (boss->hp == 0)
+							if (boss->hp <= 0)
 								effectFire1->itemInside = boss->itemInside;
 							effectFire1->SetPosition(x, y);
 							effectFire1->type = 0;
@@ -3529,7 +3529,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 							effectFire1->AddAnimation(577);
 							effectFire1->AddAnimation(576);
 							effectFire1->SetState(EFFECT_STATE_ACTIVE);
-							if (boss->hp == 0)
+							if (boss->hp <= 0)
 								effectFire1->itemInside = boss->itemInside;
 							effectFire1->SetPosition(x, y);
 							effectFire1->type = 0;
@@ -3692,7 +3692,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 								effectFire1->AddAnimation(577);
 								effectFire1->AddAnimation(576);
 								effectFire1->SetState(EFFECT_STATE_ACTIVE);
-								if (boss->hp == 0)
+								if (boss->hp <= 0)
 									effectFire1->itemInside = boss->itemInside;
 								effectFire1->SetPosition(x, y);
 								effectFire1->type = 0;
@@ -3853,7 +3853,7 @@ void Scene2::CollisionBetWeaponAndEnemy()
 									effectFire1->AddAnimation(577);
 									effectFire1->AddAnimation(576);
 									effectFire1->SetState(EFFECT_STATE_ACTIVE);
-									if (boss->hp == 0)
+									if (boss->hp <= 0)
 										effectFire1->itemInside = boss->itemInside;
 									effectFire1->SetPosition(x, y);
 									effectFire1->type = 0;
@@ -4031,7 +4031,6 @@ void Scene2::CollisionBetSimonAndItem()
 										effectBag1->SetPosition(x + 5, y);
 										effectBag1->type = newGoldBag->type;
 										effectBag1->SetState(EFFECT_STATE_ACTIVE);
-										listEffectBag1.push_back(effectBag1);
 										if (newGoldBag->type == 0)
 										{
 											simon1->score += 700;
@@ -4051,7 +4050,8 @@ void Scene2::CollisionBetSimonAndItem()
 													{
 														simon1->score += 1000;
 													}
-										
+
+										listEffectBag1.push_back(effectBag1);
 											listItem1.erase(listItem1.begin() + i);
 											i = i - 1;
 										

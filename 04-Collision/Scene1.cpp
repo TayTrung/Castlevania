@@ -969,6 +969,7 @@ void Scene1::CollisionBetSimonAndItem()
 												{
 													simon->score += 1000;
 												}
+
 									listEffectBag.push_back(effectBag);
 									listItem.erase(listItem.begin() + i);
 									i = i - 1;

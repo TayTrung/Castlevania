@@ -575,7 +575,7 @@ enum eTag
 #define EFFECT_ANI_SCORE_3COLOR 3
 
 
-#define EFFECT_TIME 400
+#define EFFECT_TIME 500
 #pragma endregion
 
 #pragma region Simon
