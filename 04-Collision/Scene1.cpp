@@ -127,27 +127,19 @@ void Scene1::OnKeyDown(int KeyCode)
 
 				if (simon->isJumping == false)
 				{
-					if (simon->GetState() == SIMON_STATE_WALKING_LEFT)
+					if(game->IsKeyDown(DIK_LEFT ))
 						simon->SetState(SIMON_STATE_JUMP_LEFT);
 					else
-						if (simon->GetState() == SIMON_STATE_WALKING_RIGHT)
+						if (game->IsKeyDown(DIK_RIGHT))
 							simon->SetState(SIMON_STATE_JUMP_RIGHT);
 						else
 							simon->SetState(SIMON_STATE_JUMP);
 					simon->isJumping = true;
 				}
 			}
+			
 		}
 		break;
-		break;
-	//case DIK_A: // reset
-	//	simon->SetState(SIMON_STATE_IDLE);
-	//	simon->SetPosition(700.0f, 0.0f);
-	//	simon->SetSpeed(0, 0);
-	//	break;
-		//case DIK_DOWNARROW:
-		//	simon->SetState(SIMON_STATE_SIT);
-		//	break;
 	case DIK_Q: // reset
 		SceneManager::GetInstance()->replaceScene(new Scene2(simon));
 		break;
@@ -230,6 +222,8 @@ void Scene1::OnKeyDown(int KeyCode)
 		{
 		//	if (simon->finishedAttacking == true)
 			{
+				if (simon->isJumping == false)
+					simon->vx = 0;
 				if (simon->GetState() == SIMON_STATE_SIT)
 				{
 					simon->SetState(SIMON_STATE_ATTACK_SITTING);
@@ -421,13 +415,16 @@ void Scene1::LoadResources()
 
 void Scene1::Update(DWORD dt)
 {
+	//xu li time--------------------------------------------------------------
 	if (time->x == 0)
 		simon->healthCount = 0;
 	time->Update(dt);
+	//xu li grid--------------------------------------------------------------
 	newGrid->getListOfObjects(listColliableObjects, camera);
 	listCheckBox.clear();
 	listEnemy.clear();
 	listSurface.clear();
+	//phan loai obj lay dc tu grid vao tung danh sach-------------------------
 	for (int i = 0; i < listColliableObjects.size(); i++)
 	{
 		if (listColliableObjects.at(i)->tag == eTag::TORCHES)
@@ -446,7 +443,7 @@ void Scene1::Update(DWORD dt)
 					listSurface.push_back(listColliableObjects.at(i));
 				}
 	}
-
+	//xu li board-------------------------------------------------------------
 	if (simon->shotTwoWeaponOneTime == true)
 	{
 		newBoard->simonHasNumbah = true;
@@ -459,6 +456,12 @@ void Scene1::Update(DWORD dt)
 	newBoard->bossHealth = 16;
 	newBoard->time = time->x;
 
+
+	//update dagger khi dc ban ra----------------------------------------------------------------------------
+	if ((simon->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon->dagger->isOn == true && simon->isUsing1stWeapon == true)//updating dagger when being used
+			simon->dagger->Update(dt, &listSurface);
+	if (simon->dagger->GetState() == DAGGER_STATE_INACTIVE)
+		simon->dagger->isFinished = true;
 	float x1, y1;
 	x1 = Camera::GetInstance()->GetPosition().x;
 	y1 = Camera::GetInstance()->GetPosition().y;
@@ -477,38 +480,35 @@ void Scene1::Update(DWORD dt)
 
 		}
 	}
-
-	CollisionBetWeaponAndEnemy();
+	//Update list item--------------------------------------------------------
 	for (int i = 0; i < listItem.size(); i++)
 	{
-		//if (listItem.at(i)->GetState() == ITEM_STATE_ACTIVE);
 		listItem.at(i)->Update(dt, &listSurface);
 	}
+	
+		
+	//Update list effect lua sau khi danh xong--------------------------------------------------------
 
 	for (int i = 0; i < listEffectFire.size(); i++)
 	{
-		//if (listItem.at(i)->GetState() == ITEM_STATE_ACTIVE);
 		listEffectFire.at(i)->Update(dt, &listSurface);
 	}
-
+	//Update hieu ung an bich tien--------------------------------------------------------------------
 	for (int i = 0; i < listEffectBag.size(); i++)//render ietms
 		listEffectBag[i]->Update(dt);
 	spawnItemsAfterEffect();
-
-	if (goldbag->GetState() == ITEM_STATE_ACTIVE)
-		goldbag->Update(dt, &listSurface);
-
+	//Update simon ----------------------------------------------------------------------------------
 	simon->Update(dt, &listSurface);
-
-	if ((simon->dagger->GetState() != DAGGER_STATE_INACTIVE) && simon->dagger->isOn == true && simon->isUsing1stWeapon == true)//updating dagger when being used
-		simon->dagger->Update(dt, &listSurface);
-	if (simon->dagger->GetState() == DAGGER_STATE_INACTIVE)
-		simon->dagger->isFinished = true;
+	//Update camera-----------------------------------------------------------------------------------
 	camera->SetPosition(simon->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon
 	camera->Update();
+
 	CollisionBetSimonAndCheckBox();
 	CollisionBetSimonAndItem();
+	CollisionBetWeaponAndEnemy();
+
 	erasingObjThatInacitve();
+	
 	if (proceedToLvl2 == true)
 	{
 		sound->GetInstance()->stopSound(eTagSound::Stage1);
@@ -530,10 +530,11 @@ void Scene1::Render()
 		// Clear back buffer with a color
 		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
+	    //Render board-------------------------------------------------------------------------
 		newBoard->Render();
-		//	DrawTextA(NULL, message.c_str(),-1,	&rect, DT_LEFT | DT_NOCLIP,);
+		//Render map---------------------------------------------------------------------------
 		map->drawTileMap(camera, ID_TEX_MAP1);
-		//All items are rendered if state = active
+		//All items are rendered if state = active---------------------------------------------
 		for (int i = 0; i < listSurface.size(); i++)//render surface
 			listSurface[i]->Render();
 
@@ -542,13 +543,12 @@ void Scene1::Render()
 
 		for (int i = 0; i < listItem.size(); i++)//render ietms
 			listItem[i]->Render();
-		for (int i = 0; i < listEffectFire.size(); i++)//render ietms
+		for (int i = 0; i < listEffectFire.size(); i++)//render effect fire
 			listEffectFire[i]->Render();
-		goldbag->Render();
-		//
-
-		for (int i = 0; i < listEffectBag.size(); i++)//render ietms
+		
+		for (int i = 0; i < listEffectBag.size(); i++)//render so diem dc khi an diem
 			listEffectBag[i]->Render();
+
 		simon->Render();
 		simon->dagger->Render();
 		simon->whip->Render();
@@ -640,9 +640,9 @@ void Scene1::spawnItemsAfterEffect()
 			}
 
 
-			listEffectFire.erase(listEffectFire.begin() + i);// Delete it from enemy since Simion killed it
+			listEffectFire.erase(listEffectFire.begin() + i);// Delete it from list since it is inactive
 
-			i = i - 1; // Push back 1 cuz after deleting i+1 will replace i
+			i = i - 1; // Push back 1 cuz after deleting obj at i+1 will replace obj at i
 
 		}
 

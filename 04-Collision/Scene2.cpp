@@ -287,78 +287,7 @@ void Scene2::OnKeyDown(int KeyCode)
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	switch (KeyCode)
 	{
-	case DIK_1: //On dagger
-		simon1->dagger->turnOnDagger();
-		simon1->axe->turnOffAxe();
-		simon1->holy->turnOffHolyWater();
-		simon1->clock->turnOffClock();
 
-		board->typeOfWeaopon = 1;
-		break;
-	case DIK_2://On Axe
-		simon1->dagger->turnOffDagger();
-		simon1->axe->turnOnAxe();
-		simon1->holy->turnOffHolyWater();
-		simon1->clock->turnOffClock();
-		board->typeOfWeaopon = 2;
-		break;
-	case DIK_3://On HOly
-		simon1->dagger->turnOffDagger();
-		simon1->axe->turnOffAxe();
-		simon1->holy->turnOnHolyWater();
-		simon1->clock->turnOffClock();
-		board->typeOfWeaopon = 3;
-		break;
-	case DIK_4://On Clock
-		simon1->dagger->turnOffDagger();
-		simon1->axe->turnOffAxe();
-		simon1->holy->turnOffHolyWater();
-		simon1->clock->turnOnClock();
-		board->typeOfWeaopon = 4;
-		break;
-	case DIK_5:
-		if (simon1->shotTwoWeaponOneTime == false)
-			simon1->shotTwoWeaponOneTime = true;
-		else
-			simon1->shotTwoWeaponOneTime = false;
-		break;
-	case DIK_T:
-		if (simon1->proceedThruDoor == false)
-		{
-			simon1->SetState(SIMON_STATE_IDLE);
-			simon1->isOnStairs = false;
-			simon1->SetPosition(2400, 0.0f);
-			stage = 5;
-			simon1->SetSpeed(0, 0);
-			break;
-		}
-	case DIK_Y:
-		if (simon1->proceedThruDoor == false)
-		{
-			simon1->SetState(SIMON_STATE_IDLE);
-			simon1->isOnStairs = false;
-			simon1->SetPosition(3238, 0.0f);
-			stage = 3;
-			simon1->SetSpeed(0, 0);
-			break;
-		}
-	case DIK_U:
-		if (simon1->proceedThruDoor == false)
-		{
-			simon1->SetState(SIMON_STATE_IDLE);
-			simon1->isOnStairs = false;
-			simon1->SetPosition(1690, 0.0f);
-			stage = 2;
-			simon1->SetSpeed(0, 0);
-			break;
-		}
-	case DIK_J:
-	{
-		simon1->SetState(SIMON_STATE_DEAD);
-		simon1->healthCount = 0;
-	}
-	break;
-			
 	case DIK_S:
 		if (simon1->proceedThruDoor == false)
 		{
@@ -379,26 +308,14 @@ void Scene2::OnKeyDown(int KeyCode)
 			}
 		}
 		break;
-	//case DIK_A: // reset
-	//	if (simon1->proceedThruDoor == false)
-	//	{
-	//		simon1->SetState(SIMON_STATE_IDLE);
-	//		simon1->isOnStairs = false;
-	//		simon1->SetPosition(1460, 0.0f);
-	//		simon1->SetSpeed(0, 0);
-	//		break;
-	//	}
-		//case DIK_DOWNARROW:
-		//	simon1->SetState(SIMON_STATE_SIT);
-		//	break;
 	case DIK_A:
 		if (simon1->GetState() == SIMON_STATE_ATTACK_ON_STAIRS ||
 			simon1->GetState() == SIMON_STATE_ATTACK_SITTING ||
 			simon1->GetState() == SIMON_STATE_ATTACK ||
 			simon1->GetState() == SIMON_STATE_THROW_SITTING ||
 			simon1->GetState() == SIMON_STATE_THROW_ON_STAIRS ||
-			simon1->GetState() == SIMON_STATE_THROW||
-			simon1->GetState() == SIMON_STATE_HURT_LEFT||
+			simon1->GetState() == SIMON_STATE_THROW ||
+			simon1->GetState() == SIMON_STATE_HURT_LEFT ||
 			simon1->GetState() == SIMON_STATE_HURT_RIGHT)
 			return;
 		if (game1->IsKeyDown(DIK_UP))
@@ -851,41 +768,42 @@ void Scene2::OnKeyDown(int KeyCode)
 		}
 		else
 
-		if (simon1->proceedThruDoor == false)
-		{
-			//if (simon1->finishedAttacking == true)
+			if (simon1->proceedThruDoor == false)
 			{
-				if (simon1->isOnStairs == true)
+				//if (simon1->finishedAttacking == true)
 				{
-					simon1->SetState(SIMON_STATE_ATTACK_ON_STAIRS);
-					//simon1->finishedAttacking = false;
-					simon1->whip->CreateWeapon(simon1->x, simon1->y, simon1->nx);
-				}
-				else
-				{
-					if (simon1->GetState() == SIMON_STATE_SIT)
+					if (simon1->isOnStairs == true)
 					{
-						simon1->SetState(SIMON_STATE_ATTACK_SITTING);
+						simon1->SetState(SIMON_STATE_ATTACK_ON_STAIRS);
 						//simon1->finishedAttacking = false;
-						simon1->whip->CreateWeapon(simon1->x, simon1->y + 7, simon1->nx);
-						simon1->vx = 0;
+						simon1->whip->CreateWeapon(simon1->x, simon1->y, simon1->nx);
 					}
 					else
 					{
-						simon1->SetState(SIMON_STATE_ATTACK);
-						//simon1->finishedAttacking = false;
-						simon1->whip->CreateWeapon(simon1->x, simon1->y, simon1->nx);
-						if (simon1->isJumping==false)
+						if (simon1->GetState() == SIMON_STATE_SIT)
 						{
+							simon1->SetState(SIMON_STATE_ATTACK_SITTING);
+							//simon1->finishedAttacking = false;
+							simon1->whip->CreateWeapon(simon1->x, simon1->y + 7, simon1->nx);
 							simon1->vx = 0;
 						}
-						
+						else
+						{
+							simon1->SetState(SIMON_STATE_ATTACK);
+							//simon1->finishedAttacking = false;
+							simon1->whip->CreateWeapon(simon1->x, simon1->y, simon1->nx);
+							if (simon1->isJumping == false)
+							{
+								simon1->vx = 0;
+							}
 
+
+						}
 					}
 				}
+
 			}
-			
-		}
+		break;
 		break;
 	case DIK_D:
 		
@@ -1396,6 +1314,8 @@ void Scene2::XuLyPanthera()
 		{
 			
 			if (abs(listPanther.at(i)->x - simon1->x) > 16 * 4 && abs(listPanther.at(i)->x - simon1->x) < 16 * 4 + 5)
+				//if distance between simon and pant abou 16*4 => pant start to run
+
 			{
 				if (listPanther.at(i)->changeDirection == false)
 				{
@@ -1417,7 +1337,7 @@ void Scene2::XuLyPanthera()
 
 					{
 						listPanther.at(i)->changeDirection = true;
-						if ((listPanther.at(i)->x - simon1->x) > 0)
+						if ((listPanther.at(i)->x - simon1->x) > 0)//check where simon to change direction to simon
 						{
 							listPanther.at(i)->SetState(PANTHER_STATE_ACTIVE_LEFT);
 						}
@@ -1442,7 +1362,7 @@ void Scene2::spawnMonster()
 {
 	DWORD tickTime = GetTickCount();
 	if (tickTime % 2==1)
-		monster1 = new Monster(simon1->x - 16 * 5);
+		monster1 = new Monster(simon1->x - 16 * 5); 
 	else
 		monster1 = new Monster(simon1->x + 16 * 5);
 	monster1->AddAnimation(846);
@@ -1508,7 +1428,7 @@ void Scene2::spawnPanther()
 	pant->setItemInside(randomIteminside());
 	
 	pant->SetPosition(685, 0 + offsetMap);
-	if (simon1->x < pant->x)
+	if (simon1->x < pant->x)//face to simon when spawn
 		pant->SetState(PANTHER_STATE_SIT_LEFT);
 	else
 		pant->SetState(PANTHER_STATE_SIT_RIGHT);
@@ -1596,7 +1516,7 @@ void Scene2::TinhDiem()
 
 void Scene2::spawnFireBall()
 {
-	if (stage == 3)
+	if (stage == 3)//only spawn fireball khi o duoi man nuoc = stage 3
 	{
 		for (UINT i = 0; i < listEnemy1.size(); i++)
 		{
@@ -1635,13 +1555,13 @@ void Scene2::spawnFireBall()
 
 	}
 	else
-		if (stage == 5)
+		if (stage == 5)//or when boss
 		{
 			if (bossOn == true)
 			{
 				if (boss->GetState() == BOSS_STATE_AFK)
 				{
-					if (boss->fired == false)
+					if (boss->fired == false)//boss is in state AFK for few milisec so boss can only hit once
 					{
 						fire = new FireBall();
 						fire->AddAnimation(899);
@@ -1664,7 +1584,8 @@ void Scene2::spawnFireBall()
 
 void Scene2::Update(DWORD dt)
 {
-	if (soundClockOn)//tinh thoi gian phat am thanh khi weapon clock dc dung
+	//tinh thoi gian phat am thanh khi weapon clock dc dung--------------------------------------------------------
+	if (soundClockOn)
 	{
 		TimeWaitToTurnOffSoundClock += dt;
 		if (TimeWaitToTurnOffSoundClock >= 4000)
@@ -1674,10 +1595,8 @@ void Scene2::Update(DWORD dt)
 			sound->stopSound(eTagSound::stopWatch);
 		}
 	}
-
-	newGrid1->getListOfObjects(listColliableObjects1, camera1);//Get lisst of obj from grid
-
-	DebugOut(L"[INFO] Number of Objects: %d\n", listColliableObjects1.size());
+	//xu li grid----------------------------------------------------------------------------------------------------
+	newGrid1->getListOfObjects(listColliableObjects1, camera1);//Get list of obj from grid
 	listCheckBox1.clear();
 	listSurface1.clear();
 	listUpStairs1.clear();
@@ -1736,8 +1655,8 @@ void Scene2::Update(DWORD dt)
 									listDoor.push_back(listColliableObjects1.at(i));
 								}
 	}
-
-	if (simon1->shotTwoWeaponOneTime == true)//simon has numbah? => show on board
+    //xu li board-------------------------------------------------------------------------------------------------
+	if (simon1->shotTwoWeaponOneTime == true)//simon1 has double attack => show on board
 	{
 		board->simonHasNumbah = true;
 	}
@@ -1750,7 +1669,7 @@ void Scene2::Update(DWORD dt)
 	board->bossHealth = boss->hp;
 	board->time = time1->x;
 
-
+	//thoi gian hieu ung khi an cross-------------------------------------------------------------------------------
 	if (isEatingCross == true)//wait time for cross effect
 	{
 		TimeWait += dt;
@@ -1760,7 +1679,9 @@ void Scene2::Update(DWORD dt)
 			TimeWait = 0;
 		}
 	}
-
+	//updating time to switch color between 2 colors when eating cross---------------------------------------------
+	TimeWaitToChangeColor += dt;
+	//set border for simon and camera for each stage in scene 2----------------------------------------------------
 	if (stage == 1)
 	{
 		if (simon1->x > STAGE1_RIGHT_BORDER && simon1->y > offsetMap + 80)
@@ -1771,7 +1692,7 @@ void Scene2::Update(DWORD dt)
 			camera1->SetPosition(simon1->x - SCREEN_WIDTH / 2, 0); // cho camera chay theo simon1
 			camera1->Update();
 			if (camera1->GetPosition().x > STAGE1_CAMERA_BORDER)
-				camera1->SetPosition(STAGE1_CAMERA_BORDER, camera1->GetPosition().y);//simon chua qua cua nen set camera di chuyen toi cua th
+				camera1->SetPosition(STAGE1_CAMERA_BORDER, camera1->GetPosition().y);//simon1 chua qua cua nen set camera di chuyen toi cua th
 		}
 		else//dung box de bat dau qua cua
 		{
@@ -1780,25 +1701,25 @@ void Scene2::Update(DWORD dt)
 				camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//di  chuyen camera truoc
 				
 			}
-			if (camera1->GetPosition().x > STAGE1_CAMERA_WAIT_PLACE)// neu camera dat vi tri x thi mo cua ra roi cho simon di qua
+			if (camera1->GetPosition().x > STAGE1_CAMERA_WAIT_PLACE)// neu camera dat vi tri x thi mo cua ra roi cho simon1 di qua
 			{
 
 				listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_OPENED);
 				
 				simon1->SetState(SIMON_STATE_WALKING_RIGHT);
-				if (simon1->x > STAGE2_SIMON_START_PLACE)//neu simon di den 1 doan x thi set ve vi tri idle
+				if (simon1->x > STAGE2_SIMON_START_PLACE)//neu simon1 di den 1 doan x thi set ve vi tri idle
 				{
 					simon1->SetState(SIMON_STATE_IDLE);
 					
 					listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_CLOSED);//dong cua
-					simon1->stage = 02;//chuyen mini man
+					simon1->stage = 02;//chuyen stage
 					if (camera1->GetPosition().x < STAGE1_CAMERA_WAIT_PLACE2)
 						camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//keo camera qua hoan toan
 					if (camera1->GetPosition().x >= STAGE1_CAMERA_WAIT_PLACE2)
 					{
 						listDoor.at(0)->SetState(DOOR_STATE_INACTIVE);
 						simon1->proceedThruDoor = false;
-						stage = 2;//simon dang o man 2
+						stage = 2;//simon1 dang o man 2
 					}
 
 				}
@@ -1906,12 +1827,12 @@ void Scene2::Update(DWORD dt)
 							camera1->SetPosition(camera1->GetPosition().x + 1, camera1->GetPosition().y);//di  chuyen camera truoc
 
 						}
-						if (camera1->GetPosition().x > 1920)// neu camera dat vi tri x thi mo cua ra roi cho simon di qua
+						if (camera1->GetPosition().x > 1920)// neu camera dat vi tri x thi mo cua ra roi cho simon1 di qua
 						{
 
 							listDoor.at(0)->SetState(DOOR_STATE_ACTIVE_OPENED);
 							simon1->SetState(SIMON_STATE_WALKING_RIGHT);
-							if (simon1->x > 2081)//neu simon di den 1 doan x thi set ve vi tri idle							{
+							if (simon1->x > 2081)//neu simon1 di den 1 doan x thi set ve vi tri idle							{
 							{
 								simon1->SetState(SIMON_STATE_IDLE);
 
@@ -1968,15 +1889,15 @@ void Scene2::Update(DWORD dt)
 	float x1, y1;
 	x1 = Camera::GetInstance()->GetPosition().x;
 	y1 = Camera::GetInstance()->GetPosition().y;
-	
-	if (stage == 1)
+	//spawn enemies (ghou, bat,panther, monster)for each stage ------------------------------------------------------------------
+	if (stage == 1)//stage ha has ghou before 1st door
 	{
 		if (simon1->proceedThruDoor == false)
 		{
 
 #pragma region spawnGhou
 		tickGhou += 1;
-		if ((simon1->x < 417 - SIMON_BIG_BBOX_WIDTH) || (simon1->x > 1117 && simon1->x < 1525))//chi cho ghou xuan hien khi simon trong vung do
+		if ((simon1->x < 417 - SIMON_BIG_BBOX_WIDTH) || (simon1->x > 1117 && simon1->x < 1525))//chi cho ghou xuan hien khi simon1 trong vung do
 		{//spawn every 6 seconds
 			int xz = 0;
 			if (spawnedEnoughGhou == true)
@@ -2043,11 +1964,11 @@ void Scene2::Update(DWORD dt)
 		for (UINT i = 0; i < listPanther.size(); i++)
 			//if (abs(simon1->x - listPanther.at(i)->x) > 550)
 				//listPanther.at(i)->StartUntouchable();
-			if (simon1->x > 537 && simon1->x < 1120)//chi xu ly khi simon trong vung panter spawn
+			if (simon1->x > 537 && simon1->x < 1120)//chi xu ly khi simon1 trong vung panter spawn
 				XuLyPanthera();
 	}
 	else
-	if (stage == 2 ||stage ==4)
+	if (stage == 2 ||stage ==4)//stage that has a bat
 	{
 		if (simon1->proceedThruDoor == false)
 		{
@@ -2085,7 +2006,7 @@ void Scene2::Update(DWORD dt)
 	
 	}
 	else
-		if (stage == 3)
+		if (stage == 3)//underwater stage
 		{
 
 #pragma region spawnMonster
@@ -2143,7 +2064,7 @@ void Scene2::Update(DWORD dt)
 			
 		}
 		else
-			if(stage == 5)
+			if(stage == 5)//stage boss be4 2nd floor
 			{
 				if (simon1->x > 2069 && simon1->x < 2496 - 16)
 				{
@@ -2220,9 +2141,8 @@ void Scene2::Update(DWORD dt)
 				spawnFireBall();
 			}
 
-	//if (simon1->isUsing1stWeapon == true || simon1->isUsing2ndWeapon==true)
-	{
-
+       //Updating subweapong---------------------------------------------------------------------------
+	   //Dagger--------------------------
 		if ((simon1->dagger->GetState() != DAGGER_STATE_INACTIVE))
 			simon1->dagger->Update(dt, &listSurface1);
 		if ((simon1->dagger1->GetState() != DAGGER_STATE_INACTIVE))
@@ -2245,9 +2165,9 @@ void Scene2::Update(DWORD dt)
 				}
 			}
 
-		}
+		
 
-
+        //Axe----------------------------
 		if ((simon1->axe->GetState() != AXE_STATE_INACTIVE))
 			simon1->axe->Update(dt, &listSurface1);
 		if ((simon1->axe1->GetState() != AXE_STATE_INACTIVE))
@@ -2270,7 +2190,7 @@ void Scene2::Update(DWORD dt)
 		}
 
 		
-
+		//holy water-----------------------------------------
 			if ((simon1->holy->GetState() != HOLYWATER_STATE_INACTIVE))
 				simon1->holy->Update(dt, &listSurface1);
 			if ((simon1->holy1->GetState() != HOLYWATER_STATE_INACTIVE))
@@ -2312,27 +2232,32 @@ void Scene2::Update(DWORD dt)
 
 	if (simon1->holy1->GetState() == HOLYWATER_STATE_INACTIVE)
 		simon1->holy1->isFinished = true;
+	//updating items--------------------------------------------------------------------
 	for (int i = 0; i < listItem1.size(); i++)
 	{
 		listItem1.at(i)->Update(dt, &listSurface1);
 	}
-
+	//updating effect fire---------------------------------------------------------------
 	for (int i = 0; i < listEffectFire1.size(); i++)
 	{
 		listEffectFire1.at(i)->Update(dt, &listSurface1);
 	}
-
+	//updating hieu ung diem sau khi an bich ien-----------------------------------------
 	for (int i = 0; i < listEffectBag1.size(); i++)//render ietms
 		listEffectBag1[i]->Update(dt);
+
 	spawnItemsAfterEffect();
+	
 	if (stage == 5)
 		boss->Update(dt, simon1);
+	//update list enemies----------------------------------------------------------------
 	for (int i = 0; i < listEnemy1.size(); i++)
 		listEnemy1[i]->Update(dt, &listSurface1);
+	//updatinig list panther-------------------------------------------------------------
 	for (int i = 0; i < listPanther.size(); i++)
 		if (abs(simon1->x - listPanther[i]->x) < SCREEN_WIDTH/2)
 			listPanther[i]->Update(dt, &listSurface1);
-
+	//updating ground enemy = ground that simon can destroy------------------------------
 	for (int i = 0; i < listGroundEnemy.size(); i++)
 		listGroundEnemy[i]->Update(dt, &listSurface1);
 
@@ -2342,21 +2267,21 @@ void Scene2::Update(DWORD dt)
 		if (simon1->untouchable == false)//bi untouchable thi k va cham voi enemy nua
 			if (simon1->isInvis == false)
 				CollisionBetSimonAndEnemy();
+	
 	CollisionBetSimonAndCheckBox();
 	CollisionBetSimonAndItem();
-
 	CollisionBetWeaponAndEnemy();
 
-	TimeWaitToChangeColor += dt;
-	if (boss->GetState() != BOSS_STATE_INACTIVE)//time =0 =>dead
-		if (time1->x == 0)
+	if (boss->GetState() != BOSS_STATE_INACTIVE)//don't kill simon when time = 0 if boss is dead
+		if (time1->x == 0)//time=0 => simon dead
 			simon1->healthCount = 0;
-	if (simon1->healthCount <= 0)//if simon is dead=>check player life=>respawn?
+
+	if (simon1->healthCount <= 0)//if simon1 is dead=>check player life=>respawn?
 	{
 		TimeWaitToRefresh += dt;
-		if (TimeWaitToRefresh >= SIMON_REFRESH_TIME)
+		if (TimeWaitToRefresh >= SIMON_REFRESH_TIME)//doi 1 xiu r moi reset lai man
 		{
-			if (simon1->playerLife > 0)
+			if (simon1->playerLife > 0)//simon die => lose all subweapon, hearts = 10
 			{
 				simon1->playerLife -= 1;
 				simon1->CGameObject::SetState(SIMON_STATE_IDLE);
@@ -2410,10 +2335,12 @@ void Scene2::Update(DWORD dt)
 			TimeWaitToRefresh = 0;
 		}
 	}
-	if (boss->GetState() != BOSS_STATE_INACTIVE)//update time
-		if (simon1->healthCount > 0)
+
+	if (boss->GetState() != BOSS_STATE_INACTIVE)//don't update time if boss is dead
+		if (simon1->healthCount > 0)//update time
 			time1->Update(dt);
-	if (boss->GetState() == BOSS_STATE_INACTIVE)
+
+	if (boss->GetState() == BOSS_STATE_INACTIVE)//tinh diem khi boss is dead
 	{
 		sound->stopSound(eTagSound::Bos);
 		TimeWaitToCount += dt;
@@ -2439,7 +2366,7 @@ void Scene2::Render()
 		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
 		if (isEatingCross)
 		{
-			if (TimeWaitToChangeColor >50)
+			if (TimeWaitToChangeColor >50)//wait time before switch color
 			{
 				if (changedColor == true)
 				{
@@ -2660,15 +2587,7 @@ void Scene2::erasingObjThatInacitve()
 							i = i - 1;
 						}
 					}
-					else
-						if (dynamic_cast<GroundEnemy *>(listEnemy1.at(i)))
-						{
-							if (listEnemy1.at(i)->GetState() == GROUND_STATE_INACTIVE)
-							{
-								listEnemy1.erase(listEnemy1.begin() + i);
-								i = i - 1;
-							}
-						}
+					
 
 
 	}
@@ -2715,26 +2634,26 @@ void Scene2::spawnGhou(float x,float y,int state)
 	
 }
 
-void Scene2::spawnBat(Simon * simon,Camera *camera1)
+void Scene2::spawnBat(Simon * simon1,Camera *camera1)
 {
-	bat1 = new Bat(simon->y+8);
+	bat1 = new Bat(simon1->y+8);
 	bat1->AddAnimation(521);
 	bat1->AddAnimation(520);
 	bat1->AddAnimation(523);
 	bat1->AddAnimation(522);
 	bat1->setItemInside(randomIteminside());
 	
-	if (simon->nx == 1)
+	if (simon1->nx == 1)
 	{
 		bat1->SetState(BAT_STATE_ACTIVE_LEFT);
-		bat1->SetPosition(camera1->GetPosition().x+SCREEN_WIDTH-4, (simon->y + 8));
+		bat1->SetPosition(camera1->GetPosition().x+SCREEN_WIDTH-4, (simon1->y + 8));
 	}
 	else
-		if (simon->nx == -1)
+		if (simon1->nx == -1)
 		{
 
 			bat1->SetState(BAT_STATE_ACTIVE_RIGHT);
-			bat1->SetPosition(camera1->GetPosition().x + 4, (simon->y + 8));
+			bat1->SetPosition(camera1->GetPosition().x + 4, (simon1->y + 8));
 		}
 	listEnemy1.push_back(bat1);
 
@@ -2752,8 +2671,7 @@ void Scene2::freezeEnemyFunction()
 			listEnemy1.at(i)->y>y1 &&
 			listEnemy1.at(i)->y < y1 + SCREEN_HEIGHT)
 		{
-			if (!(dynamic_cast<GroundEnemy *>(listEnemy1.at(i))))
-			{
+		    {
 
 				//listEnemy1.at(i)->SetState(ENEMY_STATE_FREEZE);
 				//listEnemy1.at(i)->freezed = true;
@@ -3956,7 +3874,7 @@ void Scene2::CollisionBetSimonAndItem()
 				if (listItem1.at(i)->GetState() == ITEM_STATE_DROPPED)
 				{
 					sound->playSound(eTagSound::CollItem, false);
-					OutputDebugString(L"Simon and BigHeart \n");
+					OutputDebugString(L"simon1 and BigHeart \n");
 					listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 					simon1->heartCount += 5;
 					//if (!dynamic_cast<Ground *>(listItem1.at(i)))//Khong xoa checkbox di de co the di len cau thang qua man khac lai
@@ -3972,7 +3890,7 @@ void Scene2::CollisionBetSimonAndItem()
 					if (listItem1.at(i)->GetState() == ITEM_STATE_DROPPED)
 					{
 						sound->playSound(eTagSound::COllWeapon, false);
-						OutputDebugString(L"Simon and WHIP \n");
+						OutputDebugString(L"simon1 and WHIP \n");
 						listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 						if (simon1->nx == 1)
 							simon1->SetState(SIMON_STATE_EAT_RIGHT);
@@ -3992,7 +3910,7 @@ void Scene2::CollisionBetSimonAndItem()
 						if (listItem1.at(i)->GetState() == ITEM_STATE_DROPPED)
 						{
 							sound->playSound(eTagSound::COllWeapon, false);
-							OutputDebugString(L"Simon and DAGGER \n");
+							OutputDebugString(L"simon1 and DAGGER \n");
 							listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 							simon1->dagger->turnOnDagger();
 							simon1->axe->turnOffAxe();
@@ -4013,7 +3931,7 @@ void Scene2::CollisionBetSimonAndItem()
 							if (listItem1.at(i)->GetState() == ITEM_STATE_DROPPED)
 							{
 								sound->playSound(eTagSound::CollItem, false);
-								OutputDebugString(L"Simon and SmallHeart \n");
+								OutputDebugString(L"simon1 and SmallHeart \n");
 								listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 
 								simon1->heartCount += 1;
@@ -4084,7 +4002,7 @@ void Scene2::CollisionBetSimonAndItem()
 												{
 													listEnemy1.at(i)->SetState(200);
 													listEnemy1.erase(listEnemy1.begin() + i);
-													i = i - 1; //Optional cuz simon only can hit 1 torch at one moment
+													i = i - 1; //Optional cuz simon1 only can hit 1 torch at one moment
 												}
 											}
 											
@@ -4100,7 +4018,7 @@ void Scene2::CollisionBetSimonAndItem()
 											if (listItem1.at(i)->GetState() == ITEM_STATE_DROPPED)
 											{
 												sound->playSound(eTagSound::COllWeapon, false);
-												OutputDebugString(L"Simon and Axe \n");
+												OutputDebugString(L"simon1 and Axe \n");
 												listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 												simon1->dagger->turnOffDagger();
 												simon1->axe->turnOnAxe();
@@ -4120,7 +4038,7 @@ void Scene2::CollisionBetSimonAndItem()
 												if (listItem1.at(i)->state == ITEM_STATE_DROPPED)
 												{
 													sound->playSound(eTagSound::COllWeapon, false);
-													OutputDebugString(L"Simon and HolyWater \n");
+													OutputDebugString(L"simon1 and HolyWater \n");
 													listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 													simon1->dagger->turnOffDagger();
 													simon1->axe->turnOffAxe();
@@ -4141,7 +4059,7 @@ void Scene2::CollisionBetSimonAndItem()
 													if (listItem1.at(i)->state == ITEM_STATE_DROPPED)
 													{
 														sound->playSound(eTagSound::COllWeapon, false);
-														OutputDebugString(L"Simon and Clock \n");
+														OutputDebugString(L"simon1 and Clock \n");
 														listItem1.at(i)->SetState(ITEM_STATE_INACTIVE);
 														simon1->dagger->turnOffDagger();
 														simon1->axe->turnOffAxe();
@@ -4395,7 +4313,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 								listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
 							{
 
-								OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+								OutputDebugString(L"RIGHT SIDE: simon1 and GHOU  \n");
 								if (simon1->isUsing1stWeapon == true)
 									simon1->notUseWeapon();
 								if (simon1->whip->isFinished == false)
@@ -4422,7 +4340,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 									listEnemy1.at(i)->GetState() == GHOU_STATE_ACTIVE_RIGHT)
 								{
 
-									OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+									OutputDebugString(L"LEFT SIDE: simon1 and GHOU  \n");
 									//if (simon1->isUsingDagger == true)
 									//simon1->notUseDagger();
 									if (simon1->whip->isFinished == false)
@@ -4450,7 +4368,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 										listEnemy1.at(i)->GetPosition(x1, y1);
 										if (x < x1)
 										{
-											OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+											OutputDebugString(L"RIGHT SIDE: simon1 and GHOU  \n");
 											//if (simon1->isUsingDagger == true)
 											//	simon1->notUseDagger();
 											if (simon1->whip->isFinished == false)
@@ -4467,7 +4385,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 										else
 											if (x >= x1)
 											{
-												OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+												OutputDebugString(L"LEFT SIDE: simon1 and GHOU  \n");
 												//if (simon1->isUsingDagger == true)
 												//	simon1->notUseDagger();
 												if (simon1->whip->isFinished == false)
@@ -4504,7 +4422,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 						listEnemy1.at(i)->GetPosition(x1, y1);
 						if (x < x1)
 						{
-							OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+							OutputDebugString(L"RIGHT SIDE: simon1 and GHOU  \n");
 							if (simon1->isUsing1stWeapon == true)
 								simon1->notUseWeapon();
 							if (simon1->whip->isFinished == false)
@@ -4521,7 +4439,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 						else
 							if (x >= x1)
 							{
-								OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+								OutputDebugString(L"LEFT SIDE: simon1 and GHOU  \n");
 								if (simon1->isUsing1stWeapon == true)
 									simon1->notUseWeapon();
 								if (simon1->whip->isFinished == false)
@@ -4564,7 +4482,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 				if (e->nx == -1)
 				{
 
-					OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+					OutputDebugString(L"RIGHT SIDE: simon1 and GHOU  \n");
 					if (simon1->whip->isFinished == false)
 						simon1->whip->isFinished = true;
 					if (simon1->isOnStairs == true)
@@ -4580,7 +4498,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 					//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
 					//		else if(simon1->nx=-1)
 					//		simon1->SetState(SIMON_STATE_HURT_LEFT);
-					//simon->heartCount += 5;
+					//simon1->heartCount += 5;
 
 
 				}
@@ -4588,7 +4506,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 				else
 					if (e->nx == 1)
 					{
-						OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+						OutputDebugString(L"LEFT SIDE: simon1 and GHOU  \n");
 						//if (simon1->isUsingDagger == true)
 						//simon1->notUseDagger();
 						if (simon1->whip->isFinished == false)
@@ -4613,7 +4531,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 								boss->GetPosition(x1, y1);
 								if (x < x1)
 								{
-									OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+									OutputDebugString(L"RIGHT SIDE: simon1 and GHOU  \n");
 									//if (simon1->isUsingDagger == true)
 									//	simon1->notUseDagger();
 									if (simon1->whip->isFinished == false)
@@ -4630,7 +4548,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 								else
 									if (x >= x1)
 									{
-										OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+										OutputDebugString(L"LEFT SIDE: simon1 and GHOU  \n");
 										//if (simon1->isUsingDagger == true)
 										//	simon1->notUseDagger();
 										if (simon1->whip->isFinished == false)
@@ -4661,7 +4579,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 					boss->GetPosition(x1, y1);
 					if (x < x1)
 					{
-						OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+						OutputDebugString(L"RIGHT SIDE: simon1 and GHOU  \n");
 						//	if (simon1->isUsing1stWeapon == true)
 						//		simon1->notUseWeapon();
 						if (simon1->whip->isFinished == false)
@@ -4678,7 +4596,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 					else
 						if (x >= x1)
 						{
-							OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+							OutputDebugString(L"LEFT SIDE: simon1 and GHOU  \n");
 							//	if (simon1->isUsing1stWeapon == true)
 							//		simon1->notUseWeapon();
 							if (simon1->whip->isFinished == false)
@@ -4715,7 +4633,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 
 							{
 
-								OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+								OutputDebugString(L"RIGHT SIDE: simon1 and GHOU  \n");
 								//if (simon1->isUsing1stWeapon == true)
 								//	simon1->notUseWeapon();
 								if (simon1->whip->isFinished == false)
@@ -4733,7 +4651,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 								//		simon1->SetState(SIMON_STATE_HURT_RIGHT);
 								//		else if(simon1->nx=-1)
 								//		simon1->SetState(SIMON_STATE_HURT_LEFT);
-								//simon->heartCount += 5;
+								//simon1->heartCount += 5;
 
 							}
 
@@ -4745,7 +4663,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 
 								{
 
-									OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+									OutputDebugString(L"LEFT SIDE: simon1 and GHOU  \n");
 									//if (simon1->isUsingDagger == true)
 									//simon1->notUseDagger();
 									if (simon1->whip->isFinished == false)
@@ -4773,7 +4691,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 										listPanther.at(i)->GetPosition(x1, y1);
 										if (x < x1)
 										{
-											OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+											OutputDebugString(L"RIGHT SIDE: simon1 and GHOU  \n");
 											//if (simon1->isUsingDagger == true)
 											//	simon1->notUseDagger();
 											if (simon1->whip->isFinished == false)
@@ -4790,7 +4708,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 										else
 											if (x >= x1)
 											{
-												OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+												OutputDebugString(L"LEFT SIDE: simon1 and GHOU  \n");
 												//if (simon1->isUsingDagger == true)
 												//	simon1->notUseDagger();
 												if (simon1->whip->isFinished == false)
@@ -4821,7 +4739,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 							listPanther.at(i)->GetPosition(x1, y1);
 							if (x < x1)
 							{
-								OutputDebugString(L"RIGHT SIDE: Simon and GHOU  \n");
+								OutputDebugString(L"RIGHT SIDE: simon1 and GHOU  \n");
 								if (simon1->isUsing1stWeapon == true)
 									simon1->notUseWeapon();
 								if (simon1->whip->isFinished == false)
@@ -4838,7 +4756,7 @@ void Scene2::CollisionBetSimonAndEnemy()
 							else
 								if (x >= x1)
 								{
-									OutputDebugString(L"LEFT SIDE: Simon and GHOU  \n");
+									OutputDebugString(L"LEFT SIDE: simon1 and GHOU  \n");
 									if (simon1->isUsing1stWeapon == true)
 										simon1->notUseWeapon();
 									if (simon1->whip->isFinished == false)
