@@ -1,10 +1,8 @@
 #include "Bat.h"
 
-
-
-void Bat::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
+void Bat::Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects)
 {
-	// Calculate dx, dy 
+	// Calculate dx, dy
 	CGameObject::Update(dt);
 	if (GetTickCount() - freezeTime_Start > ENEMY_FREEZE_TIME)
 	{
@@ -12,25 +10,28 @@ void Bat::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		{
 			freezeTime_Start = 0;
 			freezed = false;
+			int x = 0;
 		}
 	}
-	
+
 	if (freezed == false)
 	{
 		x += dx;
 		y += dy;
 	}
-	
+
 	if (vy < 0 && y < this->x1 - 20)
 	{
-		y = this->x1 - 20; vy = -vy;
+		y = this->x1 - 20;
+		vy = -vy;
 	}
 
 	if (vy > 0 && y > this->x1 + 20)
 	{
-		y = this->x1 + 20; vy = -vy;
+		y = this->x1 + 20;
+		vy = -vy;
 	}
-	if (x<Camera::GetInstance()->GetPosition().x || x>Camera::GetInstance()->GetPosition().x + SCREEN_WIDTH)
+	if (x < Camera::GetInstance()->GetPosition().x || x > Camera::GetInstance()->GetPosition().x + SCREEN_WIDTH)
 		this->SetState(BAT_STATE_INACTIVE);
 }
 
@@ -38,14 +39,11 @@ Bat::Bat(int x2)
 {
 	x1 = x2;
 	tag = eTag::BAT;
-	
 }
-
 
 Bat::~Bat()
 {
 }
-
 
 void Bat::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
@@ -54,8 +52,6 @@ void Bat::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 	right = x + BAT_BBOX_WIDTH;
 	bottom = y + BAT_BBOX_HEIGHT;
 }
-
-
 
 void Bat::Render()
 {
@@ -75,22 +71,19 @@ void Bat::Render()
 			animations[ani]->Render(x, y);
 		}
 	}
-	else
-		if (this->GetState() == BAT_STATE_ACTIVE_RIGHT)
-		{
-			ani = BAT_ANI_RIGHT;
-			animations[ani]->Render(x, y);
-			//	RenderBoundingBox(100);
-		}
-		else
-			if (this->GetState() == BAT_STATE_ACTIVE_LEFT)
-			{
+	else if (this->GetState() == BAT_STATE_ACTIVE_RIGHT)
+	{
+		ani = BAT_ANI_RIGHT;
+		animations[ani]->Render(x, y);
+		//	RenderBoundingBox(100);
+	}
+	else if (this->GetState() == BAT_STATE_ACTIVE_LEFT)
+	{
 
-				ani = BAT_ANI_LEFT;
-				animations[ani]->Render(x, y);
-				//RenderBoundingBox(100);
-			}
-			
+		ani = BAT_ANI_LEFT;
+		animations[ani]->Render(x, y);
+		//RenderBoundingBox(100);
+	}
 }
 
 void Bat::SetState(int state)
@@ -100,7 +93,7 @@ void Bat::SetState(int state)
 	{
 	case BAT_STATE_ACTIVE_RIGHT:
 		vx = GHOU_WALKING_SPEED;
-		vy = GHOU_WALKING_SPEED/3;
+		vy = GHOU_WALKING_SPEED / 3;
 		nx = 1;
 		break;
 	case BAT_STATE_ACTIVE_LEFT:
@@ -108,7 +101,5 @@ void Bat::SetState(int state)
 		vy = GHOU_WALKING_SPEED / 3;
 		nx = -1;
 		break;
-
 	}
-
 }
